@@ -9,6 +9,37 @@
       var mxResourceExtension = ".txt";
       var Graph;
       var HoverIcons;
+
+      var mxCellEditor;
+      var mxCellEditorGetInitialValue;
+      var mxCellEditorGetCurrentValue;
+      var mxGraphHandlerIsValidDropTarget;
+      var mxRectangle;
+
+      var mxEdgeHandler = function () {
+      }
+      mxEdgeHandler.prototype.destroy = function (...args) {
+      };
+      var mxVertexHandler = function () {
+      }
+      mxVertexHandler.prototype.destroy = function (...args) {
+      };
+      mxVertexHandler.prototype.mouseMove = function (...args) {
+      };
+      var mxRubberband = function () {
+      }
+      var mxGuide = function () {
+      }
+      var mxOutline = function () {
+      }
+      var mxDragSource = function () {
+      }
+      var mxEdgeSegmentHandler = function () {
+      }
+      var mxSelectionCellsHandler = function () {
+      };
+      mxSelectionCellsHandler.prototype.refresh = function (...args) {
+      };
     </script>
     <script type="module" src="/build/drawio.esm.js"></script>
     <script nomodule src="/build/drawio.js"></script>
