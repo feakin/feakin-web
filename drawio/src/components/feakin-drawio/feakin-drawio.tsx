@@ -1,5 +1,5 @@
 import { Component, Prop, h } from '@stencil/core';
-import { format } from '../../utils/utils';
+import './assets/embed.js';
 
 @Component({
   tag: 'feakin-drawio',
@@ -7,26 +7,22 @@ import { format } from '../../utils/utils';
   shadow: true,
 })
 export class FeakinDrawio {
-  /**
-   * The first name
-   */
-  @Prop() first: string;
+  private graphEl: HTMLElement;
 
-  /**
-   * The middle name
-   */
-  @Prop() middle: string;
+  @Prop() file: string;
 
-  /**
-   * The last name
-   */
-  @Prop() last: string;
+  constructor() {
+    let graph = new (window as any).Graph(this.graphEl);
+    graph.resizeContainer = true;
+    graph.centerZoom = true;
+    graph.zoomWheel = true;
 
-  private getText(): string {
-    return format(this.first, this.middle, this.last);
+    graph.setTooltips(false);
+    graph.setConnectable(false);
+    graph.setEnabled(false);
   }
 
   render() {
-    return <div>Hello, World! I'm {this.getText()}</div>;
+    return <div ref={ el => this.graphEl = el as HTMLElement }></div>;
   }
 }
