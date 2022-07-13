@@ -2,11 +2,11 @@ import { Component, Prop, h } from '@stencil/core';
 import { format } from '../../utils/utils';
 
 @Component({
-  tag: 'my-component',
-  styleUrl: 'my-component.css',
+  tag: 'feakin-drawio',
+  styleUrl: 'feakin-drawio.css',
   shadow: true,
 })
-export class MyComponent {
+export class FeakinDrawio {
   /**
    * The first name
    */
