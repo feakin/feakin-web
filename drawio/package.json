@@ -1,7 +1,7 @@
 {
-  "name": "drawio",
+  "name": "@feakin/render-drawio",
   "version": "0.0.1",
-  "description": "Stencil Component Starter",
+  "description": "draw.io render for feakin",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -12,7 +12,7 @@
   "unpkg": "dist/drawio/drawio.esm.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ionic-team/stencil-component-starter.git"
+    "url": "https://github.com/feakin/diagram-render.git"
   },
   "files": [
     "dist/",
@@ -34,5 +34,5 @@
     "jest-cli": "^27.4.5",
     "puppeteer": "^10.0.0"
   },
-  "license": "MIT"
+  "license": "MPL-2.0"
 }
