@@ -3,28 +3,43 @@ import { Rect } from 'react-konva';
 import Konva from 'konva';
 
 class ColoredRect extends React.Component {
-    state = {
-        color: 'green'
-    };
-    handleClick = () => {
-        this.setState({
-            color: Konva.Util.getRandomColor()
-        });
-    };
+  state = {
+    color: 'green',
+    isDragging: false,
+    x: 20,
+    y: 20
+  };
 
-    render() {
-        return (
-            <Rect
-                x={ 20 }
-                y={ 20 }
-                width={ 50 }
-                height={ 50 }
-                fill={ this.state.color }
-                shadowBlur={ 5 }
-                onClick={ this.handleClick }
-            />
-        );
-    }
+  handleClick = () => {
+
+  };
+
+  render() {
+    return (
+      <Rect
+        width={ 50 }
+        height={ 50 }
+        shadowBlur={ 5 }
+        onClick={ this.handleClick }
+        x={ this.state.x }
+        y={ this.state.y }
+        draggable
+        fill={ this.state.isDragging ? 'green' : 'black' }
+        onDragStart={ () => {
+          this.setState({
+            isDragging: true,
+          });
+        } }
+        onDragEnd={ (e) => {
+          this.setState({
+            isDragging: false,
+            x: e.target.x(),
+            y: e.target.y(),
+          });
+        } }
+      />
+    );
+  }
 }
 
 export default ColoredRect;
