@@ -1,11 +1,18 @@
 {
-  "name": "@feakin/render",
-  "version": "0.0.1",
-  "description": "a Feakin render for diagram",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "feakin",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {},
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "nx": "14.4.2",
+    "@nrwl/cli": "14.4.2",
+    "@nrwl/workspace": "14.4.2",
+    "typescript": "~4.7.2",
+    "prettier": "^2.6.2"
   },
-  "author": "",
-  "license": "MPL-2.0"
+  "workspaces": [
+    "packages/**"
+  ]
 }
