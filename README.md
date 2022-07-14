@@ -4,8 +4,10 @@ todos:
 
 - [ ] [ComponentLess](https://componentless.com/) architecture
 - [ ] Renders
-  - [ ] draw.io
+  - [ ] draw.io     (level 1)
   - [ ] excalidraw
+  - [ ] Mermaid.js
+  - [ ] Flowchart.js
 
 License
 ---

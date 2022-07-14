@@ -1,0 +1,57 @@
+{ "class": "go.GraphLinksModel",
+  "copiesArrays": true,
+  "copiesArrayObjects": true,
+  "nodeDataArray": [
+    { "key": -1, "category": "Source", "text": "Search" },
+    { "key": -2, "category": "Source", "text": "Referral" },
+    { "key": -3, "category": "Source", "text": "Advertising" },
+
+    { "key": 0, "text": "Homepage" },
+    { "key": 1, "text": "Products" },
+    { "key": 2, "text": "Buy" },
+    { "key": 3, "text": "Samples" },
+    { "key": 5, "text": "Documentation" },
+    { "key": 6, "text": "Download" },
+
+    { "key": 100, "category": "DesiredEvent", "text": "Ordered!" },
+    { "key": 101, "category": "DesiredEvent", "text": "Downloaded!" },
+
+    { "key": 200, "category": "UndesiredEvent",
+      "reasonsList": [
+        {"text":"Needs redesign?"},
+        {"text":"Wrong Product?"} ]},
+    { "key": 201, "category": "UndesiredEvent",
+      "reasonsList": [
+        {"text":"Need better samples?"},
+        {"text":"Bad landing page for Advertising?"} ]},
+    { "key": 202, "category": "UndesiredEvent",
+      "reasonsList": [
+        {"text":"Reconsider Pricing?"},
+        {"text":"Confusing Cart?"} ]},
+
+    { "category": "Comment", "text": "Add notes with general comments for the next team meeting" }
+
+  ],
+  "linkDataArray": [
+    { "from": -1, "to": 0 },
+    { "from": -2, "to": 0 },
+    { "from": -2, "to": 3 },
+    { "from": -3, "to": 3 },
+    { "from":  0, "to": 1 },
+    { "from":  1, "to": 2 },
+    { "from":  1, "to": 3 },
+    { "from":  0, "to": 5 },
+    { "from":  5, "to": 3 },
+    { "from":  3, "to": 2 },
+
+
+    { "from":  3, "to": 6 },
+
+    { "from":  2, "to": 100 },
+    { "from":  6, "to": 101 },
+
+    { "from":  0, "to": 200 },
+    { "from":  3, "to": 201 },
+    { "from":  2, "to": 202 }
+  ]
+}
