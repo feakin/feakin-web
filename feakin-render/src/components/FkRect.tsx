@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Rect, Transformer } from 'react-konva';
 
+interface FkPosition {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 interface FkRectProps {
-  isSelected: boolean;
+  isSelected?: boolean;
   onSelect: () => void;
+  position: FkPosition
 }
 
 function FkRect(props: FkRectProps) {
@@ -12,12 +20,7 @@ function FkRect(props: FkRectProps) {
 
   const [isDragging, setIsDragging] = useState(false);
 
-  const [position, setPosition] = useState({
-    x: 20,
-    y: 20,
-    width: 50,
-    height: 50
-  })
+  const [position, setPosition] = useState(props.position)
 
   useEffect(() => {
     if (props.isSelected) {
@@ -46,7 +49,8 @@ function FkRect(props: FkRectProps) {
         x={ position.x }
         y={ position.y }
         draggable
-        fill={ isDragging ? 'green' : 'black' }
+        // fill={ isDragging ? 'green' : 'black' }
+        strokeWidth={ 1 }
         onDragStart={ () => {
           setIsDragging(true)
         } }

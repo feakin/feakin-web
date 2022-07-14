@@ -46,7 +46,6 @@ function App() {
   };
 
   const layout = fkDagre(nodeDefinitions, edges);
-  console.log(layout);
 
   return (
     <Stage width={ window.innerWidth }
@@ -54,6 +53,24 @@ function App() {
            onMouseDown={ checkDeselect }
            onTouchStart={ checkDeselect }>
       <Layer draggable>
+        {
+          layout.nodes.map((node: any) => {
+            return (
+              <FkRect
+                isSelected
+                onSelect={ () => {
+
+                } }
+                // todo: add location converter
+                position={ {
+                  x: node.x - node.width / 2,
+                  y: node.y - node.height / 2,
+                  width: node.width,
+                  height: node.height
+                } }></FkRect>
+            )
+          })
+        }
         { layout.edges.map((edge) => {
           const { points, label } = edge.props;
           return (
@@ -71,7 +88,12 @@ function App() {
           isSelected={ selectedId == 1 }
           onSelect={ () => {
             selectShape(1);
-          } }/>
+          } } position={ {
+          x: 20,
+          y: 20,
+          width: 50,
+          height: 50
+        } }/>
       </Layer>
     </Stage>
   );
