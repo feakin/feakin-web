@@ -36,6 +36,7 @@
   "author": "Jakub Synowiec <jsynowiec@users.noreply.github.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "@typed-mxgraph/typed-mxgraph": "^1.0.7",
     "tslib": "~2.4"
   },
   "volta": {
