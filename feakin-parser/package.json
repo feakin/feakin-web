@@ -1,7 +1,7 @@
 {
-  "name": "node-typescript-boilerplate",
+  "name": "@feakin/parser",
   "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "description": "Feakin",
   "type": "module",
   "engines": {
     "node": ">= 16.13 <17"
