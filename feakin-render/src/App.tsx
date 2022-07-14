@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import FkRect from "./components/FkRect";
-import { Layer, Stage } from "react-konva";
+import { Arrow, Group, Layer, Stage, Text } from "react-konva";
 import { fkDagre, NodeDefinition } from "./layout/fk-dagre";
 
 export const nodeDefinitions: NodeDefinition[] = [
@@ -54,6 +54,19 @@ function App() {
            onMouseDown={ checkDeselect }
            onTouchStart={ checkDeselect }>
       <Layer draggable>
+        { layout.edges.map((edge) => {
+          const { points, label } = edge.props;
+          return (
+            <Group key={ edge.props.label }>
+              <Arrow
+                points={ edge.points }
+                fill="black"
+                stroke="black"
+              />
+              <Text text={ label } x={ points[0].x } y={ points[0].y }/>
+            </Group>
+          );
+        }) }
         <FkRect
           isSelected={ selectedId == 1 }
           onSelect={ () => {
