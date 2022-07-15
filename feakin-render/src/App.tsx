@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
 import { Arrow, Group, Layer, Line, Rect, Stage, Text, Transformer } from "react-konva";
-import { fkDagre, NodeDefinition } from "./layout/fk-dagre";
+import { fkDagre} from "./layout/fkDagre";
 import Konva from "konva";
 import FkRect from "./shapes/FkRect";
+import { NodeDefinition } from "./layout/fkLayoutDef";
 
 export const nodeDefinitions: NodeDefinition[] = [
   {

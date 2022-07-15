@@ -1,25 +1,6 @@
 import * as dagre from "dagre";
+import { flattenPoints, NodeDefinition } from "./fkLayoutDef";
 
-export interface Definition {
-  label: string,
-  width: number,
-  height: number
-}
-
-export interface NodeDefinition {
-  id: string;
-  definition: Definition
-}
-
-type Point = { x: number; y: number };
-const flattenPoints = (points: Point[]): number[] => {
-  const flatten: number[] = [];
-  points.forEach(({ x, y }) => flatten.push(x, y));
-  return flatten;
-};
-
-
-// refs: https://codesandbox.io/s/g72t3?file=/src/index.tsx
 export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[]) => {
   const g = new dagre.graphlib.Graph();
   g.setGraph({
