@@ -28,6 +28,7 @@
   "dependencies": {
     "@stencil/core": "^2.13.0"
   },
+  "author": "Phodal HUANG <phodal@users.noreply.github.com>",
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "jest": "^27.4.5",

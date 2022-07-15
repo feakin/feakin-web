@@ -33,6 +33,7 @@
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch"
   },
+  "author": "Phodal HUANG <phodal@users.noreply.github.com>",
   "dependencies": {
     "@typed-mxgraph/typed-mxgraph": "^1.0.7",
     "tslib": "~2.4"
