@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import './App.css';
 import FkRect from "./components/FkRect";
-import { Arrow, Group, KonvaNodeComponent, Layer, Stage, StageProps, Text } from "react-konva";
+import { Arrow, Group, KonvaNodeComponent, Layer, Line, Stage, StageProps, Text } from "react-konva";
 import { fkDagre, NodeDefinition } from "./layout/fk-dagre";
 import Konva from "konva";
 import StageConfig = Konva.StageConfig;
@@ -40,6 +40,8 @@ function App() {
   const [selectedId, selectShape] = React.useState<number | null>(null);
   const stageEl = useRef<Konva.Stage | null>(null);
   const layerEl = useRef<Konva.Layer | null>(null);
+  const [lines, setLines] = React.useState([] as any);
+  const isDrawing = React.useRef(false);
 
   useLayoutEffect(() => {
     if (stageEl.current != null) {
@@ -48,20 +50,44 @@ function App() {
   })
 
   const checkDeselect = (e: any) => {
-    // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
       selectShape(null);
+
+      // for draw items ?
+      onMouseDown(e);
     }
   };
 
   // refs: https://jsbin.com/rumizocise/1/edit?html,js,output
   const onMouseUp = (e: Konva.KonvaEventObject<MouseEvent>) => {
-    console.log(stageEl.current!!.getStage());
+    isDrawing.current = false;
+  }
+
+
+  const onMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
+    isDrawing.current = true;
+    // @ts-ignore
+    const pos = e.target.getStage().getPointerPosition();
+    // @ts-ignore
+    setLines([...lines, [pos.x, pos.y]]);
   }
 
   const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
+    // no drawing - skipping
+    if (!isDrawing.current) {
+      return;
+    }
 
+    const stage: Konva.Stage = e.target.getStage()!!;
+    const point = stage.getPointerPosition()!!;
+    let lastLine = lines[lines.length - 1];
+    // add point
+    lastLine = lastLine.concat([point.x, point.y]);
+
+    // replace last
+    lines.splice(lines.length - 1, 1, lastLine);
+    setLines(lines.concat());
   }
 
   const onMouseOut = (e: Konva.KonvaEventObject<MouseEvent>) => {
@@ -115,6 +141,11 @@ function App() {
             </Group>
           );
         }) }
+
+        { lines.map((line: number[] | undefined, i: React.Key | null | undefined) => (
+          <Line key={ i } points={ line } stroke="red"/>
+        )) }
+
         <FkRect
           isSelected={ selectedId == 1 }
           onSelect={ () => {
