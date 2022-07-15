@@ -1,19 +1,18 @@
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { Rect, Transformer } from 'react-konva';
 import Konva from "konva";
+import { FkLocation } from "../geometry/FkLocation";
 
-interface FkPosition {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+interface FkRectConfig {
+
 }
 
 interface FkRectProps {
   draggable?: boolean;
   isSelected?: boolean;
   onSelect: (ref: MutableRefObject<Konva.Rect | null>) => void;
-  position: FkPosition
+  position: FkLocation;
+  config?: FkRectConfig;
 }
 
 function FkRect(props: FkRectProps) {
