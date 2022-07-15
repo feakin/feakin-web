@@ -47,7 +47,7 @@ export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[]) => 
   const edges = g.edges().map(item => {
     let edge = g.edge(item);
     let points = flattenPoints(edge.points);
-    console.log(points);
+
     return {
       props: edge,
       points

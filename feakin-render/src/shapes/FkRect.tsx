@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { MutableRefObject, useEffect, useState } from 'react';
 import { Rect, Transformer } from 'react-konva';
+import Konva from "konva";
 
 interface FkPosition {
   x: number;
@@ -11,13 +12,13 @@ interface FkPosition {
 interface FkRectProps {
   draggable?: boolean;
   isSelected?: boolean;
-  onSelect: () => void;
+  onSelect: (ref: MutableRefObject<Konva.Rect | null>) => void;
   position: FkPosition
 }
 
 function FkRect(props: FkRectProps) {
-  const shapeRef: any = React.useRef();
-  const trRef: any = React.useRef();
+  const shapeRef = React.useRef<Konva.Rect | null>(null);
+  const trRef: any = React.useRef<Konva.Transformer | null>(null);
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -42,10 +43,11 @@ function FkRect(props: FkRectProps) {
   return (
     <React.Fragment>
       <Rect
+        name="fk-rect"
         width={ position.width }
         height={ position.height }
-        onClick={ props.onSelect }
-        onTap={ props.onSelect }
+        onClick={ () => props.onSelect(shapeRef) }
+        onTap={ () =>  props.onSelect(shapeRef) }
         ref={ shapeRef }
         x={ position.x }
         y={ position.y }
@@ -68,7 +70,7 @@ function FkRect(props: FkRectProps) {
           // and NOT its width or height
           // but in the store we have only width and height
           // to match the data better we will reset scale on transform end
-          const node = shapeRef.current;
+          const node = shapeRef.current!!;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
 
@@ -91,7 +93,6 @@ function FkRect(props: FkRectProps) {
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
             }
-
             return newBox;
           } }
         />
