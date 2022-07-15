@@ -21,7 +21,7 @@ const flattenPoints = (points: Point[]): number[] => {
 
 // refs: https://codesandbox.io/s/g72t3?file=/src/index.tsx
 export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[]) => {
-  var g = new dagre.graphlib.Graph();
+  const g = new dagre.graphlib.Graph();
   g.setGraph({
     rankdir: "TB",
     align: "UL",
@@ -37,6 +37,7 @@ export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[]) => 
 
   relations.forEach(([v, w]) => g.setEdge(v, w));
 
+  // todo: export redraw function
   dagre.layout(g);
 
   const nodes = g.nodes().map(node => {
@@ -53,8 +54,11 @@ export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[]) => 
     }
   });
 
+  const connectors: any[] = [];
+
   return {
     nodes,
-    edges
+    edges,
+    connectors
   }
 };

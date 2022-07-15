@@ -9,6 +9,7 @@ interface FkPosition {
 }
 
 interface FkRectProps {
+  draggable?: boolean;
   isSelected?: boolean;
   onSelect: () => void;
   position: FkPosition
@@ -48,8 +49,8 @@ function FkRect(props: FkRectProps) {
         ref={ shapeRef }
         x={ position.x }
         y={ position.y }
-        draggable
-        // fill={ isDragging ? 'green' : 'black' }
+        draggable={ props.draggable || true }
+        fill={ isDragging ? 'green' : 'black' }
         strokeWidth={ 1 }
         onDragStart={ () => {
           setIsDragging(true)

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import './App.css';
 import FkRect from "./components/FkRect";
-import { Arrow, Group, Layer, Stage, Text } from "react-konva";
+import { Arrow, Group, KonvaNodeComponent, Layer, Stage, StageProps, Text } from "react-konva";
 import { fkDagre, NodeDefinition } from "./layout/fk-dagre";
+import Konva from "konva";
+import StageConfig = Konva.StageConfig;
 
 export const nodeDefinitions: NodeDefinition[] = [
   {
@@ -35,7 +37,15 @@ export const edges = [
 ];
 
 function App() {
-  const [selectedId, selectShape] = React.useState(null as any);
+  const [selectedId, selectShape] = React.useState<number | null>(null);
+  const stageEl = useRef<Konva.Stage | null>(null);
+  const layerEl = useRef<Konva.Layer | null>(null);
+
+  useLayoutEffect(() => {
+    if (stageEl.current != null) {
+
+    }
+  })
 
   const checkDeselect = (e: any) => {
     // deselect when clicked on empty area
@@ -45,19 +55,40 @@ function App() {
     }
   };
 
+  // refs: https://jsbin.com/rumizocise/1/edit?html,js,output
+  const onMouseUp = (e: Konva.KonvaEventObject<MouseEvent>) => {
+    console.log(stageEl.current!!.getStage());
+  }
+
+  const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
+
+  }
+
+  const onMouseOut = (e: Konva.KonvaEventObject<MouseEvent>) => {
+
+  }
+
   const layout = fkDagre(nodeDefinitions, edges);
 
+  // todo: add redo and undo functionality
   return (
-    <Stage width={ window.innerWidth }
+    <Stage ref={ stageEl }
+           width={ window.innerWidth }
            height={ window.innerHeight }
            onMouseDown={ checkDeselect }
+           onMouseUp={ onMouseUp }
+           onMouseMove={ onMouseMove }
+           onMouseOut={ onMouseOut }
            onTouchStart={ checkDeselect }>
-      <Layer draggable>
+
+      <Layer ref={ layerEl } draggable>
         {
-          layout.nodes.map((node: any) => {
+          layout.nodes.map((node: any, index: number) => {
             return (
               <FkRect
-                isSelected
+                key={ "node_" + index }
+                isSelected={ false }
+                draggable={ false }
                 onSelect={ () => {
 
                 } }
