@@ -20,3 +20,11 @@ Modules Design:
 - [ ] key shortcut
 - [ ] history manager
 - [ ] state manager
+
+Hand-drawn engine:
+
+- [ ] [roughjs](https://github.com/rough-stuff/rough)
+
+Toolsets
+
+- [ ] storybook
