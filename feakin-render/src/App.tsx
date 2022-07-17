@@ -3,7 +3,7 @@ import './App.css';
 import { Arrow, Group, Layer, Line, Rect, Stage, Text, Transformer } from "react-konva";
 import { fkDagre} from "./layout/fkDagre";
 import Konva from "konva";
-import FkRect from "./shapes/FkRect";
+import FkRect, { FK_RECT_NAME } from "./shapes/FkRect";
 import { NodeDefinition } from "./layout/fkLayoutDef";
 
 export const nodeDefinitions: NodeDefinition[] = [
@@ -94,18 +94,14 @@ function App() {
       return;
     }
     const selBox = selectionRectRef.current!!.getClientRect();
-    console.log(selBox);
 
     const elements: any[] = [];
-    console.log(layerRef.current!!.find(".fk-rect"));
-    layerRef.current!!.find(".fk-rect").forEach((elementNode) => {
+    layerRef.current!!.find(FK_RECT_NAME).forEach((elementNode) => {
       const elBox = elementNode.getClientRect();
       if (Konva.Util.haveIntersection(selBox, elBox)) {
         elements.push(elementNode);
       }
     });
-
-    console.log(elements);
 
     trRef.current!!.nodes(elements);
     selection.current.visible = false;
@@ -185,7 +181,7 @@ function App() {
     }
 
     // do nothing if clicked NOT on our rectangles
-    if (!e.target.hasName(".rect")) {
+    if (!e.target.hasName(FK_RECT_NAME)) {
       return;
     }
 

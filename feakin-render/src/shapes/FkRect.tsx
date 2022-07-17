@@ -15,6 +15,7 @@ interface FkRectProps {
   config?: FkRectConfig;
 }
 
+export const FK_RECT_NAME = ".fk-rect"
 function FkRect(props: FkRectProps) {
   const shapeRef = React.useRef<Konva.Rect | null>(null);
   const trRef: any = React.useRef<Konva.Transformer | null>(null);
