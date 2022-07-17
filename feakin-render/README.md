@@ -28,6 +28,11 @@ Modules Design:
 - [ ] history manager
 - [ ] state manager
   
+DSL
+
+- [ ] Parser generator
+  - [ ] mermaid use [jison](https://github.com/zaach/jison)
+
 Toolsets
 
 - [ ] storybook

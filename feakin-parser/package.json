@@ -36,6 +36,7 @@
   "author": "Phodal HUANG <phodal@users.noreply.github.com>",
   "dependencies": {
     "@typed-mxgraph/typed-mxgraph": "^1.0.7",
+    "jison": "^0.4.18",
     "tslib": "~2.4"
   },
   "volta": {

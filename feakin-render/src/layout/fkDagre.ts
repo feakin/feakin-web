@@ -1,10 +1,15 @@
 import * as dagre from "dagre";
 import { flattenPoints, NodeDefinition } from "./fkLayoutDef";
 
-export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[]) => {
+interface FkDagreOptions {
+  // TB = top to bottom, LR = left to right.
+  dir?: 'TB' | 'BT' | 'LR' | 'RL';
+}
+
+export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[], options?: FkDagreOptions) => {
   const g = new dagre.graphlib.Graph();
   g.setGraph({
-    rankdir: "TB",
+    rankdir: options?.dir || 'TB',
     align: "UL",
     ranker: "network-simplex"
   });
