@@ -31,7 +31,7 @@ function FkRect(props: FkRectProps) {
     }
   }, [props.isSelected]);
 
-  function onChange(param: { x: any; width: number; y: any; height: number }) {
+  function onChange(param: FkLocation) {
     setPosition({
       x: param.x,
       y: param.y,
