@@ -1,9 +1,23 @@
-import { greeter } from '../src/main.js';
+import { flowParser } from '../src/parser/mermaid/flowParser.js';
 
 describe('greeter function', () => {
-  const name = 'John';
+  it('parse flow', () => {
+    const grammar = {
+      "lex": {
+        "rules": [
+          ["\\s+", "/* skip whitespace */"],
+          ["[a-f0-9]+", "return 'HEX';"]
+        ]
+      },
 
-  it('greets a user with `Hello, {name}` message', () => {
-    expect(greeter(name)).toBe(`Hello, ${name}`);
+      "bnf": {
+        "hex_strings" :[ "hex_strings HEX",
+          "HEX" ]
+      }
+    };
+
+    let parser = flowParser(grammar as any);
+    let result = parser.parse("adfe34bc e82a");
+    console.log(result);
   });
 });
