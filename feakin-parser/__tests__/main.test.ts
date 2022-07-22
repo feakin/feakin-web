@@ -1,4 +1,4 @@
-import { flowParser } from '../src/parser/mermaid/flowParser.js';
+import { FlowParser } from '../src/parser/mermaid/flowParser.js';
 
 describe('greeter function', () => {
   it('parse flow', () => {
@@ -16,7 +16,7 @@ describe('greeter function', () => {
       }
     };
 
-    let parser = flowParser(grammar as any);
+    let parser = new FlowParser(grammar as any);
     let result = parser.parse("adfe34bc e82a");
     console.log(result);
   });
