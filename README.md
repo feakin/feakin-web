@@ -3,11 +3,9 @@
 todos:
 
 - [ ] [ComponentLess](https://componentless.com/) architecture
-- [ ] Diagram Library
-  - [ ] draw.io     (level 1)
-  - [ ] excalidraw
-  - [ ] Mermaid.js
-  - [ ] Flowchart.js
+- [ ] Layout Model Design
+  - [] Shape
+  - [] Geometry
 - [ ] Layout Engine
   - [ ] [dagre](https://github.com/dagrejs/dagre)
   - [ ] [ELK](https://github.com/kieler/elkjs)
@@ -19,6 +17,11 @@ todos:
   - [ ] [Fabric.js](https://github.com/fabricjs/fabric.js) SVG-to-Canvas (& canvas-to-SVG) Parser
 - [ ] Parser
   - [ ] [Jison](https://github.com/zaach/jison)
+- Diagram analysis
+  - [ ] draw.io     (level 1)
+  - [ ] excalidraw
+  - [ ] Mermaid.js
+  - [ ] Flowchart.js
 
 ## Samples
 
