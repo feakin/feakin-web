@@ -6,6 +6,7 @@
   "engines": {
     "node": ">= 16.13 <17"
   },
+  "private": false,
   "devDependencies": {
     "@types/jest": "~27.5",
     "@types/node": "~16",

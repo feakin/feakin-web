@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "private": false,
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

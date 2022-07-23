@@ -2,7 +2,9 @@
   "name": "@feakin/all",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "publish": "npx lerna publish --no-private"
+  },
   "private": true,
   "devDependencies": {
     "lerna": "^5.2.0",
