@@ -7,7 +7,7 @@
     "build:development": "webpack --mode development --progress --color",
     "build:production": "webpack --mode production --progress --color",
     "build": "concurrently \"yarn build:development\" \"yarn build:production\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "keywords": [],
   "author": "Phodal Huang<h@phodal.com>",
