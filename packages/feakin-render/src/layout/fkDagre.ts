@@ -9,7 +9,7 @@ interface FkDagreOptions {
 export const fkDagre = (nodeDefinitions: NodeDefinition[], relations: any[], options?: FkDagreOptions) => {
   const g = new dagre.graphlib.Graph();
   g.setGraph({
-    rankdir: options?.dir || 'TB',
+    rankdir: options && options.dir ? options.dir : 'TB',
     align: "UL",
     ranker: "network-simplex"
   });
