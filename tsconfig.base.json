@@ -16,6 +16,5 @@
     "baseUrl": "./feakin",
     "paths": {}
   },
-  "exclude": [
-    "feakin/node_modules", "tmp"]
+  "exclude": ["feakin/node_modules", "tmp"]
 }
