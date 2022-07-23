@@ -1,4 +1,4 @@
-// eslint-disable-next-line  @typescript-eslint/no-unused-vars
+// @ts-ignore
 interface mxCell {
   id: string;
   value: string | number;
