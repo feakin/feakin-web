@@ -1,7 +1,7 @@
-// @ts-ignore
+// eslint-disable-next-line  @typescript-eslint/no-unused-vars
 interface mxCell {
   id: string;
-  value: any;
+  value: string | number;
   // geometry: mxGeometry;
   style: string;
   vertex: boolean;
