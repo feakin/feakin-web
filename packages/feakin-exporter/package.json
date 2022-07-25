@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "",
     "test": "echo \"Error: no test specified\""
   },
   "private": false,
