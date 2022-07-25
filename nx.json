@@ -1,24 +1,27 @@
 {
-  "extends": "nx/presets/npm.json",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "feakin",
+  "affected": {
+    "defaultBase": "main"
+  },
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
         "cacheableOperations": [
-          "build:development",
-          "build:production",
           "build",
-          "test",
-          "clean",
-          "prebuild",
-          "build:watch",
-          "build:release",
           "lint",
-          "prettier",
-          "test:watch",
-          "eject"
+          "test",
+          "e2e"
         ],
-        "accessToken": "YjBjZmVhNjQtMzkwOC00ZDkzLTllODEtNDEzYWE0ODQ4OTg1fHJlYWQtd3JpdGU="
+        "accessToken": "NTMwMjY0MmItNGY0Ni00NzIxLTlmYzAtOTQwNmQ1ZjE1NWJkfHJlYWQtd3JpdGU="
       }
     }
   },
@@ -29,7 +32,8 @@
       ]
     }
   },
-  "affected": {
-    "defaultBase": "master"
+  "workspaceLayout": {
+    "appsDir": "packages",
+    "libsDir": "packages"
   }
 }
