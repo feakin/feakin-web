@@ -1,4 +1,6 @@
-# Diagrams' render
+# Feakin
+
+[![CI](https://github.com/feakin/feakin/actions/workflows/ci.yml/badge.svg)](https://github.com/feakin/feakin/actions/workflows/ci.yml)
 
 todos:
 
