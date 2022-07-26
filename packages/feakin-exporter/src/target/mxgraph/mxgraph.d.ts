@@ -1,5 +1,5 @@
-export interface MXGraphModel {
-  root: Root;
+export interface MxGraphModel {
+  root: RootNode;
   dx: string;
   dy: string;
   grid: string;
@@ -25,16 +25,27 @@ export interface MXCell {
   id: string;
   parent?: string;
   mxGeometry?: MXGeometry;
-  value?: string;
   style?: string;
+  source?: string;
+  target?: string;
+  edge?: string;
+  value?: string;
   vertex?: string;
+  connectable?: string;
 }
 
 export interface MXGeometry {
-  x: string;
-  y: string;
-  width: string;
-  height: string;
+  mxPoint?: MxPoint[];
+  x?: string;
+  y?: string;
+  relative?: string;
   as: string;
+  width?: string;
+  height?: string;
 }
 
+export interface MxPoint {
+  as: string;
+  x?: string;
+  y?: string;
+}
