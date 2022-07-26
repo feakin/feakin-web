@@ -1,5 +1,9 @@
 {
   "name": "@feakin/feakin-exporter",
   "version": "0.0.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "pako": "^2.0.4"
+  }
 }
