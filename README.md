@@ -6,7 +6,7 @@ todos:
 - [ ] Layout Model Design
   - [] Shape
   - [] Geometry
-- [ ] Layout Engine
+- [ ] Layout Engine (TODO: split to standalone module)
   - [ ] [dagre](https://github.com/dagrejs/dagre)
   - [ ] [ELK](https://github.com/kieler/elkjs)
   - [ ] [cola.js](https://ialab.it.monash.edu/webcola/)
