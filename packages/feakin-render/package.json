@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
+    "canvas": "^2.9.3",
     "dagre": "^0.8.5",
     "konva": "^8.3.10",
     "react": "^18.2.0",
