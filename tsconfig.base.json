@@ -10,13 +10,21 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": "./feakin",
     "paths": {
-      "@feakin/feakin-exporter": ["packages/feakin-exporter/src/index.ts"]
+      "@feakin/feakin-exporter": [
+        "packages/feakin-exporter/src/index.ts"
+      ]
     }
   },
-  "exclude": ["feakin/node_modules", "tmp"]
+  "exclude": [
+    "feakin/node_modules",
+    "tmp"
+  ]
 }

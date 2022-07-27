@@ -1,20 +1,16 @@
-import * as cheerio from 'cheerio';
-import { xml2json } from 'xml-js';
-
-const convert = require('xml-js');
-
-const pako = require('pako');
+import cheerio from 'cheerio';
+import * as convert from 'xml-js';
+import * as pako from 'pako';
 
 const MxGraphEncode = {
   xml2json: (xml: string) => {
     return convert.xml2js(xml, {
       compact: true,
-      spaces: 4,
       alwaysChildren: true,
     });
   },
   inlineAttrs: function (obj: any) {
-    for (let prop in obj) {
+    for (const prop in obj) {
       if (typeof obj[prop] == 'object') {
         if (obj[prop]._attributes) {
           Object.assign(obj[prop], obj[prop]._attributes);
@@ -34,9 +30,8 @@ const MxGraphEncode = {
   },
   decodeXml: (source: string) => {
     const $ = MxGraphEncode.parseXml(source);
-    let mxfile = $('mxfile');
+    const mxfile = $('mxfile');
     if (mxfile) {
-      // @ts-ignore
       const diagrams = cheerio.text($('mxfile diagram'));
 
       if (diagrams.length > 0) {
@@ -57,16 +52,15 @@ const MxGraphEncode = {
   },
   encode: (source: string) => {
     const data = encodeURIComponent(source);
-    const compressed = pako.deflateRaw(data, { to: 'string' });
+    const compressed = pako.deflateRaw(data);
     const base64 = btoa(MxGraphEncode.arrayBufferToString(compressed));
     return base64;
   },
   arrayBufferToString: (array: ArrayBuffer) => {
     let result = '';
-    array = new Uint8Array(array);
-    for (let c = array.byteLength, d = 0; d < c; d++) {
-      // @ts-ignore
-      result += String.fromCharCode(array[d]);
+    const uint8Array = new Uint8Array(array);
+    for (let c = uint8Array.byteLength, d = 0; d < c; d++) {
+      result += String.fromCharCode(uint8Array[d]);
     }
     return result;
   },
