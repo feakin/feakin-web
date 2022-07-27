@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { xml2json } from "xml-js";
 
 const convert = require('xml-js');
 
@@ -7,11 +8,25 @@ const pako = require('pako');
 const MxGraphEncode = {
   xml2json: (xml: string) => {
     return convert.xml2js(xml, {
-      attributesKey: 'attributes',
       compact: true,
       spaces: 4,
       alwaysChildren: true
     })
+  },
+  inlineAttrs: function (obj: any) {
+    for (let prop in obj) {
+      if (typeof obj[prop] == 'object') {
+        if (obj[prop]._attributes) {
+          Object.assign(obj[prop], obj[prop]._attributes);
+          delete obj[prop]._attributes;
+        }
+        MxGraphEncode.inlineAttrs(obj[prop]);
+      }
+    }
+    return obj;
+  },
+  xml2obj: (xml: string) => {
+    return MxGraphEncode.inlineAttrs(MxGraphEncode.xml2json(xml));
   },
   parseXml: (xml: string) => {
     const $ = cheerio.load(xml);
