@@ -8,7 +8,8 @@
     "build:since": "nx affected --target=build",
     "test:all": "nx run-many --target=test --all",
     "test:since": "lerna run test --since=main",
-    "dev": "lerna run dev --stream --parallel"
+    "dev": "lerna run dev --stream --parallel",
+    "format": "nx format:write"
   },
   "private": true,
   "devDependencies": {
