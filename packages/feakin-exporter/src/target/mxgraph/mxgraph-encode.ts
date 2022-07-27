@@ -7,6 +7,7 @@ const pako = require('pako');
 const MxGraphEncode = {
   xml2json: (xml: string) => {
     return convert.xml2js(xml, {
+      attributesKey: 'attributes',
       compact: true,
       spaces: 4,
       alwaysChildren: true

@@ -3,22 +3,24 @@ export interface MxGraph {
 }
 
 export interface MxGraphModel {
+  attributes: {
+    dx: string;
+    dy: string;
+    grid: string;
+    gridSize: string;
+    guides: string;
+    tooltips: string;
+    connect: string;
+    arrows: string;
+    fold: string;
+    page: string;
+    pageScale: string;
+    pageWidth: string;
+    pageHeight: string;
+    math: string;
+    shadow: string;
+  }
   root: RootNode;
-  dx: string;
-  dy: string;
-  grid: string;
-  gridSize: string;
-  guides: string;
-  tooltips: string;
-  connect: string;
-  arrows: string;
-  fold: string;
-  page: string;
-  pageScale: string;
-  pageWidth: string;
-  pageHeight: string;
-  math: string;
-  shadow: string;
 }
 
 export interface RootNode {
@@ -26,26 +28,30 @@ export interface RootNode {
 }
 
 export interface MXCell {
-  id: string;
-  parent?: string;
+  attributes: {
+    id: string;
+    parent?: string;
+    style?: string;
+    source?: string;
+    target?: string;
+    edge?: string;
+    value?: string;
+    vertex?: string;
+    connectable?: string;
+  }
   mxGeometry?: MXGeometry;
-  style?: string;
-  source?: string;
-  target?: string;
-  edge?: string;
-  value?: string;
-  vertex?: string;
-  connectable?: string;
 }
 
 export interface MXGeometry {
   mxPoint?: MxPoint[];
-  x?: string;
-  y?: string;
-  relative?: string;
-  as: string;
-  width?: string;
-  height?: string;
+  attributes: {
+    x?: string;
+    y?: string;
+    relative?: string;
+    as: string;
+    width?: string;
+    height?: string;
+  }
 }
 
 export interface MxPoint {
