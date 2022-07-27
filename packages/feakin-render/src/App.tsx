@@ -11,6 +11,7 @@ import {
   Transformer,
 } from 'react-konva';
 import { fkDagre } from './layout/fkDagre';
+/* global Konva */
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
 import { NodeDefinition } from './layout/fkLayoutDef';
