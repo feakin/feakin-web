@@ -1,4 +1,5 @@
-{ "class": "go.GraphLinksModel",
+{
+  "class": "go.GraphLinksModel",
   "copiesArrays": true,
   "copiesArrayObjects": true,
   "nodeDataArray": [
@@ -16,42 +17,55 @@
     { "key": 100, "category": "DesiredEvent", "text": "Ordered!" },
     { "key": 101, "category": "DesiredEvent", "text": "Downloaded!" },
 
-    { "key": 200, "category": "UndesiredEvent",
+    {
+      "key": 200,
+      "category": "UndesiredEvent",
       "reasonsList": [
-        {"text":"Needs redesign?"},
-        {"text":"Wrong Product?"} ]},
-    { "key": 201, "category": "UndesiredEvent",
+        { "text": "Needs redesign?" },
+        { "text": "Wrong Product?" }
+      ]
+    },
+    {
+      "key": 201,
+      "category": "UndesiredEvent",
       "reasonsList": [
-        {"text":"Need better samples?"},
-        {"text":"Bad landing page for Advertising?"} ]},
-    { "key": 202, "category": "UndesiredEvent",
+        { "text": "Need better samples?" },
+        { "text": "Bad landing page for Advertising?" }
+      ]
+    },
+    {
+      "key": 202,
+      "category": "UndesiredEvent",
       "reasonsList": [
-        {"text":"Reconsider Pricing?"},
-        {"text":"Confusing Cart?"} ]},
+        { "text": "Reconsider Pricing?" },
+        { "text": "Confusing Cart?" }
+      ]
+    },
 
-    { "category": "Comment", "text": "Add notes with general comments for the next team meeting" }
-
+    {
+      "category": "Comment",
+      "text": "Add notes with general comments for the next team meeting"
+    }
   ],
   "linkDataArray": [
     { "from": -1, "to": 0 },
     { "from": -2, "to": 0 },
     { "from": -2, "to": 3 },
     { "from": -3, "to": 3 },
-    { "from":  0, "to": 1 },
-    { "from":  1, "to": 2 },
-    { "from":  1, "to": 3 },
-    { "from":  0, "to": 5 },
-    { "from":  5, "to": 3 },
-    { "from":  3, "to": 2 },
+    { "from": 0, "to": 1 },
+    { "from": 1, "to": 2 },
+    { "from": 1, "to": 3 },
+    { "from": 0, "to": 5 },
+    { "from": 5, "to": 3 },
+    { "from": 3, "to": 2 },
 
+    { "from": 3, "to": 6 },
 
-    { "from":  3, "to": 6 },
+    { "from": 2, "to": 100 },
+    { "from": 6, "to": 101 },
 
-    { "from":  2, "to": 100 },
-    { "from":  6, "to": 101 },
-
-    { "from":  0, "to": 200 },
-    { "from":  3, "to": 201 },
-    { "from":  2, "to": 202 }
+    { "from": 0, "to": 200 },
+    { "from": 3, "to": 201 },
+    { "from": 2, "to": 202 }
   ]
 }

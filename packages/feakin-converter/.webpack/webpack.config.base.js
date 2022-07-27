@@ -1,6 +1,7 @@
 import path from 'path';
 
-export const resolveRoot = (...relativePath) => path.resolve(__dirname, '..', ...relativePath);
+export const resolveRoot = (...relativePath) =>
+  path.resolve(__dirname, '..', ...relativePath);
 
 export default {
   amd: false, // https://github.com/lodash/lodash/issues/3052
@@ -29,7 +30,10 @@ export default {
     rules: [
       {
         test: /\.js$/,
-        include: [resolveRoot('./src'), resolveRoot('./node_modules/dagre-d3-renderer/lib')],
+        include: [
+          resolveRoot('./src'),
+          resolveRoot('./node_modules/dagre-d3-renderer/lib'),
+        ],
         use: {
           loader: 'babel-loader',
         },

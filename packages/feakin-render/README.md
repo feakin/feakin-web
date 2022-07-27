@@ -27,7 +27,7 @@ Modules Design:
 - [ ] key shortcut
 - [ ] history manager
 - [ ] state manager
-  
+
 DSL
 
 - [ ] Parser generator

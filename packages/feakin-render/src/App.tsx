@@ -1,39 +1,48 @@
 import React from 'react';
 import './App.css';
-import { Arrow, Group, Layer, Line, Rect, Stage, Text, Transformer } from "react-konva";
-import { fkDagre} from "./layout/fkDagre";
-import Konva from "konva";
-import FkRect, { FK_RECT_NAME } from "./shapes/FkRect";
-import { NodeDefinition } from "./layout/fkLayoutDef";
+import {
+  Arrow,
+  Group,
+  Layer,
+  Line,
+  Rect,
+  Stage,
+  Text,
+  Transformer,
+} from 'react-konva';
+import { fkDagre } from './layout/fkDagre';
+import Konva from 'konva';
+import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
+import { NodeDefinition } from './layout/fkLayoutDef';
 
 export const nodeDefinitions: NodeDefinition[] = [
   {
-    id: "kspacey",
-    definition: { label: "Kevin Spacey", width: 144, height: 100 }
+    id: 'kspacey',
+    definition: { label: 'Kevin Spacey', width: 144, height: 100 },
   },
   {
-    id: "swilliams",
-    definition: { label: "Saul Williams", width: 160, height: 100 }
+    id: 'swilliams',
+    definition: { label: 'Saul Williams', width: 160, height: 100 },
   },
-  { id: "bpitt", definition: { label: "Brad Pitt", width: 108, height: 100 } },
+  { id: 'bpitt', definition: { label: 'Brad Pitt', width: 108, height: 100 } },
   {
-    id: "hford",
-    definition: { label: "Harrison Ford", width: 168, height: 100 }
-  },
-  {
-    id: "lwilson",
-    definition: { label: "Luke Wilson", width: 144, height: 100 }
+    id: 'hford',
+    definition: { label: 'Harrison Ford', width: 168, height: 100 },
   },
   {
-    id: "kbacon",
-    definition: { label: "Kevin Bacon", width: 121, height: 100 }
-  }
+    id: 'lwilson',
+    definition: { label: 'Luke Wilson', width: 144, height: 100 },
+  },
+  {
+    id: 'kbacon',
+    definition: { label: 'Kevin Bacon', width: 121, height: 100 },
+  },
 ];
 
 export const edges = [
-  ["kspacey", "swilliams"],
-  ["swilliams", "kbacon"],
-  ["kbacon", "kspacey"]
+  ['kspacey', 'swilliams'],
+  ['swilliams', 'kbacon'],
+  ['kbacon', 'kspacey'],
 ];
 
 function App() {
@@ -54,7 +63,7 @@ function App() {
     x1: 0,
     y1: 0,
     x2: 0,
-    y2: 0
+    y2: 0,
   });
 
   const updateSelectionRect = () => {
@@ -65,7 +74,7 @@ function App() {
       y: Math.min(selection.current.y1, selection.current.y2),
       width: Math.abs(selection.current.x1 - selection.current.x2),
       height: Math.abs(selection.current.y1 - selection.current.y2),
-      fill: "rgba(0, 161, 255, 0.3)"
+      fill: 'rgba(0, 161, 255, 0.3)',
     });
 
     node.getLayer()!!.batchDraw();
@@ -109,7 +118,7 @@ function App() {
     // @ts-ignore
     Konva.listenClickTap = false;
     updateSelectionRect();
-  }
+  };
 
   const onMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
     isDrawing.current = true;
@@ -118,8 +127,8 @@ function App() {
     // @ts-ignore
     setLines([...lines, [pos.x, pos.y]]);
 
-    const isElement = e.target.findAncestor(".elements-container");
-    const isTransformer = e.target.findAncestor("Transformer");
+    const isElement = e.target.findAncestor('.elements-container');
+    const isTransformer = e.target.findAncestor('Transformer');
     if (isElement || isTransformer) {
       return;
     }
@@ -131,7 +140,7 @@ function App() {
     selection.current.y2 = pos.y;
 
     updateSelectionRect();
-  }
+  };
 
   const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
     // no drawing - skipping
@@ -156,11 +165,9 @@ function App() {
     selection.current.x2 = pos.x;
     selection.current.y2 = pos.y;
     updateSelectionRect();
-  }
+  };
 
-  const onMouseOut = (e: Konva.KonvaEventObject<MouseEvent>) => {
-
-  }
+  const onMouseOut = (e: Konva.KonvaEventObject<MouseEvent>) => {};
 
   // based on: https://codesandbox.io/s/react-konva-multiple-selection-tgggi?file=/src/index.js:312-320
   const onClickTap = (e: Konva.KonvaEventObject<MouseEvent>) => {
@@ -212,76 +219,71 @@ function App() {
 
   // todo: add redo and undo functionality
   return (
-    <Stage ref={ stageRef }
-           width={ window.innerWidth }
-           height={ window.innerHeight }
-           onMouseDown={ checkDeselect }
-           onMouseUp={ onMouseUp }
-           onMouseMove={ onMouseMove }
-           onMouseOut={ onMouseOut }
-           onClick={ onClickTap }
-           onTouchStart={ checkDeselect }>
-
-      <Layer ref={ layerRef }>
-        {
-          layout.nodes.map((node: any, index: number) => {
-            return (
-              <FkRect
-                key={ "node_" + index }
-                isSelected={ !!selectedId && node.id == selectedId }
-                draggable={ true }
-                onSelect={ (e) => {
-                  console.log(e);
-                  console.log(node.id);
-                  if (e.current !== undefined) {
-                    let temp = nodesArray;
-                    if (!nodesArray.includes(e.current)) temp.push(e.current);
-                    setNodes(temp);
-                    trRef.current!!.nodes(nodesArray);
-                    trRef.current!!.getLayer()!!.batchDraw();
-                  }
-                  selectShape(node.id);
-                } }
-                // todo: add location converter
-                position={ {
-                  x: node.x - node.width / 2,
-                  y: node.y - node.height / 2,
-                  width: node.width,
-                  height: node.height
-                } }
-              />
-            )
-          })
-        }
-        { layout.edges.map((edge) => {
+    <Stage
+      ref={stageRef}
+      width={window.innerWidth}
+      height={window.innerHeight}
+      onMouseDown={checkDeselect}
+      onMouseUp={onMouseUp}
+      onMouseMove={onMouseMove}
+      onMouseOut={onMouseOut}
+      onClick={onClickTap}
+      onTouchStart={checkDeselect}
+    >
+      <Layer ref={layerRef}>
+        {layout.nodes.map((node: any, index: number) => {
+          return (
+            <FkRect
+              key={'node_' + index}
+              isSelected={!!selectedId && node.id == selectedId}
+              draggable={true}
+              onSelect={(e) => {
+                console.log(e);
+                console.log(node.id);
+                if (e.current !== undefined) {
+                  let temp = nodesArray;
+                  if (!nodesArray.includes(e.current)) temp.push(e.current);
+                  setNodes(temp);
+                  trRef.current!!.nodes(nodesArray);
+                  trRef.current!!.getLayer()!!.batchDraw();
+                }
+                selectShape(node.id);
+              }}
+              // todo: add location converter
+              position={{
+                x: node.x - node.width / 2,
+                y: node.y - node.height / 2,
+                width: node.width,
+                height: node.height,
+              }}
+            />
+          );
+        })}
+        {layout.edges.map((edge) => {
           const { points, label } = edge.props;
           return (
-            <Group key={ edge.props.label }>
-              <Arrow
-                points={ edge.points }
-                fill="black"
-                stroke="black"
-              />
-              <Text text={ label } x={ points[0].x } y={ points[0].y }/>
+            <Group key={edge.props.label}>
+              <Arrow points={edge.points} fill="black" stroke="black" />
+              <Text text={label} x={points[0].x} y={points[0].y} />
             </Group>
           );
-        }) }
+        })}
 
-        {/*{ lines.map((line: number[] | undefined, i: React.Key | null | undefined) => (*/ }
-        {/*  <Line key={ i } points={ line } stroke="red"/>*/ }
-        {/*)) }*/ }
+        {/*{ lines.map((line: number[] | undefined, i: React.Key | null | undefined) => (*/}
+        {/*  <Line key={ i } points={ line } stroke="red"/>*/}
+        {/*)) }*/}
 
         <Transformer
-          ref={ trRef }
-          boundBoxFunc={ (oldBox, newBox) => {
+          ref={trRef}
+          boundBoxFunc={(oldBox, newBox) => {
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
             }
 
             return newBox;
-          } }
+          }}
         />
-        <Rect fill="rgba(0,0,255,0.5)" ref={ selectionRectRef }/>
+        <Rect fill="rgba(0,0,255,0.5)" ref={selectionRectRef} />
       </Layer>
     </Stage>
   );

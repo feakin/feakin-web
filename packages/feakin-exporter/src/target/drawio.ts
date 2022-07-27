@@ -1,16 +1,15 @@
-import { FeakinExporter } from "./exporter";
+import { FeakinExporter } from './exporter';
 
 export class DrawioExporter implements FeakinExporter {
   export(x: string): string {
-    return "";
+    return '';
   }
 
   footer(): string {
-    return "";
+    return '';
   }
 
   header(): string {
-    return "";
+    return '';
   }
-
 }

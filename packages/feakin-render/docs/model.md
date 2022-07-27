@@ -24,7 +24,6 @@ export type ExcalidrawElement =
   | ExcalidrawFreeDrawElement
   | ExcalidrawImageElement;
 
-
 export type ExcalidrawBindableElement =
   | ExcalidrawRectangleElement
   | ExcalidrawDiamondElement

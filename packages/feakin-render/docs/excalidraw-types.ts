@@ -7,31 +7,31 @@ export const FONT_FAMILY = {
 };
 
 export const THEME = {
-  LIGHT: "light",
-  DARK: "dark",
+  LIGHT: 'light',
+  DARK: 'dark',
 };
 
 export const VERTICAL_ALIGN = {
-  TOP: "top",
-  MIDDLE: "middle",
-  BOTTOM: "bottom",
+  TOP: 'top',
+  MIDDLE: 'middle',
+  BOTTOM: 'bottom',
 };
 
 type MarkNonNullable<T, K extends keyof T> = {
   [P in K]-?: P extends K ? NonNullable<T[P]> : T[P];
 } & { [P in keyof T]: T[P] };
 
-export type ChartType = "bar" | "line";
-export type FillStyle = "hachure" | "cross-hatch" | "solid";
+export type ChartType = 'bar' | 'line';
+export type FillStyle = 'hachure' | 'cross-hatch' | 'solid';
 export type FontFamilyKeys = keyof typeof FONT_FAMILY;
 export type FontFamilyValues = typeof FONT_FAMILY[FontFamilyKeys];
 export type Theme = typeof THEME[keyof typeof THEME];
-export type FontString = string & { _brand: "fontString" };
+export type FontString = string & { _brand: 'fontString' };
 export type GroupId = string;
-export type PointerType = "mouse" | "pen" | "touch";
-export type StrokeSharpness = "round" | "sharp";
-export type StrokeStyle = "solid" | "dashed" | "dotted";
-export type TextAlign = "left" | "center" | "right";
+export type PointerType = 'mouse' | 'pen' | 'touch';
+export type StrokeSharpness = 'round' | 'sharp';
+export type StrokeStyle = 'solid' | 'dashed' | 'dotted';
+export type TextAlign = 'left' | 'center' | 'right';
 
 type VerticalAlignKeys = keyof typeof VERTICAL_ALIGN;
 export type VerticalAlign = typeof VERTICAL_ALIGN[VerticalAlignKeys];
@@ -68,8 +68,8 @@ type _ExcalidrawElementBase = Readonly<{
   /** other elements that are bound to this element */
   boundElements:
     | readonly Readonly<{
-        id: ExcalidrawLinearElement["id"];
-        type: "arrow" | "text";
+        id: ExcalidrawLinearElement['id'];
+        type: 'arrow' | 'text';
       }>[]
     | null;
   /** epoch (ms) timestamp of last element update */
@@ -79,34 +79,34 @@ type _ExcalidrawElementBase = Readonly<{
 }>;
 
 export type ExcalidrawSelectionElement = _ExcalidrawElementBase & {
-  type: "selection";
+  type: 'selection';
 };
 
 export type ExcalidrawRectangleElement = _ExcalidrawElementBase & {
-  type: "rectangle";
+  type: 'rectangle';
 };
 
 export type ExcalidrawDiamondElement = _ExcalidrawElementBase & {
-  type: "diamond";
+  type: 'diamond';
 };
 
 export type ExcalidrawEllipseElement = _ExcalidrawElementBase & {
-  type: "ellipse";
+  type: 'ellipse';
 };
 
 export type ExcalidrawImageElement = _ExcalidrawElementBase &
   Readonly<{
-    type: "image";
+    type: 'image';
     fileId: FileId | null;
     /** whether respective file is persisted */
-    status: "pending" | "saved" | "error";
+    status: 'pending' | 'saved' | 'error';
     /** X and Y scale factors <-1, 1>, used for image axis flipping */
     scale: [number, number];
   }>;
 
 export type InitializedExcalidrawImageElement = MarkNonNullable<
   ExcalidrawImageElement,
-  "fileId"
+  'fileId'
 >;
 
 /**
@@ -138,14 +138,14 @@ export type NonDeletedExcalidrawElement = NonDeleted<ExcalidrawElement>;
 
 export type ExcalidrawTextElement = _ExcalidrawElementBase &
   Readonly<{
-    type: "text";
+    type: 'text';
     fontSize: number;
     fontFamily: FontFamilyValues;
     text: string;
     baseline: number;
     textAlign: TextAlign;
     verticalAlign: VerticalAlign;
-    containerId: ExcalidrawGenericElement["id"] | null;
+    containerId: ExcalidrawGenericElement['id'] | null;
     originalText: string;
   }>;
 
@@ -163,20 +163,20 @@ export type ExcalidrawTextContainer =
   | ExcalidrawImageElement;
 
 export type ExcalidrawTextElementWithContainer = {
-  containerId: ExcalidrawTextContainer["id"];
+  containerId: ExcalidrawTextContainer['id'];
 } & ExcalidrawTextElement;
 
 export type PointBinding = {
-  elementId: ExcalidrawBindableElement["id"];
+  elementId: ExcalidrawBindableElement['id'];
   focus: number;
   gap: number;
 };
 
-export type Arrowhead = "arrow" | "bar" | "dot" | "triangle";
+export type Arrowhead = 'arrow' | 'bar' | 'dot' | 'triangle';
 
 export type ExcalidrawLinearElement = _ExcalidrawElementBase &
   Readonly<{
-    type: "line" | "arrow";
+    type: 'line' | 'arrow';
     points: readonly Point[];
     lastCommittedPoint: Point | null;
     startBinding: PointBinding | null;
@@ -187,11 +187,11 @@ export type ExcalidrawLinearElement = _ExcalidrawElementBase &
 
 export type ExcalidrawFreeDrawElement = _ExcalidrawElementBase &
   Readonly<{
-    type: "freedraw";
+    type: 'freedraw';
     points: readonly Point[];
     pressures: readonly number[];
     simulatePressure: boolean;
     lastCommittedPoint: Point | null;
   }>;
 
-export type FileId = string & { _brand: "FileId" };
+export type FileId = string & { _brand: 'FileId' };

@@ -1,12 +1,12 @@
 export interface Definition {
-  label: string,
-  width: number,
-  height: number
+  label: string;
+  width: number;
+  height: number;
 }
 
 export interface NodeDefinition {
   id: string;
-  definition: Definition
+  definition: Definition;
 }
 
 export type Point = { x: number; y: number };
