@@ -1,3 +1,7 @@
+export interface MxGraph {
+  mxGraphModel: MxGraphModel;
+}
+
 export interface MxGraphModel {
   root: RootNode;
   dx: string;
@@ -17,7 +21,7 @@ export interface MxGraphModel {
   shadow: string;
 }
 
-export interface Root {
+export interface RootNode {
   mxCell: MXCell[];
 }
 

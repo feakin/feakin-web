@@ -1,8 +1,17 @@
 import * as cheerio from 'cheerio';
 
+const convert = require('xml-js');
+
 const pako = require('pako');
 
 const MxGraphEncode = {
+  xml2json: (xml: string) => {
+    return convert.xml2js(xml, {
+      compact: true,
+      spaces: 4,
+      alwaysChildren: true
+    })
+  },
   parseXml: (xml: string) => {
     const $ = cheerio.load(xml);
     return $

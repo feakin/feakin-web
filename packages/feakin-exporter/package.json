@@ -4,6 +4,7 @@
   "type": "commonjs",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "pako": "^2.0.4"
+    "pako": "^2.0.4",
+    "xml-js": "^1.6.11"
   }
 }
