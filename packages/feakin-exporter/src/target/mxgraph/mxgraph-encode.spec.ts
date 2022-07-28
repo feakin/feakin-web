@@ -1,5 +1,5 @@
 import MxGraphEncode from './mxgraph-encode';
-import { MxGraph, MxGraphModel } from './mxgraph';
+import { MxGraph } from './mxgraph';
 
 describe('MxGraphEncoder', () => {
   it('should work', () => {

@@ -1,29 +1,9 @@
 import cheerio from 'cheerio';
-import * as convert from 'xml-js';
 import * as pako from 'pako';
+import { xml2obj } from './xml-converter';
 
 const MxGraphEncode = {
-  xml2json: (xml: string) => {
-    return convert.xml2js(xml, {
-      compact: true,
-      alwaysChildren: true,
-    });
-  },
-  inlineAttrs: function (obj: any) {
-    for (const prop in obj) {
-      if (typeof obj[prop] == 'object') {
-        if (obj[prop]._attributes) {
-          Object.assign(obj[prop], obj[prop]._attributes);
-          delete obj[prop]._attributes;
-        }
-        MxGraphEncode.inlineAttrs(obj[prop]);
-      }
-    }
-    return obj;
-  },
-  xml2obj: (xml: string) => {
-    return MxGraphEncode.inlineAttrs(MxGraphEncode.xml2json(xml));
-  },
+  xml2obj: xml2obj,
   parseXml: (xml: string) => {
     const $ = cheerio.load(xml);
     return $;
