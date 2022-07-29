@@ -18,6 +18,8 @@
     "@babel/eslint-parser": "^7.14.7",
     "@babel/preset-env": "^7.14.7",
     "@babel/register": "^7.14.5",
+    "@feakin/exporter": "^0.1.1",
+    "@feakin/parser": "^0.1.1",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.2.2",
     "concurrently": "^7.3.0",
