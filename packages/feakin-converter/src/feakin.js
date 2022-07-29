@@ -1,8 +1,15 @@
 const flowParser = require('./parser/mermaid/flow');
 
-const Parser = {
-  flowParser,
+// todo: mermaid need more api support
+// import mermaid from 'mermaid';
+// const { mermaidAPI } = mermaid;
+
+const Converter = {
+  flowParser: () => {
+    let parser = flowParser;
+    return parser;
+  },
 };
 
-export default Parser;
+export default Converter;
 
