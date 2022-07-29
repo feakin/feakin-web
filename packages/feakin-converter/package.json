@@ -1,8 +1,16 @@
 {
   "name": "@feakin/converter",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "",
-  "main": "index.js",
+  "main": "dist/feakin.core.js",
+  "module": "dist/feakin.esm.min.mjs",
+  "exports": {
+    ".": {
+      "require": "./dist/feakin.core.js",
+      "import": "./dist/feakin.esm.min.mjs"
+    },
+    "./*": "./*"
+  },
   "scripts": {
     "build:development": "webpack --mode development --progress --color",
     "build:production": "webpack --mode production --progress --color",
