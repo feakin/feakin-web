@@ -1,5 +1,8 @@
-import flowParser from './parser/mermaid/flow';
+const flowParser = require('./parser/mermaid/flow');
 
-export const Parser = {
+const Parser = {
   flowParser,
 };
+
+export default Parser;
+
