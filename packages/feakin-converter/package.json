@@ -12,6 +12,7 @@
   "keywords": [],
   "author": "Phodal Huang<h@phodal.com>",
   "license": "MIT",
+  "private": false,
   "dependencies": {
     "@babel/core": "^7.14.6",
     "@babel/eslint-parser": "^7.14.7",
@@ -27,5 +28,6 @@
     "webpack-dev-server": "^4.9.3",
     "webpack-merge": "^5.8.0",
     "webpack-node-externals": "^3.0.0"
-  }
+  },
+  "gitHead": "e116795dd3b92acf142139100f45f1df45378a76"
 }

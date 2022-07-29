@@ -9,5 +9,6 @@
   },
   "devDependencies": {
     "@types/pako": "^2.0.0"
-  }
+  },
+  "gitHead": "e116795dd3b92acf142139100f45f1df45378a76"
 }
