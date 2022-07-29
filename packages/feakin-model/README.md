@@ -1,4 +1,6 @@
-# @feakin/model
+# @feakin/parser
+
+flow based on: [https://github.com/mermaid-js/mermaid](https://github.com/mermaid-js/mermaid)
 
 ## License
 
