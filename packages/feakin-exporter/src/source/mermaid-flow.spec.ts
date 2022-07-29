@@ -2,6 +2,9 @@ import { flow } from './mermaid-flow';
 
 describe('feakinExporter', () => {
   it('should work', () => {
-    flow("graph TD; A-->B;");
+    let flow1 = flow(`graph TD;
+    A-->B;`);
+
+    console.log(flow1);
   });
 });
