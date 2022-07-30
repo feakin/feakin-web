@@ -6,7 +6,7 @@ describe('feakinExporter', () => {
     A-->B
     B-->C;`);
 
-    expect(flow1.direction).toBe(' TD');
+    expect(flow1.direction).toBe('TD');
     expect(flow1.vertices['A'].id).toBe('A');
     expect(flow1.edges.length).toBe(2);
   });
@@ -18,7 +18,7 @@ describe('feakinExporter', () => {
     a1-->a2
     end`);
 
-    expect(flow1.direction).toBe(' TB');
-    expect(flow1.edges.length).toBe(2);
+    expect(flow1.direction).toBe('TB');
+    expect(flow1.subGraphs.length).toBe(1);
   });
 });

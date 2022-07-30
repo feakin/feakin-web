@@ -9,10 +9,10 @@ export class FlowDb {
   vertexCounter = 0;
   vertices: any = {};
   DOM_PREFIX = "feakin-";
-  direction: string = "TB";
+  direction = "TB";
   edges: FlowEdge[] = [];
   firstGraphFlag = true;
-  version: string = 'gen-1';
+  version = 'gen-1';
   subCount = 0;
   subGraphs: any[] = [];
   subGraphLookup: any = {};
@@ -313,7 +313,7 @@ export class FlowDb {
 
 
 // Todo optimizer this by caching existing nodes
-  exists(allSgs: any, _id: any){
+  exists(allSgs: any, _id: any) {
     let res = false;
     allSgs.forEach((sg: any) => {
       const pos = sg.nodes.indexOf(_id);
@@ -330,7 +330,7 @@ export class FlowDb {
    * @param sg
    * @param allSubgraphs
    */
-  makeUniq(sg: any, allSubgraphs: any[])  {
+  makeUniq(sg: any, allSubgraphs: any[]) {
     const res: any[] = [];
     sg.nodes.forEach((_id: any, pos: any) => {
       if (!this.exists(allSubgraphs, _id)) {
@@ -354,6 +354,7 @@ export class FlowDb {
     if (_id === _title && _title.match(/\s/)) {
       id = undefined;
     }
+
     /** @param a */
     function uniq(a: any[]) {
       const prims: any = { boolean: {}, number: {}, string: {} };
@@ -412,4 +413,8 @@ export class FlowDb {
     this.subGraphLookup[id] = subGraph;
     return id;
   };
+
+  getSubGraphs() {
+    return this.subGraphs;
+  }
 }

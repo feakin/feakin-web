@@ -20,8 +20,9 @@ export function flow(str: string) {
   flowParser.parse(str)
 
   return {
-    direction: flowDb.direction,
+    direction: flowDb.getDirection(),
     vertices: flowDb.vertices,
     edges: flowDb.edges,
+    subGraphs: flowDb.getSubGraphs()
   };
 }
