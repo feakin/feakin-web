@@ -1,4 +1,5 @@
-import { FlowEdge } from "./flow";
+import { FlowEdge, FlowVertex } from "./flow";
+
 
 /**
  * based on Mermaid.js
@@ -7,7 +8,7 @@ import { FlowEdge } from "./flow";
  */
 export class FlowDb {
   vertexCounter = 0;
-  vertices: any = {};
+  vertices: { [key: string]: FlowVertex; }  = {};
   DOM_PREFIX = "feakin-";
   direction = "TB";
   edges: FlowEdge[] = [];
@@ -171,7 +172,7 @@ export class FlowDb {
     return info;
   };
 
-  addLink(_start: any, _end: any, type: any, linktext: any) {
+  addLink(_start: any[], _end: any[], type: string, linktext: string) {
     let i, j;
     for (i = 0; i < _start.length; i++) {
       for (j = 0; j < _end.length; j++) {
@@ -180,6 +181,7 @@ export class FlowDb {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   sanitizeText(text: string, config?: string) {
     // if (!text) return text;
     // let txt = '';
@@ -204,7 +206,7 @@ export class FlowDb {
     let start = _start;
     let end = _end;
 
-    const edge: any = { start: start, end: end, type: undefined, text: '' };
+    const edge: FlowEdge = { start: start, end: end, type: undefined, text: '' };
     linktext = type.text;
 
     if (typeof linktext !== 'undefined') {
@@ -273,6 +275,7 @@ export class FlowDb {
       this.vertices[id].type = type;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this;
     if (typeof style !== 'undefined') {
       if (style !== null) {
@@ -308,12 +311,13 @@ export class FlowDb {
         return this.vertices[veritceKeys[i]].domId;
       }
     }
+
     return id;
   };
 
 
 // Todo optimizer this by caching existing nodes
-  exists(allSgs: any, _id: any) {
+  exists(allSgs: object[], _id: string) {
     let res = false;
     allSgs.forEach((sg: any) => {
       const pos = sg.nodes.indexOf(_id);
@@ -330,7 +334,7 @@ export class FlowDb {
    * @param sg
    * @param allSubgraphs
    */
-  makeUniq(sg: any, allSubgraphs: any[]) {
+  makeUniq(sg: any, allSubgraphs: object[]) {
     const res: any[] = [];
     sg.nodes.forEach((_id: any, pos: any) => {
       if (!this.exists(allSubgraphs, _id)) {
@@ -349,7 +353,7 @@ export class FlowDb {
    */
   addSubGraph(_id: string, list: any[], _title: string) {
     // console.log('addSubGraph', _id, list, _title);
-    let id: any = _id.trim();
+    let id: string | undefined = _id.trim();
     let title = _title;
     if (_id === _title && _title.match(/\s/)) {
       id = undefined;
@@ -358,7 +362,7 @@ export class FlowDb {
     /** @param a */
     function uniq(a: any[]) {
       const prims: any = { boolean: {}, number: {}, string: {} };
-      const objs: any[] = [];
+      const objs: object[] = [];
 
       let dir; //  = undefined; direction.trim();
       const nodeList = a.filter(function (item) {
@@ -379,7 +383,8 @@ export class FlowDb {
       return { nodeList, dir };
     }
 
-    let nodeList: any[] = [];
+    let nodeList: string[] = [];
+    // eslint-disable-next-line prefer-spread
     const { nodeList: nl, dir } = uniq(nodeList.concat.apply(nodeList, list));
     nodeList = nl;
     if (this.version === 'gen-1') {
