@@ -13,9 +13,7 @@ export function flow(str: string) {
     addLink: flowDb.addLink.bind(flowDb),
     destructLink: flowDb.destructLink.bind(flowDb),
     lex: {
-      firstGraph: () => {
-        return true;
-      }
+      firstGraph: flowDb.firstGraph.bind(flowDb)
     }
   };
 

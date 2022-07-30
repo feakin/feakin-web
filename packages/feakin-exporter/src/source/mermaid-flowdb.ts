@@ -7,15 +7,11 @@ import { FlowEdge } from "./flow";
  */
 export class FlowDb {
   vertexCounter = 0;
-  vertices: any;
+  vertices: any = {};
   DOM_PREFIX = "feakin-";
   direction: string = "TB";
   edges: FlowEdge[] = [];
-
-  constructor() {
-    this.vertices = {};
-  }
-
+  firstGraphFlag = true;
 
   /**
    * Called by parser when a graph definition is found, stores the direction of the chart.
@@ -37,6 +33,19 @@ export class FlowDb {
       this.direction = 'TB';
     }
   }
+
+  firstGraph() {
+    if (this.firstGraphFlag) {
+      this.firstGraphFlag = false;
+      return true;
+    }
+    return false;
+  };
+
+
+  getDirection() {
+    return this.direction.trim();
+  };
 
   countChar(char: string, str: string) {
     const length = str.length;
