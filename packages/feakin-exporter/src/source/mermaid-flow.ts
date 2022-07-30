@@ -1,7 +1,5 @@
-import { FlowDb } from "./mermaid-flowdb";
-
 const Converter = require("@feakin/converter");
-
+import { FlowDb } from "./mermaid-flowdb";
 
 export function flow(str: string) {
   let flowParser = Converter.flowParser();
@@ -12,6 +10,7 @@ export function flow(str: string) {
     addVertex: flowDb.addVertex.bind(flowDb),
     addLink: flowDb.addLink.bind(flowDb),
     destructLink: flowDb.destructLink.bind(flowDb),
+    addSubGraph: flowDb.addSubGraph.bind(flowDb),
     lex: {
       firstGraph: flowDb.firstGraph.bind(flowDb)
     }

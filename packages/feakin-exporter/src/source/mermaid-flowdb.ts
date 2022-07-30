@@ -12,6 +12,10 @@ export class FlowDb {
   direction: string = "TB";
   edges: FlowEdge[] = [];
   firstGraphFlag = true;
+  version: string = 'gen-1';
+  subCount = 0;
+  subGraphs: any[] = [];
+  subGraphLookup: any = {};
 
   /**
    * Called by parser when a graph definition is found, stores the direction of the chart.
@@ -289,5 +293,123 @@ export class FlowDb {
     }
 
     that.vertices[id].props = props;
+  };
+
+  /**
+   * Function to lookup domId from id in the graph definition.
+   *
+   * @param id
+   * @public
+   */
+  lookUpDomId(id: string) {
+    const veritceKeys = Object.keys(this.vertices);
+    for (let i = 0; i < veritceKeys.length; i++) {
+      if (this.vertices[veritceKeys[i]].id === id) {
+        return this.vertices[veritceKeys[i]].domId;
+      }
+    }
+    return id;
+  };
+
+
+// Todo optimizer this by caching existing nodes
+  exists(allSgs: any, _id: any){
+    let res = false;
+    allSgs.forEach((sg: any) => {
+      const pos = sg.nodes.indexOf(_id);
+      if (pos >= 0) {
+        res = true;
+      }
+    });
+    return res;
+  };
+
+  /**
+   * Deletes an id from all subgraphs
+   *
+   * @param sg
+   * @param allSubgraphs
+   */
+  makeUniq(sg: any, allSubgraphs: any[])  {
+    const res: any[] = [];
+    sg.nodes.forEach((_id: any, pos: any) => {
+      if (!this.exists(allSubgraphs, _id)) {
+        res.push(sg.nodes[pos]);
+      }
+    });
+    return { nodes: res };
+  };
+
+  /**
+   * Clears the internal graph db so that a new graph can be parsed.
+   *
+   * @param _id
+   * @param list
+   * @param _title
+   */
+  addSubGraph(_id: string, list: any[], _title: string) {
+    // console.log('addSubGraph', _id, list, _title);
+    let id: any = _id.trim();
+    let title = _title;
+    if (_id === _title && _title.match(/\s/)) {
+      id = undefined;
+    }
+    /** @param a */
+    function uniq(a: any[]) {
+      const prims: any = { boolean: {}, number: {}, string: {} };
+      const objs: any[] = [];
+
+      let dir; //  = undefined; direction.trim();
+      const nodeList = a.filter(function (item) {
+        const type = typeof item;
+        if (item.stmt && item.stmt === 'dir') {
+          dir = item.value;
+          return false;
+        }
+        if (item.trim() === '') {
+          return false;
+        }
+        if (type in prims) {
+          return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true); // eslint-disable-line
+        } else {
+          return objs.indexOf(item) >= 0 ? false : objs.push(item);
+        }
+      });
+      return { nodeList, dir };
+    }
+
+    let nodeList: any[] = [];
+    const { nodeList: nl, dir } = uniq(nodeList.concat.apply(nodeList, list));
+    nodeList = nl;
+    if (this.version === 'gen-1') {
+      for (let i = 0; i < nodeList.length; i++) {
+        nodeList[i] = this.lookUpDomId(nodeList[i]);
+      }
+    }
+
+    id = id || 'subGraph' + this.subCount;
+    // if (id[0].match(/\d/)) id = lookUpDomId(id);
+    title = title || '';
+    title = this.sanitizeText(title);
+    this.subCount = this.subCount + 1;
+    const subGraph = { id: id, nodes: nodeList, title: title.trim(), classes: [], dir };
+    /** Deletes an id from all subgraphs */
+    // const del = _id => {
+    //   subGraphs.forEach(sg => {
+    //     const pos = sg.nodes.indexOf(_id);
+    //     if (pos >= 0) {
+    //       sg.nodes.splice(pos, 1);
+    //     }
+    //   });
+    // };
+
+    // // Removes the members of this subgraph from any other subgraphs, a node only belong to one subgraph
+    // subGraph.nodes.forEach(_id => del(_id));
+
+    // Remove the members in the new subgraph if they already belong to another subgraph
+    subGraph.nodes = this.makeUniq(subGraph, this.subGraphs).nodes;
+    this.subGraphs.push(subGraph);
+    this.subGraphLookup[id] = subGraph;
+    return id;
   };
 }
