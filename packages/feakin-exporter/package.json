@@ -10,6 +10,7 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "@types/dompurify": "^2.3.3",
     "@types/pako": "^2.0.0"
   },
   "gitHead": "d469dc8908cb5a800ce1ccb52c621809ed1335af"

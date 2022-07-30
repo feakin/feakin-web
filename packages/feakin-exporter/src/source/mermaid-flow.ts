@@ -190,12 +190,83 @@ export const addSingleLink = function (_start: any, _end: any, type: any, linkte
   edges.push(edge);
 }
 
+let vertexCounter = 0;
+let vertices: any = {};
+const DOM_PREFIX = "feakin-";
+/**
+ * Function called by parser when a node definition has been found
+ *
+ * @param _id
+ * @param text
+ * @param type
+ * @param style
+ * @param classes
+ * @param dir
+ * @param props
+ */
+export const addVertex = function (_id: string, text: string, type: string, style: any, classes: string[], dir: string, props = {}) {
+  let txt;
+  let id = _id;
+  if (typeof id === 'undefined') {
+    return;
+  }
+  if (id.trim().length === 0) {
+    return;
+  }
+
+  if (typeof vertices[id] === 'undefined') {
+    vertices[id] = {
+      id: id,
+      domId: DOM_PREFIX + id + '-' + vertexCounter,
+      styles: [],
+      classes: [],
+    };
+  }
+  vertexCounter++;
+  if (typeof text !== 'undefined') {
+    // config = configApi.getConfig();
+    txt = sanitizeText(text.trim());
+
+    // strip quotes if string starts and ends with a quote
+    if (txt[0] === '"' && txt[txt.length - 1] === '"') {
+      txt = txt.substring(1, txt.length - 1);
+    }
+
+    vertices[id].text = txt;
+  } else {
+    if (typeof vertices[id].text === 'undefined') {
+      vertices[id].text = _id;
+    }
+  }
+  if (typeof type !== 'undefined') {
+    vertices[id].type = type;
+  }
+  if (typeof style !== 'undefined') {
+    if (style !== null) {
+      style.forEach(function (s: any) {
+        vertices[id].styles.push(s);
+      });
+    }
+  }
+  if (typeof classes !== 'undefined') {
+    if (classes !== null) {
+      classes.forEach(function (s: any) {
+        vertices[id].classes.push(s);
+      });
+    }
+  }
+  if (typeof dir !== 'undefined') {
+    vertices[id].dir = dir;
+  }
+  vertices[id].props = props;
+};
+
+
 export function flow(str: string) {
   let flowParser = Converter.flowParser();
   flowParser.parser.yy = {
     setDirection,
-    addVertex: () => {
-    },
+    addVertex,
     addLink,
     destructLink,
     lex: {
@@ -210,6 +281,7 @@ export function flow(str: string) {
 
   return {
     direction,
+    vertices,
     edges,
   };
 }
