@@ -1,3 +1,5 @@
+import { FlowEdge } from "./flow";
+
 /**
  * based on Mermaid.js
  * The MIT License (MIT)
@@ -6,7 +8,7 @@
 
 const Converter = require("@feakin/converter");
 
-let direction;
+let direction: string;
 export const setDirection = function (dir: string) {
   direction = dir;
   if (direction.match(/.*</)) {
@@ -163,7 +165,7 @@ const sanitizeText = (text: string, config?: string) => {
   return text;
 };
 
-let edges: any = [];
+let edges: FlowEdge[] = [];
 export const addSingleLink = function (_start: any, _end: any, type: any, linktext: any) {
   let start = _start;
   let end = _end;
@@ -202,7 +204,12 @@ export function flow(str: string) {
       }
     }
   };
+
+  flowParser.parser.yy.graphType = "flowchart";
   flowParser.parse(str)
 
-  return flowParser;
+  return {
+    direction,
+    edges,
+  };
 }

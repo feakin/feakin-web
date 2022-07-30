@@ -5,6 +5,7 @@
   "dependencies": {
     "@feakin/converter": "^0.1.4",
     "cheerio": "^1.0.0-rc.12",
+    "dompurify": "^2.3.10",
     "pako": "^2.0.4",
     "xml-js": "^1.6.11"
   },
