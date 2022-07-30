@@ -1,9 +1,10 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const Converter = require("@feakin/converter");
 import { FlowDb } from "./mermaid-flowdb";
 
-export function flow(str: string) {
-  let flowParser = Converter.flowParser();
-  let flowDb = new FlowDb();
+export function parseFlow(str: string) {
+  const flowParser = Converter.flowParser();
+  const flowDb = new FlowDb();
 
   flowParser.parser.yy = {
     setDirection: flowDb.setDirection.bind(flowDb),

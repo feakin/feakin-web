@@ -7,6 +7,7 @@ export interface FlowEdge {
   length?: number
 }
 
+// Geometry ??
 export interface FlowVertex {
   id: string,
   domId: string,
@@ -15,5 +16,5 @@ export interface FlowVertex {
   text?: string,
   dir?: string,
   type?: string | 'square',
-  props?: any
+  props?: object
 }
