@@ -6,6 +6,8 @@ describe('feakinExporter', () => {
     A-->B
     B-->C;`);
 
-    console.log(flow1);
+    expect(flow1.direction).toBe(' TD');
+    expect(flow1.vertices['A'].id).toBe('A');
+    expect(flow1.edges.length).toBe(2);
   });
 });
