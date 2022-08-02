@@ -1,3 +1,5 @@
+import { ElementsDefinition } from "./element";
+
 export interface LayoutLifecycle {
   /**
    * Called when the layout is started.
@@ -6,7 +8,7 @@ export interface LayoutLifecycle {
   /**
    * transition layout.
    */
-  transform?: (element: object) => void;
+  transform?: (element: ElementsDefinition) => void;
   /**
    * Called when the layout is stopped.
    */
@@ -26,7 +28,7 @@ export interface Layout extends LayoutLifecycle {
 }
 
 export interface LayoutOptions {
-  elements: object[];
+  container: HTMLElement;
 }
 
 export class SimpleLayout implements Layout {

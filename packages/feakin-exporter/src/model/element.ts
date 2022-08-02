@@ -89,22 +89,22 @@ interface ElementDataDefinition {
   position?: Position | undefined;
 }
 
-interface NodeDefinition extends ElementDefinition {
+export interface NodeDefinition extends ElementDefinition {
   data: NodeDataDefinition;
 }
 
-interface NodeDataDefinition extends ElementDataDefinition {
+export interface NodeDataDefinition extends ElementDataDefinition {
   id?: string | undefined;
   parent?: string | undefined;
 
   [key: string]: any;
 }
 
-interface EdgeDefinition extends ElementDefinition {
+export interface EdgeDefinition extends ElementDefinition {
   data: EdgeDataDefinition;
 }
 
-interface EdgeDataDefinition extends ElementDataDefinition {
+export interface EdgeDataDefinition extends ElementDataDefinition {
   id?: string | undefined;
 
   /**
