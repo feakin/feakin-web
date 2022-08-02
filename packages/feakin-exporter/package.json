@@ -5,11 +5,13 @@
   "dependencies": {
     "@feakin/converter": "^0.1.4",
     "cheerio": "^1.0.0-rc.12",
+    "dagre": "^0.8.5",
     "dompurify": "^2.3.10",
     "pako": "^2.0.4",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "@types/dagre": "^0.7.47",
     "@types/pako": "^2.0.0"
   },
   "gitHead": "d469dc8908cb5a800ce1ccb52c621809ed1335af"
