@@ -2,10 +2,6 @@ import * as dagre from 'dagre'
 import { Point } from "../model/geometry/point";
 import { defaultLayoutOptions, LayoutOptions } from "../model/layout";
 
-export function feakinExporter(): string {
-  return 'feakin-exporter';
-}
-
 export interface Label {
   name: string;
   label?: string

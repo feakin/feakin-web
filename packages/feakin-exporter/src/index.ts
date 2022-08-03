@@ -1,1 +1,1 @@
-export * from './lib/feakin-exporter';
+export * from './lib/dagre-layout';

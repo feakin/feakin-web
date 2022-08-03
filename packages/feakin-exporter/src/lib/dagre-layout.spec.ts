@@ -1,10 +1,6 @@
-import { dagreLayout, DagreRelation, feakinExporter } from './feakin-exporter';
+import { dagreLayout, DagreRelation } from './dagre-layout';
 
 describe('feakinExporter', () => {
-  it('should work', () => {
-    expect(feakinExporter()).toEqual('feakin-exporter');
-  });
-
   it('layout', () => {
     const relations: DagreRelation[] = [
       { source: { name: 'A' } },
