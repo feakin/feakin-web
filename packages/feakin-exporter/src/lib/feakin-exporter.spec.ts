@@ -13,8 +13,10 @@ describe('feakinExporter', () => {
     ]
 
     const layout = dagreLayout(relations);
-    console.log(JSON.stringify(layout, null, 2));
+
     expect(layout.nodes.length).toBe(3);
+    expect(layout.nodes[0].width).toBe(100);
+    expect(layout.nodes[0].height).toBe(40);
     expect(layout.edges.length).toBe(1);
   });
 });

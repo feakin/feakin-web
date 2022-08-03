@@ -27,8 +27,21 @@ export interface Layout extends LayoutLifecycle {
   run: () => Layout;
 }
 
+export const defaultLayoutOptions = {
+  node: {
+    width: 100,
+    height: 40,
+  }
+}
+
 export interface LayoutOptions {
-  container: HTMLElement;
+  container?: HTMLElement;
+  node?: {
+    // each node width
+    width: number;
+    // each node height
+    height: number;
+  }
 }
 
 export class SimpleLayout implements Layout {

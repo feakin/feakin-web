@@ -1,5 +1,6 @@
 import * as dagre from 'dagre'
 import { Point } from "../model/geometry/point";
+import { defaultLayoutOptions, LayoutOptions } from "../model/layout";
 
 export function feakinExporter(): string {
   return 'feakin-exporter';
@@ -19,7 +20,9 @@ export interface DagreRelation {
 }
 
 // todo: refs to mermaid
-export function dagreLayout(relations: DagreRelation[]) {
+export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions) {
+  options = options || defaultLayoutOptions;
+
   const graph = new dagre.graphlib.Graph({
     multigraph: true,
     compound: true,
@@ -33,7 +36,10 @@ export function dagreLayout(relations: DagreRelation[]) {
   }).setDefaultEdgeLabel(() => ({}));
 
   relations.forEach(relation => {
-    graph.setNode(relation.source.name, {});
+    graph.setNode(relation.source.name, {
+      width: options?.node?.width || 0,
+      height: options?.node?.height || 0,
+    });
 
     if (relation.target) {
       graph.setNode(relation.target.name, {});
