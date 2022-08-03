@@ -5,38 +5,49 @@ export function feakinExporter(): string {
   return 'feakin-exporter';
 }
 
+export interface Label {
+  name: string;
+  label?: string
+}
+
+export type SourceElement = Label
+export type TargetElement = Label
+
 export interface DagreRelation {
-  source: string;
-  target: string;
+  source: SourceElement;
+  target?: TargetElement;
 }
 
 // todo: refs to mermaid
-export function dagreLayout() {
-  const g = new dagre.graphlib.Graph();
+export function dagreLayout(relations: DagreRelation[]) {
+  const graph = new dagre.graphlib.Graph();
 
-  g.setGraph({});
-  g.setDefaultEdgeLabel(function () {
+  graph.setGraph({});
+  graph.setDefaultEdgeLabel(function () {
     return {};
   });
 
-  g.setNode("kspacey", { label: "Kevin Spacey" });
-  g.setNode("swilliams", { label: "Saul Williams" });
+  relations.forEach(relation => {
+    graph.setNode(relation.source.name, {});
 
-  g.setEdge("hford", "lwilson");
-  g.setEdge("lwilson", "kbacon");
+    if(relation.target) {
+      graph.setNode(relation.target.name, {});
+      graph.setEdge(relation.source.name, relation.target.name, {});
+    }
+  })
 
-  dagre.layout(g);
+  dagre.layout(graph);
 
   const nodes: BaseNode[] = [];
-  g.nodes().forEach(function (v) {
+  graph.nodes().forEach(function (v) {
     // todo: add converter;
-    nodes.push(g.node(v));
+    nodes.push(graph.node(v));
   });
 
   const edges: BaseEdge[] = [];
-  g.edges().forEach(function (e) {
+  graph.edges().forEach(function (e) {
     // todo: add converter;
-    edges.push(g.edge(e));
+    edges.push(graph.edge(e.v, e.w, e.name));
   });
 
   return {

@@ -1,4 +1,4 @@
-import { dagreLayout, feakinExporter } from './feakin-exporter';
+import { dagreLayout, DagreRelation, feakinExporter } from './feakin-exporter';
 
 describe('feakinExporter', () => {
   it('should work', () => {
@@ -6,6 +6,15 @@ describe('feakinExporter', () => {
   });
 
   it('layout', () => {
-    dagreLayout();
+    const relations: DagreRelation[] = [
+      { source: { name: 'A' } },
+      { source: { name: 'B' } },
+      { source: { name: 'B' }, target: { name: 'C' } },
+    ]
+
+    const layout = dagreLayout(relations);
+    console.log(JSON.stringify(layout, null, 2));
+    expect(layout.nodes.length).toBe(3);
+    expect(layout.edges.length).toBe(1);
   });
 });
