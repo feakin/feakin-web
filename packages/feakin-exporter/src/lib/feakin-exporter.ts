@@ -20,17 +20,22 @@ export interface DagreRelation {
 
 // todo: refs to mermaid
 export function dagreLayout(relations: DagreRelation[]) {
-  const graph = new dagre.graphlib.Graph();
-
-  graph.setGraph({});
-  graph.setDefaultEdgeLabel(function () {
-    return {};
-  });
+  const graph = new dagre.graphlib.Graph({
+    multigraph: true,
+    compound: true,
+  }).setGraph({
+    // todo: import
+    // rankdir: 'TB',
+    nodesep: 50,
+    ranksep: 50,
+    marginx: 8,
+    marginy: 8,
+  }).setDefaultEdgeLabel(() => ({}));
 
   relations.forEach(relation => {
     graph.setNode(relation.source.name, {});
 
-    if(relation.target) {
+    if (relation.target) {
       graph.setNode(relation.target.name, {});
       graph.setEdge(relation.source.name, relation.target.name, {});
     }
@@ -40,13 +45,11 @@ export function dagreLayout(relations: DagreRelation[]) {
 
   const nodes: BaseNode[] = [];
   graph.nodes().forEach(function (v) {
-    // todo: add converter;
     nodes.push(graph.node(v));
   });
 
   const edges: BaseEdge[] = [];
   graph.edges().forEach(function (e) {
-    // todo: add converter;
     edges.push(graph.edge(e.v, e.w, e.name));
   });
 
