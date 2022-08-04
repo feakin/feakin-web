@@ -1,11 +1,10 @@
-import { FlowEdge, FlowVertex } from "./flow";
-
-
 /**
  * based on Mermaid.js
  * The MIT License (MIT)
  * Copyright (c) 2014 - 2021 Knut Sveidqvist
  */
+import { FlowEdge, FlowVertex } from "./flow";
+
 export class FlowDb {
   vertexCounter = 0;
   vertices: { [key: string]: FlowVertex; }  = {};
