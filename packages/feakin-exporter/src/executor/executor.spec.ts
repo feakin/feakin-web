@@ -7,6 +7,6 @@ describe('execute', () => {
     A-->B
     B-->C;`;
     const result = executor.execute(source);
-    // expect(result).toBe(source);
+    console.log((result));
   });
 });

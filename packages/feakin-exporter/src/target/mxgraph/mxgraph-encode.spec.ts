@@ -1,5 +1,8 @@
 import MxGraphEncode from './mxgraph-encode';
-import { MxGraph } from './mxgraph';
+import { MXCell, Mxfile, MxFileRoot, MxGraph } from './mxgraph';
+import * as fs from "fs";
+import { obj2xml } from "./xml-converter";
+import { js2xml } from "xml-js";
 
 describe('MxGraphEncoder', () => {
   it('should work', () => {
@@ -21,10 +24,58 @@ describe('MxGraphEncoder', () => {
       '<mxfile host="Electron" modified="2022-07-26T12:42:39.225Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/19.0.3 Chrome/102.0.5005.63 Electron/19.0.3 Safari/537.36" etag="O1qmAbmb6dEBzrUx5KlV" version="19.0.3" type="device"><diagram id="bN4dli3-ZhfTxRglmdzi" name="Page-1">jZNNT4QwEIZ/i4ceTYDuh1cX190Y9SCHPZqGjrRJYbAUYf31lm270BgTL2T6vPPRzgyE5vV40KwVL8hBkSzhI6EPJMvWq9R+J3B2gG4zByotuUPpDAr5DR4mnvaSQxc5GkRlZBvDEpsGShMxpjUOsdsHqrhqyyr4BYqSqd/0JLkRjt6tk5kfQVYiVE4Tr9QsOHvQCcZxWCC6JzTXiMZZ9ZiDmnoX+uLiHv9QrxfT0Jj/BNy/FVWywu1Yn3bvtHjdPcHzrc/yxVTvH0yyjbL5dq0Ga1aTGVDXsmZqtWKd6+rms8eLMJsh5miLI8ly6z+gVvwmJLEXdHni3BZHFS8dM+cwBo19w2F6SWLlQUgDRcvKSR3s3lkmTK3sKb1GLzsTngnawLhAvlMHwBqMPlsXr9KNn5pf2xX152FegjRMViwWIMQxv3fVNfU8Gmv46YTjvAUXbfEr0f0P</diagram></mxfile>';
     const encoded = MxGraphEncode.decodeXml(sampleStr);
 
-    const xmlInJson: MxGraph = MxGraphEncode.xml2obj(encoded!);
-    const mxCell = xmlInJson.mxGraphModel.root.mxCell;
+    const xmlInJson: MxGraph | any = MxGraphEncode.xml2obj(encoded!);
+    const mxCell: MXCell[] = xmlInJson.mxGraphModel.root.mxCell;
 
-    expect(xmlInJson.mxGraphModel.root.mxCell.length).toBe(3);
-    expect(mxCell[2].value!.includes('Hello, world!')).toBeTruthy();
+    expect(mxCell.length).toBe(3);
+    expect(mxCell[2].attributes?.value?.includes('Hello, world!')).toBeTruthy();
+  });
+
+  it('xml to object', () => {
+    const sampleStr =
+      '<mxfile host="Electron" modified="2022-07-26T12:42:39.225Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/19.0.3 Chrome/102.0.5005.63 Electron/19.0.3 Safari/537.36" etag="O1qmAbmb6dEBzrUx5KlV" version="19.0.3" type="device"><diagram id="bN4dli3-ZhfTxRglmdzi" name="Page-1">jZNNT4QwEIZ/i4ceTYDuh1cX190Y9SCHPZqGjrRJYbAUYf31lm270BgTL2T6vPPRzgyE5vV40KwVL8hBkSzhI6EPJMvWq9R+J3B2gG4zByotuUPpDAr5DR4mnvaSQxc5GkRlZBvDEpsGShMxpjUOsdsHqrhqyyr4BYqSqd/0JLkRjt6tk5kfQVYiVE4Tr9QsOHvQCcZxWCC6JzTXiMZZ9ZiDmnoX+uLiHv9QrxfT0Jj/BNy/FVWywu1Yn3bvtHjdPcHzrc/yxVTvH0yyjbL5dq0Ga1aTGVDXsmZqtWKd6+rms8eLMJsh5miLI8ly6z+gVvwmJLEXdHni3BZHFS8dM+cwBo19w2F6SWLlQUgDRcvKSR3s3lkmTK3sKb1GLzsTngnawLhAvlMHwBqMPlsXr9KNn5pf2xX152FegjRMViwWIMQxv3fVNfU8Gmv46YTjvAUXbfEr0f0P</diagram></mxfile>';
+
+    const xmlInJson: MxGraph | any = MxGraphEncode.xml2obj(sampleStr!);
+    console.log(JSON.stringify(xmlInJson, null, 4));
+  });
+
+  it('convert model to file', () => {
+    const cells: MXCell[] = [{
+      attributes: {
+        id: 1,
+        vertex: 1,
+        style: "rounded=0;whiteSpace=wrap;html=1;"
+      },
+      mxGeometry: {
+        attributes: {
+          as: "geometry",
+          width: 100,
+          height: 60
+        }
+      }
+    }];
+
+    const graph: MxGraph = {
+      mxGraphModel: {
+        root: {
+          mxCell: cells
+        }
+      }
+    };
+
+
+    const file: MxFileRoot = {
+      mxfile: {
+        diagram: {
+          _text: MxGraphEncode.encode(obj2xml(graph))
+        }
+      }
+    }
+
+    const drawioFile = obj2xml(file);
+    fs.writeFileSync('./test.drawio', drawioFile);
+
+    const data = MxGraphEncode.decodeXml(drawioFile);
+    expect(true).toBeTruthy;
   });
 });

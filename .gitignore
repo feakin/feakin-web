@@ -39,3 +39,5 @@ testem.log
 .DS_Store
 Thumbs.db
 .run
+packages/feakin-exporter/test.json
+packages/feakin-exporter/test.drawio

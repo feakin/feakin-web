@@ -1,12 +1,23 @@
 import cheerio from 'cheerio';
 import * as pako from 'pako';
-import { xml2obj } from './xml-converter';
+import { xml2json } from './xml-converter';
 
 const MxGraphEncode = {
-  xml2obj: xml2obj,
+  GUID_ALPHABET:'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_',
+  xml2obj: xml2json,
   parseXml: (xml: string) => {
     const $ = cheerio.load(xml);
     return $;
+  },
+  guid: () => {
+    const len = (length != null) ? length : MxGraphEncode.GUID_ALPHABET;
+    const rtn = [];
+
+    for (let i = 0; i < len; i++) {
+      rtn.push(MxGraphEncode.GUID_ALPHABET.charAt(Math.floor(Math.random() * MxGraphEncode.GUID_ALPHABET.length)));
+    }
+
+    return rtn.join('');
   },
   decodeXml: (source: string) => {
     const $ = MxGraphEncode.parseXml(source);

@@ -1,24 +1,51 @@
+export interface MxFileRoot {
+  mxfile: Mxfile;
+}
+
+export interface Mxfile {
+  diagram: Diagram;
+  attributes?: {
+    host: string;
+    modified: Date;
+    agent: string;
+    etag: string;
+    version: string;
+    type: string;
+  };
+}
+
+export interface Diagram {
+  _text: string;
+  attributes?: {
+    id: string;
+    name: string;
+  }
+}
+
+
 export interface MxGraph {
   mxGraphModel: MxGraphModel;
 }
 
 export interface MxGraphModel {
   root: RootNode;
-  dx: string;
-  dy: string;
-  grid: string;
-  gridSize: string;
-  guides: string;
-  tooltips: string;
-  connect: string;
-  arrows: string;
-  fold: string;
-  page: string;
-  pageScale: string;
-  pageWidth: string;
-  pageHeight: string;
-  math: string;
-  shadow: string;
+  attributes?: {
+    dx?: number;
+    dy?: number;
+    grid?: number;
+    gridSize?: number;
+    guides?: string;
+    tooltips?: string;
+    connect?: string;
+    arrows?: string;
+    fold?: string;
+    page?: string;
+    pageScale?: string;
+    pageWidth?: string;
+    pageHeight?: string;
+    math?: string;
+    shadow?: string;
+  }
 }
 
 export interface RootNode {
@@ -26,26 +53,31 @@ export interface RootNode {
 }
 
 export interface MXCell {
-  id: string;
-  parent?: string;
   mxGeometry?: MXGeometry;
-  style?: string;
-  source?: string;
-  target?: string;
-  edge?: string;
-  value?: string;
-  vertex?: string;
-  connectable?: string;
+  attributes?: {
+    id: number;
+    style?: string;
+    source?: string;
+    target?: string;
+    edge?: string;
+    value?: string;
+    vertex?: number;
+    parent?: number;
+    children?: MXCell[];
+    connectable?: string;
+  }
 }
 
 export interface MXGeometry {
   mxPoint?: MxPoint[];
-  x?: string;
-  y?: string;
-  relative?: string;
-  as: string;
-  width?: string;
-  height?: string;
+  attributes?: {
+    x?: number;
+    y?: number;
+    relative?: string;
+    as?: string;
+    width?: number;
+    height?: number;
+  }
 }
 
 export interface MxPoint {
