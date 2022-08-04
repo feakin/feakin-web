@@ -1,6 +1,6 @@
 import * as dagre from 'dagre'
 import { Point } from "../model/geometry/point";
-import { defaultLayoutOptions, LayoutOptions } from "../model/layout";
+import { defaultLayoutOptions, Layout, LayoutOptions } from "../model/layout";
 
 export interface Label {
   name: string;
@@ -13,6 +13,12 @@ export type TargetElement = Label
 export interface DagreRelation {
   source: SourceElement;
   target?: TargetElement;
+}
+
+export class DagreLayout implements Layout {
+  run(): Layout {
+    return this;
+  }
 }
 
 // todo: refs to mermaid
@@ -61,6 +67,7 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
 }
 
 
+// todo: merge to elements;
 export interface BaseEdge {
   points: Point[]
 }

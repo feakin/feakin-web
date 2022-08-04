@@ -24,6 +24,7 @@ export interface LayoutLifecycle {
 }
 
 export interface Layout extends LayoutLifecycle {
+  // todo: output to examples?
   run: () => Layout;
 }
 
