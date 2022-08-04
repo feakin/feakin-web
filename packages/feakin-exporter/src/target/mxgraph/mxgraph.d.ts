@@ -55,14 +55,14 @@ export interface RootNode {
 export interface MXCell {
   mxGeometry?: MXGeometry;
   attributes?: {
-    id: number;
+    id: string;
     style?: string;
     source?: string;
     target?: string;
     edge?: string;
     value?: string;
     vertex?: number;
-    parent?: number;
+    parent?: string;
     children?: MXCell[];
     connectable?: string;
   }

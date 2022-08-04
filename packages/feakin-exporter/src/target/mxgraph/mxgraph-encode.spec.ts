@@ -40,20 +40,29 @@ describe('MxGraphEncoder', () => {
   });
 
   it('convert model to file', () => {
-    const cells: MXCell[] = [{
-      attributes: {
-        id: 1,
-        vertex: 1,
-        style: "rounded=0;whiteSpace=wrap;html=1;"
-      },
-      mxGeometry: {
+    const cells: MXCell[] = [
+      {
         attributes: {
-          as: "geometry",
-          width: 100,
-          height: 60
+          id: "0",
+        }
+      },
+      {
+        attributes: {
+          id: "ARSg04o7xmWB_3SNBJeL-0",
+          vertex: 1,
+          style: "rounded=0;whiteSpace=wrap;html=1;",
+          value: "Hello, world!",
+          parent: "0",
+        },
+        mxGeometry: {
+          attributes: {
+            as: "geometry",
+            width: 100,
+            height: 60
+          }
         }
       }
-    }];
+    ];
 
     const graph: MxGraph = {
       mxGraphModel: {
@@ -62,7 +71,6 @@ describe('MxGraphEncoder', () => {
         }
       }
     };
-
 
     const file: MxFileRoot = {
       mxfile: {
@@ -76,6 +84,9 @@ describe('MxGraphEncoder', () => {
     fs.writeFileSync('./test.drawio', drawioFile);
 
     const data = MxGraphEncode.decodeXml(drawioFile);
-    expect(true).toBeTruthy;
+    const xmlInJson: MxGraph | any = MxGraphEncode.xml2obj(data!);
+    const mxCell: MXCell[] = xmlInJson.mxGraphModel.root.mxCell;
+
+    expect(mxCell.length).toBe(2);
   });
 });
