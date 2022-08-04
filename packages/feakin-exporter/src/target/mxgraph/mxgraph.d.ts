@@ -56,6 +56,7 @@ export interface MXCell {
   mxGeometry?: MXGeometry;
   attributes?: {
     id: string;
+    label?: string;
     style?: string;
     source?: string;
     target?: string;

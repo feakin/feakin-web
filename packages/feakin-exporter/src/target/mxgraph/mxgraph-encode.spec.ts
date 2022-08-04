@@ -1,7 +1,7 @@
 import MxGraphEncode from './mxgraph-encode';
-import { MXCell, MxFileRoot, MxGraph } from './mxgraph';
+import { MXCell, MxGraph } from './mxgraph';
 import * as fs from "fs";
-import { js2xml } from "./xml-converter";
+import { wrapperToDrawIo } from "./drawio-wrapper";
 
 describe('MxGraphEncoder', () => {
   it('should work', () => {
@@ -39,47 +39,7 @@ describe('MxGraphEncoder', () => {
   });
 
   it('convert model to file', () => {
-    const cells: MXCell[] = [
-      {
-        attributes: {
-          id: "0",
-        }
-      },
-      {
-        attributes: {
-          id: "ARSg04o7xmWB_3SNBJeL-0",
-          vertex: 1,
-          style: "rounded=0;whiteSpace=wrap;html=1;",
-          value: "Hello, world!",
-          parent: "0",
-        },
-        mxGeometry: {
-          attributes: {
-            as: "geometry",
-            width: 100,
-            height: 60
-          }
-        }
-      }
-    ];
-
-    const graph: MxGraph = {
-      mxGraphModel: {
-        root: {
-          mxCell: cells
-        }
-      }
-    };
-
-    const file: MxFileRoot = {
-      mxfile: {
-        diagram: {
-          _text: MxGraphEncode.encode(js2xml(graph))
-        }
-      }
-    }
-
-    const drawioFile = js2xml(file);
+    const drawioFile = wrapperToDrawIo();
     fs.writeFileSync('./test.drawio', drawioFile);
 
     const data = MxGraphEncode.decodeXml(drawioFile);
