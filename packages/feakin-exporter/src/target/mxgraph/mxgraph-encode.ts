@@ -1,10 +1,10 @@
 import cheerio from 'cheerio';
 import * as pako from 'pako';
-import { xml2json } from './xml-converter';
+import { xml2js } from './xml-converter';
 
 const MxGraphEncode = {
   GUID_ALPHABET:'0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_',
-  xml2obj: xml2json,
+  xml2obj: xml2js,
   parseXml: (xml: string) => {
     const $ = cheerio.load(xml);
     return $;

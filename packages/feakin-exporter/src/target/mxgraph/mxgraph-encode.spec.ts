@@ -1,7 +1,7 @@
 import MxGraphEncode from './mxgraph-encode';
 import { MXCell, MxFileRoot, MxGraph } from './mxgraph';
 import * as fs from "fs";
-import { obj2xml } from "./xml-converter";
+import { js2xml } from "./xml-converter";
 
 describe('MxGraphEncoder', () => {
   it('should work', () => {
@@ -74,12 +74,12 @@ describe('MxGraphEncoder', () => {
     const file: MxFileRoot = {
       mxfile: {
         diagram: {
-          _text: MxGraphEncode.encode(obj2xml(graph))
+          _text: MxGraphEncode.encode(js2xml(graph))
         }
       }
     }
 
-    const drawioFile = obj2xml(file);
+    const drawioFile = js2xml(file);
     fs.writeFileSync('./test.drawio', drawioFile);
 
     const data = MxGraphEncode.decodeXml(drawioFile);
