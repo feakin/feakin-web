@@ -1,8 +1,7 @@
 import MxGraphEncode from './mxgraph-encode';
-import { MXCell, Mxfile, MxFileRoot, MxGraph } from './mxgraph';
+import { MXCell, MxFileRoot, MxGraph } from './mxgraph';
 import * as fs from "fs";
 import { obj2xml } from "./xml-converter";
-import { js2xml } from "xml-js";
 
 describe('MxGraphEncoder', () => {
   it('should work', () => {
