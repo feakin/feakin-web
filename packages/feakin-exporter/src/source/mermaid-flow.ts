@@ -22,7 +22,7 @@ export function parseFlow(str: string) {
 
   return {
     direction: flowDb.getDirection(),
-    vertices: flowDb.vertices,
+    nodes: flowDb.vertices,
     edges: flowDb.edges,
     subGraphs: flowDb.getSubGraphs()
   };

@@ -7,8 +7,9 @@ describe('feakinExporter', () => {
     B-->C;`);
 
     expect(flow.direction).toBe('TD');
-    expect(flow.vertices['A'].id).toBe('A');
+    expect(flow.nodes['A'].id).toBe('A');
     expect(flow.edges.length).toBe(2);
+    expect(Object.values(flow.nodes).length).toBe(3);
   });
 
   it('should parse subgraph', () => {
@@ -27,6 +28,6 @@ describe('feakinExporter', () => {
     id1[This is the text in the box]`);
 
     expect(flow.direction).toBe('LR');
-    expect(flow.vertices['id1'].text).toBe("This is the text in the box");
+    expect(flow.nodes['id1'].text).toBe("This is the text in the box");
   });
 });
