@@ -4,12 +4,30 @@ import { js2xml } from "./xml-converter";
 import { BaseNode } from "../../layout/dagre-layout";
 
 export class DrawIoWrapper {
+  idIndex = 0;
+  GUID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+
+  guid(): string {
+    const len = (length != null) ? length : this.GUID_ALPHABET;
+    const rtn = [];
+
+    for (let i = 0; i < len; i++) {
+      rtn.push(this.GUID_ALPHABET.charAt(Math.floor(Math.random() * this.GUID_ALPHABET.length)));
+    }
+
+    return rtn.join('');
+  }
+
+  id(): string {
+    this.idIndex++;
+    return `${ this.guid() }-${ this.idIndex }`;
+  }
+
   fromNodes(nodes: BaseNode[]): MXCell[] {
     return nodes.map(node => {
       return {
         attributes: {
-          // todo: generate ids
-          id: "",
+          id: this.id(),
           style: "rounded=0;whiteSpace=wrap;html=1;",
           value: node.label
         },
@@ -50,6 +68,8 @@ export class DrawIoWrapper {
 }
 
 export function wrapperToDrawIo() {
+  const wrapper = new DrawIoWrapper();
+
   const cells: MXCell[] = [
     {
       attributes: {
@@ -58,11 +78,11 @@ export function wrapperToDrawIo() {
     },
     {
       attributes: {
-        id: "ARSg04o7xmWB_3SNBJeL-0",
+        id: `${ wrapper.id() }`,
         vertex: 1,
         style: "rounded=0;whiteSpace=wrap;html=1;",
         value: "Hello, world!",
-        parent: "0",
+        parent: "0"
       },
       mxGeometry: {
         attributes: {
@@ -74,7 +94,6 @@ export function wrapperToDrawIo() {
     }
   ];
 
-  const wrapper = new DrawIoWrapper();
   const mxGraph = wrapper.wrapperGraph(cells);
   return wrapper.toXml(wrapper.wrapperRoot(mxGraph));
 }
