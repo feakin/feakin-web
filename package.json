@@ -11,6 +11,13 @@
     "dev": "lerna run dev --stream --parallel",
     "format": "nx format:write"
   },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "regenerator-runtime": "0.13.7",
+    "tslib": "^2.3.0"
+  },
   "private": true,
   "devDependencies": {
     "@craco/craco": "^6.4.5",
