@@ -1,6 +1,6 @@
 {
   "name": "@feakin/render",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "private": false,
   "dependencies": {
     "canvas": "^2.9.3",

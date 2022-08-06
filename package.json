@@ -1,6 +1,6 @@
 {
   "name": "@feakin/all",
-  "version": "0.0.0",
+  "version": "0.1.4",
   "license": "MIT",
   "scripts": {
     "publish": "npx lerna publish --no-private",
