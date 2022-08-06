@@ -1,6 +1,7 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import * as pako from 'pako';
 import { xml2js } from './xml-converter';
+import { text } from "cheerio";
 
 const MxGraphEncode = {
   xml2obj: xml2js,
@@ -12,7 +13,7 @@ const MxGraphEncode = {
     const $ = MxGraphEncode.parseXml(source);
     const mxfile = $('mxfile');
     if (mxfile) {
-      const diagrams = cheerio.text($('mxfile diagram'));
+      const diagrams = text($('mxfile diagram'));
 
       if (diagrams.length > 0) {
         return MxGraphEncode.decode(diagrams);
