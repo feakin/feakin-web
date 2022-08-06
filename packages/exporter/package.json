@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "type": "commonjs",
   "dependencies": {
-    "@feakin/converter": "^0.1.4",
+    "@feakin/parser": "^0.1.4",
     "cheerio": "^1.0.0-rc.12",
     "dagre": "^0.8.5",
     "dompurify": "^2.3.10",

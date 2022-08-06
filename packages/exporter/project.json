@@ -1,30 +1,30 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/feakin-exporter/src",
+  "sourceRoot": "packages/exporter/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/feakin-exporter",
-        "main": "packages/feakin-exporter/src/index.ts",
-        "tsConfig": "packages/feakin-exporter/tsconfig.lib.json",
-        "assets": ["packages/feakin-exporter/*.md"]
+        "outputPath": "dist/packages/exporter",
+        "main": "packages/exporter/src/index.ts",
+        "tsConfig": "packages/exporter/tsconfig.lib.json",
+        "assets": ["packages/exporter/*.md"]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/feakin-exporter/**/*.ts"]
+        "lintFilePatterns": ["packages/exporter/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/feakin-exporter"],
+      "outputs": ["coverage/packages/exporter"],
       "options": {
-        "jestConfig": "packages/feakin-exporter/jest.config.ts",
+        "jestConfig": "packages/exporter/jest.config.ts",
         "passWithNoTests": true
       }
     }
