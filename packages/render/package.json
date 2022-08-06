@@ -34,6 +34,14 @@
       "react-app/jest"
     ]
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(konva)).*\\.js$"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
