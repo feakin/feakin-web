@@ -13,13 +13,14 @@
   },
   "private": true,
   "devDependencies": {
-    "@nrwl/cli": "14.4.3",
-    "@nrwl/eslint-plugin-nx": "14.4.3",
-    "@nrwl/jest": "14.4.3",
-    "@nrwl/js": "14.4.3",
-    "@nrwl/linter": "14.4.3",
+    "@craco/craco": "^6.4.5",
+    "@nrwl/cli": "14.5.4",
+    "@nrwl/eslint-plugin-nx": "14.5.4",
+    "@nrwl/jest": "14.5.4",
+    "@nrwl/js": "14.5.4",
+    "@nrwl/linter": "14.5.4",
     "@nrwl/nx-cloud": "latest",
-    "@nrwl/workspace": "^14.4.3",
+    "@nrwl/workspace": "14.5.4",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
@@ -27,19 +28,31 @@
     "dotenv": "^16.0.1",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-cypress": "^2.10.3",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jsx-a11y": "6.6.1",
+    "eslint-plugin-react": "7.30.1",
+    "eslint-plugin-react-hooks": "4.6.0",
     "jest": "27.5.1",
+    "jest-watch-typeahead": "^2.0.0",
     "lerna": "^5.2.0",
-    "nx": "14.4.3",
+    "nx": "14.5.4",
     "prettier": "^2.6.2",
+    "react-scripts": "^5.0.1",
+    "react-test-renderer": "18.2.0",
     "ts-jest": "27.1.4",
     "ts-node": "~10.8.0",
-    "typescript": "~4.7.2"
+    "typescript": "~4.7.2",
+    "web-vitals": "^2.1.4"
   },
   "author": "Phodal HUANG <phodal@users.noreply.github.com>",
   "workspaces": [
     "packages/*"
   ],
   "dependencies": {
+    "@nrwl/react": "^14.5.4",
+    "@nrwl/web": "^14.5.4",
     "tslib": "^2.3.0"
   }
 }

@@ -13,10 +13,8 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": "./feakin",
-    "paths": {
-      "@feakin/feakin-exporter": ["packages/feakin-exporter/src/index.ts"]
-    }
+    "baseUrl": ".",
+    "paths": {}
   },
   "exclude": ["feakin/node_modules", "tmp"]
 }
