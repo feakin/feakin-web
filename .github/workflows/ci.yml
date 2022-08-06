@@ -7,21 +7,18 @@ on:
   pull_request:
 
 jobs:
-  main:
-    name: Nx Cloud - Main Job
-    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.5
-    with:
-      number-of-agents: 3
-      parallel-commands: |
-        npx nx-cloud record -- npx nx workspace-lint
-        npx nx-cloud record -- npx nx format:check
-      parallel-commands-on-agents: |
-        npx nx affected --target=lint --parallel=3
-        npx nx affected --target=test --parallel=3 --ci
-        npx nx affected --target=build --parallel=3
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-  agents:
-    name: Nx Cloud - Agents
-    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.5
-    with:
-      number-of-agents: 3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - run: npm ci
+
+      - run: npm run build --if-present
+
+      - run: npm test
