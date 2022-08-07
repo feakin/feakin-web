@@ -1,0 +1,45 @@
+@startuml
+
+class Graph {
+  Node[] nodes;
+  Edge[] edges;
+  Property property;
+}
+
+class Node {
+  String id;
+  String label;
+  Shape shape;
+  Property property;
+  Node[] children;
+  Node parent;
+}
+
+class Edge {
+  Point[] points;
+}
+
+class Point {
+  int x;
+  int y;
+}
+
+class Shape {
+  String type;
+}
+
+class Geometry {
+  String stroke;
+  Int fillWith;
+  String fillStroke;
+  String fillOpacity;
+  String scale;
+}
+
+Graph --> Node
+Graph --> Edge
+Node --> Shape
+Edge --> Point
+Node --> Geometry
+
+@enduml
