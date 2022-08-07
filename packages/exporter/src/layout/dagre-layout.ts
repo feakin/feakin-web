@@ -15,22 +15,14 @@ export interface DagreRelation {
   target?: TargetElement;
 }
 
-export class DagreLayout implements Layout {
-  run(): Layout {
-    return this;
-  }
-}
-
-// todo: refs to mermaid
-export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions) {
+export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions): LayoutOutput {
   options = options || defaultLayoutOptions;
 
   const graph = new dagre.graphlib.Graph({
     multigraph: true,
     compound: true,
   }).setGraph({
-    // todo: import
-    // rankdir: 'TB',
+    rankdir: options?.rankdir,
     nodesep: 50,
     ranksep: 50,
     marginx: 8,
@@ -86,6 +78,7 @@ export interface BaseNode extends Point, Valued {
   ry?: number | undefined;
 }
 
-export function fromDagre(node: dagre.Node<string>): BaseNode {
-  return node;
+export interface LayoutOutput {
+  nodes: BaseNode[];
+  edges: BaseEdge[];
 }

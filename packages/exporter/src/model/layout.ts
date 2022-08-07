@@ -29,6 +29,7 @@ export interface Layout extends LayoutLifecycle {
 }
 
 export const defaultLayoutOptions = {
+  rankdir: 'TB',
   node: {
     width: 100,
     height: 40,
@@ -36,6 +37,7 @@ export const defaultLayoutOptions = {
 }
 
 export interface LayoutOptions {
+  rankdir?: string;
   container?: HTMLElement;
   node?: {
     // each node width
