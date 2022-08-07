@@ -3,7 +3,7 @@
 class Graph {
   Node[] nodes;
   Edge[] edges;
-  Property property;
+  GraphProperty property;
 }
 
 class Node {
@@ -24,7 +24,30 @@ class Point {
   int y;
 }
 
+Position --|> Point
+
 class Geometry {
+  int size;
+  Position position;
+}
+
+Geometry::position --> Position
+
+Graph --> Node
+Graph --> Edge
+Node --> Shape
+Node --> Geometry
+
+interface Shape {
+  String type;
+}
+
+Shape  <|-- Rectangle
+Shape  <|-- Hexagon
+Shape  <|-- Circle
+Shape  <|-- Ellipse
+
+interface Property {
   String stroke;
   Int fillWith;
   String fillStroke;
@@ -32,18 +55,33 @@ class Geometry {
   String scale;
 }
 
-Graph --> Node
-Graph --> Edge
-Node --> Shape
-Edge --> Point
-Node --> Geometry
+GraphProperty --|> Property
+NodeProperty --|> Property
 
-interface Shape {
-  String type;
+
+interface Layout {
+  String name;
 }
 
-Shape o- Rectangle
-Shape o- Circle
-Shape o- Ellipse
+Layout  <|-- Dagre
+Layout  <|-- CoSE
+Layout  <|-- Circle
+
+
+Edge  <|-- Arrow
+Edge  <|-- Connector
+Edge  <|-- Polyline
+
+
+'class LayoutOptions {}
+'
+'interface Renderer {
+'  String name;
+'  LayoutOptions layoutOptions;
+'
+'  + void configure(Graph graph);
+'}
+'
+
 
 @enduml
