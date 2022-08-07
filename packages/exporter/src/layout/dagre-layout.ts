@@ -1,19 +1,6 @@
 import * as dagre from 'dagre'
-import { Point } from "../model/geometry/point";
-import { defaultLayoutOptions, Layout, LayoutOptions } from "../model/layout";
-
-export interface Label {
-  name: string;
-  label?: string
-}
-
-export type SourceElement = Label
-export type TargetElement = Label
-
-export interface DagreRelation {
-  source: SourceElement;
-  target?: TargetElement;
-}
+import { defaultLayoutOptions, LayoutOptions } from "../model/layout";
+import { BaseEdge, BaseNode, DagreRelation, LayoutOutput } from "../model/layout-model";
 
 export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions): LayoutOutput {
   options = options || defaultLayoutOptions;
@@ -56,29 +43,4 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
   return {
     nodes, edges
   }
-}
-
-
-// todo: merge to elements;
-export interface BaseEdge {
-  points: Point[]
-}
-
-export interface Valued {
-  label?: string;
-}
-
-export interface BaseNode extends Point, Valued {
-  width: number;
-  height: number;
-  padding?: number | undefined;
-  paddingX?: number | undefined;
-  paddingY?: number | undefined;
-  rx?: number | undefined;
-  ry?: number | undefined;
-}
-
-export interface LayoutOutput {
-  nodes: BaseNode[];
-  edges: BaseEdge[];
 }

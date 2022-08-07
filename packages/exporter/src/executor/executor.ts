@@ -1,6 +1,7 @@
 import { parseFlow } from "../source/mermaid-flow";
 import { FlowEdge, FlowVertex } from "../source/flow";
-import { BaseEdge, BaseNode, dagreLayout, DagreRelation } from "../layout/dagre-layout";
+import { dagreLayout} from "../layout/dagre-layout";
+import { BaseEdge, BaseNode, DagreRelation } from "../layout/layout-model";
 
 export interface IExecutor {
   execute(source: string): Promise<string>;

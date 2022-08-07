@@ -1,7 +1,7 @@
 import { MXCell, MxFileRoot, MxGraph } from "./mxgraph";
 import MxGraphEncode from "./mxgraph-encode";
 import { js2xml } from "./xml-converter";
-import { BaseNode } from "../../layout/dagre-layout";
+import { BaseNode } from "../../layout/layout-model";
 
 export class DrawIoWrapper {
   idIndex = 0;

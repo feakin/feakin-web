@@ -1,4 +1,5 @@
-import { dagreLayout, DagreRelation } from './dagre-layout';
+import { dagreLayout} from './dagre-layout';
+import { DagreRelation } from "./layout-model";
 
 describe('feakinExporter', () => {
   it('layout', () => {
