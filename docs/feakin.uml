@@ -24,10 +24,6 @@ class Point {
   int y;
 }
 
-class Shape {
-  String type;
-}
-
 class Geometry {
   String stroke;
   Int fillWith;
@@ -41,5 +37,13 @@ Graph --> Edge
 Node --> Shape
 Edge --> Point
 Node --> Geometry
+
+interface Shape {
+  String type;
+}
+
+Shape o- Rectangle
+Shape o- Circle
+Shape o- Ellipse
 
 @enduml
