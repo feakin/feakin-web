@@ -15,7 +15,7 @@
     "core-js": "^3.6.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "regenerator-runtime": "0.13.7",
+    "regenerator-runtime": "0.13.9",
     "tslib": "^2.3.0"
   },
   "private": true,
@@ -26,6 +26,8 @@
     "@nrwl/jest": "14.5.4",
     "@nrwl/js": "14.5.4",
     "@nrwl/linter": "14.5.4",
+    "@nrwl/react": "^14.5.4",
+    "@nrwl/web": "^14.5.4",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "14.5.4",
     "@types/jest": "27.4.1",
@@ -56,10 +58,5 @@
   "author": "Phodal HUANG <phodal@users.noreply.github.com>",
   "workspaces": [
     "packages/*"
-  ],
-  "dependencies": {
-    "@nrwl/react": "^14.5.4",
-    "@nrwl/web": "^14.5.4",
-    "tslib": "^2.3.0"
-  }
+  ]
 }
