@@ -7,12 +7,21 @@ class Graph {
 }
 
 class Node {
-  String id;
-  String label;
-  Shape shape;
-  Property property;
-  Node[] children;
-  Node parent;
+  String       id;
+  String       label;
+  TextStyle    labelStyle;
+  Shape        shape;
+  Property     property;
+  Node[]       children;
+  Node         parent;
+}
+
+class TextStyle {
+  String text;
+  String fontName;
+  int    fontSize;
+  String fontStyle;
+  String color;
 }
 
 class Edge {
@@ -48,11 +57,14 @@ Shape  <|-- Circle
 Shape  <|-- Ellipse
 
 interface Property {
-  String stroke;
-  Int fillWith;
+  String strokeColor;
+  Int    strokeWidth;
+
+  Int    fillWidth;
   String fillStroke;
   String fillOpacity;
-  String scale;
+
+  Int    scale;
 }
 
 GraphProperty --|> Property
