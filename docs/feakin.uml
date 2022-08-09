@@ -55,12 +55,19 @@ Node --> Geometry
 
 interface Shape {
   String type;
+  + void draw();
+' c.moveTo(0.25 * w, 0.25 * h);
+  + void redrawShape();
+  + void redraw();
 }
 
-Shape  <|-- Rectangle
-Shape  <|-- Hexagon
-Shape  <|-- Circle
-Shape  <|-- Ellipse
+Shape  <|-- RectangleShape
+Shape  <|-- HexagonShape
+Shape  <|-- CircleShape
+Shape  <|-- EllipseShape
+Shape  <|-- TextShape
+Shape  <|-- LabelShape
+Shape  <|-- ImageShape
 
 interface Property {
   String strokeColor;
@@ -81,14 +88,22 @@ interface LayoutStrategy {
   String name;
 }
 
-LayoutStrategy  <|-- Dagre
-LayoutStrategy  <|-- CoSE
-LayoutStrategy  <|-- Circle
+LayoutStrategy  <|-- DagreLayout
+LayoutStrategy  <|-- CoSELayout
+LayoutStrategy  <|-- CircleLayout
+
+interface Connector {
+
+}
 
 
-Edge  <|-- Arrow
 Edge  <|-- Connector
 Edge  <|-- Polyline
+Edge  <|-- LabelLine
+Edge  <|-- CurveLine
+Edge  <|-- BezierCurveLine
+
+Connector  <|-- Arrow
 
 
 interface Renderer {
