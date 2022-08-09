@@ -3,6 +3,7 @@
 class Graph {
   Node[] nodes;
   Edge[] edges;
+'  GraphProperty can transfer for different renderer
   GraphProperty property;
 }
 
@@ -26,6 +27,7 @@ class TextStyle {
 
 class Edge {
   Point[] points;
+  String  edgeType;
 }
 
 class Point {
@@ -34,6 +36,10 @@ class Point {
 }
 
 Position --|> Point
+
+class Position {
+
+}
 
 class Geometry {
   int size;
@@ -71,13 +77,13 @@ GraphProperty --|> Property
 NodeProperty --|> Property
 
 
-interface Layout {
+interface LayoutStrategy {
   String name;
 }
 
-Layout  <|-- Dagre
-Layout  <|-- CoSE
-Layout  <|-- Circle
+LayoutStrategy  <|-- Dagre
+LayoutStrategy  <|-- CoSE
+LayoutStrategy  <|-- Circle
 
 
 Edge  <|-- Arrow
@@ -85,15 +91,15 @@ Edge  <|-- Connector
 Edge  <|-- Polyline
 
 
-'class LayoutOptions {}
-'
-'interface Renderer {
-'  String name;
-'  LayoutOptions layoutOptions;
-'
-'  + void configure(Graph graph);
-'}
-'
+interface Renderer {
+  String name;
+  LayoutOptions layoutOptions;
 
+  + void configure(LayoutOptions layoutOptions);
+  + void drawing(Graph graph);
+}
+
+SvgRenderer --|> Renderer
+CanvasRenderer --|> Renderer
 
 @enduml
