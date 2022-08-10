@@ -1,4 +1,4 @@
-import { EdgeData, Elements, NodeDataDefinition } from "./element";
+import { EdgeData, Elements, NodeData } from "./element";
 
 export interface RendererContext {
   elementId?: string;
@@ -10,7 +10,7 @@ export interface Renderer {
   drawingElements: (context: RendererContext, elements: Elements) => void;
 
   drawingEdges: (edges: EdgeData) => void;
-  drawingNodes: (nodes: NodeDataDefinition[]) => void;
+  drawingNodes: (nodes: NodeData[]) => void;
   drawingShapes: () => void;
   drawingImages: () => void;
   drawingLabelText: () => void;
