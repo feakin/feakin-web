@@ -13,9 +13,6 @@ export interface BaseNode extends Point {
   label?: string;
   width: number;
   height: number;
-  padding?: number | undefined;
-  paddingX?: number | undefined;
-  paddingY?: number | undefined;
   rx?: number | undefined;
   ry?: number | undefined;
 }
