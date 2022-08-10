@@ -1,6 +1,7 @@
 import * as dagre from 'dagre'
 import { defaultLayoutOptions, LayoutOptions } from "../model/layout";
-import { BaseEdge, BaseNode, DagreRelation, LayoutOutput } from "../model/layout-model";
+import { BaseEdge, BaseNode, LayoutOutput } from "../model/layout-model";
+import { DagreRelation } from "./dagre-relation";
 
 export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions): LayoutOutput {
   options = options || defaultLayoutOptions;

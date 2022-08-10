@@ -1,10 +1,13 @@
 import { Point } from "./point";
 
-export type Graph = Elements;
+export interface Graph {
+
+}
 
 export interface Elements {
   nodes: Node[];
   edges: Edge[];
+  props: ElementProperty[];
 }
 
 export type Position = Point;
