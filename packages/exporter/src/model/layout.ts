@@ -1,4 +1,4 @@
-import { Elements } from "./element";
+import { Elements } from "./graph";
 
 export interface LayoutLifecycle {
   /**

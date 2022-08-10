@@ -1,10 +1,12 @@
-import { EdgeData, Elements, NodeData } from "./element";
+import { EdgeData, Elements, NodeData } from "./graph";
 
 export interface RendererContext {
   elementId?: string;
 }
 
-// inspired by cytoscape.js
+/**
+ * Renderer (aka Graph Drawing) is a class that can be used to render a Graph object.
+ */
 export interface Renderer {
   arrowShapes: () => void;
   drawingElements: (context: RendererContext, elements: Elements) => void;

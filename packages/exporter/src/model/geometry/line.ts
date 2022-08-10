@@ -1,9 +1,8 @@
-import { Point } from "../point";
+import { Point } from "./point";
 
-export interface Shape {
-  points: Point[],
-}
-
+/**
+ * Line is a simple 2D line with start and end points.
+ */
 export interface Line extends Point {
   stroke?: string,
 }

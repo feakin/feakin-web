@@ -1,4 +1,4 @@
-import { Point } from "./point";
+import { Point } from "./geometry/point";
 
 export interface Label {
   name: string;

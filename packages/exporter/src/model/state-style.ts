@@ -7,6 +7,9 @@ export interface StrokeState {
   strokeOpacity: number;
 }
 
+/**
+ * ImageState is a style for a state.
+ */
 export interface ImageState {
   image: string;
   backgroundColor: string;
