@@ -1,7 +1,5 @@
 import MxGraphEncode from './mxgraph-encode';
 import { MXCell, MxGraph } from './mxgraph';
-import * as fs from "fs";
-import { wrapperToDrawIo } from "./drawio-wrapper";
 
 describe('MxGraphEncoder', () => {
   it('should work', () => {
@@ -36,16 +34,5 @@ describe('MxGraphEncoder', () => {
 
     const xmlInJson: MxGraph | any = MxGraphEncode.xml2obj(sampleStr!);
     expect(xmlInJson.mxfile.attributes).toBeDefined();
-  });
-
-  it('convert model to file', () => {
-    const drawioFile = wrapperToDrawIo();
-    fs.writeFileSync('./test.drawio', drawioFile);
-
-    const data = MxGraphEncode.decodeXml(drawioFile);
-    const xmlInJson: MxGraph = MxGraphEncode.xml2obj(data!) as never;
-    const mxCell: MXCell[] = xmlInJson.mxGraphModel.root.mxCell;
-
-    expect(mxCell.length).toBe(2);
   });
 });
