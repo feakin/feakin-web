@@ -42,3 +42,5 @@ Thumbs.db
 packages/exporter/test.json
 packages/exporter/test.drawio
 lerna-debug.log
+test.drawio
+docs/models
