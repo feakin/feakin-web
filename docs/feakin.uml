@@ -117,4 +117,10 @@ interface Renderer {
 SvgRenderer --|> Renderer
 CanvasRenderer --|> Renderer
 
+interface Layer {
+}
+
+' paper can be a layer ??
+interface Paper {}
+
 @enduml

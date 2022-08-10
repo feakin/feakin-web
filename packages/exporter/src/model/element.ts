@@ -16,9 +16,11 @@
 // http://js.cytoscape.org/#notation/functions
 // TypeScript Version: 2.3
 
-export interface ElementsDefinition {
-  nodes: NodeDefinition[];
-  edges: EdgeDefinition[];
+export type Graph = Elements;
+
+export interface Elements {
+  nodes: Node[];
+  edges: Edge[];
 }
 
 interface Position {
@@ -89,18 +91,20 @@ interface ElementDataDefinition {
   position?: Position | undefined;
 }
 
-export interface NodeDefinition extends ElementDefinition {
+export interface Node extends ElementDefinition {
   data: NodeDataDefinition;
 }
 
 export interface NodeDataDefinition extends ElementDataDefinition {
   id?: string | undefined;
   parent?: string | undefined;
+  // children's Node ids
+  children?: string[];
 
   [key: string]: any;
 }
 
-export interface EdgeDefinition extends ElementDefinition {
+export interface Edge extends ElementDefinition {
   data: EdgeDataDefinition;
 }
 

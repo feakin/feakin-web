@@ -1,4 +1,4 @@
-import { EdgeDataDefinition, ElementsDefinition, NodeDataDefinition } from "./element";
+import { EdgeDataDefinition, Elements, NodeDataDefinition } from "./element";
 
 export interface RendererContext {
   elementId?: string;
@@ -7,7 +7,7 @@ export interface RendererContext {
 // inspired by cytoscape.js
 export interface Renderer {
   arrowShapes: () => void;
-  drawingElements: (context: RendererContext, elements: ElementsDefinition) => void;
+  drawingElements: (context: RendererContext, elements: Elements) => void;
 
   drawingEdges: (edges: EdgeDataDefinition) => void;
   drawingNodes: (nodes: NodeDataDefinition[]) => void;

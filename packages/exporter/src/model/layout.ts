@@ -1,4 +1,4 @@
-import { ElementsDefinition } from "./element";
+import { Elements } from "./element";
 
 export interface LayoutLifecycle {
   /**
@@ -8,7 +8,7 @@ export interface LayoutLifecycle {
   /**
    * transition layout.
    */
-  transform?: (element: ElementsDefinition) => void;
+  transform?: (element: Elements) => void;
   /**
    * Called when the layout is stopped.
    */
