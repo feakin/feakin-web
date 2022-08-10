@@ -3,20 +3,18 @@ import { Point } from "./geometry/point";
 /**
  * Graph is a class that represents a graph.
  */
-export interface Graph {
-
-}
+export type Graph = Elements;
 
 export interface Elements {
   nodes: Node[];
   edges: Edge[];
-  props: ElementProperty[];
+  props?: ElementProperty[];
 }
 
 export type Position = Point;
 
 interface Element {
-  data: NodeData | EdgeData;
+  data?: NodeData | EdgeData;
   position?: Position | undefined;
   css?: any | undefined;
 }
@@ -32,7 +30,12 @@ interface ElementProperty {
  * and an edge is represented by a line or arrow extending from one vertex to another.
  */
 export interface Node extends Element, ElementProperty {
-  data: NodeData;
+  label: string | undefined;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  data?: NodeData;
 }
 
 /**
@@ -45,7 +48,8 @@ export interface Node extends Element, ElementProperty {
  * vertices x and y is sometimes written xy.
  */
 export interface Edge extends Element, ElementProperty {
-  data: EdgeData;
+  points: Point[];
+  data?: EdgeData;
 }
 
 export interface NodeData extends ElementData {

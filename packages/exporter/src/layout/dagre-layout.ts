@@ -1,9 +1,9 @@
 import * as dagre from 'dagre'
 import { defaultLayoutOptions, LayoutOptions } from "../model/layout";
-import { BaseEdge, BaseNode, LayoutOutput } from "../model/layout-model";
 import { DagreRelation } from "./dagre-relation";
+import { Node, Edge, Graph } from "../model/graph";
 
-export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions): LayoutOutput {
+export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions): Graph {
   options = options || defaultLayoutOptions;
 
   const graph = new dagre.graphlib.Graph({
@@ -31,14 +31,24 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
 
   dagre.layout(graph);
 
-  const nodes: BaseNode[] = [];
+  const nodes: Node[] = [];
   graph.nodes().forEach(function (v) {
-    nodes.push(graph.node(v));
+    let node = graph.node(v);
+    nodes.push({
+      x: node.x,
+      y: node.y,
+      label: node.label,
+      height: node.height,
+      width: node.width
+    });
   });
 
-  const edges: BaseEdge[] = [];
+  const edges: Edge[] = [];
   graph.edges().forEach(function (e) {
-    edges.push(graph.edge(e.v, e.w, e.name));
+    let graphEdge = graph.edge(e);
+    edges.push({
+      points: graphEdge.points,
+    });
   });
 
   return {

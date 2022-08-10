@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const Converter = require("@feakin/converter");
+const Converter = require("@feakin/parser");
 import { FlowDb } from "./mermaid-flowdb";
 
 export function parseFlow(str: string) {
