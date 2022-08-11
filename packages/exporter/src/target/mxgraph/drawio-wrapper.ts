@@ -1,7 +1,7 @@
 import { MXCell, MxFileRoot, MxGraph } from "./mxgraph";
 import MxGraphEncode from "./mxgraph-encode";
 import { js2xml } from "./xml-converter";
-import { BaseNode } from "../../model/layout-model";
+import { Node } from "../../model/graph";
 
 export class DrawIoWrapper {
   idIndex = 0;
@@ -23,7 +23,7 @@ export class DrawIoWrapper {
     return `${ this.guid() }-${ this.idIndex }`;
   }
 
-  fromNodes(nodes: BaseNode[]): MXCell[] {
+  fromNodes(nodes: Node[]): MXCell[] {
     return nodes.map(node => {
       return {
         attributes: {

@@ -3,9 +3,9 @@ import { Point } from "./geometry/point";
 /**
  * Graph is a class that represents a graph.
  */
-export type Graph = Elements;
+export type Graph = Layers;
 
-export interface Elements {
+export interface Layers {
   nodes: Node[];
   edges: Edge[];
   props?: ElementProperty[];

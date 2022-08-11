@@ -3,11 +3,11 @@
  * The MIT License (MIT)
  * Copyright (c) 2014 - 2021 Knut Sveidqvist
  */
-import { FlowEdge, FlowVertex } from "./flow";
+import { FlowEdge, FlowNode } from "./flow";
 
 export class FlowDb {
   vertexCounter = 0;
-  vertices: { [key: string]: FlowVertex; }  = {};
+  vertices: { [key: string]: FlowNode; }  = {};
   DOM_PREFIX = "feakin-";
   direction = "TB";
   edges: FlowEdge[] = [];

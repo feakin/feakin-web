@@ -1,3 +1,6 @@
+/**
+ * FlowEdge is a drawable edge in mermaid.
+ */
 export interface FlowEdge {
   start: string,
   end: string,
@@ -7,8 +10,10 @@ export interface FlowEdge {
   length?: number
 }
 
-// Geometry ??
-export interface FlowVertex {
+/**
+ * FlowNode is a drawable node in mermaid.
+ */
+export interface FlowNode {
   id: string,
   domId: string,
   styles: string[],

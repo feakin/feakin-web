@@ -1,4 +1,6 @@
-import { Elements } from "./graph";
+import { Layers } from "./graph";
+
+export type Direction = "LR" | "RL" | "TB" | "BT";
 
 export interface LayoutLifecycle {
   /**
@@ -8,7 +10,7 @@ export interface LayoutLifecycle {
   /**
    * transition layout.
    */
-  transform?: (element: Elements) => void;
+  transform?: (element: Layers) => void;
   /**
    * Called when the layout is stopped.
    */

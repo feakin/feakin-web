@@ -1,4 +1,7 @@
-import { Label } from "../model/layout-model";
+export interface Label {
+  name: string;
+  label?: string
+}
 
 export type SourceElement = Label
 export type TargetElement = Label

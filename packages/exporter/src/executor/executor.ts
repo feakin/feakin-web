@@ -1,15 +1,15 @@
 import { parseFlow } from "../source/mermaid-flow";
-import { FlowEdge, FlowVertex } from "../source/flow";
-import { dagreLayout} from "../layout/dagre-layout";
-import { BaseEdge, BaseNode} from "../model/layout-model";
+import { FlowEdge, FlowNode } from "../source/flow";
+import { dagreLayout } from "../layout/dagre-layout";
 import { DagreRelation } from "../layout/dagre-relation";
+import { Edge, Node } from "../model/graph";
 
 export interface IExecutor {
   execute(source: string): Promise<string>;
 }
 
 export class Executor implements IExecutor {
-  flowToDagre(nodes: { [p: string]: FlowVertex }, edges: FlowEdge[]): DagreRelation[] {
+  flowToDagre(nodes: { [p: string]: FlowNode }, edges: FlowEdge[]): DagreRelation[] {
     const relations: DagreRelation[] = [];
     edges.forEach(edge => {
       relations.push({
@@ -30,7 +30,7 @@ export class Executor implements IExecutor {
     return Promise.resolve("");
   }
 
-  private toMermaid(layout: { nodes: BaseNode[]; edges: BaseEdge[] }) {
+  private toMermaid(layout: { nodes: Node[]; edges: Edge[] }) {
 
   }
 }
