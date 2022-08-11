@@ -1,6 +1,6 @@
 import { CanvasShapeDrawing } from './canvas-shape-drawing';
 import { Rectangle } from "../model/shapes/rectangle";
-import { dataURLtoFileData } from "./utils/image";
+import { dataURLtoFileData } from "./utils/data-url";
 import * as fs from "fs";
 
 describe('CanvasShapeDrawing', () => {
