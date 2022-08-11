@@ -12,7 +12,9 @@
   },
   "devDependencies": {
     "@types/dagre": "^0.7.47",
-    "@types/pako": "^2.0.0"
+    "@types/jsdom": "^20.0.0",
+    "@types/pako": "^2.0.0",
+    "jsdom": "^20.0.0"
   },
   "gitHead": "d469dc8908cb5a800ce1ccb52c621809ed1335af"
 }
