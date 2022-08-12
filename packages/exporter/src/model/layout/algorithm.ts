@@ -1,4 +1,4 @@
-import { Graph } from "./graph";
+import { Graph } from "../graph";
 
 /**
  * Algorithm is a class that represents an algorithm for Graph objects.

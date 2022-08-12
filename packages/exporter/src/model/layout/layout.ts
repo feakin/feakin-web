@@ -1,4 +1,4 @@
-import { Layers } from "./graph";
+import { Layers } from "../graph";
 
 export type Direction = "LR" | "RL" | "TB" | "BT";
 

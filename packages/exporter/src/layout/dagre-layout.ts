@@ -1,5 +1,5 @@
 import * as dagre from 'dagre'
-import { defaultLayoutOptions, LayoutOptions } from "../model/layout";
+import { defaultLayoutOptions, LayoutOptions } from "../model/abstract/layout";
 import { DagreRelation } from "./dagre-relation";
 import { Node, Edge, Graph } from "../model/graph";
 
