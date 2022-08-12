@@ -1,6 +1,7 @@
 import { Rectangle } from "../model/shapes/rectangle";
 import { SvgShapeDrawing } from "./svg-shape-drawing";
 import { Circle } from "../model/shapes/circle";
+import { HexagonShape } from "../model/shapes/hexagon";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
@@ -37,4 +38,11 @@ describe('SvgShapeDrawing', () => {
 
     expect(svg.innerHTML).toBe('<path d="M0,0 L50,50 L50,100 L-50,100" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></path>');
   });
+
+  it('hexagon', () => {
+    let drawing = new SvgShapeDrawing(svg as SVGElement);
+    drawing.drawHexagon(new HexagonShape(0, 0, 100, 100));
+
+    expect(svg.innerHTML).toBe('<polygon points="25,0 75,0 100,50 75,100 25,100 0,50 25,0" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
+  })
 });

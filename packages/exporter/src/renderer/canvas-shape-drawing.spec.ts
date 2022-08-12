@@ -3,6 +3,7 @@ import { CanvasShapeDrawing } from './canvas-shape-drawing';
 import { Rectangle } from "../model/shapes/rectangle";
 import { dataURLtoFileData } from "./utils/data-url";
 import { Circle } from "../model/shapes/circle";
+import { HexagonShape } from "../model/shapes/hexagon";
 
 describe('CanvasShapeDrawing', () => {
   let canvas: any, ctx: any;
@@ -48,5 +49,17 @@ describe('CanvasShapeDrawing', () => {
     let fileData = dataURLtoFileData(image);
 
     fs.writeFileSync('./test/circle.png', fileData.data);
+  });
+
+  it('hexagon', () => {
+    let drawing = new CanvasShapeDrawing(ctx);
+    drawing.drawHexagon(new HexagonShape(1, 1, 60, 60));
+
+    let canvasElement = drawing.ctx.canvas;
+
+    let image = canvasElement.toDataURL();
+    let fileData = dataURLtoFileData(image);
+
+    fs.writeFileSync('./test/hexagon.png', fileData.data);
   });
 });

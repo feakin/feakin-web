@@ -2,6 +2,7 @@ import { Rectangle } from "../model/shapes/rectangle";
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { Circle } from "../model/shapes/circle";
+import { HexagonShape } from "../model/shapes/hexagon";
 
 export class SvgShapeDrawing {
   private ctx: SVGElement;
@@ -100,6 +101,16 @@ export class SvgShapeDrawing {
     this.configProperty(circleEl);
 
     this.ctx.appendChild(circleEl)
+    return this;
+  }
+
+  drawHexagon(hexagon: HexagonShape): this {
+    const hexagonEl = this.createElement('polygon');
+    hexagonEl.setAttribute('points', hexagon.points().map(p => p.x + ',' + p.y).join(' '));
+
+    this.configProperty(hexagonEl);
+
+    this.ctx.appendChild(hexagonEl)
     return this;
   }
 }
