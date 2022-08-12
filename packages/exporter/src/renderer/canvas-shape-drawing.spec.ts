@@ -1,7 +1,8 @@
+import * as fs from "fs";
 import { CanvasShapeDrawing } from './canvas-shape-drawing';
 import { Rectangle } from "../model/shapes/rectangle";
 import { dataURLtoFileData } from "./utils/data-url";
-import * as fs from "fs";
+import { Circle } from "../model/shapes/circle";
 
 describe('CanvasShapeDrawing', () => {
   let canvas: any, ctx: any;
@@ -35,5 +36,17 @@ describe('CanvasShapeDrawing', () => {
     let fileData = dataURLtoFileData(image);
 
     fs.writeFileSync('./test/path.png', fileData.data);
+  });
+
+  it('circle', () => {
+    let drawing = new CanvasShapeDrawing(ctx);
+    drawing.drawCircle(new Circle(60, 60, 50));
+
+    let canvasElement = drawing.ctx.canvas;
+
+    let image = canvasElement.toDataURL();
+    let fileData = dataURLtoFileData(image);
+
+    fs.writeFileSync('./test/circle.png', fileData.data);
   });
 });

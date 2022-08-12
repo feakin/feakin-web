@@ -1,6 +1,7 @@
 import { Rectangle } from "../model/shapes/rectangle";
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
+import { Circle } from "../model/shapes/circle";
 
 export class SvgShapeDrawing {
   private ctx: SVGElement;
@@ -54,7 +55,7 @@ export class SvgShapeDrawing {
     return this;
   }
 
-  pointsToSvgPath(points: { x: number; y: number; }[]): string {
+  pointsToSvgPath(points: Point[]): string {
     let path = 'M' + points[0].x + ',' + points[0].y;
     for (let i = 1; i < points.length; i++) {
       path += ' L' + points[i].x + ',' + points[i].y;
@@ -69,6 +70,13 @@ export class SvgShapeDrawing {
     const pathEl = this.createElement('path');
     pathEl.setAttribute('d', path);
 
+    this.configProperty(pathEl);
+
+    this.ctx.appendChild(pathEl)
+    return this;
+  }
+
+  private configProperty(pathEl: Element) {
     let stroke = this.property.stroke;
     let fill = this.property.fill;
 
@@ -81,8 +89,17 @@ export class SvgShapeDrawing {
     if (fill != null) {
       pathEl.setAttribute('fill', fill.transparent ? 'transparent' : '#000000');
     }
+  }
 
-    this.ctx.appendChild(pathEl)
+  drawCircle(circle: Circle): this {
+    const circleEl = this.createElement('circle');
+    circleEl.setAttribute('cx', String(circle.x));
+    circleEl.setAttribute('cy', String(circle.y));
+    circleEl.setAttribute('r', String(circle.radius));
+
+    this.configProperty(circleEl);
+
+    this.ctx.appendChild(circleEl)
     return this;
   }
 }

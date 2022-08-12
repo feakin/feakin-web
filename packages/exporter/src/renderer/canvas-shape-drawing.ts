@@ -1,5 +1,6 @@
 import { Rectangle } from "../model/shapes/rectangle";
 import { Point } from "../model/geometry/point";
+import { Circle } from "../model/shapes/circle";
 
 export class CanvasShapeDrawing {
   ctx: CanvasRenderingContext2D;
@@ -20,6 +21,13 @@ export class CanvasShapeDrawing {
     for (let i = 1; i < point.length; i++) {
       this.ctx.lineTo(point[i].x, point[i].y);
     }
+    this.ctx.stroke();
+    return this;
+  }
+
+  drawCircle(circle: Circle): this {
+    this.ctx.beginPath();
+    this.ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
     this.ctx.stroke();
     return this;
   }
