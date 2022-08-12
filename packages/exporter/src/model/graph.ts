@@ -1,4 +1,5 @@
 import { Point } from "./geometry/point";
+import { StrokeState } from "./state-style";
 
 /**
  * Graph is a class that represents a graph.
@@ -19,7 +20,8 @@ interface Element {
   css?: any | undefined;
 }
 
-interface ElementProperty {
+export interface ElementProperty {
+  stroke?: StrokeState;
 }
 
 /**

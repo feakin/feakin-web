@@ -24,4 +24,16 @@ describe('CanvasShapeDrawing', () => {
 
     fs.writeFileSync('./test/rect.png', fileData.data);
   });
+
+  it('path', () => {
+    let drawing = new CanvasShapeDrawing(ctx);
+    drawing.drawPath([{ x: 0, y: 0 }, { x: 50, y: 50 }, { x: 50, y: 100 }, { x: -50, y: 100 }]);
+
+    let canvasElement = drawing.ctx.canvas;
+
+    let image = canvasElement.toDataURL();
+    let fileData = dataURLtoFileData(image);
+
+    fs.writeFileSync('./test/path.png', fileData.data);
+  });
 });
