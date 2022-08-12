@@ -6,7 +6,7 @@ export interface Layout extends LayoutLifecycle {
   run: () => Layout;
 }
 
-export const defaultLayoutOptions = {
+export const defaultLayoutOptions: LayoutOptions = {
   rankdir: 'TB',
   node: {
     width: 100,
@@ -17,4 +17,10 @@ export const defaultLayoutOptions = {
 export interface LayoutOptions {
   rankdir?: Direction;
   container?: HTMLElement;
+  node?: {
+    // each node width
+    width: number;
+    // each node height
+    height: number;
+  }
 }

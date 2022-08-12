@@ -40,3 +40,8 @@ export interface PaddingState {
   paddingX?: number | undefined;
   paddingY?: number | undefined;
 }
+
+export interface FillState {
+  transparent?: boolean;
+  fillColor?: string;
+}

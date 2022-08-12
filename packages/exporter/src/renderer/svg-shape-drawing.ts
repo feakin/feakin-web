@@ -7,7 +7,10 @@ export class SvgShapeDrawing {
   private property: ElementProperty;
   private svg: Element;
 
-  private defaultProperty = {
+  private defaultProperty: ElementProperty = {
+    fill: {
+      transparent: true,
+    },
     stroke: {
       strokeColor: '#000000',
       strokeWidth: 1,
@@ -67,11 +70,16 @@ export class SvgShapeDrawing {
     pathEl.setAttribute('d', path);
 
     let stroke = this.property.stroke;
+    let fill = this.property.fill;
 
     if (stroke != null) {
       pathEl.setAttribute('stroke', stroke.strokeColor);
       pathEl.setAttribute('stroke-width', String(stroke.strokeWidth));
       pathEl.setAttribute('stroke-opacity', String(stroke.strokeOpacity));
+    }
+
+    if (fill != null) {
+      pathEl.setAttribute('fill', fill.transparent ? 'transparent' : '#000000');
     }
 
     this.ctx.appendChild(pathEl)

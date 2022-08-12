@@ -27,10 +27,6 @@ describe('SvgShapeDrawing', () => {
     let drawing = new SvgShapeDrawing(svg as SVGElement);
     drawing.drawPath([{ x: 0, y: 0 }, { x: 50, y: 50 }, { x: 50, y: 100 }, { x: -50, y: 100 }]);
 
-    expect(svg.innerHTML).toBe('<path d="M0,0 L50,50 L50,100 L-50,100" stroke="#000000" stroke-width="1" stroke-opacity="1"></path>');
-
-    const serializer = new XMLSerializer();
-    const str = serializer.serializeToString(svg);
-    expect(str).toBe(`<svg xmlns="http://www.w3.org/1999/xhtml"><path xmlns="&quot;http://www.w3.org/1999/xhtml&quot;" d="M0,0 L50,50 L50,100 L-50,100" stroke="#000000" stroke-width="1" stroke-opacity="1"/></svg>`);
+    expect(svg.innerHTML).toBe('<path d="M0,0 L50,50 L50,100 L-50,100" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></path>');
   });
 });
