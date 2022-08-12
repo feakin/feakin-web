@@ -1,4 +1,4 @@
-import { Edge, Node, Layers } from "../graph";
+import { Edge, Node, Layers } from "./graph";
 
 export interface RendererContext {
   elementId?: string;

@@ -1,32 +1,8 @@
-import { Layers } from "../graph";
+import { LayoutLifecycle } from "./layout-lifecycle";
 
 export type Direction = "LR" | "RL" | "TB" | "BT";
 
-export interface LayoutLifecycle {
-  /**
-   * Called when the layout is started.
-   */
-  ready?: () => void;
-  /**
-   * transition layout.
-   */
-  transform?: (element: Layers) => void;
-  /**
-   * Called when the layout is stopped.
-   */
-  stop?: () => void;
-  /**
-   * when Window resize
-   */
-  resize?: () => void;
-  /**
-   * destroy view and render
-   */
-  destroy?: () => void;
-}
-
 export interface Layout extends LayoutLifecycle {
-  // todo: output to examples?
   run: () => Layout;
 }
 
@@ -39,24 +15,6 @@ export const defaultLayoutOptions = {
 }
 
 export interface LayoutOptions {
-  rankdir?: string;
+  rankdir?: Direction;
   container?: HTMLElement;
-  node?: {
-    // each node width
-    width: number;
-    // each node height
-    height: number;
-  }
-}
-
-export class SimpleLayout implements Layout {
-  private options: object;
-
-  constructor(options: LayoutOptions) {
-    this.options = options;
-  }
-
-  run(): Layout {
-    return this;
-  }
 }

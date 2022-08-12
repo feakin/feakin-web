@@ -32,12 +32,6 @@ function loadImage(svg: SVGElement, canvas: any, ctx: any) {
   img.src = "./test/svg.png";
 }
 
-const load = (url: string = "") => new Promise(resolve => {
-  const img = new Image()
-  img.onload = () => resolve({ url, ratio: img.naturalWidth / img.naturalHeight })
-  img.src = url
-});
-
 describe('DrawingDiff', () => {
   let svg: SVGElement;
   let canvas: any, ctx: any;
