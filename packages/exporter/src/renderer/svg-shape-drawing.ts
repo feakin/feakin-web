@@ -5,6 +5,7 @@ import { ElementProperty } from "../model/graph";
 export class SvgShapeDrawing {
   private ctx: SVGElement;
   private property: ElementProperty;
+  private svg: Element;
 
   private defaultProperty = {
     stroke: {
@@ -17,6 +18,19 @@ export class SvgShapeDrawing {
   constructor(context: SVGElement, property?: ElementProperty) {
     this.ctx = context;
     this.property = property == null ? this.defaultProperty : property;
+    this.svg = this.createElement('svg');
+
+    this.initSvgWrapper();
+  }
+
+  initSvgWrapper() {
+    let element = this.createElement('svg');
+    element.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    element.setAttribute('version', '1.1');
+    element.setAttribute('width', '100%');
+    element.setAttribute('height', '100%');
+
+    return element;
   }
 
   createElement(tagName: string, namespace?: string): Element {
