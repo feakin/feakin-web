@@ -3,6 +3,7 @@ import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { Circle } from "../model/shapes/circle";
 import { HexagonShape } from "../model/shapes/hexagon";
+import { CloudShape } from "../model/shapes/cloud-shape";
 
 export class SvgShapeDrawing {
   private ctx: SVGElement;

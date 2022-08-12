@@ -10,6 +10,7 @@
  * ```
  *
  */
+import { Point } from "../geometry/point";
 
 export class Shape {
   x: number;
@@ -27,7 +28,8 @@ export class Shape {
 
   }
 
-  points() {
+  points(): Point[] {
+    return [];
   }
 
   rotate() {
