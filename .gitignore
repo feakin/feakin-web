@@ -44,3 +44,5 @@ packages/exporter/test.drawio
 lerna-debug.log
 test.drawio
 docs/models
+test
+**/coverage/

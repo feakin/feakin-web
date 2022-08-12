@@ -6,7 +6,7 @@
     "publish": "npx lerna publish --no-private",
     "build:all": "nx run-many --target=build --all",
     "build:since": "nx affected --target=build",
-    "test:all": "nx run-many --target=test --all",
+    "test:all": "nx run-many --target=test --all --coverage",
     "test:since": "lerna run test --since=main",
     "dev": "lerna run dev --stream --parallel",
     "format": "nx format:write"
