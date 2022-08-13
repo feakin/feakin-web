@@ -11,8 +11,9 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-import { Executor }  from "@feakin/exporter/src/index";
-import { Edge }  from "@feakin/exporter/src/model/graph";
+import { Executor } from "@feakin/exporter/src/index";
+import { Edge } from "@feakin/exporter/src/model/graph";
+import { flattenPoints } from "@feakin/exporter/src/model/geometry/point";
 
 function App() {
   const [selectedId, selectShape] = React.useState<number | null>(null);
@@ -136,7 +137,8 @@ function App() {
     updateSelectionRect();
   };
 
-  const onMouseOut = (e: Konva.KonvaEventObject<MouseEvent>) => {};
+  const onMouseOut = (e: Konva.KonvaEventObject<MouseEvent>) => {
+  };
 
   // based on: https://codesandbox.io/s/react-konva-multiple-selection-tgggi?file=/src/index.js:312-320
   const onClickTap = (e: Konva.KonvaEventObject<MouseEvent>) => {
@@ -191,26 +193,25 @@ function App() {
 
   return (
     <Stage
-      ref={stageRef}
-      width={window.innerWidth}
-      height={window.innerHeight}
-      onMouseDown={checkDeselect}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
-      onMouseOut={onMouseOut}
-      onClick={onClickTap}
-      onTouchStart={checkDeselect}
+      ref={ stageRef }
+      width={ window.innerWidth }
+      height={ window.innerHeight }
+      onMouseDown={ checkDeselect }
+      onMouseUp={ onMouseUp }
+      onMouseMove={ onMouseMove }
+      onMouseOut={ onMouseOut }
+      onClick={ onClickTap }
+      onTouchStart={ checkDeselect }
     >
-      <Layer ref={layerRef}>
-        {layout.nodes.map((node: any, index: number) => {
+      <Layer ref={ layerRef }>
+        { layout.nodes.map((node: any, index: number) => {
+          console.log(node);
           return (
             <FkRect
-              key={'node_' + index}
-              isSelected={!!selectedId && node.id === selectedId}
-              draggable={true}
-              onSelect={(e) => {
-                console.log(e);
-                console.log(node.id);
+              key={ 'node_' + index }
+              isSelected={ !!selectedId && node.id === selectedId }
+              draggable={ true }
+              onSelect={ (e) => {
                 if (e.current !== undefined) {
                   let temp = nodesArray;
                   if (!nodesArray.includes(e.current)) temp.push(e.current);
@@ -219,42 +220,37 @@ function App() {
                   trRef.current!!.getLayer()!!.batchDraw();
                 }
                 selectShape(node.id);
-              }}
-              // todo: add location converter
-              position={{
+              } }
+              position={ {
                 x: node.x - node.width / 2,
                 y: node.y - node.height / 2,
                 width: node.width,
                 height: node.height,
-              }}
+              } }
             />
           );
-        })}
-        {layout.edges.map((edge: Edge) => {
+        }) }
+        { layout.edges.map((edge: Edge) => {
           const { points, label } = edge;
           return (
-            <Group key={edge?.label || ""}>
-              {/*<Arrow points={edge.points} fill="black" stroke="black" />*/}
-              <Text text={label} x={points[0].x} y={points[0].y} />
+            <Group key={ edge?.label || "" }>
+              <Arrow points={ flattenPoints(edge.points) } fill="black" stroke="black"/>
+              <Text text={ label } x={ points[0].x } y={ points[0].y }/>
             </Group>
           );
-        })}
-
-        {/*{ lines.map((line: number[] | undefined, i: React.Key | null | undefined) => (*/}
-        {/*  <Line key={ i } points={ line } stroke="red"/>*/}
-        {/*)) }*/}
+        }) }
 
         <Transformer
-          ref={trRef}
-          boundBoxFunc={(oldBox, newBox) => {
+          ref={ trRef }
+          boundBoxFunc={ (oldBox, newBox) => {
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
             }
 
             return newBox;
-          }}
+          } }
         />
-        <Rect fill="rgba(0,0,255,0.5)" ref={selectionRectRef} />
+        <Rect fill="rgba(0,0,255,0.5)" ref={ selectionRectRef }/>
       </Layer>
     </Stage>
   );

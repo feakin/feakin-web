@@ -1,5 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "packages/exporter",
   "sourceRoot": "packages/exporter/src",
   "projectType": "library",
   "targets": {

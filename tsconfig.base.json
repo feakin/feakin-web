@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@feakin/model": ["packages/model/src/index.ts"]
+      "@feakin/model": ["packages/model/src/index.ts"],
+      "@feakin/exporter": ["packages/model/exporter/index.ts"]
     }
   },
   "exclude": ["feakin/node_modules", "tmp"]
