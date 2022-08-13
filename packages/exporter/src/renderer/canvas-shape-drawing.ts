@@ -1,9 +1,7 @@
-import { Rectangle } from "../model/shape/rectangle";
 import { Point } from "../model/geometry/point";
-import { CircleShape } from "../model/shape/circle-shape";
-import { HexagonShape } from "../model/shape/hexagon-shape";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
+import { CircleShape, HexagonShape, Rectangle } from "../model/shape";
 
 export class CanvasShapeDrawing implements ShapeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;

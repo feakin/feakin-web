@@ -1,8 +1,6 @@
 import { ElementProperty } from "../model/graph";
-import { Rectangle } from "../model/shape/rectangle";
 import { Point } from "../model/geometry/point";
-import { CircleShape } from "../model/shape/circle-shape";
-import { HexagonShape } from "../model/shape/hexagon-shape";
+import { CircleShape, HexagonShape, Rectangle } from "../model/shape";
 
 export interface ShapeDrawing {
   property: ElementProperty;

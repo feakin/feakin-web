@@ -1,6 +1,5 @@
 import { Point } from "./geometry/point";
-import { StrokeState } from "./style/stroke-state";
-import { FillState } from "./style/fill-state";
+import { FillState, StrokeState } from "./state-style";
 
 /**
  * Graph is a class that represents a graph.

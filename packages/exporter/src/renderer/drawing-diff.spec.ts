@@ -1,6 +1,5 @@
 import { SvgShapeDrawing } from "./svg-shape-drawing";
 
-
 describe('DrawingDiff', () => {
   let svg: SVGElement;
   let canvas: any, ctx: any;
