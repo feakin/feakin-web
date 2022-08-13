@@ -10,10 +10,11 @@ export class Rectangle extends Shape {
     this.height = height;
   }
 
+  // todo: add calcualtion for label position
   override labelPosition() {
     return {
       x: this.x + this.width / 2,
-      y: this.y + this.height / 2
+      y: this.y + this.height / 2 - this.fontSize / 2
     };
   }
 }

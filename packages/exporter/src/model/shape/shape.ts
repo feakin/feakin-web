@@ -13,8 +13,14 @@
 import { Point } from "../geometry/point";
 
 export class Shape {
+
   x: number;
   y: number;
+
+  private _fontSize = 12;
+  get fontSize(): number {
+    return this._fontSize;
+  }
 
   constructor(x = 0, y = 0) {
     this.x = x;

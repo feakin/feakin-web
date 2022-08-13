@@ -201,6 +201,7 @@ function Render(props: { text: string }) {
         { layout.nodes.map((node: any, index: number) => {
           return (
             <FkRect
+              node={ node }
               label={ node.label }
               key={ 'node-' + index }
               isSelected={ !!selectedId && node.id === selectedId }

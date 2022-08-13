@@ -2,11 +2,13 @@ import React, { MutableRefObject, useEffect, useState } from 'react';
 import { Text, Rect, Transformer } from 'react-konva';
 import Konva from "konva";
 import { FkLocation } from '../geometry/FkLocation';
+import { Rectangle } from "@feakin/exporter";
 
 interface FkRectConfig {
 }
 
 interface FkRectProps {
+  node: any,
   label?: string;
   draggable?: boolean;
   isSelected?: boolean;
@@ -24,7 +26,7 @@ function FkRect(props: FkRectProps) {
   const [isDragging, setIsDragging] = useState(false);
 
   const [position, setPosition] = useState(props.position);
-  // const [labelPosition, setLabelPosition] = useState({ x: 0, y: 0 });
+  const [labelPosition, setLabelPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (props.isSelected) {
@@ -34,8 +36,9 @@ function FkRect(props: FkRectProps) {
   }, [props.isSelected]);
 
   useEffect(() => {
-    // todo: add for label position
-  }, [props.position]);
+    const rectangle = new Rectangle(props.position.x, props.position.y, props.node.width, props.node.height);
+    setLabelPosition(rectangle.labelPosition());
+  }, [props.node, props.position]);
 
 
   function onChange(param: FkLocation) {
@@ -93,7 +96,7 @@ function FkRect(props: FkRectProps) {
           });
         } }
       />
-      { props.label && <Text text={ props.label } x={ position.x } y={ position.y }/> }
+      { props.label && <Text text={ props.label } x={ labelPosition.x } y={ labelPosition.y }/> }
       { props.isSelected && (
         <Transformer
           ref={ trRef }
