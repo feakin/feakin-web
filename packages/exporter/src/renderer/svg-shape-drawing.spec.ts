@@ -12,7 +12,7 @@ describe('SvgShapeDrawing', () => {
 
   it('initWrapper', () => {
     let drawing = new SvgShapeDrawing(svg);
-    let element = drawing.initSvgWrapper();
+    let element = drawing.svg;
 
     expect(element.tagName).toBe('svg');
     expect(element.innerHTML).toBe('');

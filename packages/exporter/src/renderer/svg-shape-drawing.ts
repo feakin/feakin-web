@@ -3,12 +3,15 @@ import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { CircleShape } from "../model/shapes/circle-shape";
 import { HexagonShape } from "../model/shapes/hexagon-shape";
-import { CloudShape } from "../model/shapes/cloud-shape";
 
 export class SvgShapeDrawing {
   private ctx: SVGElement;
   private property: ElementProperty;
-  private svg: Element;
+
+  private readonly _svg: Element;
+  get svg(): Element {
+    return this._svg;
+  }
 
   private defaultProperty: ElementProperty = {
     fill: {
@@ -24,12 +27,10 @@ export class SvgShapeDrawing {
   constructor(context: SVGElement, property?: ElementProperty) {
     this.ctx = context;
     this.property = property == null ? this.defaultProperty : property;
-    this.svg = this.createElement('svg');
-
-    this.initSvgWrapper();
+    this._svg = this.initSvgWrapper();
   }
 
-  initSvgWrapper() {
+  private initSvgWrapper() {
     let element = this.createElement('svg');
     element.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     element.setAttribute('version', '1.1');
@@ -39,12 +40,28 @@ export class SvgShapeDrawing {
     return element;
   }
 
-  createElement(tagName: string, namespace?: string): Element {
+  private createElement(tagName: string, namespace?: string): Element {
     return this.ctx.ownerDocument.createElementNS(
       namespace || '"http://www.w3.org/1999/xhtml"',
       tagName
     )
   }
+
+  private configProperty(pathEl: Element) {
+    let stroke = this.property.stroke;
+    let fill = this.property.fill;
+
+    if (stroke != null) {
+      pathEl.setAttribute('stroke', stroke.strokeColor);
+      pathEl.setAttribute('stroke-width', String(stroke.strokeWidth));
+      pathEl.setAttribute('stroke-opacity', String(stroke.strokeOpacity));
+    }
+
+    if (fill != null) {
+      pathEl.setAttribute('fill', fill.transparent ? 'transparent' : '#000000');
+    }
+  }
+
 
   drawRect(rect: Rectangle): this {
     const rectEl = this.createElement('rect');
@@ -76,21 +93,6 @@ export class SvgShapeDrawing {
 
     this.ctx.appendChild(pathEl)
     return this;
-  }
-
-  private configProperty(pathEl: Element) {
-    let stroke = this.property.stroke;
-    let fill = this.property.fill;
-
-    if (stroke != null) {
-      pathEl.setAttribute('stroke', stroke.strokeColor);
-      pathEl.setAttribute('stroke-width', String(stroke.strokeWidth));
-      pathEl.setAttribute('stroke-opacity', String(stroke.strokeOpacity));
-    }
-
-    if (fill != null) {
-      pathEl.setAttribute('fill', fill.transparent ? 'transparent' : '#000000');
-    }
   }
 
   drawCircle(circle: CircleShape): this {
