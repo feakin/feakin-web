@@ -4,41 +4,13 @@ import {
   Arrow,
   Group,
   Layer,
-  Line,
   Rect,
   Stage,
   Text,
   Transformer,
 } from 'react-konva';
-import { fkDagre } from './layout/fkDagre';
-/* global Konva */
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-import { NodeDefinition } from './layout/fkLayoutDef';
-
-export const nodeDefinitions: NodeDefinition[] = [
-  {
-    id: 'kspacey',
-    definition: { label: 'Kevin Spacey', width: 144, height: 100 },
-  },
-  {
-    id: 'swilliams',
-    definition: { label: 'Saul Williams', width: 160, height: 100 },
-  },
-  { id: 'bpitt', definition: { label: 'Brad Pitt', width: 108, height: 100 } },
-  {
-    id: 'hford',
-    definition: { label: 'Harrison Ford', width: 168, height: 100 },
-  },
-  {
-    id: 'lwilson',
-    definition: { label: 'Luke Wilson', width: 144, height: 100 },
-  },
-  {
-    id: 'kbacon',
-    definition: { label: 'Kevin Bacon', width: 121, height: 100 },
-  },
-];
 
 export const edges = [
   ['kspacey', 'swilliams'],
@@ -216,9 +188,8 @@ function App() {
     layer.draw();
   };
 
-  const layout = fkDagre(nodeDefinitions, edges);
+  const layout: any = { nodes: [], edges: [], connectors: [] }
 
-  // todo: add redo and undo functionality
   return (
     <Stage
       ref={stageRef}
@@ -236,7 +207,7 @@ function App() {
           return (
             <FkRect
               key={'node_' + index}
-              isSelected={!!selectedId && node.id == selectedId}
+              isSelected={!!selectedId && node.id === selectedId}
               draggable={true}
               onSelect={(e) => {
                 console.log(e);
@@ -260,7 +231,7 @@ function App() {
             />
           );
         })}
-        {layout.edges.map((edge) => {
+        {layout.edges.map((edge: any) => {
           const { points, label } = edge.props;
           return (
             <Group key={edge.props.label}>

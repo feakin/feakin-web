@@ -5,3 +5,9 @@ export interface Point {
   x: number;
   y: number;
 }
+
+export const flattenPoints = (points: Point[]): number[] => {
+  const flatten: number[] = [];
+  points.forEach(({ x, y }) => flatten.push(x, y));
+  return flatten;
+};
