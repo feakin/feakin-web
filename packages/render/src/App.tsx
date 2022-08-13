@@ -11,9 +11,7 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-import { Executor } from "@feakin/exporter/src/index";
-import { Edge } from "@feakin/exporter/src/model/graph";
-import { flattenPoints } from "@feakin/exporter/src/model/geometry/point";
+import { Executor, Edge, flattenPoints } from "@feakin/exporter";
 
 function App() {
   const [selectedId, selectShape] = React.useState<number | null>(null);
