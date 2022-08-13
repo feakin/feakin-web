@@ -229,10 +229,10 @@ function App() {
             />
           );
         }) }
-        { layout.edges.map((edge: Edge) => {
+        { layout.edges.map((edge: Edge, index: number) => {
           const { points, label } = edge;
           return (
-            <Group key={ edge?.label || "" }>
+            <Group key={ 'edge-' + index }>
               <Arrow points={ flattenPoints(edge.points) } fill="black" stroke="black"/>
               <Text text={ label } x={ points[0].x } y={ points[0].y }/>
             </Group>
