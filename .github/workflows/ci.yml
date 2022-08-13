@@ -17,6 +17,6 @@ jobs:
 
       - run: npx nx workspace-lint
 #      - run: npx nx format:check
-#      - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx run-many --target=test --all --coverage
+      - run: npx nx run-many --target=lint --all
       - run: npx nx run-many --target=build --all
+      - run: npx nx run-many --target=test --all --coverage
