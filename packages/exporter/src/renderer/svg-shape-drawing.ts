@@ -1,8 +1,8 @@
-import { Rectangle } from "../model/shapes/rectangle";
+import { Rectangle } from "../model/shape/rectangle";
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
-import { CircleShape } from "../model/shapes/circle-shape";
-import { HexagonShape } from "../model/shapes/hexagon-shape";
+import { CircleShape } from "../model/shape/circle-shape";
+import { HexagonShape } from "../model/shape/hexagon-shape";
 
 export class SvgShapeDrawing {
   private ctx: SVGElement;
