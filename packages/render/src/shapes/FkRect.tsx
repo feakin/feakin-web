@@ -24,7 +24,7 @@ function FkRect(props: FkRectProps) {
   const [isDragging, setIsDragging] = useState(false);
 
   const [position, setPosition] = useState(props.position);
-  const [labelPosition, setLabelPosition] = useState({ x: 0, y: 0 });
+  // const [labelPosition, setLabelPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (props.isSelected) {
