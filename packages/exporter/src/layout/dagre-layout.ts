@@ -36,7 +36,7 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
 
   const nodes: Node[] = [];
   graph.nodes().forEach(function (v) {
-    let node = graph.node(v);
+    const node = graph.node(v);
     nodes.push({
       x: node.x,
       y: node.y,
@@ -48,7 +48,7 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
 
   const edges: Edge[] = [];
   graph.edges().forEach(function (e) {
-    let graphEdge = graph.edge(e);
+    const graphEdge = graph.edge(e);
     edges.push({
       points: graphEdge.points,
     });

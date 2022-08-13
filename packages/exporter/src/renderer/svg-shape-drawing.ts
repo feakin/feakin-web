@@ -29,7 +29,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   private initSvgWrapper() {
-    let element = this.createElement('svg');
+    const element = this.createElement('svg');
     element.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     element.setAttribute('version', '1.1');
     element.setAttribute('width', '100%');
@@ -46,8 +46,8 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   configProperty = (pathEl: Element) => {
-    let stroke = this.property.stroke;
-    let fill = this.property.fill;
+    const stroke = this.property.stroke;
+    const fill = this.property.fill;
 
     if (stroke != null) {
       pathEl.setAttribute('stroke', stroke.strokeColor);
@@ -81,7 +81,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   drawPath(points: Point[]): this {
-    let path = this.pointsToSvgPath(points);
+    const path = this.pointsToSvgPath(points);
 
     const pathEl = this.createElement('path');
     pathEl.setAttribute('d', path);

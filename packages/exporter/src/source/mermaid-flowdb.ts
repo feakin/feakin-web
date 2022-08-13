@@ -98,7 +98,7 @@ export class FlowDb {
       stroke = 'thick';
     }
 
-    let dots = this.countChar('.', line);
+    const dots = this.countChar('.', line);
 
     if (dots) {
       stroke = 'dotted';
@@ -202,8 +202,8 @@ export class FlowDb {
    * @param linktext
    */
   addSingleLink(_start: any, _end: any, type: any, linktext: any) {
-    let start = _start;
-    let end = _end;
+    const start = _start;
+    const end = _end;
 
     const edge: FlowEdge = { start: start, end: end, type: undefined, text: '' };
     linktext = type.text;
@@ -238,7 +238,7 @@ export class FlowDb {
    */
   addVertex(_id: string, text: string, type: string, style: any, classes: string[], dir: string, props = {}) {
     let txt;
-    let id = _id;
+    const id = _id;
     if (typeof id === 'undefined') {
       return;
     }

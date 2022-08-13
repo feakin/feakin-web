@@ -12,7 +12,7 @@ describe('DrawingDiff', () => {
   });
 
   it('diff svg and canvas', async () => {
-    let drawing = new SvgShapeDrawing(svg as SVGElement);
+    const drawing = new SvgShapeDrawing(svg as SVGElement);
     drawing.drawPath([{ x: 0, y: 0 }, { x: 50, y: 50 }, { x: 50, y: 100 }, { x: -50, y: 100 }]);
   });
 });

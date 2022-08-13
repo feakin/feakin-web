@@ -16,7 +16,7 @@ export class Shape {
   x: number;
   y: number;
 
-  constructor(x: number = 0, y: number = 0) {
+  constructor(x = 0, y = 0) {
     this.x = x;
     this.y = y;
   }
@@ -25,13 +25,14 @@ export class Shape {
    * @param scale The scale to be applied to the shape.
    */
   scale(scale: number) {
-
+    //
   }
 
   /**
    * label to put in center
    */
   labelPosition() {
+    //
   }
 
   points(): Point[] {
@@ -39,6 +40,7 @@ export class Shape {
   }
 
   rotate() {
+    //
   }
 }
 

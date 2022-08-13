@@ -30,12 +30,12 @@ export class Executor implements IExecutor {
   }
 
   sourceToDagre(source: string): Graph {
-    let flow = parseFlow(source);
-    let relations = this.flowToDagre(flow.nodes, flow.edges);
+    const flow = parseFlow(source);
+    const relations = this.flowToDagre(flow.nodes, flow.edges);
     return dagreLayout(relations);
   }
 
   private toMermaid(layout: { nodes: Node[]; edges: Edge[] }) {
-
+    //
   }
 }

@@ -3,7 +3,7 @@ import { dataURLtoFileData } from "./data-url";
 describe('dataURLtoFileData', () => {
   it('convert', () => {
     const image = `data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==`;
-    let data = dataURLtoFileData(image);
+    const data = dataURLtoFileData(image);
 
     expect(data.contentType).toBe('image/gif');
     expect(data.data.length).toBe(37);
