@@ -51,6 +51,7 @@ export interface Node extends Element, ElementProperty {
  * vertices x and y is sometimes written xy.
  */
 export interface Edge extends Element, ElementProperty {
+  label?: string;
   points: Point[];
   data?: EdgeData;
 }

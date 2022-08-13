@@ -9,6 +9,7 @@ export interface IExecutor {
 }
 
 export class Executor implements IExecutor {
+  // todo: change to strategy;
   flowToDagre(nodes: { [p: string]: FlowNode }, edges: FlowEdge[]): DagreRelation[] {
     const relations: DagreRelation[] = [];
     edges.forEach(edge => {
@@ -22,12 +23,16 @@ export class Executor implements IExecutor {
   }
 
   execute(source: string): Promise<string> {
-    let flow = parseFlow(source);
-    let relations = this.flowToDagre(flow.nodes, flow.edges);
-    const layout = dagreLayout(relations);
+    const layout = this.sourceToDagre(source);
     this.toMermaid(layout);
 
     return Promise.resolve("");
+  }
+
+  sourceToDagre(source: string) {
+    let flow = parseFlow(source);
+    let relations = this.flowToDagre(flow.nodes, flow.edges);
+    return dagreLayout(relations);
   }
 
   private toMermaid(layout: { nodes: Node[]; edges: Edge[] }) {

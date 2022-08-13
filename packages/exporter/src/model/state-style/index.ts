@@ -4,7 +4,7 @@ import { PaddingState } from "./padding-state";
 import { SpaceState } from "./space-state";
 import { StrokeState } from "./stroke-state";
 
-export {
+export type {
   FillState,
   ImageState,
   PaddingState,

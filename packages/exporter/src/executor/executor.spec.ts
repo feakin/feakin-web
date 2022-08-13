@@ -1,6 +1,6 @@
 import { Executor } from "./executor";
 
-describe('execute', () => {
+describe('Executor', () => {
   it('sample', () => {
     const executor = new Executor();
     const source = `graph TD;

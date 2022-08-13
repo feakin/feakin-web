@@ -11,12 +11,8 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-
-export const edges = [
-  ['kspacey', 'swilliams'],
-  ['swilliams', 'kbacon'],
-  ['kbacon', 'kspacey'],
-];
+import { Executor }  from "@feakin/exporter/src/index";
+import { Edge }  from "@feakin/exporter/src/model/graph";
 
 function App() {
   const [selectedId, selectShape] = React.useState<number | null>(null);
@@ -188,7 +184,10 @@ function App() {
     layer.draw();
   };
 
-  const layout: any = { nodes: [], edges: [], connectors: [] }
+  const executor = new Executor();
+  const layout = executor.sourceToDagre(`graph TD;
+    A-->B
+    B-->C;`);
 
   return (
     <Stage
@@ -231,11 +230,11 @@ function App() {
             />
           );
         })}
-        {layout.edges.map((edge: any) => {
-          const { points, label } = edge.props;
+        {layout.edges.map((edge: Edge) => {
+          const { points, label } = edge;
           return (
-            <Group key={edge.props.label}>
-              <Arrow points={edge.points} fill="black" stroke="black" />
+            <Group key={edge?.label || ""}>
+              {/*<Arrow points={edge.points} fill="black" stroke="black" />*/}
               <Text text={label} x={points[0].x} y={points[0].y} />
             </Group>
           );
