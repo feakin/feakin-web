@@ -11,7 +11,8 @@
     "xml-js": "^1.6.11"
   },
   "scripts": {
-    "gen": "node scripts/gen-import.js"
+    "gen": "node scripts/gen-import.js",
+    "lint": "eslint src/**/*.ts"
   },
   "devDependencies": {
     "@types/dagre": "^0.7.47",

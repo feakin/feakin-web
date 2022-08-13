@@ -1,7 +1,7 @@
 import { FeakinExporter } from './exporter';
 
 export class DrawioExporter implements FeakinExporter {
-  export(x: string): string {
+  export(_x: string): string {
     return '';
   }
 
