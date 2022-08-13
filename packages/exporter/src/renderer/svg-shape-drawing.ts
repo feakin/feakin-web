@@ -3,17 +3,17 @@ import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { CircleShape } from "../model/shape/circle-shape";
 import { HexagonShape } from "../model/shape/hexagon-shape";
+import { ShapeDrawing } from "./shape-drawing";
 
-export class SvgShapeDrawing {
+export class SvgShapeDrawing implements ShapeDrawing {
   private ctx: SVGElement;
-  private property: ElementProperty;
-
   private readonly _svg: Element;
   get svg(): Element {
     return this._svg;
   }
 
-  private defaultProperty: ElementProperty = {
+  property: ElementProperty;
+  defaultProperty: ElementProperty = {
     fill: {
       transparent: true,
     },
@@ -47,7 +47,7 @@ export class SvgShapeDrawing {
     )
   }
 
-  private configProperty(pathEl: Element) {
+  configProperty = (pathEl: Element) => {
     let stroke = this.property.stroke;
     let fill = this.property.fill;
 
@@ -60,8 +60,7 @@ export class SvgShapeDrawing {
     if (fill != null) {
       pathEl.setAttribute('fill', fill.transparent ? 'transparent' : '#000000');
     }
-  }
-
+  };
 
   drawRect(rect: Rectangle): this {
     const rectEl = this.createElement('rect');

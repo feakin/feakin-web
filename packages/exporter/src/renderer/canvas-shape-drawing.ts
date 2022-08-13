@@ -1,40 +1,71 @@
 import { Rectangle } from "../model/shape/rectangle";
-import { Point, Point_ } from "../model/geometry/point";
+import { Point } from "../model/geometry/point";
 import { CircleShape } from "../model/shape/circle-shape";
 import { HexagonShape } from "../model/shape/hexagon-shape";
+import { ElementProperty } from "../model/graph";
+import { ShapeDrawing } from "./shape-drawing";
 
-export class CanvasShapeDrawing {
-  ctx: CanvasRenderingContext2D;
+export class CanvasShapeDrawing implements ShapeDrawing {
+  private readonly _ctx: CanvasRenderingContext2D;
+  get ctx(): CanvasRenderingContext2D {
+    return this._ctx;
+  }
 
-  constructor(context: CanvasRenderingContext2D) {
-    this.ctx = context;
+  property: ElementProperty;
+
+  defaultProperty: ElementProperty = {
+    fill: {
+      transparent: true,
+    },
+    stroke: {
+      strokeColor: '#000000',
+      strokeWidth: 1,
+      strokeOpacity: 1
+    }
+  };
+
+  constructor(context: CanvasRenderingContext2D, property?: ElementProperty) {
+    this._ctx = context;
+    this.property = property == null ? this.defaultProperty : property;
+  }
+
+  configProperty() {
+    if (this.property.fill?.transparent) {
+      this._ctx.fillStyle = 'transparent';
+    }
+
+    if (this.property.stroke != null) {
+      this._ctx.strokeStyle = this.property.stroke?.strokeColor || '#000000';
+    }
   }
 
   drawRect(rect: Rectangle): this {
-    this.ctx.rect(rect.x, rect.y, rect.width, rect.height);
-    this.ctx.fill();
+    this.configProperty();
+
+    this._ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+    this._ctx.fill();
     return this
   }
 
   drawPath(point: Point[], offset: Point = { x: 0, y: 0 }): this {
-    this.ctx.beginPath();
-    this.ctx.moveTo(point[0].x + offset.x, point[0].y + offset.y);
+    this._ctx.beginPath();
+    this._ctx.moveTo(point[0].x + offset.x, point[0].y + offset.y);
     for (let i = 1; i < point.length; i++) {
-      this.ctx.lineTo(point[i].x + offset.x, point[i].y + offset.y);
+      this._ctx.lineTo(point[i].x + offset.x, point[i].y + offset.y);
     }
 
-    this.ctx.stroke();
+    this._ctx.stroke();
     return this;
   }
 
   drawCircle(circle: CircleShape): this {
-    this.ctx.beginPath();
-    this.ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
-    this.ctx.stroke();
+    this._ctx.beginPath();
+    this._ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
+    this._ctx.stroke();
     return this;
   }
 
-  drawHexagon(hexagon: HexagonShape) {
+  drawHexagon(hexagon: HexagonShape): this {
     this.drawPath(hexagon.points(), {
       x: hexagon.x,
       y: hexagon.y
