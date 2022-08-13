@@ -14,7 +14,7 @@
   "scripts": {
     "build:development": "webpack --mode development --progress --color",
     "build:production": "webpack --mode production --progress --color",
-    "build": "concurrently \"yarn build:development\" \"yarn build:production\"",
+    "build": "concurrently \"npm run build:development\" \"npm run build:production\"",
     "test": "echo \"Error: no test specified\""
   },
   "keywords": [],

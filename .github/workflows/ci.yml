@@ -19,6 +19,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm -g concurrently
+
       - run: npm run build:all
 
       - run: npm run test:all
