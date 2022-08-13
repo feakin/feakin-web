@@ -34,6 +34,7 @@ export interface ElementProperty {
  */
 export interface Node extends Element, ElementProperty {
   id?: number;
+  // todo: add count for label position ?
   label: string | undefined;
   x: number;
   y: number;

@@ -9,4 +9,11 @@ export class Rectangle extends Shape {
     this.width = width;
     this.height = height;
   }
+
+  override labelPosition() {
+    return {
+      x: this.x + this.width / 2,
+      y: this.y + this.height / 2
+    };
+  }
 }

@@ -28,6 +28,12 @@ export class Shape {
 
   }
 
+  /**
+   * label to put in center
+   */
+  labelPosition() {
+  }
+
   points(): Point[] {
     return [];
   }

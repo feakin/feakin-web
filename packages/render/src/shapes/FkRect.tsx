@@ -24,6 +24,7 @@ function FkRect(props: FkRectProps) {
   const [isDragging, setIsDragging] = useState(false);
 
   const [position, setPosition] = useState(props.position);
+  const [labelPosition, setLabelPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (props.isSelected) {
@@ -31,6 +32,11 @@ function FkRect(props: FkRectProps) {
       trRef.current.getLayer().batchDraw();
     }
   }, [props.isSelected]);
+
+  useEffect(() => {
+    // todo: add for label position
+  }, [props.position]);
+
 
   function onChange(param: FkLocation) {
     setPosition({
