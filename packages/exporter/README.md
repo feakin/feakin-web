@@ -4,8 +4,8 @@ This library was generated with [Nx](https://nx.dev).
 
 ## Building
 
-Run `nx build feakin-exporter` to build the library.
+Run `nx build exporter` to build the library.
 
 ## Running unit tests
 
-Run `nx test feakin-exporter` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test exporter` to execute the unit tests via [Jest](https://jestjs.io).
