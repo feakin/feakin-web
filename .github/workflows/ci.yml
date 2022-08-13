@@ -21,7 +21,7 @@ jobs:
 
       - run: npm install -g concurrently
 
-      - run: npm run build:all
+#      - run: npm run build:all
 
       - run: npm run test:all
 

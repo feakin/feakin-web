@@ -6,8 +6,12 @@
     "@feakin/parser": "^0.1.6",
     "cheerio": "^1.0.0-rc.12",
     "dagre": "^0.8.5",
+    "glob": "^8.0.3",
     "pako": "^2.0.4",
     "xml-js": "^1.6.11"
+  },
+  "scripts": {
+    "gen": "node scripts/gen-import.js"
   },
   "devDependencies": {
     "@types/dagre": "^0.7.47",

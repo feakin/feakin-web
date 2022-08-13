@@ -12,7 +12,7 @@ import {
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
 import { Executor } from "@feakin/exporter/src/index";
-import { Edge, Node } from "@feakin/exporter/src/model/graph";
+import { Edge } from "@feakin/exporter/src/model/graph";
 import { flattenPoints } from "@feakin/exporter/src/model/geometry/point";
 
 function App() {
