@@ -113,4 +113,8 @@ export class SvgShapeDrawing implements ShapeDrawing {
     this.ctx.appendChild(hexagonEl)
     return this;
   }
+
+  recursiveRender(): this {
+    return this;
+  }
 }

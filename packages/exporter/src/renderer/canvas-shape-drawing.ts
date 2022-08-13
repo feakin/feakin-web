@@ -70,4 +70,8 @@ export class CanvasShapeDrawing implements ShapeDrawing {
     });
     return this;
   }
+
+  recursiveRender(): this {
+    return this;
+  }
 }

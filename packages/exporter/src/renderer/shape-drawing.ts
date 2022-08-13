@@ -19,4 +19,6 @@ export interface ShapeDrawing {
   drawCircle(circle: Circle): this;
 
   drawHexagon(hexagon: HexagonShape): this;
+
+  recursiveRender(): this;
 }
