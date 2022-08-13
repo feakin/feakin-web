@@ -17,11 +17,9 @@ jobs:
         with:
           node-version: 14.x
 
-      - run: npm ci
-
       - run: npm install -g concurrently
 
-#      - run: npm run build:all
+      - run: npm install --legacy-peer-deps
 
       - run: npm run test:all
 
