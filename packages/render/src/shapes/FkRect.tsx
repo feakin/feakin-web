@@ -1,11 +1,13 @@
 import React, { MutableRefObject, useEffect, useState } from 'react';
-import { Rect, Transformer } from 'react-konva';
+import { Text, Rect, Transformer } from 'react-konva';
 import Konva from "konva";
 import { FkLocation } from '../geometry/FkLocation';
 
-interface FkRectConfig {}
+interface FkRectConfig {
+}
 
 interface FkRectProps {
+  label?: string;
   draggable?: boolean;
   isSelected?: boolean;
   onSelect?: (ref: MutableRefObject<Konva.Rect | null>) => void;
@@ -14,6 +16,7 @@ interface FkRectProps {
 }
 
 export const FK_RECT_NAME = '.fk-rect';
+
 function FkRect(props: FkRectProps) {
   const shapeRef = React.useRef<Konva.Rect | null>(null);
   const trRef: any = React.useRef<Konva.Transformer | null>(null);
@@ -42,29 +45,29 @@ function FkRect(props: FkRectProps) {
     <React.Fragment>
       <Rect
         name="fk-rect"
-        x={position.x}
-        y={position.y}
-        width={position.width}
-        height={position.height}
-        onClick={() => props.onSelect && props.onSelect(shapeRef)}
-        onTap={() => props.onSelect && props.onSelect(shapeRef)}
-        ref={shapeRef}
-        draggable={props.draggable || true}
-        fill={isDragging ? 'green' : ''}
-        stroke={isDragging ? 'green' : 'black'}
-        strokeWidth={1}
-        onDragStart={() => {
+        x={ position.x }
+        y={ position.y }
+        width={ position.width }
+        height={ position.height }
+        onClick={ () => props.onSelect && props.onSelect(shapeRef) }
+        onTap={ () => props.onSelect && props.onSelect(shapeRef) }
+        ref={ shapeRef }
+        draggable={ props.draggable || true }
+        fill={ isDragging ? 'green' : '' }
+        stroke={ isDragging ? 'green' : 'black' }
+        strokeWidth={ 1 }
+        onDragStart={ () => {
           setIsDragging(true);
-        }}
-        onDragEnd={(e) => {
+        } }
+        onDragEnd={ (e) => {
           setIsDragging(false);
           setPosition({
             ...position,
             x: e.target.x(),
             y: e.target.y(),
           });
-        }}
-        onTransformEnd={(e) => {
+        } }
+        onTransformEnd={ (e) => {
           // transformer is changing scale of the node
           // and NOT its width or height
           // but in the store we have only width and height
@@ -82,20 +85,21 @@ function FkRect(props: FkRectProps) {
             width: Math.max(5, node.width() * scaleX),
             height: Math.max(node.height() * scaleY),
           });
-        }}
+        } }
       />
-      {props.isSelected && (
+      { props.label && <Text text={ props.label } x={ position.x } y={ position.y }/> }
+      { props.isSelected && (
         <Transformer
-          ref={trRef}
-          boundBoxFunc={(oldBox, newBox) => {
+          ref={ trRef }
+          boundBoxFunc={ (oldBox, newBox) => {
             // limit resize
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;
             }
             return newBox;
-          }}
+          } }
         />
-      )}
+      ) }
     </React.Fragment>
   );
 }

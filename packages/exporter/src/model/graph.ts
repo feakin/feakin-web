@@ -33,6 +33,7 @@ export interface ElementProperty {
  * and an edge is represented by a line or arrow extending from one vertex to another.
  */
 export interface Node extends Element, ElementProperty {
+  id?: number;
   label: string | undefined;
   x: number;
   y: number;

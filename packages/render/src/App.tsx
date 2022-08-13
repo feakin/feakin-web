@@ -12,7 +12,7 @@ import {
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
 import { Executor } from "@feakin/exporter/src/index";
-import { Edge } from "@feakin/exporter/src/model/graph";
+import { Edge, Node } from "@feakin/exporter/src/model/graph";
 import { flattenPoints } from "@feakin/exporter/src/model/geometry/point";
 
 function App() {
@@ -207,6 +207,7 @@ function App() {
         { layout.nodes.map((node: any, index: number) => {
           return (
             <FkRect
+              label={ node.label }
               key={ 'node-' + index }
               isSelected={ !!selectedId && node.id === selectedId }
               draggable={ true }
