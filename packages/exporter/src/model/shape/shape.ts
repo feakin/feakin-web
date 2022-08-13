@@ -13,7 +13,6 @@
 import { Point } from "../geometry/point";
 
 export class Shape {
-
   x: number;
   y: number;
 

@@ -1,5 +1,12 @@
 import React from 'react';
 
+function getTextWidthWithFontSize(text: string, fontSize: number) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d")!;
+  context.font = `${fontSize}px Arial`;
+  return context.measureText(text).width;
+}
+
 test('renders learn react link', () => {
   // render(<FkRect position={ {
   //   x: 0,
@@ -8,4 +15,8 @@ test('renders learn react link', () => {
   //   height: 100,
   // }
   // }/>);
+
+
+  let fontSize = getTextWidthWithFontSize('Hello', 10);
+  expect(fontSize).toBe(23);
 });
