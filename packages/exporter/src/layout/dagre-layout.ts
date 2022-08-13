@@ -24,7 +24,10 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
     });
 
     if (relation.target) {
-      graph.setNode(relation.target.name, {});
+      graph.setNode(relation.target.name, {
+        width: options?.node?.width || 0,
+        height: options?.node?.height || 0,
+      });
       graph.setEdge(relation.source.name, relation.target.name, {});
     }
   })
@@ -37,7 +40,7 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
     nodes.push({
       x: node.x,
       y: node.y,
-      label: node.label,
+      label: v,
       height: node.height,
       width: node.width
     });

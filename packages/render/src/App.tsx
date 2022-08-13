@@ -205,10 +205,9 @@ function App() {
     >
       <Layer ref={ layerRef }>
         { layout.nodes.map((node: any, index: number) => {
-          console.log(node);
           return (
             <FkRect
-              key={ 'node_' + index }
+              key={ 'node-' + index }
               isSelected={ !!selectedId && node.id === selectedId }
               draggable={ true }
               onSelect={ (e) => {

@@ -6,7 +6,7 @@ describe('Executor', () => {
     const source = `graph TD;
     A-->B
     B-->C;`;
-    const result = executor.execute(source);
-    console.log((result));
+    const result = executor.sourceToDagre(source);
+    expect(result.nodes.length).toBe(3);
   });
 });

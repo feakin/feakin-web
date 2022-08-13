@@ -2,7 +2,7 @@ import { parseFlow } from "../source/mermaid-flow";
 import { FlowEdge, FlowNode } from "../source/flow";
 import { dagreLayout } from "../layout/dagre-layout";
 import { DagreRelation } from "../layout/dagre-relation";
-import { Edge, Node } from "../model/graph";
+import { Edge, Graph, Node } from "../model/graph";
 
 export interface IExecutor {
   execute(source: string): Promise<string>;
@@ -29,7 +29,7 @@ export class Executor implements IExecutor {
     return Promise.resolve("");
   }
 
-  sourceToDagre(source: string) {
+  sourceToDagre(source: string): Graph {
     let flow = parseFlow(source);
     let relations = this.flowToDagre(flow.nodes, flow.edges);
     return dagreLayout(relations);

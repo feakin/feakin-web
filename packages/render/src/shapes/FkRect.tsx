@@ -42,15 +42,16 @@ function FkRect(props: FkRectProps) {
     <React.Fragment>
       <Rect
         name="fk-rect"
+        x={position.x}
+        y={position.y}
         width={position.width}
         height={position.height}
         onClick={() => props.onSelect && props.onSelect(shapeRef)}
         onTap={() => props.onSelect && props.onSelect(shapeRef)}
         ref={shapeRef}
-        x={position.x}
-        y={position.y}
         draggable={props.draggable || true}
-        fill={isDragging ? 'green' : 'black'}
+        fill={isDragging ? 'green' : ''}
+        stroke={isDragging ? 'green' : 'black'}
         strokeWidth={1}
         onDragStart={() => {
           setIsDragging(true);
