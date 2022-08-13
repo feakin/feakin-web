@@ -1,13 +1,9 @@
 const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+
 module.exports = {
   webpack: {
-    resolve: {
-      fallback: {
-        stream: require.resolve('stream-browserify')
-      },
-    },
     configure: (config) => {
       // Remove guard against importing modules outside of `src`.
       // Needed for workspace projects.
@@ -23,6 +19,15 @@ module.exports = {
         })
       );
 
+      config.resolve.fallback = {
+        // process: require.resolve("process/browser"),
+        // zlib: require.resolve("browserify-zlib"),
+        stream: require.resolve("stream-browserify"),
+        // util: require.resolve("util"),
+        // buffer: require.resolve("buffer"),
+        // asset: require.resolve("assert"),
+      }
+
       // Replace include option for babel loader with exclude
       // so babel will handle workspace projects as well.
       config.module.rules[ 1 ].oneOf.forEach((r) => {
@@ -31,6 +36,7 @@ module.exports = {
           delete r.include;
         }
       });
+
       return config;
     },
   },
