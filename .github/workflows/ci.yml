@@ -16,7 +16,9 @@ jobs:
       - run: npm install --legacy-peer-deps
 
       - run: npx nx workspace-lint
-#      - run: npx nx format:check
+
       - run: npx nx run-many --target=lint --all
-      - run: npx nx run-many --target=build --all
-      - run: npx nx run-many --target=test --all --coverage
+
+      - run: npm run build:all
+
+      - run: npm run test:all
