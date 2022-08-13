@@ -1,8 +1,8 @@
 import { Rectangle } from "../model/shapes/rectangle";
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
-import { Circle } from "../model/shapes/circle";
-import { HexagonShape } from "../model/shapes/hexagon";
+import { CircleShape } from "../model/shapes/circle-shape";
+import { HexagonShape } from "../model/shapes/hexagon-shape";
 import { CloudShape } from "../model/shapes/cloud-shape";
 
 export class SvgShapeDrawing {
@@ -93,7 +93,7 @@ export class SvgShapeDrawing {
     }
   }
 
-  drawCircle(circle: Circle): this {
+  drawCircle(circle: CircleShape): this {
     const circleEl = this.createElement('circle');
     circleEl.setAttribute('cx', String(circle.x));
     circleEl.setAttribute('cy', String(circle.y));

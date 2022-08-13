@@ -1,7 +1,7 @@
 import { Rectangle } from "../model/shapes/rectangle";
 import { SvgShapeDrawing } from "./svg-shape-drawing";
-import { Circle } from "../model/shapes/circle";
-import { HexagonShape } from "../model/shapes/hexagon";
+import { CircleShape } from "../model/shapes/circle-shape";
+import { HexagonShape } from "../model/shapes/hexagon-shape";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
@@ -27,7 +27,7 @@ describe('SvgShapeDrawing', () => {
 
   it('circle', () => {
     let drawing = new SvgShapeDrawing(svg as SVGElement);
-    drawing.drawCircle(new Circle(0, 0, 100));
+    drawing.drawCircle(new CircleShape(0, 0, 100));
 
     expect(svg.innerHTML).toBe('<circle cx="0" cy="0" r="100" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></circle>');
   });

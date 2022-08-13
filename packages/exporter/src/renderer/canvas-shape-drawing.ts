@@ -1,7 +1,7 @@
 import { Rectangle } from "../model/shapes/rectangle";
 import { Point, Point_ } from "../model/geometry/point";
-import { Circle } from "../model/shapes/circle";
-import { HexagonShape } from "../model/shapes/hexagon";
+import { CircleShape } from "../model/shapes/circle-shape";
+import { HexagonShape } from "../model/shapes/hexagon-shape";
 
 export class CanvasShapeDrawing {
   ctx: CanvasRenderingContext2D;
@@ -27,7 +27,7 @@ export class CanvasShapeDrawing {
     return this;
   }
 
-  drawCircle(circle: Circle): this {
+  drawCircle(circle: CircleShape): this {
     this.ctx.beginPath();
     this.ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
     this.ctx.stroke();

@@ -2,8 +2,8 @@ import * as fs from "fs";
 import { CanvasShapeDrawing } from './canvas-shape-drawing';
 import { Rectangle } from "../model/shapes/rectangle";
 import { dataURLtoFileData } from "./utils/data-url";
-import { Circle } from "../model/shapes/circle";
-import { HexagonShape } from "../model/shapes/hexagon";
+import { CircleShape } from "../model/shapes/circle-shape";
+import { HexagonShape } from "../model/shapes/hexagon-shape";
 
 describe('CanvasShapeDrawing', () => {
   let canvas: any, ctx: any;
@@ -41,7 +41,7 @@ describe('CanvasShapeDrawing', () => {
 
   it('circle', () => {
     let drawing = new CanvasShapeDrawing(ctx);
-    drawing.drawCircle(new Circle(60, 60, 50));
+    drawing.drawCircle(new CircleShape(60, 60, 50));
 
     let canvasElement = drawing.ctx.canvas;
 
