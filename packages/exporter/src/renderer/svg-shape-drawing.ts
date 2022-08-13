@@ -73,7 +73,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
     return this;
   }
 
-  pointsToSvgPath(points: Point[]): string {
+  private pointsToSvgPath(points: Point[]): string {
     let path = 'M' + points[0].x + ',' + points[0].y;
     for (let i = 1; i < points.length; i++) {
       path += ' L' + points[i].x + ',' + points[i].y;
