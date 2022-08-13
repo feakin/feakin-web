@@ -19,7 +19,7 @@ jobs:
 
       - run: npm ci
 
-      - run: npm -g concurrently
+      - run: npm install -g concurrently
 
       - run: npm run build:all
 
