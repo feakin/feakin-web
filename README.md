@@ -4,22 +4,22 @@
 
 todos:
 
-- [ ] Layout Model Design
-  - [] Shape
-  - [] Geometry
+- [x] Layout Model Design
+  - [x] Shape
+  - [x] Geometry
 - [ ] Render
-  - [ ] Layout Engine (TODO: split to standalone module)
-    - [ ] [dagre](https://github.com/dagrejs/dagre)
+  - [x] Layout Engine (TODO: split to standalone module)
+    - [x] [dagre](https://github.com/dagrejs/dagre)
     - [ ] [ELK](https://github.com/kieler/elkjs)
     - [ ] [cola.js](https://ialab.it.monash.edu/webcola/)
-  - [ ] Canvas
+  - [x] Canvas
     - [ ] [D3.js](https://github.com/d3/d3)
-    - [ ] [Konva.js](https://github.com/konvajs/konva), react: [react-konva](https://github.com/konvajs/react-konva)
+    - [x] [Konva.js](https://github.com/konvajs/konva), react: [react-konva](https://github.com/konvajs/react-konva)
     - [ ] [PixiJS](https://github.com/pixijs/pixijs)
     - [ ] [Fabric.js](https://github.com/fabricjs/fabric.js) SVG-to-Canvas (& canvas-to-SVG) Parser
-- [ ] Parser
-  - [ ] [Jison](https://github.com/zaach/jison) with Mermaid
-- [ ] Export
+- [x] Parser
+  - [x] [Jison](https://github.com/zaach/jison) with Mermaid
+- [x] Export
   - [ ] MxGraph
 - [ ] Import
   - [ ] MxGraph
