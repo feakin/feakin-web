@@ -1,4 +1,4 @@
-import { Options } from "roughjs/bin/core";
+import { Drawable, Options } from "roughjs/bin/core";
 import { RoughGenerator } from "roughjs/bin/generator";
 
 const getDashArrayDashed = (strokeWidth: number) => [8, 8 + strokeWidth];
@@ -22,7 +22,7 @@ export const generateRoughOptions = (): Options => {
   return options
 };
 
-export class HandDrawn {
+export class HandDrawing {
   private readonly generator: RoughGenerator;
 
   constructor() {
@@ -37,5 +37,12 @@ export class HandDrawn {
       200,
       generateRoughOptions(),
     )
+  }
+
+  /**
+   * paths here is an array of PathInfo objects.
+   */
+  paths(drawable: Drawable) {
+    return this.generator.toPaths(drawable);
   }
 }
