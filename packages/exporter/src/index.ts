@@ -2,7 +2,6 @@ export * from './executor/executor';
 
 export * from './layout/dagre-layout';
 export * from './layout/dagre-relation';
-
 export * from './model/geometry/geometry';
 export * from './model/geometry/line';
 export * from './model/geometry/point';
@@ -15,21 +14,23 @@ export * from './model/shape/circle-shape';
 export * from './model/shape/cloud-shape';
 export * from './model/shape/hexagon-shape';
 export * from './model/shape/index';
+
 export * from './model/shape/rectangle-shape';
 export * from './model/shape/shape-type';
 export * from './model/shape/shape';
-
+export * from './model/shape/text-shape';
 export * from './model/state-style/fill-state';
+export * from './model/state-style/font-state';
 export * from './model/state-style/image-state';
 export * from './model/state-style/padding-state';
 export * from './model/state-style/space-state';
 export * from './model/state-style/stroke-state';
-
+export * from './model/state-style/style-constants';
 export * from './renderer/canvas-shape-drawing';
+export * from './renderer/drawn-style/hand-drawing';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 export * from './renderer/utils/data-url';
-
 export * from './source/flow.d';
 export * from './source/mermaid-flow';
 export * from './source/mermaid-flowdb';

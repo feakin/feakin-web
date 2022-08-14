@@ -1,25 +1,29 @@
 import { Drawable, Options } from "roughjs/bin/core";
 import { RoughGenerator } from "roughjs/bin/generator";
+import { RectangleShape } from "@feakin/exporter";
 
 const getDashArrayDashed = (strokeWidth: number) => [8, 8 + strokeWidth];
 
+export interface HandDrawingOption {
+  strokeWidth: number;
+}
 
-export const generateRoughOptions = (): Options => {
-  const strokeWidth = 12;
-  const options: Options = {
+export const defaultHandDrawingOption: HandDrawingOption = {
+  strokeWidth: 12
+}
+
+export const generateRoughOptions = (option: HandDrawingOption = defaultHandDrawingOption): Options => {
+  return {
     seed: 1683771448,
-    strokeLineDash: getDashArrayDashed(strokeWidth),
+    strokeLineDash: getDashArrayDashed(option.strokeWidth),
     disableMultiStroke: true,
-    strokeWidth: 12,
-    // calculate them (and we don't want the fills to be modified)
-    fillWeight: strokeWidth / 2,
-    hachureGap: strokeWidth * 4,
+    strokeWidth: option.strokeWidth,
+    fillWeight: option.strokeWidth / 2,
+    hachureGap: option.strokeWidth * 4,
     roughness: 1,
     stroke: "#000000",
     preserveVertices: false,
-  };
-
-  return options
+  }
 };
 
 export class HandDrawing {
@@ -29,12 +33,12 @@ export class HandDrawing {
     this.generator = new RoughGenerator();
   }
 
-  rectangle() {
+  rectangle(rect: RectangleShape) {
     return this.generator.rectangle(
-      0,
-      0,
-      200,
-      200,
+      rect.x,
+      rect.y,
+      rect.width,
+      rect.height,
       generateRoughOptions(),
     )
   }
