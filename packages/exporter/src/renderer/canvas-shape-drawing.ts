@@ -1,7 +1,7 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { Circle, HexagonShape, Rectangle } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
 
 export class CanvasShapeDrawing implements ShapeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
@@ -37,7 +37,7 @@ export class CanvasShapeDrawing implements ShapeDrawing {
     }
   }
 
-  drawRect(rect: Rectangle): this {
+  drawRect(rect: RectangleShape): this {
     this.configProperty();
 
     this._ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
@@ -56,7 +56,7 @@ export class CanvasShapeDrawing implements ShapeDrawing {
     return this;
   }
 
-  drawCircle(circle: Circle): this {
+  drawCircle(circle: CircleShape): this {
     this._ctx.beginPath();
     this._ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
     this._ctx.stroke();

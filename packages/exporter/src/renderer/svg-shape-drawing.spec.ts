@@ -1,5 +1,5 @@
 import { SvgShapeDrawing } from "./svg-shape-drawing";
-import { Circle, HexagonShape, Rectangle } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
@@ -18,14 +18,14 @@ describe('SvgShapeDrawing', () => {
 
   it('rect', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
-    drawing.drawRect(new Rectangle(0, 0, 100, 100));
+    drawing.drawRect(new RectangleShape(0, 0, 100, 100));
 
     expect(svg.innerHTML).toBe('<rect x="0" y="0" width="100" height="100"></rect>');
   });
 
   it('circle', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
-    drawing.drawCircle(new Circle(0, 0, 100));
+    drawing.drawCircle(new CircleShape(0, 0, 100));
 
     expect(svg.innerHTML).toBe('<circle cx="0" cy="0" r="100" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></circle>');
   });

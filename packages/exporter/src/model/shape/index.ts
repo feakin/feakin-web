@@ -1,7 +1,7 @@
-import { Circle } from "./circle";
+import { CircleShape } from "./circle-shape";
 import { CloudShape } from "./cloud-shape";
 import { HexagonShape } from "./hexagon-shape";
-import { Rectangle } from "./rectangle";
+import { RectangleShape } from "./rectangle-shape";
 import { Shape } from "./shape";
 
-export { Circle, CloudShape, HexagonShape, Rectangle, Shape };
+export { CircleShape, CloudShape, HexagonShape, RectangleShape, Shape };

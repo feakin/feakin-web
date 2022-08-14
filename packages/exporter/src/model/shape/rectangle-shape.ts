@@ -1,6 +1,6 @@
 import { Shape } from "./shape";
 
-export class Rectangle extends Shape {
+export class RectangleShape extends Shape {
   width: number;
   height: number;
 
@@ -10,7 +10,9 @@ export class Rectangle extends Shape {
     this.height = height;
   }
 
-  // todo: add calcualtion for label position
+  /**
+   * calculate label position in center of rectangle.
+   */
   override labelPosition() {
     return {
       x: this.x + this.width / 2,

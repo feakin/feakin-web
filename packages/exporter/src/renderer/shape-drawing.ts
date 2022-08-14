@@ -1,6 +1,6 @@
 import { ElementProperty } from "../model/graph";
 import { Point } from "../model/geometry/point";
-import { Circle, HexagonShape, Rectangle } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
 
 export interface ShapeDrawing {
   property: ElementProperty;
@@ -12,11 +12,11 @@ export interface ShapeDrawing {
    */
   configProperty(element?: Element): void;
 
-  drawRect(rect: Rectangle): this;
+  drawRect(rect: RectangleShape): this;
 
   drawPath(point: Point[], offset: Point): this;
 
-  drawCircle(circle: Circle): this;
+  drawCircle(circle: CircleShape): this;
 
   drawHexagon(hexagon: HexagonShape): this;
 

@@ -1,3 +1,5 @@
+import { ALIGN } from "./style-constants";
+
 /**
  * ImageState is a style for Image.
  */
@@ -7,7 +9,7 @@ export interface ImageState {
   backgroundColor: string;
   borderColor: string;
 
-  align: string;
+  align: ALIGN;
   valign: string;
 
   width: number;

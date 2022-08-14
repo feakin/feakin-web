@@ -2,7 +2,7 @@ import React, { MutableRefObject, useEffect, useState } from 'react';
 import { Text, Rect, Transformer } from 'react-konva';
 import Konva from "konva";
 import { FkLocation } from '../geometry/FkLocation';
-import { Rectangle } from "@feakin/exporter";
+import { RectangleShape } from "@feakin/exporter";
 
 interface FkRectConfig {
 }
@@ -36,7 +36,7 @@ function FkRect(props: FkRectProps) {
   }, [props.isSelected]);
 
   useEffect(() => {
-    const rectangle = new Rectangle(props.position.x, props.position.y, props.node.width, props.node.height);
+    const rectangle = new RectangleShape(props.position.x, props.position.y, props.node.width, props.node.height);
     setLabelPosition(rectangle.labelPosition());
   }, [props.node, props.position]);
 
