@@ -17,6 +17,8 @@ todos:
     - [x] [Konva.js](https://github.com/konvajs/konva), react: [react-konva](https://github.com/konvajs/react-konva)
     - [ ] [PixiJS](https://github.com/pixijs/pixijs)
     - [ ] [Fabric.js](https://github.com/fabricjs/fabric.js) SVG-to-Canvas (& canvas-to-SVG) Parser
+  - [ ] Style
+    - [ ] sketchy, hand-drawn-like, style [roughjs](https://github.com/rough-stuff/rough)
 - [x] Parser
   - [x] [Jison](https://github.com/zaach/jison) with Mermaid
 - [x] Export
