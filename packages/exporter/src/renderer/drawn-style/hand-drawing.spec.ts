@@ -1,4 +1,5 @@
 // import { generateRoughOptions, HandDrawing } from "./hand-drawing";
+// import { RectangleShape } from "../../model/shape/rectangle-shape";
 
 describe('CanvasShapeDrawing', () => {
   it('sample', () => {

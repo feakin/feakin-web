@@ -10,6 +10,10 @@ export default {
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
+  transformIgnorePatterns: [
+    "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva)/)"
+  ],
+  resetMocks: false,
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/packages/exporter',
 };
