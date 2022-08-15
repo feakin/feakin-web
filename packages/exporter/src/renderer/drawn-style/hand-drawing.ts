@@ -1,6 +1,6 @@
 import { Drawable, Options } from "roughjs/bin/core";
 import { RoughGenerator } from "roughjs/bin/generator";
-import { RectangleShape } from "@feakin/exporter";
+import { RectangleShape } from "../../model/shape";
 
 const getDashArrayDashed = (strokeWidth: number) => [8, 8 + strokeWidth];
 
