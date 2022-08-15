@@ -1,8 +1,22 @@
-import { HandDrawing } from "./hand-drawing";
+import { generateRoughOptions, HandDrawing } from "./hand-drawing";
+import { RectangleShape } from "../../model/shape";
 
-test('hand-drawing', () => {
-  const handDrawn = new HandDrawing();
-  const rectangle = handDrawn.rectangle();
-  const paths = handDrawn.paths(rectangle);
-  console.log(paths);
+describe('CanvasShapeDrawing', () => {
+  it('hand-drawing', () => {
+    const handDrawn = new HandDrawing();
+
+    const rectangleShape = new RectangleShape(0, 0, 100, 100);
+    const rectangle = handDrawn.rectangle(rectangleShape);
+
+    const paths = handDrawn.paths(rectangle);
+
+    expect(paths.length).toBe(1);
+    expect(paths[0].stroke).toBe('#000000');
+  });
+
+  it('seed width', () => {
+    const options = generateRoughOptions();
+    expect(options.seed?.toString().length).toBe(10);
+  });
+
 });

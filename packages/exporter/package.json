@@ -15,6 +15,15 @@
     "gen": "node scripts/gen-import.js",
     "lint": "eslint src/**/*.ts"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva)/)"
+    ],
+    "resetMocks": false
+  },
   "devDependencies": {
     "@types/dagre": "^0.7.47",
     "@types/jsdom": "^20.0.0",

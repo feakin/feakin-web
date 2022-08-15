@@ -1,20 +1,23 @@
 import { Drawable, Options } from "roughjs/bin/core";
 import { RoughGenerator } from "roughjs/bin/generator";
 import { RectangleShape } from "../../model/shape";
+import { randomInteger } from "./rough-seem";
 
 const getDashArrayDashed = (strokeWidth: number) => [8, 8 + strokeWidth];
 
 export interface HandDrawingOption {
   strokeWidth: number;
+  strokeColor: string;
 }
 
 export const defaultHandDrawingOption: HandDrawingOption = {
-  strokeWidth: 12
+  strokeWidth: 12,
+  strokeColor: '#000',
 }
 
 export const generateRoughOptions = (option: HandDrawingOption = defaultHandDrawingOption): Options => {
   return {
-    seed: 1683771448,
+    seed: randomInteger(),
     strokeLineDash: getDashArrayDashed(option.strokeWidth),
     disableMultiStroke: true,
     strokeWidth: option.strokeWidth,
