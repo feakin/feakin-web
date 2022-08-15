@@ -16,7 +16,7 @@ describe('CanvasShapeDrawing', () => {
 
   it('seed width', () => {
     const options = generateRoughOptions();
-    expect(options.seed?.toString().length).toBe(10);
+    expect(options.seed!.toString().length > 8).toBeTruthy();
   });
 
 });
