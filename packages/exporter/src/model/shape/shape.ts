@@ -11,10 +11,12 @@
  *
  */
 import { Point } from "../geometry/point";
+import { ShapeType } from "./shape-type";
 
 export class Shape {
   x: number;
   y: number;
+  type: ShapeType = ShapeType.Circle;
 
   private _fontSize = 12;
   get fontSize(): number {

@@ -1,7 +1,9 @@
 export enum ShapeType {
-  Circle,
-  Rectangle,
-  Hexagon,
-  Cloud,
-  Cylinder,
+  None,
+  Circle = "circle",
+  Rectangle = "rectangle",
+  Hexagon = "hexagon",
+  Cloud = "cloud",
+  Cylinder = "cylinder",
+  Text = "text",
 }

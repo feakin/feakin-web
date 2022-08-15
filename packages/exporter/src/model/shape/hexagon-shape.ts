@@ -1,9 +1,12 @@
 import { Shape } from "./shape";
 import { Point } from "../geometry/point";
+import { ShapeType } from "./shape-type";
 
 export class HexagonShape extends Shape {
   width: number;
   height: number;
+
+  shape = ShapeType.Hexagon;
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
     super(x, y);
