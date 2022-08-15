@@ -3,6 +3,7 @@ import { RoughGenerator } from "roughjs/bin/generator";
 
 import { RectangleShape, Shape } from "../../model/shape";
 import { randomInteger } from "./rough-seem";
+import { Point } from "../../model/geometry/point";
 
 const getDashArrayDashed = (strokeWidth: number) => [8, 8 + strokeWidth];
 
@@ -12,7 +13,7 @@ export interface HandDrawingOption {
 }
 
 export const defaultHandDrawingOption: HandDrawingOption = {
-  strokeWidth: 12,
+  strokeWidth: 1,
   strokeColor: '#000',
 }
 
@@ -28,7 +29,7 @@ export const generateRoughOptions = (
     fillWeight: option.strokeWidth / 2,
     hachureGap: option.strokeWidth * 4,
     roughness: 1,
-    stroke: "#000000",
+    stroke: option.strokeColor,
     preserveVertices: false,
   }
 };
@@ -48,6 +49,21 @@ export class HandDrawing {
       rect.height,
       generateRoughOptions(rect),
     )
+  }
+
+  line(start: Point, end: Point) {
+    const options = generateRoughOptions(new Shape());
+    return this.generator.line(start.x, start.y, end.x, end.y, options);
+  }
+
+  path(points: Point[]) {
+    const rPoints: [number, number][] = points.map(p => [p.x, p.y]);
+    return this.generator.linearPath(rPoints, generateRoughOptions(new Shape()));
+  }
+
+  curve(points: Point[]) {
+    const rPoints: [number, number][] = points.map(p => [p.x, p.y]);
+    return this.generator.curve(rPoints, generateRoughOptions(new Shape()));
   }
 
   /**

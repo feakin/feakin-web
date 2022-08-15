@@ -18,7 +18,32 @@ describe('CanvasShapeDrawing', () => {
   //   expect(paths[0].stroke).toBe('#000000');
   // });
   //
-  // it('seed width', () => {
+  // it('path', () => {
+  //   const handDrawn = new HandDrawing();
+  //   const drawable = handDrawn.curve([{ x: 0, y: 0 }, { x: 100, y: 100 }]);
+  //   const paths = handDrawn.paths(drawable);
+  //
+  //   expect(paths.length).toBe(1);
+  // });
+  //
+  // it('path', () => {
+  //   const handDrawn = new HandDrawing();
+  //   const drawable = handDrawn.path([{ x: 0, y: 0 }, { x: 50, y: 60 }, { x: 100, y: 100 }]);
+  //   const paths = handDrawn.paths(drawable);
+  //
+  //   expect(paths.length).toBe(1);
+  // });
+  //
+  // it('line', () => {
+  //   const handDrawn = new HandDrawing();
+  //   const drawable = handDrawn.line({ x: 0, y: 0 }, { x: 100, y: 100 });
+  //   const paths = handDrawn.paths(drawable);
+  //
+  //   console.log(paths);
+  //   expect(paths.length).toBe(1);
+  // });
+  //
+  // it('seed length', () => {
   //   const rect = new RectangleShape(0, 0, 100, 100);
   //   const options = generateRoughOptions(rect);
   //   expect(options.seed).toBeDefined();
