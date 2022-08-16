@@ -18,7 +18,7 @@ todos:
     - [ ] [PixiJS](https://github.com/pixijs/pixijs)
     - [ ] [Fabric.js](https://github.com/fabricjs/fabric.js) SVG-to-Canvas (& canvas-to-SVG) Parser
   - [ ] Style
-    - [ ] sketchy, hand-drawn-like, style [roughjs](https://github.com/rough-stuff/rough)
+    - [x] [roughjs](https://github.com/rough-stuff/rough): sketchy, hand-drawn-like, style 
 - [x] Parser
   - [x] [Jison](https://github.com/zaach/jison) with Mermaid
 - [x] Export
