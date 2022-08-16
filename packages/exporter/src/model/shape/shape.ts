@@ -16,7 +16,7 @@ import { ShapeType } from "./shape-type";
 export class Shape {
   x: number;
   y: number;
-  type: ShapeType = ShapeType.Circle;
+  type: ShapeType = ShapeType.None;
 
   private _fontSize = 12;
   get fontSize(): number {

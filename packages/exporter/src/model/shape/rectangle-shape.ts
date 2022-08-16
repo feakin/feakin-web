@@ -5,7 +5,7 @@ export class RectangleShape extends Shape {
   width: number;
   height: number;
 
-  shape = ShapeType.Rectangle;
+  override type = ShapeType.Rectangle;
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
     super(x, y);

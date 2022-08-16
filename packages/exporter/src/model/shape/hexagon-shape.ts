@@ -6,7 +6,7 @@ export class HexagonShape extends Shape {
   width: number;
   height: number;
 
-  shape = ShapeType.Hexagon;
+  override type = ShapeType.Hexagon;
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
     super(x, y);

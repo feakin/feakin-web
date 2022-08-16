@@ -6,7 +6,7 @@ export class TextShape extends Shape {
   private dy = 0;
   private text = "";
 
-  shape = ShapeType.Text;
+  override type = ShapeType.Text;
 
   constructor(x = 0, y = 0, dx = 0, dy = 0, text = "") {
     super();
