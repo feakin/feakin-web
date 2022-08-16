@@ -2,6 +2,7 @@
 export default {
   displayName: 'exporter',
   preset: '../../jest.preset.js',
+  testEnvironment: "jsdom",
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -11,7 +12,7 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva)/)"
+    "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva))"
   ],
   resetMocks: false,
   moduleFileExtensions: ['ts', 'js', 'html'],
