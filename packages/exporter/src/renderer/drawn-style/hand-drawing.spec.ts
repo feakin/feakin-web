@@ -18,7 +18,7 @@ describe('CanvasShapeDrawing', () => {
     expect(paths[0].stroke).toBe('#000');
   });
 
-  it('path', () => {
+  it('curve', () => {
     const handDrawn = new HandDrawing();
     const drawable = handDrawn.curve([{ x: 0, y: 0 }, { x: 100, y: 100 }]);
     const paths = handDrawn.paths(drawable);
@@ -39,7 +39,6 @@ describe('CanvasShapeDrawing', () => {
     const drawable = handDrawn.line({ x: 0, y: 0 }, { x: 100, y: 100 });
     const paths = handDrawn.paths(drawable);
 
-    console.log(paths);
     expect(paths.length).toBe(1);
   });
 
@@ -49,4 +48,12 @@ describe('CanvasShapeDrawing', () => {
     expect(options.seed).toBeDefined();
   });
 
+  it('polygon', () => {
+    const handDrawn = new HandDrawing();
+    const drawable = handDrawn.polygon([{ x: 20, y: 20 }, { x: 100, y: 20 }, { x: 100, y: 100 }, { x: 30, y: 110}]);
+    const paths = handDrawn.paths(drawable);
+
+    console.log(paths);
+    expect(paths.length).toBe(1);
+  });
 });

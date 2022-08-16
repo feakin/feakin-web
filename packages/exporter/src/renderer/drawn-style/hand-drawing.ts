@@ -13,7 +13,7 @@ export interface HandDrawingOption {
 }
 
 export const defaultHandDrawingOption: HandDrawingOption = {
-  strokeWidth: 1,
+  strokeWidth: 2,
   strokeColor: '#000',
 }
 
@@ -64,6 +64,11 @@ export class HandDrawing {
   curve(points: Point[]) {
     const rPoints: [number, number][] = points.map(p => [p.x, p.y]);
     return this.generator.curve(rPoints, generateRoughOptions(new Shape()));
+  }
+
+  polygon(points: Point[]) {
+    const rPoints: [number, number][] = points.map(p => [p.x, p.y]);
+    return this.generator.polygon(rPoints, generateRoughOptions(new Shape()));
   }
 
   /**
