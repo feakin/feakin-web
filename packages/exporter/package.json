@@ -13,7 +13,17 @@
   },
   "scripts": {
     "gen": "node scripts/gen-import.js",
-    "lint": "eslint src/**/*.ts"
+    "lint": "eslint src/**/*.ts",
+    "test": "react-scripts test --watchAll=false"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva))"
+    ],
+    "resetMocks": false
   },
   "devDependencies": {
     "@types/dagre": "^0.7.47",
