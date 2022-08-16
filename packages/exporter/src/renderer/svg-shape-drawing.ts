@@ -1,7 +1,7 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape, Shape } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
 import { DiamondShape } from "../model/shape/diamond-shape";
 
 export class SvgShapeDrawing implements ShapeDrawing {

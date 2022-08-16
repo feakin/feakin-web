@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { CanvasShapeDrawing } from './canvas-shape-drawing';
 import { dataURLtoFileData } from "./utils/data-url";
-import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
+import { CircleShape, DiamondShape, HexagonShape, RectangleShape } from "../model/shape";
 
 describe('CanvasShapeDrawing', () => {
   let canvas: any, ctx: any;
@@ -59,5 +59,17 @@ describe('CanvasShapeDrawing', () => {
     const fileData = dataURLtoFileData(image);
 
     fs.writeFileSync('./test/hexagon.png', fileData.data);
+  });
+
+  it('diamond', () => {
+    const drawing = new CanvasShapeDrawing(ctx);
+    drawing.drawDiamond(new DiamondShape(1, 1, 60, 60));
+
+    const canvasElement = drawing.ctx.canvas;
+
+    const image = canvasElement.toDataURL();
+    const fileData = dataURLtoFileData(image);
+
+    fs.writeFileSync('./test/diamond.png', fileData.data);
   });
 });

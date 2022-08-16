@@ -1,7 +1,7 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
+import { CircleShape, DiamondShape, HexagonShape, RectangleShape } from "../model/shape";
 
 export class CanvasShapeDrawing implements ShapeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
@@ -68,6 +68,15 @@ export class CanvasShapeDrawing implements ShapeDrawing {
       x: hexagon.x,
       y: hexagon.y
     });
+    return this;
+  }
+
+  drawDiamond(diamond: DiamondShape): this {
+    this.drawPath(diamond.points(), {
+      x: diamond.x,
+      y: diamond.y
+    });
+
     return this;
   }
 

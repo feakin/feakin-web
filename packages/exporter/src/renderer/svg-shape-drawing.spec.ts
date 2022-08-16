@@ -1,6 +1,5 @@
 import { SvgShapeDrawing } from "./svg-shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
-import { DiamondShape } from "../model/shape/diamond-shape";
+import { CircleShape, HexagonShape, RectangleShape, DiamondShape } from "../model/shape";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
