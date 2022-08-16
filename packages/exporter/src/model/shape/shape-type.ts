@@ -7,4 +7,5 @@ export enum ShapeType {
   Cylinder = "cylinder",
   Text = "text",
   Polygon = "polygon",
+  Diamond = "diamond",
 }

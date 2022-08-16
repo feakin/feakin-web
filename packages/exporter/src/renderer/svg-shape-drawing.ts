@@ -1,7 +1,8 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape, Shape } from "../model/shape";
+import { DiamondShape } from "../model/shape/diamond-shape";
 
 export class SvgShapeDrawing implements ShapeDrawing {
   private ctx: SVGElement;
@@ -104,13 +105,24 @@ export class SvgShapeDrawing implements ShapeDrawing {
     return this;
   }
 
+  private drawByPoints(points: Point[], location: Point) {
+    const element = this.createElement('polygon');
+    element.setAttribute('points', points.map(p => p.x + ',' + p.y).join(' '));
+    // or set by location ?
+    element.setAttribute('transform', 'translate(' + location.x + ',' + location.y + ')');
+
+    this.configProperty(element);
+
+    this.ctx.appendChild(element)
+  }
+
   drawHexagon(hexagon: HexagonShape): this {
-    const hexagonEl = this.createElement('polygon');
-    hexagonEl.setAttribute('points', hexagon.points().map(p => p.x + ',' + p.y).join(' '));
+    this.drawByPoints(hexagon.points(), { x: hexagon.x, y: hexagon.y});
+    return this;
+  }
 
-    this.configProperty(hexagonEl);
-
-    this.ctx.appendChild(hexagonEl)
+  drawDiamond(diamond: DiamondShape): this {
+    this.drawByPoints(diamond.points(), { x: diamond.x, y: diamond.y });
     return this;
   }
 

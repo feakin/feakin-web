@@ -1,5 +1,6 @@
 import { SvgShapeDrawing } from "./svg-shape-drawing";
 import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
+import { DiamondShape } from "../model/shape/diamond-shape";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
@@ -41,6 +42,13 @@ describe('SvgShapeDrawing', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
     drawing.drawHexagon(new HexagonShape(0, 0, 100, 100));
 
-    expect(svg.innerHTML).toBe('<polygon points="25,0 75,0 100,50 75,100 25,100 0,50 25,0" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
+    expect(svg.innerHTML).toBe('<polygon points="25,0 75,0 100,50 75,100 25,100 0,50 25,0" transform="translate(0,0)" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
   })
+
+  it('diamond', () => {
+    const drawing = new SvgShapeDrawing(svg as SVGElement);
+    drawing.drawDiamond(new DiamondShape(0, 0, 100, 200));
+
+    expect(svg.innerHTML).toBe('<polygon points="50,0 100,100 50,200 0,100 50,0" transform="translate(0,0)" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
+  });
 });
