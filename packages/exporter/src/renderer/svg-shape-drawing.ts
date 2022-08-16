@@ -68,6 +68,11 @@ export class SvgShapeDrawing implements ShapeDrawing {
     rectEl.setAttribute('width', String(rect.width));
     rectEl.setAttribute('height', String(rect.height));
 
+    if (rect.isRounded) {
+      rectEl.setAttribute('rx', String(rect.radius));
+      rectEl.setAttribute('ry', String(rect.radius));
+    }
+
     this.ctx.appendChild(rectEl)
     return this;
   }

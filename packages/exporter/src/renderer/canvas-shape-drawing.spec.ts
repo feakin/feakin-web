@@ -25,6 +25,19 @@ describe('CanvasShapeDrawing', () => {
     fs.writeFileSync('./test/rect.png', fileData.data);
   });
 
+  it('rounded rect', () => {
+    const drawing = new CanvasShapeDrawing(ctx);
+    const rect = new RectangleShape(0, 0, 100, 100);
+    rect.isRounded = true;
+    drawing.drawRect(rect);
+    const canvasElement = drawing.ctx.canvas;
+
+    const image = canvasElement.toDataURL();
+    const fileData = dataURLtoFileData(image);
+
+    fs.writeFileSync('./test/rounded-rect.png', fileData.data);
+  });
+
   it('path', () => {
     const drawing = new CanvasShapeDrawing(ctx);
     drawing.drawPath([{ x: 0, y: 0 }, { x: 50, y: 50 }, { x: 50, y: 100 }, { x: -50, y: 100 }]);

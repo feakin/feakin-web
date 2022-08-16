@@ -23,6 +23,15 @@ describe('SvgShapeDrawing', () => {
     expect(svg.innerHTML).toBe('<rect x="0" y="0" width="100" height="100"></rect>');
   });
 
+  it('rounded rect', () => {
+    const drawing = new SvgShapeDrawing(svg as SVGElement);
+    const rect = new RectangleShape(0, 0, 100, 100);
+    rect.isRounded = true;
+    drawing.drawRect(rect);
+
+    expect(svg.innerHTML).toBe('<rect x="0" y="0" width="100" height="100" rx="2" ry="2"></rect>');
+  });
+
   it('circle', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
     drawing.drawCircle(new CircleShape(0, 0, 100));

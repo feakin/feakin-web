@@ -17,6 +17,16 @@ export class Shape {
   x: number;
   y: number;
   type: ShapeType = ShapeType.None;
+  private _isRounded = false;
+  get isRounded(): boolean {
+    return this._isRounded;
+  }
+  set isRounded(value: boolean) {
+    this._isRounded = value;
+  }
+
+  // rounded radius
+  radius = 2;
 
   private _fontSize = 12;
   get fontSize(): number {

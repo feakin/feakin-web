@@ -40,8 +40,33 @@ export class CanvasShapeDrawing implements ShapeDrawing {
   drawRect(rect: RectangleShape): this {
     this.configProperty();
 
-    this._ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
-    this._ctx.fill();
+    if (!rect.isRounded) {
+      this._ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+      this._ctx.fill();
+    } else {
+      this.drawRoundedRect(rect);
+    }
+
+    return this
+  }
+
+  drawRoundedRect(rect: RectangleShape): this {
+    const { x, y, width, height } = rect;
+    const radius = rect.radius;
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
+    const cornerRadius = Math.min(radius, halfWidth, halfHeight);
+    const cornerX = x + cornerRadius;
+    const cornerY = y + cornerRadius;
+    const cornerWidth = width - cornerRadius * 2;
+    const cornerHeight = height - cornerRadius * 2;
+    this._ctx.moveTo(cornerX, cornerY);
+    this._ctx.arcTo(cornerX + cornerWidth, cornerY, cornerX + cornerWidth, cornerY + cornerHeight, cornerRadius);
+    this._ctx.arcTo(cornerX + cornerWidth, cornerY + cornerHeight, cornerX, cornerY + cornerHeight, cornerRadius);
+    this._ctx.arcTo(cornerX, cornerY + cornerHeight, cornerX, cornerY, cornerRadius);
+    this._ctx.arcTo(cornerX, cornerY, cornerX + cornerWidth, cornerY, cornerRadius);
+    this._ctx.stroke();
+
     return this
   }
 
