@@ -1,7 +1,7 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, DiamondShape, HexagonShape, RectangleShape, TriangleShape } from "../model/shape";
+import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/shape";
 
 export class CanvasShapeDrawing implements ShapeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
@@ -114,7 +114,28 @@ export class CanvasShapeDrawing implements ShapeDrawing {
     return this;
   }
 
+  async drawImage(imageShape: ImageShape): Promise<this> {
+    const image = await this.loadHtmlImage(imageShape.imageSrc);
+    this._ctx.drawImage(image, imageShape.x, imageShape.y, imageShape.width, imageShape.height);
+
+    return this;
+  }
+
   recursiveRender(): this {
     return this;
+  }
+
+  private loadHtmlImage(imageSrc: string): Promise<HTMLImageElement> {
+    return new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => {
+        resolve(image);
+      }
+      image.onerror = () => {
+        reject();
+      }
+
+      image.src = imageSrc;
+    });
   }
 }

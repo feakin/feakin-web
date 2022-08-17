@@ -1,3 +1,6 @@
+import { Point } from "../geometry/point";
+import { ShapeType } from "./shape-type";
+
 /**
  * Base class for all shapes.
  * A shape in feakin is a separate class that is used to draw a shape in SVG, Canvas.
@@ -10,9 +13,6 @@
  * ```
  *
  */
-import { Point } from "../geometry/point";
-import { ShapeType } from "./shape-type";
-
 export class Shape {
   x: number;
   y: number;
@@ -24,6 +24,8 @@ export class Shape {
   set isRounded(value: boolean) {
     this._isRounded = value;
   }
+
+  hasResource = false;
 
   // rounded radius
   radius = 2;
@@ -59,8 +61,27 @@ export class Shape {
     return [];
   }
 
+  /**
+   * shape resource
+   */
+  resource() : ShapeResource {
+    return {
+      type: ShapeResourceType.None,
+      src: ""
+    }
+  }
+
   rotate() {
     //
   }
 }
 
+export interface ShapeResource {
+  type: ShapeResourceType;
+  src: string;
+}
+
+export enum ShapeResourceType {
+  None,
+  Image = "image",
+}

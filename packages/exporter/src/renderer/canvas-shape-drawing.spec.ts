@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { CanvasShapeDrawing } from './canvas-shape-drawing';
 import { dataURLtoFileData } from "./utils/data-url";
-import { CircleShape, DiamondShape, HexagonShape, RectangleShape, TriangleShape } from "../model/shape";
+import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/shape";
 
 describe('CanvasShapeDrawing', () => {
   let canvas: any, ctx: any;
@@ -96,5 +96,22 @@ describe('CanvasShapeDrawing', () => {
     const fileData = dataURLtoFileData(image);
 
     fs.writeFileSync('./test/triangle.png', fileData.data);
+  });
+
+  // todo: add test for image
+  xit('image', async () => {
+    const drawing = new CanvasShapeDrawing(ctx);
+
+    const imageSrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAIAAAACDbGyAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oMCRUiMrIBQVkAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAADElEQVQI12NgoC4AAABQAAEiE+h1AAAAAElFTkSuQmCC";
+    // const imageSrc = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII';
+    const image = new ImageShape(1, 1, 60, 60, imageSrc);
+    await drawing.drawImage(image);
+
+    const canvasElement = drawing.ctx.canvas;
+
+    const imageData = canvasElement.toDataURL();
+    const fileData = dataURLtoFileData(imageData);
+
+    fs.writeFileSync('./test/image.png', fileData.data);
   });
 });
