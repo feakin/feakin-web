@@ -1,5 +1,5 @@
 import { SvgShapeDrawing } from "./svg-shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape, ImageShape } from "../model/shape";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
@@ -65,5 +65,12 @@ describe('SvgShapeDrawing', () => {
     drawing.drawTriangle(new TriangleShape(0, 0, 100, 100));
 
     expect(svg.innerHTML).toBe('<polygon points="0,0 100,50 0,100 0,0" transform="translate(0,0)" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
+  });
+
+  it('image', () => {
+    const drawing = new SvgShapeDrawing(svg as SVGElement);
+    drawing.drawImage(new ImageShape(0, 0, 100, 100, 'image.png'));
+
+    expect(svg.innerHTML).toBe('<image x="0" y="0" width="100" height="100" xlink:href="image.png"></image>');
   });
 });

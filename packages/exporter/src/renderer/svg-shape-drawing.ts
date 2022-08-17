@@ -1,7 +1,7 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape, TriangleShape } from "../model/shape";
+import { CircleShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/shape";
 import { DiamondShape } from "../model/shape/diamond-shape";
 
 export class SvgShapeDrawing implements ShapeDrawing {
@@ -133,6 +133,17 @@ export class SvgShapeDrawing implements ShapeDrawing {
 
   drawTriangle(triangle: TriangleShape): this {
     this.drawByPoints(triangle.points(), { x: triangle.x, y: triangle.y });
+    return this;
+  }
+
+  drawImage(imageShape: ImageShape): this {
+    const imageEl = this.createElement('image');
+    imageEl.setAttribute('x', String(imageShape.x));
+    imageEl.setAttribute('y', String(imageShape.y));
+    imageEl.setAttribute('width', String(imageShape.width));
+    imageEl.setAttribute('height', String(imageShape.height));
+    imageEl.setAttribute('xlink:href', imageShape.imageSrc);
+    this.ctx.appendChild(imageEl);
     return this;
   }
 
