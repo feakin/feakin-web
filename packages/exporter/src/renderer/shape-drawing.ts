@@ -1,6 +1,6 @@
 import { ElementProperty } from "../model/graph";
 import { Point } from "../model/geometry/point";
-import { CircleShape, HexagonShape, RectangleShape, DiamondShape } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape } from "../model/shape";
 
 export interface ShapeDrawing {
   property: ElementProperty;
@@ -21,6 +21,8 @@ export interface ShapeDrawing {
   drawHexagon(hexagon: HexagonShape): this;
 
   drawDiamond(diamond: DiamondShape): this;
+
+  drawTriangle(triangle: TriangleShape): this;
 
   recursiveRender(): this;
 }

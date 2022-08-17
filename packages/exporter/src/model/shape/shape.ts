@@ -52,6 +52,9 @@ export class Shape {
     //
   }
 
+  /**
+   * todo: add close options
+   */
   points(): Point[] {
     return [];
   }

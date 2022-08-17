@@ -1,5 +1,5 @@
 import { SvgShapeDrawing } from "./svg-shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape, DiamondShape } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape } from "../model/shape";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
@@ -58,5 +58,12 @@ describe('SvgShapeDrawing', () => {
     drawing.drawDiamond(new DiamondShape(0, 0, 100, 200));
 
     expect(svg.innerHTML).toBe('<polygon points="50,0 100,100 50,200 0,100 50,0" transform="translate(0,0)" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
+  });
+
+  it('triangle', () => {
+    const drawing = new SvgShapeDrawing(svg as SVGElement);
+    drawing.drawTriangle(new TriangleShape(0, 0, 100, 100));
+
+    expect(svg.innerHTML).toBe('<polygon points="0,0 100,50 0,100 0,0" transform="translate(0,0)" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
   });
 });

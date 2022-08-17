@@ -1,7 +1,7 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape } from "../model/shape";
+import { CircleShape, HexagonShape, RectangleShape, TriangleShape } from "../model/shape";
 import { DiamondShape } from "../model/shape/diamond-shape";
 
 export class SvgShapeDrawing implements ShapeDrawing {
@@ -128,6 +128,11 @@ export class SvgShapeDrawing implements ShapeDrawing {
 
   drawDiamond(diamond: DiamondShape): this {
     this.drawByPoints(diamond.points(), { x: diamond.x, y: diamond.y });
+    return this;
+  }
+
+  drawTriangle(triangle: TriangleShape): this {
+    this.drawByPoints(triangle.points(), { x: triangle.x, y: triangle.y });
     return this;
   }
 
