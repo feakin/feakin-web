@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { CanvasShapeDrawing } from './canvas-shape-drawing';
 import { dataURLtoFileData } from "./utils/data-url";
-import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/shape";
+import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
 
 describe('CanvasShapeDrawing', () => {
   let canvas: any, ctx: any;

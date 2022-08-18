@@ -1,7 +1,7 @@
 import { Drawable, Options } from "roughjs/bin/core";
 import { RoughGenerator } from "roughjs/bin/generator";
 
-import { RectangleShape, Shape } from "../../model/shape";
+import { RectangleShape, Shape } from "../../model/node";
 import { randomInteger } from "./rough-seed";
 import { Point } from "../../model/geometry/point";
 

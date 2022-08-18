@@ -1,7 +1,7 @@
 import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/shape";
+import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
 
 export class CanvasShapeDrawing implements ShapeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
