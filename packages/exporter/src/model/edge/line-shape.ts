@@ -1,11 +1,17 @@
-import { Point } from "../geometry/point";
-import { StrokeState } from "../state-style/stroke-state";
+import { Shape } from "../node";
 
 /**
  * Line is a simple 2D line with start and end points.
+ * Keep in mind that the line is not a shape, it is just a line.
+ * But we keep it same with mxGraph API, in order to keep the same API with mxGraph.
  */
-export class LineShape implements Point {
-  x!: number;
-  y!: number;
-  stroke?: StrokeState;
+export class LineShape extends Shape {
+  private readonly width: number;
+  private readonly height: number;
+
+  constructor(x: number, y: number, width: number, height: number) {
+    super(x, y);
+    this.width = width;
+    this.height = height;
+  }
 }

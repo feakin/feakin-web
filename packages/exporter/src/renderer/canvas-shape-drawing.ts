@@ -89,7 +89,7 @@ export class CanvasShapeDrawing implements ShapeDrawing {
   }
 
   drawHexagon(hexagon: HexagonShape): this {
-    this.drawPath(hexagon.points(), {
+    this.drawPath(hexagon.calculatePoints(), {
       x: hexagon.x,
       y: hexagon.y
     });
@@ -97,7 +97,7 @@ export class CanvasShapeDrawing implements ShapeDrawing {
   }
 
   drawDiamond(diamond: DiamondShape): this {
-    this.drawPath(diamond.points(), {
+    this.drawPath(diamond.calculatePoints(), {
       x: diamond.x,
       y: diamond.y
     });
@@ -106,7 +106,7 @@ export class CanvasShapeDrawing implements ShapeDrawing {
   }
 
   drawTriangle(triangle: TriangleShape): this {
-    this.drawPath(triangle.points(), {
+    this.drawPath(triangle.calculatePoints(), {
       x: triangle.x,
       y: triangle.y
     });

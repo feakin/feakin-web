@@ -122,17 +122,17 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   drawHexagon(hexagon: HexagonShape): this {
-    this.drawByPoints(hexagon.points(), { x: hexagon.x, y: hexagon.y});
+    this.drawByPoints(hexagon.calculatePoints(), { x: hexagon.x, y: hexagon.y});
     return this;
   }
 
   drawDiamond(diamond: DiamondShape): this {
-    this.drawByPoints(diamond.points(), { x: diamond.x, y: diamond.y });
+    this.drawByPoints(diamond.calculatePoints(), { x: diamond.x, y: diamond.y });
     return this;
   }
 
   drawTriangle(triangle: TriangleShape): this {
-    this.drawByPoints(triangle.points(), { x: triangle.x, y: triangle.y });
+    this.drawByPoints(triangle.calculatePoints(), { x: triangle.x, y: triangle.y });
     return this;
   }
 
