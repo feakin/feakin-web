@@ -12,7 +12,7 @@ export class PolygonShape extends Shape {
     this.points_ = points
   }
 
-  override calculatePoints(): Point[] {
+  override points(): Point[] {
     return this.points_;
   }
 }

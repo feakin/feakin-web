@@ -13,7 +13,7 @@ export class TriangleShape extends Shape {
     this.height = height;
   }
 
-  override calculatePoints(): Point[] {
+  override points(): Point[] {
     const width = this.width;
     const height = this.height;
 

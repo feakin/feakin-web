@@ -57,7 +57,7 @@ export class Shape {
   /**
    * todo: add close options
    */
-  calculatePoints(): Point[] {
+  points(): Point[] {
     return [];
   }
 
