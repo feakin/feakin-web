@@ -12,13 +12,19 @@ todos:
     - [x] [dagre](https://github.com/dagrejs/dagre)
     - [ ] [ELK](https://github.com/kieler/elkjs)
     - [ ] [cola.js](https://ialab.it.monash.edu/webcola/)
+  - [ ] SVG
   - [x] Canvas
     - [ ] [D3.js](https://github.com/d3/d3)
     - [x] [Konva.js](https://github.com/konvajs/konva), react: [react-konva](https://github.com/konvajs/react-konva)
     - [ ] [PixiJS](https://github.com/pixijs/pixijs)
     - [ ] [Fabric.js](https://github.com/fabricjs/fabric.js) SVG-to-Canvas (& canvas-to-SVG) Parser
   - [ ] Style
-    - [x] [roughjs](https://github.com/rough-stuff/rough): sketchy, hand-drawn-like, style 
+    - [x] [roughjs](https://github.com/rough-stuff/rough): sketchy, hand-drawn-like, style
+- [ ] Editor
+  - [ ] text Editor with Monaco Editor
+  - [ ] interactive Editor with Graphical Editor
+- [ ] Static Pages
+  - Feakin Space
 - [x] Parser
   - [x] [Jison](https://github.com/zaach/jison) with Mermaid
 - [x] Export
