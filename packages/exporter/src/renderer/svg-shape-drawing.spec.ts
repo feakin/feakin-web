@@ -71,6 +71,6 @@ describe('SvgShapeDrawing', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
     drawing.drawImage(new ImageShape(0, 0, 100, 100, 'image.png'));
 
-    expect(svg.innerHTML).toBe('<image x="0" y="0" width="100" height="100" xlink:href="image.png"></image>');
+    expect(svg.innerHTML).toBe('<image x="0" y="0" width="100" height="100" href="image.png"></image>');
   });
 });

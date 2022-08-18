@@ -142,7 +142,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
     imageEl.setAttribute('y', String(imageShape.y));
     imageEl.setAttribute('width', String(imageShape.width));
     imageEl.setAttribute('height', String(imageShape.height));
-    imageEl.setAttribute('xlink:href', imageShape.imageSrc);
+    imageEl.setAttribute('href', imageShape.imageSrc);
     this.ctx.appendChild(imageEl);
     return this;
   }
