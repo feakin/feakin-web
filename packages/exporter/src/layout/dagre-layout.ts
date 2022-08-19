@@ -1,16 +1,16 @@
 import * as dagre from 'dagre'
+import { Node as DagreNode, GraphEdge } from "dagre";
+
 import { DagreRelation } from "./dagre-relation";
 import { Node, Edge, Graph } from "../model/graph";
 import { defaultLayoutOptions, LayoutOptions } from "../model/layout/layout";
 
-export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions): Graph {
-  options = options || defaultLayoutOptions;
-
+export function dagreLayout(relations: DagreRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
   const graph = new dagre.graphlib.Graph({
     multigraph: true,
     compound: true,
   }).setGraph({
-    rankdir: options?.rankdir,
+    rankdir: options.rankdir,
     nodesep: 50,
     ranksep: 50,
     marginx: 8,
@@ -18,16 +18,14 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
   }).setDefaultEdgeLabel(() => ({}));
 
   relations.forEach(relation => {
-    graph.setNode(relation.source.name, {
-      width: options?.node?.width || 0,
-      height: options?.node?.height || 0,
-    });
+    const label = {
+      width: options.node.width,
+      height: options.node.height,
+    };
+    graph.setNode(relation.source.name, label);
 
     if (relation.target) {
-      graph.setNode(relation.target.name, {
-        width: options?.node?.width || 0,
-        height: options?.node?.height || 0,
-      });
+      graph.setNode(relation.target.name, label);
       graph.setEdge(relation.source.name, relation.target.name, {});
     }
   })
@@ -36,7 +34,7 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
 
   const nodes: Node[] = [];
   graph.nodes().forEach(function (v) {
-    const node = graph.node(v);
+    const node: DagreNode = graph.node(v);
     nodes.push({
       x: node.x,
       y: node.y,
@@ -48,7 +46,7 @@ export function dagreLayout(relations: DagreRelation[], options?: LayoutOptions)
 
   const edges: Edge[] = [];
   graph.edges().forEach(function (e) {
-    const graphEdge = graph.edge(e);
+    const graphEdge: GraphEdge = graph.edge(e);
     edges.push({
       points: graphEdge.points,
     });

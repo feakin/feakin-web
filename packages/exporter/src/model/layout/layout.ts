@@ -17,7 +17,7 @@ export const defaultLayoutOptions: LayoutOptions = {
 export interface LayoutOptions {
   rankdir?: Direction;
   container?: HTMLElement;
-  node?: {
+  node: {
     // each node width
     width: number;
     // each node height
