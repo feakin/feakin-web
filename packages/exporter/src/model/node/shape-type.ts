@@ -9,4 +9,6 @@ export enum ShapeType {
   Polygon = "polygon",
   Diamond = "diamond",
   Image = "image",
+  Arrow = "arrow",
+  Custom = "custom",
 }
