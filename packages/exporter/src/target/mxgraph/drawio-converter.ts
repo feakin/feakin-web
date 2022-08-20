@@ -1,17 +1,17 @@
 import { MXCell, MxGraph } from "./mxgraph";
 import { Edge, Graph, Node } from "../../model/graph";
 import { CellStateStyle } from "./cell-state-style";
+import { Converter, FeakinConverter } from "../converter";
 
-export class DrawioConverter {
-  private graph: MxGraph;
+export class DrawioConverter extends Converter implements FeakinConverter {
   private mxCells: MXCell[];
 
   constructor(graph: MxGraph) {
-    this.graph = graph;
+    super(graph);
     this.mxCells = this.graph.mxGraphModel.root.mxCell;
   }
 
-  convert() {
+  convert(): Graph {
     let filtered: Graph = {
       nodes: [],
       edges: [],

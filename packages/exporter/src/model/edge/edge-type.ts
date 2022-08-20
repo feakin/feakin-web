@@ -32,3 +32,23 @@ export enum ArrowType {
   FILLED_SQUARE = 'filled-square',
   FILLED_DIAMOND = 'filled-diamond',
 }
+
+export class EdgeTypeUtils {
+  static fromString(type: string): EdgeType | undefined {
+    switch (type) {
+      case 'line':
+        return EdgeType.LINE;
+      case 'arrow':
+        return EdgeType.ARROW;
+      case 'polyline':
+        return EdgeType.POLYLINE;
+      case 'curve':
+        return EdgeType.CURVE;
+      case 'scribble':
+        return EdgeType.SCRIBBLE;
+      default:
+        return undefined;
+    }
+  }
+}
+

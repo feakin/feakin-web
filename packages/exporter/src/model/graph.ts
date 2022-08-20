@@ -1,6 +1,7 @@
 import { Point } from "./geometry/point";
 import { FillState } from "./state-style/fill-state";
 import { StrokeState } from "./state-style/stroke-state";
+import { EdgeType } from "./edge/edge-type";
 
 /**
  * Graph is a class that represents a graph.
@@ -72,6 +73,7 @@ export interface EdgeData extends ElementData {
   id?: string | undefined;
   source: string;
   target: string;
+  type?: EdgeType;
 
   [key: string]: any;
 }
