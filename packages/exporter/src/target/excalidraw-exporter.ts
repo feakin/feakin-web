@@ -77,7 +77,7 @@ export class ExcalidrawExporter implements FeakinExporter {
 
   private createBaseNode(node: Node) {
     return {
-      id: randomInteger(),
+      id: node.id,
       type: 'rectangle',
       x: node.x,
       y: node.y,
