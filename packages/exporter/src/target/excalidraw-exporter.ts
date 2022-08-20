@@ -22,7 +22,11 @@ export class ExcalidrawExporter implements FeakinExporter {
     const root = this.createRoot();
 
     this.graph.nodes.forEach(node => {
-      root.elements.push(this.createNode(node));
+      const rectangle: any = this.createNode(node);
+      root.elements.push(rectangle);
+      if (node.label) {
+        root.elements.push(this.createLabel(node, rectangle.id));
+      }
     });
 
     return root;
@@ -38,19 +42,40 @@ export class ExcalidrawExporter implements FeakinExporter {
 
   createRoot(): ExportedDataState {
     return {
-      "type": "excalidraw",
-      "version": 2,
-      "source": "https://feakin.com",
-      "elements": [],
-      "appState": {
-        "gridSize": null,
-        "viewBackgroundColor": "#ffffff"
+      type: "excalidraw",
+      version: 2,
+      source: "https://feakin.com",
+      elements: [],
+      appState: {
+        gridSize: null,
+        viewBackgroundColor: "#ffffff"
       },
-      "files": {}
+      files: {}
     }
   }
 
   createNode(node: Node): object {
+    return this.createBaseNode(node);
+  }
+
+  createLabel(node: Node, id?: number): object {
+    const labelNode = this.createBaseNode(node);
+    labelNode.type = "text";
+    Object.assign(labelNode, {
+      text: node.label,
+      fontSize: 20,
+      fontFamily: 3,
+      textAlign: "left",
+      verticalAlign: "top",
+      baseline: 18,
+      containerId: id,
+      originalText: node.label
+    });
+
+    return labelNode;
+  }
+
+  private createBaseNode(node: Node) {
     return {
       id: randomInteger(),
       type: 'rectangle',
