@@ -1,25 +1,19 @@
 import * as fs from "fs";
-import * as path from "path";
-import DrawioEncode from "./mxgraph/drawio-encode";
-import { Mxfile, MxGraph } from "./mxgraph/mxgraph";
-import { DrawioConverter } from "./mxgraph/drawio-converter";
+import DrawioEncode from "../mxgraph/drawio-encode";
+import { Mxfile, MxGraph } from "../mxgraph/mxgraph";
+import { DrawioConverter } from "../mxgraph/drawio-converter";
 import { ExcalidrawExporter } from "./excalidraw-exporter";
-import { Graph } from "../model/graph";
-
-const pwd = process.env["PWD"] || process.cwd();
+import { Graph } from "../../model/graph";
 
 describe('ExcalidrawExporter', () => {
   let mxGraph: MxGraph;
 
   beforeAll(() => {
-    const drawioFile = path.resolve(pwd, "./_fixtures/drawio/android-ag.drawio");
-    const data = fs.readFileSync(drawioFile, { encoding: 'utf8', flag: 'r' });
+    const data = fs.readFileSync('_fixtures/drawio/android-ag.drawio', 'utf8');
 
     const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
     mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
-  });
 
-  beforeEach(() => {
     if (!fs.existsSync("test")) {
       fs.mkdirSync('test');
     }

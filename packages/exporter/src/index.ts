@@ -46,8 +46,8 @@ export * from './source/mermaid-flow';
 export * from './source/mermaid-flowdb';
 
 export * from './target/converter';
-export * from './target/drawio';
-export * from './target/excalidraw-exporter';
+export * from './target/excalidraw/excalidraw-exporter';
+export * from './target/excalidraw/excalidraw-types';
 export * from './target/exporter';
 export * from './target/mxgraph/cell-state-style';
 export * from './target/mxgraph/drawio-converter';

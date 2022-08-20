@@ -1,7 +1,7 @@
-import { FeakinExporter } from './exporter';
-import { Edge, Graph, Node } from '../model/graph';
-import { randomInteger } from '../renderer/drawn-style/rough-seed';
-import { Point } from "../model/geometry/point";
+import { FeakinExporter } from '../exporter';
+import { Edge, Graph, Node } from '../../model/graph';
+import { randomInteger } from '../../renderer/drawn-style/rough-seed';
+import { Point } from "../../model/geometry/point";
 
 export interface ExportedDataState {
   type: string;

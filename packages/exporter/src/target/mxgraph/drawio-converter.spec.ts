@@ -50,4 +50,12 @@ describe('DrawioEncoder', () => {
 
     expect(edges[edges.length - 1].width).toEqual(0);
   });
+
+  it('edge with', () => {
+    const drawioConverter = new DrawioConverter(mxGraph);
+    const graph: Graph = drawioConverter.convert();
+
+    const edges = graph.edges;
+    console.log(edges);
+  });
 });
