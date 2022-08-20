@@ -1,0 +1,1450 @@
+[
+  {
+    "attributes": {
+      "id": "0"
+    }
+  },
+  {
+    "attributes": {
+      "id": "1",
+      "parent": "0"
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-70",
+      "value": "Android Lint&nbsp;<b>*</b>",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "720",
+        "y": "710",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-19",
+      "style": "edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-2",
+      "target": "c829ialIT6bnUCAQVo3g-17"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "relative": "1",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-20",
+      "value": "影响到",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-19"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "-0.1505",
+        "y": "3",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-2",
+      "value": "分析阶段<br>（stage）",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "270",
+        "y": "600",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-62",
+      "style": "edgeStyle=orthogonalEdgeStyle;curved=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-3",
+      "target": "c829ialIT6bnUCAQVo3g-26"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "relative": "1",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-3",
+      "value": "编译前",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "200",
+        "y": "700",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-4",
+      "value": "编译中",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "200",
+        "y": "800",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-5",
+      "value": "编译后",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "200",
+        "y": "900",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-6",
+      "value": "运行时",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "10",
+        "y": "600",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-75",
+      "style": "edgeStyle=orthogonalEdgeStyle;curved=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-8",
+      "target": "c829ialIT6bnUCAQVo3g-74"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "relative": "1",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-8",
+      "value": "构建工具",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "555",
+        "y": "800",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-73",
+      "style": "edgeStyle=orthogonalEdgeStyle;curved=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-9",
+      "target": "c829ialIT6bnUCAQVo3g-71"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "relative": "1",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-9",
+      "value": "中间表示解析",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "555",
+        "y": "890",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-72",
+      "style": "edgeStyle=orthogonalEdgeStyle;curved=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-10",
+      "target": "c829ialIT6bnUCAQVo3g-70"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "relative": "1",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-10",
+      "value": "静态代码分析",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "550",
+        "y": "710",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-12",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-2",
+      "target": "c829ialIT6bnUCAQVo3g-3"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "380",
+            "y": "780",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "19.999999999999773",
+            "y": "730",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-13",
+      "value": "",
+      "style": "endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;curved=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-2",
+      "target": "c829ialIT6bnUCAQVo3g-4"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "230",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "30",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ],
+      "Array": {
+        "attributes": {
+          "as": "points"
+        },
+        "mxPoint": {
+          "attributes": {
+            "x": "400",
+            "y": "750"
+          }
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-14",
+      "value": "",
+      "style": "endArrow=classic;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;curved=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-2",
+      "target": "c829ialIT6bnUCAQVo3g-5"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "260",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "205",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ],
+      "Array": {
+        "attributes": {
+          "as": "points"
+        },
+        "mxPoint": {
+          "attributes": {
+            "x": "420",
+            "y": "810"
+          }
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-15",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-2",
+      "target": "c829ialIT6bnUCAQVo3g-6"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "320",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "360",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-30",
+      "value": "按需或根据 log",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-15"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "-0.3582",
+        "y": "2",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "x": "-39",
+          "y": "-12",
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-17",
+      "value": "分析方式",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "500",
+        "y": "600",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-21",
+      "value": "",
+      "style": "endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;curved=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-17",
+      "target": "c829ialIT6bnUCAQVo3g-10"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "350",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "520",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-22",
+      "value": "",
+      "style": "endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;curved=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-17",
+      "target": "c829ialIT6bnUCAQVo3g-8"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "850",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "700",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ],
+      "Array": {
+        "attributes": {
+          "as": "points"
+        },
+        "mxPoint": {
+          "attributes": {
+            "x": "510",
+            "y": "740"
+          }
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-23",
+      "value": "",
+      "style": "endArrow=classic;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0;entryDx=0;entryDy=0;curved=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-17",
+      "target": "c829ialIT6bnUCAQVo3g-9"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "880",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "770",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ],
+      "Array": {
+        "attributes": {
+          "as": "points"
+        },
+        "mxPoint": {
+          "attributes": {
+            "x": "480",
+            "y": "810"
+          }
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-24",
+      "value": "Gradle",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "10",
+        "y": "800",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-25",
+      "value": "Dex/Smali",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "10",
+        "y": "900",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-26",
+      "value": ".java, .kotlin, .xml",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "10",
+        "y": "700",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-31",
+      "value": "包含",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "329.9997267630446",
+        "y": "680.0017595283141",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-34",
+      "value": "多样化变体/制品",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "80",
+        "y": "480",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-35",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-34",
+      "target": "c829ialIT6bnUCAQVo3g-2"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "320",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "360",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-36",
+      "value": "需要在不同的...中介入",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-35"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "-0.0198",
+        "y": "1",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-37",
+      "value": "生命周期",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "200",
+        "y": "340",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-39",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-37",
+      "target": "c829ialIT6bnUCAQVo3g-34"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "150",
+            "y": "520",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "260",
+            "y": "610",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-40",
+      "value": "需要关注到...",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-39"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "-0.0198",
+        "y": "1",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-41",
+      "value": "Android 应用如何进行依赖分析？",
+      "style": "rounded=1;whiteSpace=wrap;html=1;dashed=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "255",
+        "y": "80",
+        "width": "300",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-42",
+      "value": "Android 依赖分析",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "340",
+        "y": "190",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-43",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-42",
+      "target": "c829ialIT6bnUCAQVo3g-37"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "480",
+            "y": "470",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "530",
+            "y": "420",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-55",
+      "value": "关注于....",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-43"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "0.1417",
+        "y": "1",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-44",
+      "value": "依赖类型",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "480",
+        "y": "340",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-46",
+      "value": "项目依赖",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "580",
+        "y": "480",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-48",
+      "value": "代码依赖",
+      "style": "rounded=0;whiteSpace=wrap;html=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "380",
+        "y": "480",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-49",
+      "value": "",
+      "style": "endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;curved=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-46",
+      "target": "c829ialIT6bnUCAQVo3g-8"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "880",
+            "y": "670",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "840",
+            "y": "670",
+            "as": "targetPoint"
+          }
+        }
+      ],
+      "Array": {
+        "attributes": {
+          "as": "points"
+        },
+        "mxPoint": {
+          "attributes": {
+            "x": "730",
+            "y": "640"
+          }
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-81",
+      "value": "取决于",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-49"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "-0.2636",
+        "y": "-30",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-51",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-44",
+      "target": "c829ialIT6bnUCAQVo3g-48"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "600",
+            "y": "550",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "650",
+            "y": "500",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-69",
+      "value": "包含",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-51"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "-0.1449",
+        "y": "-1",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "y": "-1",
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-52",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-44",
+      "target": "c829ialIT6bnUCAQVo3g-46"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "514.1199999999999",
+            "y": "409.03999999999996",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "450",
+            "y": "490",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-68",
+      "value": "更关注于...",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-52"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "0.1053",
+        "y": "-2",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-53",
+      "value": "",
+      "style": "endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-42",
+      "target": "c829ialIT6bnUCAQVo3g-44"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "width": "50",
+        "height": "50",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "580",
+            "y": "410",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "650",
+            "y": "490",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-54",
+      "value": "根据不同的...有所差异",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "c829ialIT6bnUCAQVo3g-53"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "-0.0563",
+        "y": "1",
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": {
+        "attributes": {
+          "as": "offset"
+        }
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-59",
+      "value": "包含",
+      "style": "edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];",
+      "vertex": "1",
+      "connectable": "0",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "539.9997267630446",
+        "y": "680.0017595283141",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-63",
+      "style": "edgeStyle=orthogonalEdgeStyle;curved=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=1;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-4",
+      "target": "c829ialIT6bnUCAQVo3g-24"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "209.99999999999977",
+            "y": "740",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "140",
+            "y": "740",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-64",
+      "style": "edgeStyle=orthogonalEdgeStyle;curved=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;",
+      "edge": "1",
+      "parent": "1",
+      "source": "c829ialIT6bnUCAQVo3g-5",
+      "target": "c829ialIT6bnUCAQVo3g-25"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "relative": "1",
+        "as": "geometry"
+      },
+      "mxPoint": [
+        {
+          "attributes": {
+            "x": "209.99999999999977",
+            "y": "840",
+            "as": "sourcePoint"
+          }
+        },
+        {
+          "attributes": {
+            "x": "140",
+            "y": "840",
+            "as": "targetPoint"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-65",
+      "value": "示例",
+      "style": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "140",
+        "y": "700",
+        "width": "60",
+        "height": "30",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-66",
+      "value": "示例",
+      "style": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "130",
+        "y": "800",
+        "width": "60",
+        "height": "30",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-67",
+      "value": "示例",
+      "style": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "140",
+        "y": "890",
+        "width": "60",
+        "height": "30",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-71",
+      "value": "ASM/Baksmali",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "720",
+        "y": "890",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-74",
+      "value": "Android Studio/ADT",
+      "style": "rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "720",
+        "y": "800",
+        "width": "120",
+        "height": "60",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-76",
+      "value": "示例",
+      "style": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "670",
+        "y": "890",
+        "width": "60",
+        "height": "30",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-77",
+      "value": "示例",
+      "style": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "670",
+        "y": "800",
+        "width": "60",
+        "height": "30",
+        "as": "geometry"
+      }
+    }
+  },
+  {
+    "attributes": {
+      "id": "c829ialIT6bnUCAQVo3g-78",
+      "value": "示例",
+      "style": "text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;",
+      "vertex": "1",
+      "parent": "1"
+    },
+    "mxGeometry": {
+      "attributes": {
+        "x": "640",
+        "y": "710",
+        "width": "60",
+        "height": "30",
+        "as": "geometry"
+      }
+    }
+  }
+]

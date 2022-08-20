@@ -79,7 +79,7 @@ export function wrapperToDrawIo() {
     {
       attributes: {
         id: `${ wrapper.id() }`,
-        vertex: 1,
+        vertex: true,
         style: "rounded=0;whiteSpace=wrap;html=1;",
         value: "Hello, world!",
         parent: "0"

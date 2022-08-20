@@ -58,14 +58,33 @@ export interface MXCell {
     id: string;
     label?: string;
     style?: string;
+    /**
+     * Once cell is an edge, this is the id of the source cell.
+     */
     source?: string;
+    /**
+     * Once cell is an edge, this is the id of the target cell.
+     */
     target?: string;
-    edge?: string;
+    /**
+     * Specifies whether the cell is an edge. Default is false.
+     */
+    edge?: boolean;
     value?: string;
-    vertex?: number;
+    /**
+     * Specifies whether the cell is a vertex. Default is false.
+     */
+    vertex?: boolean;
     parent?: string;
     children?: MXCell[];
-    connectable?: string;
+    /**
+     * Specifies whether the cell is visible. Default is true.
+     */
+    visible?: boolean;
+    /**
+     * Specifies whether the cell is connectable. Default is true.
+     */
+    connectable?: boolean;
   }
 }
 
@@ -74,15 +93,28 @@ export interface MXGeometry {
   attributes?: {
     x?: number;
     y?: number;
-    relative?: string;
+    /**
+     * Specifies if the coordinates in the geometry are to be interpreted as
+     * relative coordinates. For edges, this is used to define the location of
+     * the edge label relative to the edge as rendered on the display. For
+     * vertices, this specifies the relative location inside the bounds of the
+     * parent cell.
+     *
+     * If this is false, then the coordinates are relative to the origin of the
+     * parent cell or, for edges, the edge label position is relative to the
+     * center of the edge as rendered on screen.
+     *
+     * Default is false.
+     */
+    relative?: boolean;
     as?: string;
     width?: number;
     height?: number;
+    offset?: MxPoint[];
   }
 }
 
 export interface MxPoint {
-  as: string;
   x?: string;
   y?: string;
 }
