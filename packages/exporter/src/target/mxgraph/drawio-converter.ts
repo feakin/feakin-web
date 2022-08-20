@@ -54,11 +54,11 @@ export class DrawioConverter extends Converter implements FeakinConverter {
       id: attrs.id,
       label: attrs.value,
       points: this.calPointsForEdge(cell),
+      width: parseFloat(String(cell?.mxGeometry?.attributes?.width || 0)),
+      height: parseFloat(String(cell?.mxGeometry?.attributes?.height || 0)),
       data: {
         source: attrs.source!,
-        target: attrs.target!,
-        width: parseFloat(String(cell?.mxGeometry?.attributes?.width || 0)),
-        height: parseFloat(String(cell?.mxGeometry?.attributes?.height || 0)),
+        target: attrs.target!
       }
     };
   }

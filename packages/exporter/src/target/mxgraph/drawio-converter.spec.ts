@@ -45,7 +45,7 @@ describe('DrawioEncoder', () => {
     const edges = graph.edges;
     expect(edges.length).toBe(21);
     expect(edges[edges.length - 1].points).toEqual(
-      [{ "x": "209.99999999999977", "y": "840" }, { "x": "140", "y": "840" }]
+      [{ "x": 209.99999999999977, "y": 840 }, { "x": 140, "y": 840 }]
     );
 
     expect(edges[edges.length - 1].width).toEqual(0);
