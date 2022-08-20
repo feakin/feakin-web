@@ -32,6 +32,9 @@ todos:
 - [ ] Import
   - [ ] MxGraph
   - [ ] Excalidraw
+- [ ] collaboration
+  - [ ] [Rope Architecture Model](https://blog.jetbrains.com/zh-hans/fleet/2022/02/fleet-below-deck-part-ii-breaking-down-the-editor/)
+  - [ ] [State Management](https://blog.jetbrains.com/zh-hans/fleet/2022/06/fleet-below-deck-part-iii-state-management/)
 - Diagram analysis
   - [ ] draw.io (level 1)
   - [ ] excalidraw
