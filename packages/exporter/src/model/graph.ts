@@ -11,7 +11,7 @@ export type Graph = Layers;
 export interface Layers {
   nodes: Node[];
   edges: Edge[];
-  props?: ElementProperty[];
+  props?: ElementProperty;
 }
 
 export type Position = Point;
@@ -25,6 +25,8 @@ interface Element {
 export interface ElementProperty {
   fill?: FillState;
   stroke?: StrokeState;
+  width?: number | string;
+  height?: number | string;
 }
 
 /**

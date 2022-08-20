@@ -35,7 +35,17 @@ describe('DrawioEncoder', () => {
     const drawioConverter = new DrawioConverter(mxGraph);
     const graph: Graph = drawioConverter.convert();
 
-    expect(graph.nodes.length).toBe(39);
-    expect(graph.edges.length).toBe(21);
+    expect(graph.props?.height).toBe(1100);
+    expect(graph.props?.width).toBe(850);
+
+    const nodes = graph.nodes;
+    expect(nodes.length).toBe(39);
+    expect(nodes[nodes.length - 1].x).toEqual(640);
+
+    const edges = graph.edges;
+    expect(edges.length).toBe(21);
+    expect(edges[edges.length - 1].points).toEqual(
+      [{ "x": "209.99999999999977", "y": "840" }, { "x": "140", "y": "840" }]
+    );
   });
 });

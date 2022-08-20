@@ -12,9 +12,14 @@ export class DrawioConverter extends Converter implements FeakinConverter {
   }
 
   convert(): Graph {
-    let filtered: Graph = {
+    const graphAttrs = this.graph.mxGraphModel?.attributes;
+    const filtered: Graph = {
       nodes: [],
       edges: [],
+      props: {
+        width: parseFloat(<string>graphAttrs?.pageWidth) || 0,
+        height: parseFloat(<string>graphAttrs?.pageHeight) || 0,
+      },
     };
 
     this.mxCells.forEach((cell: MXCell) => {
@@ -48,6 +53,7 @@ export class DrawioConverter extends Converter implements FeakinConverter {
     return {
       id: attrs.id,
       label: attrs.value,
+      points: this.calPointsForEdge(cell),
       data: {
         source: attrs.source!,
         target: attrs.target!,
@@ -55,12 +61,34 @@ export class DrawioConverter extends Converter implements FeakinConverter {
     };
   }
 
+  private calPointsForEdge(cell: MXCell) {
+    const mxPoint = cell.mxGeometry?.mxPoint;
+    if (!mxPoint) {
+      return [];
+    }
+
+    return mxPoint?.map((point: any) => {
+      return {
+        x: point.attributes.x,
+        y: point.attributes.y
+      }
+    }) || [];
+  }
+
   private convertNode(cell: MXCell): Node {
     const attrs = cell.attributes!;
+    const geoAttrs = cell.mxGeometry?.attributes;
+
+    const point = {
+      x: parseFloat(String(geoAttrs?.x || 0)),
+      y: parseFloat(String(geoAttrs?.y || 0)),
+    }
 
     return {
       id: attrs.id,
       label: attrs.value,
+      x: point.x,
+      y: point.y,
     };
   }
 }

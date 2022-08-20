@@ -36,13 +36,13 @@ export interface MxGraphModel {
     gridSize?: number;
     guides?: string;
     tooltips?: string;
-    connect?: string;
+    connect?: boolean;
     arrows?: string;
     fold?: string;
     page?: string;
-    pageScale?: string;
-    pageWidth?: string;
-    pageHeight?: string;
+    pageScale?: number;
+    pageWidth?: number | string;
+    pageHeight?: number | string;
     math?: string;
     shadow?: string;
   }
