@@ -1,5 +1,5 @@
 import { FeakinExporter } from '../exporter';
-import { Edge, Graph, Node } from '../../model/graph';
+import { Edge, Graph, Node, NodeExt } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import { Point } from "../../model/geometry/point";
 
@@ -14,6 +14,7 @@ export interface ExportedDataState {
 
 export class ExcalidrawExporter implements FeakinExporter {
   graph: Graph;
+  nodeCaches: Map<string, Node> = new Map<string, Node>();
 
   constructor(graph: Graph) {
     this.graph = graph;
@@ -25,6 +26,8 @@ export class ExcalidrawExporter implements FeakinExporter {
     this.graph.nodes.forEach(node => {
       const rectangle: any = this.createNode(node);
       root.elements.push(rectangle);
+      this.nodeCaches.set(rectangle.id, node);
+
       if (node.label) {
         root.elements.push(this.createLabel(node, rectangle.id));
       }
@@ -111,12 +114,11 @@ export class ExcalidrawExporter implements FeakinExporter {
   }
 
   private createEdge(edge: Edge) {
-    const points: Point[] = edge?.points || [];
     const baseEdge = {
       id: edge.id,
       type: 'arrow',
-      x: points[0]?.x || 0,
-      y: points[0]?.y || 0,
+      x: 0,
+      y: 0,
       width: edge?.width || 0,
       height: edge?.height || 0,
       angle: 0,
@@ -139,7 +141,10 @@ export class ExcalidrawExporter implements FeakinExporter {
       locked: false,
     }
 
-    const rPoints: [number, number][] = edge.points?.map(p => [p.x, p.y]) || [];
+    let rPoints: [number, number][] = edge.points?.map(p => [p.x, p.y]) || [];
+    if (rPoints.length == 0) {
+      rPoints = this.reCalculateEdgePoints(edge);
+    }
 
     Object.assign(baseEdge, {
       startBinding: {
@@ -159,5 +164,21 @@ export class ExcalidrawExporter implements FeakinExporter {
     })
 
     return baseEdge
+  }
+
+  private reCalculateEdgePoints(edge: Edge): [number, number][] {
+    let rPoints: [number, number][] = [];
+    const source: Node | undefined = this.nodeCaches.get(<string>edge.data?.source);
+    const target: Node | undefined = this.nodeCaches.get(<string>edge.data?.target);
+    if (source && target) {
+      const start = NodeExt.getCenter(source);
+      const end = NodeExt.getCenter(target);
+      rPoints = [
+        [start.x, start.y],
+        [end.x, end.y]
+      ];
+    }
+
+    return rPoints;
   }
 }

@@ -47,6 +47,15 @@ export interface Node extends Element, ElementProperty {
   data?: NodeData;
 }
 
+export class NodeExt {
+  static getCenter(node: Node) {
+    return {
+      x: node.x! + node.width! / 2,
+      y: node.y! + node.height! / 2,
+    };
+  }
+}
+
 /**
  * Edge (also called links or lines) is a class that represents an edge in a graph.
  * An edge is (together with vertices) one of the two basic units out of which graphs are constructed.
