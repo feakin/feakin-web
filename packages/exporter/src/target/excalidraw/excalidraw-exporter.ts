@@ -114,11 +114,12 @@ export class ExcalidrawExporter implements FeakinExporter {
   }
 
   private createEdge(edge: Edge) {
+    const points: Point[] = edge?.points || [];
     const baseEdge = {
       id: edge.id,
       type: 'arrow',
-      x: 0,
-      y: 0,
+      x: points[0]?.x || 0,
+      y: points[0]?.y || 0,
       width: edge?.width || 0,
       height: edge?.height || 0,
       angle: 0,
@@ -149,6 +150,7 @@ export class ExcalidrawExporter implements FeakinExporter {
     Object.assign(baseEdge, {
       startBinding: {
         elementId: edge.data?.source,
+        // todo: refs to excalidraw collision.ts for count focus and gap
         focus: 0.05,
         gap: 1
       },
