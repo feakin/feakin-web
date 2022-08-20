@@ -117,14 +117,13 @@ export class ExcalidrawExporter implements FeakinExporter {
   }
 
   private createEdge(edge: Edge) {
-    const points: Point[] = edge?.points || [];
     const baseEdge = {
       id: edge.id,
       type: 'arrow',
-      x: points[0]?.x || 0,
-      y: points[0]?.y || 0,
-      width: edge?.width || 0,
-      height: edge?.height || 0,
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
       angle: 0,
       strokeColor: '#000000',
       backgroundColor: 'transparent',
@@ -136,7 +135,7 @@ export class ExcalidrawExporter implements FeakinExporter {
       groupIds: [],
       strokeSharpness: "round",
       seed: randomInteger(),
-      version: 390,
+      version: 205,
       versionNonce: 0,
       isDeleted: false,
       boundElements: null,
@@ -145,33 +144,36 @@ export class ExcalidrawExporter implements FeakinExporter {
       locked: false,
     }
 
-    let rPoints: [number, number][] = edge.points?.map(p => [p.x, p.y]) || [];
-    if (rPoints.length == 0) {
-      rPoints = this.reCalculateEdgePoints(edge);
-    }
+    const rPoints = this.reCalculateEdgePoints(edge);
 
     const sourceNode = this.nodeCaches.get(<string>edge.data?.source);
     if (edge.data?.source && sourceNode != undefined) {
-      sourceNode.boundElements.push(edge.id);
+      sourceNode.boundElements.push({
+        id: edge.id,
+        type: "arrow"
+      });
     }
 
     const targetNode = this.nodeCaches.get(<string>edge.data?.target);
     if (edge.data?.source && targetNode != undefined) {
-      targetNode.boundElements.push(edge.id);
+      targetNode.boundElements.push({
+        id: edge.id,
+        type: "arrow"
+      });
     }
 
     Object.assign(baseEdge, {
-      startBinding: {
-        elementId: edge.data?.source,
-        // todo: refs to excalidraw collision.ts for count focus and gap
-        focus: 0.05,
-        gap: 1
-      },
-      endBinding: {
-        elementId: edge.data?.target,
-        focus: 0.05,
-        gap: 1
-      },
+      // todo: refs to excalidraw collision.ts for count focus and gap
+      // startBinding: {
+      //   elementId: edge.data?.source,
+      //   focus: 0.05,
+      //   gap: 1
+      // },
+      // endBinding: {
+      //   elementId: edge.data?.target,
+      //   focus: 0.05,
+      //   gap: 1
+      // },
       points: rPoints,
       lastCommittedPoint: null,
       startArrowhead: null,
