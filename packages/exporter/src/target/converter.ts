@@ -1,4 +1,5 @@
-import { Graph, MxGraph } from "@feakin/exporter";
+import { MxGraph } from "./mxgraph/mxgraph";
+import { Graph } from "../model/graph";
 
 export class Converter {
   protected graph: MxGraph;

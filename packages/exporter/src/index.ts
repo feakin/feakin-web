@@ -51,7 +51,7 @@ export * from './source/mermaid-flow';
 export * from './source/mermaid-flowdb';
 
 export * from './target/drawio';
-export * from './target/excalidraw';
+export * from './target/excalidraw-exporter';
 export * from './target/exporter';
 export * from './target/mxgraph/drawio-wrapper';
 export * from './target/mxgraph/drawio-encode';

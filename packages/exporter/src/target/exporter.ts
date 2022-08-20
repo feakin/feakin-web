@@ -1,5 +1,9 @@
+import { Graph } from "../model/graph";
+
 export interface FeakinExporter {
-  export(x: string): string;
+  graph: Graph;
+
+  export(): any;
 
   header(): string;
 

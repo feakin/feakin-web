@@ -24,7 +24,7 @@ export class DrawioConverter extends Converter implements FeakinConverter {
 
     this.mxCells.forEach((cell: MXCell) => {
         if (cell.attributes?.source && cell.attributes?.target) {
-          filtered.edges.push(this.convertRelation(cell));
+          filtered.edges.push(this.convertEdge(cell));
         } else if (cell.attributes?.value) {
           filtered.nodes.push(this.convertNode(cell));
         }
@@ -47,7 +47,7 @@ export class DrawioConverter extends Converter implements FeakinConverter {
     return parsed;
   }
 
-  private convertRelation(cell: MXCell): Edge {
+  private convertEdge(cell: MXCell): Edge {
     const attrs = cell.attributes!;
 
     return {
@@ -89,6 +89,8 @@ export class DrawioConverter extends Converter implements FeakinConverter {
       label: attrs.value,
       x: point.x,
       y: point.y,
+      width: parseFloat(String(geoAttrs?.width || 0)),
+      height: parseFloat(String(geoAttrs?.height || 0)),
     };
   }
 }
