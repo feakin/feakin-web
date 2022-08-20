@@ -14,7 +14,7 @@ export interface ExportedDataState {
 
 export class ExcalidrawExporter implements FeakinExporter {
   graph: Graph;
-  nodeCaches: Map<string, Node> = new Map<string, Node>();
+  nodeCaches: Map<string, any> = new Map<string, any>();
 
   constructor(graph: Graph) {
     this.graph = graph;
@@ -25,8 +25,7 @@ export class ExcalidrawExporter implements FeakinExporter {
 
     this.graph.nodes.forEach(node => {
       const rectangle: any = this.createNode(node);
-      root.elements.push(rectangle);
-      this.nodeCaches.set(rectangle.id, node);
+      this.nodeCaches.set(rectangle.id, rectangle);
 
       if (node.label) {
         root.elements.push(this.createLabel(node, rectangle.id));
@@ -35,6 +34,10 @@ export class ExcalidrawExporter implements FeakinExporter {
 
     this.graph.edges.forEach(edge => {
       root.elements.push(this.createEdge(edge));
+    });
+
+    this.nodeCaches.forEach((node, _id) => {
+      root.elements.push(node);
     });
 
     return root;
@@ -145,6 +148,16 @@ export class ExcalidrawExporter implements FeakinExporter {
     let rPoints: [number, number][] = edge.points?.map(p => [p.x, p.y]) || [];
     if (rPoints.length == 0) {
       rPoints = this.reCalculateEdgePoints(edge);
+    }
+
+    const sourceNode = this.nodeCaches.get(<string>edge.data?.source);
+    if (edge.data?.source && sourceNode != undefined) {
+      sourceNode.boundElements.push(edge.id);
+    }
+
+    const targetNode = this.nodeCaches.get(<string>edge.data?.target);
+    if (edge.data?.source && targetNode != undefined) {
+      targetNode.boundElements.push(edge.id);
     }
 
     Object.assign(baseEdge, {
