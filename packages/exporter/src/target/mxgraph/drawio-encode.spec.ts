@@ -40,15 +40,4 @@ describe('DrawioEncoder', () => {
     const xmlInJson: MxGraph | any = DrawioEncode.xml2obj(sampleStr!);
     expect(xmlInJson.mxfile.attributes).toBeDefined();
   });
-
-  it('decode for relations', () => {
-    const drawioFile = path.resolve(pwd!, "./_fixtures/drawio/android-ag.drawio");
-    const data = fs.readFileSync(drawioFile, { encoding: 'utf8', flag: 'r' });
-
-    const encoded: Mxfile | any = DrawioEncode.decodeXml(data!);
-    const graph: MxGraph | any = DrawioEncode.xml2obj(encoded!);
-
-    const cells: MXCell[] = graph.mxGraphModel.root.mxCell;
-    console.log(JSON.stringify(cells, null, 2));
-  });
 });

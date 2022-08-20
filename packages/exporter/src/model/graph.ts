@@ -34,13 +34,13 @@ export interface ElementProperty {
  * and an edge is represented by a line or arrow extending from one vertex to another.
  */
 export interface Node extends Element, ElementProperty {
-  id?: number;
+  id?: string | number;
   // todo: add count for label position ?
   label: string | undefined;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
   data?: NodeData;
 }
 
@@ -54,8 +54,9 @@ export interface Node extends Element, ElementProperty {
  * vertices x and y is sometimes written xy.
  */
 export interface Edge extends Element, ElementProperty {
+  id?: string | number;
   label?: string;
-  points: Point[];
+  points?: Point[];
   data?: EdgeData;
 }
 
