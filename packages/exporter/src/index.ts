@@ -57,4 +57,15 @@ export * from './target/mxgraph/drawio-wrapper';
 export * from './target/mxgraph/drawio-encode';
 export * from './target/mxgraph/mxgraph.d';
 export * from './target/mxgraph/xml-converter';
+export { CellStateStyle } from "./target/mxgraph/cell-state-style";
+export { ShapeValue } from "./target/mxgraph/cell-state-style";
+export { ArrowType } from "./target/mxgraph/cell-state-style";
+export { WhiteSpaceValue } from "./target/mxgraph/cell-state-style";
+export { OverflowValue } from "./target/mxgraph/cell-state-style";
+export { VAlignValue } from "./target/mxgraph/cell-state-style";
+export { AlignValue } from "./target/mxgraph/cell-state-style";
+export { TextDirectionValue } from "./target/mxgraph/cell-state-style";
+export { DirectionValue } from "./target/mxgraph/cell-state-style";
+export { ColorValue } from "./target/mxgraph/cell-state-style";
+export { DIRECTION } from "./target/mxgraph/cell-state-style";
 

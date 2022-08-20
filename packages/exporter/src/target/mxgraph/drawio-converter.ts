@@ -1,5 +1,6 @@
 import { MXCell, MxGraph } from "./mxgraph";
 import { Edge, Graph, Node } from "../../model/graph";
+import { CellStateStyle } from "./cell-state-style";
 
 export class DrawioConverter {
   private graph: MxGraph;
@@ -28,7 +29,7 @@ export class DrawioConverter {
     return filtered;
   }
 
-  parseStyle(style: string): any {
+  parseStyle(style: string): CellStateStyle {
     const styles = style.split(";");
     const parsed: any = {};
 
