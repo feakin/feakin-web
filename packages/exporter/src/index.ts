@@ -54,7 +54,7 @@ export * from './target/drawio';
 export * from './target/excalidraw';
 export * from './target/exporter';
 export * from './target/mxgraph/drawio-wrapper';
-export * from './target/mxgraph/mxgraph-encode';
+export * from './target/mxgraph/drawio-encode';
 export * from './target/mxgraph/mxgraph.d';
 export * from './target/mxgraph/xml-converter';
 

@@ -1,5 +1,5 @@
 import { MXCell, MxFileRoot, MxGraph } from "./mxgraph";
-import MxGraphEncode from "./mxgraph-encode";
+import DrawioEncode from "./drawio-encode";
 import { js2xml } from "./xml-converter";
 import { Node } from "../../model/graph";
 
@@ -56,7 +56,7 @@ export class DrawIoWrapper {
     return {
       mxfile: {
         diagram: {
-          _text: MxGraphEncode.encode(js2xml(graph))
+          _text: DrawioEncode.encode(js2xml(graph))
         }
       }
     };

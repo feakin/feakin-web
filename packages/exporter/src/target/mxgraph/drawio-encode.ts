@@ -3,20 +3,20 @@ import * as pako from 'pako';
 import { xml2js } from './xml-converter';
 import { text } from "cheerio";
 
-const MxGraphEncode = {
+const DrawioEncode = {
   xml2obj: xml2js,
   parseXml: (xml: string) => {
     const $ = cheerio.load(xml);
     return $;
   },
   decodeXml: (source: string) => {
-    const $ = MxGraphEncode.parseXml(source);
+    const $ = DrawioEncode.parseXml(source);
     const mxfile = $('mxfile');
     if (mxfile) {
       const diagrams = text($('mxfile diagram'));
 
       if (diagrams.length > 0) {
-        return MxGraphEncode.decode(diagrams);
+        return DrawioEncode.decode(diagrams);
       }
     }
 
@@ -34,7 +34,7 @@ const MxGraphEncode = {
   encode: (source: string) => {
     const data = encodeURIComponent(source);
     const compressed = pako.deflateRaw(data);
-    const base64 = btoa(MxGraphEncode.arrayBufferToString(compressed));
+    const base64 = btoa(DrawioEncode.arrayBufferToString(compressed));
     return base64;
   },
   arrayBufferToString: (array: ArrayBuffer) => {
@@ -47,4 +47,4 @@ const MxGraphEncode = {
   },
 };
 
-export default MxGraphEncode;
+export default DrawioEncode;

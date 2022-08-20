@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 import { wrapperToDrawIo } from "./drawio-wrapper";
-import MxGraphEncode from "./mxgraph-encode";
+import DrawioEncode from "./drawio-encode";
 import { MXCell, MxGraph } from "./mxgraph";
 
 describe('DrawIO Wrapper', () => {
@@ -9,8 +9,8 @@ describe('DrawIO Wrapper', () => {
     const drawioFile = wrapperToDrawIo();
     fs.writeFileSync('./test.drawio', drawioFile);
 
-    const data = MxGraphEncode.decodeXml(drawioFile);
-    const xmlInJson: MxGraph = MxGraphEncode.xml2obj(data!) as never;
+    const data = DrawioEncode.decodeXml(drawioFile);
+    const xmlInJson: MxGraph = DrawioEncode.xml2obj(data!) as never;
     const mxCell: MXCell[] = xmlInJson.mxGraphModel.root.mxCell;
 
     expect(mxCell.length).toBe(2);
