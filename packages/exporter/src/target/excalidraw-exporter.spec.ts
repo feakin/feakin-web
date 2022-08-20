@@ -19,6 +19,12 @@ describe('ExcalidrawExporter', () => {
     mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
   });
 
+  beforeEach(() => {
+    if (!fs.existsSync("test")) {
+      fs.mkdirSync('test');
+    }
+  });
+
   it('exporter', () => {
     const drawioConverter = new DrawioConverter(mxGraph);
     const graph: Graph = drawioConverter.convert();

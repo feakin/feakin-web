@@ -59,7 +59,7 @@ export interface Node extends Element, ElementProperty {
 export interface Edge extends Element, ElementProperty {
   id?: string | number;
   label?: string;
-  points?: Point[];
+  points: Point[];
   data?: EdgeData;
 }
 
