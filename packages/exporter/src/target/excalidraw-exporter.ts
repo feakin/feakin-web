@@ -1,6 +1,7 @@
 import { FeakinExporter } from './exporter';
-import { Graph, Node } from '../model/graph';
+import { Edge, Graph, Node } from '../model/graph';
 import { randomInteger } from '../renderer/drawn-style/rough-seed';
+import { Point } from "../model/geometry/point";
 
 export interface ExportedDataState {
   type: string;
@@ -27,6 +28,10 @@ export class ExcalidrawExporter implements FeakinExporter {
       if (node.label) {
         root.elements.push(this.createLabel(node, rectangle.id));
       }
+    });
+
+    this.graph.edges.forEach(edge => {
+      root.elements.push(this.createEdge(edge));
     });
 
     return root;
@@ -62,12 +67,13 @@ export class ExcalidrawExporter implements FeakinExporter {
     const labelNode = this.createBaseNode(node);
     labelNode.type = "text";
     Object.assign(labelNode, {
+      id: node.id + randomInteger().toString(),
       text: node.label,
-      fontSize: 20,
-      fontFamily: 3,
+      fontSize: 12,
+      fontFamily: 1,
       textAlign: "left",
       verticalAlign: "top",
-      baseline: 18,
+      baseline: 12,
       containerId: id,
       originalText: node.label
     });
@@ -102,5 +108,56 @@ export class ExcalidrawExporter implements FeakinExporter {
       link: null,
       locked: false,
     };
+  }
+
+  private createEdge(edge: Edge) {
+    const points: Point[] = edge?.points || [];
+    const baseEdge = {
+      id: edge.id,
+      type: 'arrow',
+      x: points[0]?.x || 0,
+      y: points[0]?.y || 0,
+      width: edge?.width || 0,
+      height: edge?.height || 0,
+      angle: 0,
+      strokeColor: '#000000',
+      backgroundColor: 'transparent',
+      fillStyle: 'hachure',
+      strokeWidth: 1,
+      strokeStyle: 'solid',
+      roughness: 2,
+      opacity: 100,
+      groupIds: [],
+      strokeSharpness: "round",
+      seed: randomInteger(),
+      version: 390,
+      versionNonce: 0,
+      isDeleted: false,
+      boundElements: null,
+      updated: Date.now(),
+      link: null,
+      locked: false,
+    }
+
+    const rPoints: [number, number][] = edge.points?.map(p => [p.x, p.y]) || [];
+
+    Object.assign(baseEdge, {
+      startBinding: {
+        elementId: edge.data?.source,
+        focus: 0.05,
+        gap: 1
+      },
+      endBinding: {
+        elementId: edge.data?.target,
+        focus: 0.05,
+        gap: 1
+      },
+      points: rPoints,
+      lastCommittedPoint: null,
+      startArrowhead: null,
+      endArrowhead: "arrow"
+    })
+
+    return baseEdge
   }
 }

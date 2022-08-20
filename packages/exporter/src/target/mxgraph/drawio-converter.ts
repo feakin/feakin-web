@@ -57,6 +57,8 @@ export class DrawioConverter extends Converter implements FeakinConverter {
       data: {
         source: attrs.source!,
         target: attrs.target!,
+        width: parseFloat(String(cell?.mxGeometry?.attributes?.width || 0)),
+        height: parseFloat(String(cell?.mxGeometry?.attributes?.height || 0)),
       }
     };
   }
@@ -69,8 +71,8 @@ export class DrawioConverter extends Converter implements FeakinConverter {
 
     return mxPoint?.map((point: any) => {
       return {
-        x: point.attributes.x,
-        y: point.attributes.y
+        x: parseFloat(point.attributes.x || 0),
+        y: parseFloat(point.attributes.y || 0)
       }
     }) || [];
   }
