@@ -19,7 +19,7 @@ export type AlignValue = 'left' | 'center' | 'right';
 export type VAlignValue = 'top' | 'middle' | 'bottom';
 export type OverflowValue = 'fill' | 'width' | 'auto' | 'hidden' | 'scroll' | 'visible';
 export type WhiteSpaceValue = 'normal' | 'wrap' | 'nowrap' | 'pre';
-export type ArrowType =
+export type MxArrowType =
   | 'none'
   | 'classic'
   | 'classicThin'
@@ -69,7 +69,7 @@ export type CellStateStyle = {
   edgeStyle?: string;
   editable?: boolean;
   elbow?: string;
-  endArrow?: ArrowType;
+  endArrow?: MxArrowType;
   endFill?: boolean;
   endSize?: number;
   entryDx?: number;
@@ -155,7 +155,7 @@ export type CellStateStyle = {
   spacingLeft?: number;
   spacingRight?: number;
   spacingTop?: number;
-  startArrow?: ArrowType;
+  startArrow?: MxArrowType;
   startFill?: boolean;
   startSize?: number;
   strokeColor?: ColorValue;
