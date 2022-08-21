@@ -20,6 +20,7 @@ todos:
     - [ ] [Fabric.js](https://github.com/fabricjs/fabric.js) SVG-to-Canvas (& canvas-to-SVG) Parser
   - [ ] Style
     - [x] [roughjs](https://github.com/rough-stuff/rough): sketchy, hand-drawn-like, style
+    - [ ] [perfect freehand](https://github.com/steveruizok/perfect-freehand)
 - [ ] Editor
   - [ ] text Editor with Monaco Editor
   - [ ] interactive Editor with Graphical Editor

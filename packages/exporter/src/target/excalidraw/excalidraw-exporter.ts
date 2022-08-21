@@ -1,8 +1,12 @@
 import { FeakinExporter } from '../exporter';
 import { Edge, Graph, Node, NodeExt } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
-import { calculateFocusAndGap, intersectElementWithLine } from "./collision";
+import {
+  calculateFocusAndGap,
+  intersectElementWithLine,
+} from "./collision";
 import { FontString, measureText } from "./text-utils";
+import { ExPoint } from "./excalidraw-types";
 
 export interface ExportedDataState {
   type: string;
@@ -161,7 +165,8 @@ export class ExcalidrawExporter implements FeakinExporter {
       updated: Date.now(),
       link: null,
       locked: false,
-    }
+      points: []
+    } as any;
 
     const rPoints = this.reCalculateEdgePoints(edge);
 
@@ -181,11 +186,21 @@ export class ExcalidrawExporter implements FeakinExporter {
       });
     }
 
-    // const sourceIntersect = intersectElementWithLine(sourceNode, rPoints[0], rPoints[1]);
-    // const targetIntersect = intersectElementWithLine(targetNode, rPoints[0], rPoints[1]);
+    Object.assign(baseEdge, {
+      points: rPoints,
+    });
+
+    // todo: count by source and target for relations
+    // const sourceIntersect: ExPoint[] = intersectElementWithLine(sourceNode, rPoints[0], rPoints[1]);
+    // const targetIntersect: ExPoint[] = intersectElementWithLine(targetNode, rPoints[0], rPoints[1]);
+    // console.log(rPoints);
+    // console.log(sourceIntersect, targetIntersect);
+    //
+    // function abs(point: ExPoint) {
+    //   return [Math.abs(point[0]), Math.abs(point[1])];
+    // }
 
     Object.assign(baseEdge, {
-      // points: [sourceIntersect[0], targetIntersect[0]],
       points: rPoints,
       lastCommittedPoint: null,
       startArrowhead: null,

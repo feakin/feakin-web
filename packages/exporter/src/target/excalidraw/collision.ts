@@ -83,7 +83,7 @@ export const rotate = (
     (x1 - x2) * Math.sin(angle) + (y1 - y2) * Math.cos(angle) + y2,
   ];
 
-const getPointAtIndexGlobalCoordinates = (
+export const getPointAtIndexGlobalCoordinates = (
   element: NonDeleted<ExcalidrawLinearElement>,
   indexMaybeFromEnd: number, // -1 for last element
 ): ExPoint => {
@@ -480,4 +480,101 @@ const getSortedElementLineIntersections = (
     sortedIntersections[0],
     sortedIntersections[sortedIntersections.length - 1],
   ];
+};
+
+export const determineFocusPoint = (
+  element: ExcalidrawBindableElement,
+  // The oriented, relative distance from the center of `element` of the
+  // returned focusPoint
+  focus: number,
+  adjecentPoint: ExPoint,
+): ExPoint => {
+  if (focus === 0) {
+    const elementCoords = getElementAbsoluteCoords(element);
+    const center = coordsCenter(elementCoords);
+    return GAPoint.toTuple(center);
+  }
+  const relateToCenter = relativizationToElementCenter(element);
+  const adjecentPointRel = GATransform.apply(
+    relateToCenter,
+    GAPoint.from(adjecentPoint),
+  );
+  const reverseRelateToCenter = GA.reverse(relateToCenter);
+  let point;
+  switch (element.type) {
+    case "rectangle":
+    case "image":
+    case "text":
+    case "diamond":
+      point = findFocusPointForRectangulars(element, focus, adjecentPointRel);
+      break;
+    case "ellipse":
+      point = findFocusPointForEllipse(element, focus, adjecentPointRel);
+      break;
+  }
+  return GAPoint.toTuple(GATransform.apply(reverseRelateToCenter, point));
+};
+
+export const findFocusPointForRectangulars = (
+  element:
+    | ExcalidrawRectangleElement
+    | ExcalidrawImageElement
+    | ExcalidrawDiamondElement
+    | ExcalidrawTextElement,
+  // Between -1 and 1 for how far away should the focus point be relative
+  // to the size of the element. Sign determines orientation.
+  relativeDistance: number,
+  // The point for which we're trying to find the focus point, relative
+  // to the element center.
+  point: GA.Point,
+): GA.Point => {
+  const relativeDistanceAbs = Math.abs(relativeDistance);
+  const orientation = Math.sign(relativeDistance);
+  const corners = getCorners(element, relativeDistanceAbs);
+
+  let maxDistance = 0;
+  let tangentPoint: null | GA.Point = null;
+  corners.forEach((corner) => {
+    const distance = orientation * GALine.through(point, corner)[1];
+    if (distance > maxDistance) {
+      maxDistance = distance;
+      tangentPoint = corner;
+    }
+  });
+  return tangentPoint!;
+};
+
+
+// The focus point is the tangent point of the "focus image" of the
+// `element`, where the tangent goes through `point`.
+export const findFocusPointForEllipse = (
+  ellipse: ExcalidrawEllipseElement,
+  // Between -1 and 1 (not 0) the relative size of the "focus image" of
+  // the element on which the focus point lies
+  relativeDistance: number,
+  // The point for which we're trying to find the focus point, relative
+  // to the ellipse center.
+  point: GA.Point,
+): GA.Point => {
+  const relativeDistanceAbs = Math.abs(relativeDistance);
+  const a = (ellipse.width * relativeDistanceAbs) / 2;
+  const b = (ellipse.height * relativeDistanceAbs) / 2;
+
+  const orientation = Math.sign(relativeDistance);
+  const [px, pyo] = GAPoint.toTuple(point);
+
+  // The calculation below can't handle py = 0
+  const py = pyo === 0 ? 0.0001 : pyo;
+
+  const squares = px ** 2 * b ** 2 + py ** 2 * a ** 2;
+  // Tangent mx + ny + 1 = 0
+  const m =
+    (-px * b ** 2 +
+      orientation * py * Math.sqrt(Math.max(0, squares - a ** 2 * b ** 2))) /
+    squares;
+
+  const n = (-m * px - 1) / py;
+
+  const x = -(a ** 2 * m) / (n ** 2 * b ** 2 + m ** 2 * a ** 2);
+  return GA.point(x, (-m * x - 1) / n);
 };
