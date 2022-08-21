@@ -2,6 +2,7 @@ import { FeakinExporter } from '../exporter';
 import { Edge, Graph, Node, NodeExt } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import { calculateFocusAndGap } from "./collision";
+import { FontString, measureText } from "./text-utils";
 
 export interface ExportedDataState {
   type: string;
@@ -94,6 +95,12 @@ export class ExcalidrawExporter implements FeakinExporter {
       originalText: node.label
     });
 
+    const metrics = measureText(node.label!, "20px sans-serif" as FontString);
+    if(metrics.width != 0) {
+      labelNode.width = metrics.width;
+      labelNode.height = metrics.height;
+    }
+
     return labelNode;
   }
 
@@ -148,7 +155,7 @@ export class ExcalidrawExporter implements FeakinExporter {
       version: 205,
       versionNonce: 0,
       isDeleted: false,
-      boundElements: null,
+      boundElements: [],
       updated: Date.now(),
       link: null,
       locked: false,
