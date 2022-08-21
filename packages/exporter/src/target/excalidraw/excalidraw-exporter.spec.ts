@@ -19,6 +19,16 @@ describe('ExcalidrawExporter', () => {
     }
   });
 
+  it('source and target', () => {
+    const drawioConverter = DrawioConverter.fromFile('_fixtures/drawio/source-target.drawio');
+    const graph: Graph = drawioConverter.convert();
+
+    const exporter = new ExcalidrawExporter(graph).export();
+
+    console.log(exporter);
+    expect(exporter).toBeDefined();
+  });
+
   it('exporter', () => {
     const drawioConverter = new DrawioConverter(mxGraph);
     const graph: Graph = drawioConverter.convert();
