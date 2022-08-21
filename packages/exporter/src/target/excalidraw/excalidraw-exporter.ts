@@ -1,7 +1,6 @@
 import { FeakinExporter } from '../exporter';
 import { Edge, Graph, Node, NodeExt } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
-import { Point } from "../../model/geometry/point";
 import { calculateFocusAndGap } from "./collision";
 
 export interface ExportedDataState {
@@ -15,7 +14,8 @@ export interface ExportedDataState {
 
 export class ExcalidrawExporter implements FeakinExporter {
   graph: Graph;
-  nodeCaches: Map<string, any> = new Map<string, any>();
+  originNodeCaches: Map<string, Node> = new Map<string, Node>();
+  createdNodeCaches: Map<string, any> = new Map<string, any>();
 
   constructor(graph: Graph) {
     this.graph = graph;
@@ -26,19 +26,21 @@ export class ExcalidrawExporter implements FeakinExporter {
 
     this.graph.nodes.forEach(node => {
       const rectangle: any = this.createNode(node);
-      this.nodeCaches.set(rectangle.id, rectangle);
-
-      if (node.label) {
-        root.elements.push(this.createLabel(node, rectangle.id));
-      }
+      this.originNodeCaches.set(<string>node.id, node);
+      this.createdNodeCaches.set(rectangle.id, rectangle);
     });
 
     this.graph.edges.forEach(edge => {
       root.elements.push(this.createEdge(edge));
     });
 
-    this.nodeCaches.forEach((node, _id) => {
+    this.createdNodeCaches.forEach((node, _id) => {
       root.elements.push(node);
+
+      const originNode = this.originNodeCaches.get(<string>node.id);
+      if (originNode?.label) {
+        root.elements.push(this.createLabel(originNode, node.id));
+      }
     });
 
     return root;
@@ -67,14 +69,18 @@ export class ExcalidrawExporter implements FeakinExporter {
   }
 
   createNode(node: Node): object {
-    return this.createBaseNode(node);
+    return {
+      ...this.createBaseNode(node),
+      // a placeholder for checking if the node is a text node
+      text: node.label
+    };
   }
 
   createLabel(node: Node, id?: number): object {
     const labelNode = this.createBaseNode(node);
     labelNode.type = "text";
     Object.assign(labelNode, {
-      id: node.id + randomInteger().toString(),
+      id: node.id + "-" + randomInteger().toString(),
       text: node.label,
       fontSize: 12,
       fontFamily: 1,
@@ -147,7 +153,7 @@ export class ExcalidrawExporter implements FeakinExporter {
 
     const rPoints = this.reCalculateEdgePoints(edge);
 
-    const sourceNode = this.nodeCaches.get(<string>edge.data?.source);
+    const sourceNode = this.createdNodeCaches.get(<string>edge.data?.source);
     if (edge.data?.source && sourceNode != undefined) {
       sourceNode.boundElements.push({
         id: edge.id,
@@ -155,8 +161,8 @@ export class ExcalidrawExporter implements FeakinExporter {
       });
     }
 
-    const targetNode = this.nodeCaches.get(<string>edge.data?.target);
-    if (edge.data?.source && targetNode != undefined) {
+    const targetNode = this.createdNodeCaches.get(<string>edge.data?.target);
+    if (edge.data?.target && targetNode != undefined) {
       targetNode.boundElements.push({
         id: edge.id,
         type: "arrow"
@@ -202,8 +208,8 @@ export class ExcalidrawExporter implements FeakinExporter {
 
   private reCalculateEdgePoints(edge: Edge): [number, number][] {
     let rPoints: [number, number][] = [];
-    const source: Node | undefined = this.nodeCaches.get(<string>edge.data?.source);
-    const target: Node | undefined = this.nodeCaches.get(<string>edge.data?.target);
+    const source: Node | undefined = this.createdNodeCaches.get(<string>edge.data?.source);
+    const target: Node | undefined = this.createdNodeCaches.get(<string>edge.data?.target);
     if (source && target) {
       const start = NodeExt.getCenter(source);
       const end = NodeExt.getCenter(target);

@@ -8,11 +8,15 @@ import { Graph } from "../../model/graph";
 describe('ExcalidrawExporter', () => {
   let mxGraph: MxGraph;
 
+  const drawioConverter = DrawioConverter.fromFile('_fixtures/drawio/source-target.drawio');
+  const sourceTargetGraph: Graph = drawioConverter.convert();
+
   beforeAll(() => {
     const data = fs.readFileSync('_fixtures/drawio/android-ag.drawio', 'utf8');
 
     const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
     mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
+
 
     if (!fs.existsSync("test")) {
       fs.mkdirSync('test');
@@ -20,10 +24,7 @@ describe('ExcalidrawExporter', () => {
   });
 
   it('source and target', () => {
-    const drawioConverter = DrawioConverter.fromFile('_fixtures/drawio/source-target.drawio');
-    const graph: Graph = drawioConverter.convert();
-
-    const exporter = new ExcalidrawExporter(graph).export();
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
 
     expect(exporter).toBeDefined();
     expect(exporter.elements.length).toBe(5);
@@ -32,6 +33,13 @@ describe('ExcalidrawExporter', () => {
     expect(arrows[0].startBinding).toBeDefined();
     expect(arrows[0].endBinding).toBeDefined();
     fs.writeFileSync('./test/source-target.excalidraw', JSON.stringify(exporter, null, 2));
+  });
+
+  it('text id', () => {
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
+
+    const lastElement = exporter.elements[exporter.elements.length - 1];
+    expect(lastElement.text).toEqual('B');
   });
 
   it('exporter', () => {
