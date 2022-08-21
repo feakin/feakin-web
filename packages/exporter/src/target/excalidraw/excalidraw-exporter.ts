@@ -7,6 +7,7 @@ import {
 } from "./collision";
 import { FontString, measureText } from "./text-utils";
 import { ExPoint } from "./excalidraw-types";
+import { getElementBounds } from "./bounds";
 
 export interface ExportedDataState {
   type: string;
@@ -190,6 +191,7 @@ export class ExcalidrawExporter implements FeakinExporter {
       points: rPoints,
     });
 
+    // console.log(getElementBounds(sourceNode));
     // todo: count by source and target for relations
     // const sourceIntersect: ExPoint[] = intersectElementWithLine(sourceNode, rPoints[0], rPoints[1]);
     // const targetIntersect: ExPoint[] = intersectElementWithLine(targetNode, rPoints[0], rPoints[1]);

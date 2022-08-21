@@ -29,15 +29,16 @@
 // The line going through `a` and `b` is a tangent to the "focus image"
 // of the element.
 import {
-  ExPoint,
   ExcalidrawBindableElement,
+  ExcalidrawDiamondElement,
   ExcalidrawElement,
+  ExcalidrawEllipseElement,
+  ExcalidrawImageElement,
+  ExcalidrawLinearElement,
   ExcalidrawRectangleElement,
   ExcalidrawTextElement,
-  ExcalidrawImageElement,
-  ExcalidrawDiamondElement,
-  ExcalidrawEllipseElement,
-  ExcalidrawLinearElement, NonDeleted
+  ExPoint,
+  NonDeleted
 } from "./excalidraw-types";
 
 import * as GA from "./ga/ga";
@@ -45,6 +46,8 @@ import * as GAPoint from "./ga/gapoints";
 import * as GADirection from "./ga/gadirections";
 import * as GALine from "./ga/galines";
 import * as GATransform from "./ga/gatransforms";
+import { getElementAbsoluteCoords } from "./bounds";
+import { rotate } from "./math";
 
 export const calculateFocusAndGap = (
   linearElement: NonDeleted<ExcalidrawLinearElement>,
@@ -67,21 +70,6 @@ export const calculateFocusAndGap = (
     gap: Math.max(1, distanceToBindableElement(hoveredElement, edgePoint)),
   };
 };
-
-export const rotate = (
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  angle: number,
-): [number, number] =>
-  // 𝑎′𝑥=(𝑎𝑥−𝑐𝑥)cos𝜃−(𝑎𝑦−𝑐𝑦)sin𝜃+𝑐𝑥
-  // 𝑎′𝑦=(𝑎𝑥−𝑐𝑥)sin𝜃+(𝑎𝑦−𝑐𝑦)cos𝜃+𝑐𝑦.
-  // https://math.stackexchange.com/questions/2204520/how-do-i-rotate-a-line-segment-in-a-specific-point-on-the-line
-  [
-    (x1 - x2) * Math.cos(angle) - (y1 - y2) * Math.sin(angle) + x2,
-    (x1 - x2) * Math.sin(angle) + (y1 - y2) * Math.cos(angle) + y2,
-  ];
 
 export const getPointAtIndexGlobalCoordinates = (
   element: NonDeleted<ExcalidrawLinearElement>,
@@ -167,24 +155,6 @@ const coordsCenter = ([ax, ay, bx, by]: Bounds): GA.Point => {
 
 // x and y position of top left corner, x and y position of bottom right corner
 export type Bounds = readonly [number, number, number, number];
-
-// If the element is created from right to left, the width is going to be negative
-// This set of functions retrieves the absolute position of the 4 points.
-export const getElementAbsoluteCoords = (
-  element: ExcalidrawElement,
-): Bounds => {
-  // if (isFreeDrawElement(element)) {
-  //   return getFreeDrawElementAbsoluteCoords(element);
-  // } else if (isLinearElement(element)) {
-  //   return getLinearElementAbsoluteCoords(element);
-  // }
-  return [
-    element.x,
-    element.y,
-    element.x + element.width,
-    element.y + element.height,
-  ];
-};
 
 const distanceToRectangle = (
   element:
