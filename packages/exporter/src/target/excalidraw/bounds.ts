@@ -23,7 +23,7 @@
  *
  */
 
-import { ExcalidrawElement, ExcalidrawLinearElement, ExPoint } from "@feakin/exporter";
+import { ExcalidrawElement, ExcalidrawFreeDrawElement, ExcalidrawLinearElement, ExPoint } from "@feakin/exporter";
 import { Bounds } from "./collision";
 import { rotate } from "./math";
 import { isFreeDrawElement, isLinearElement } from "./type-check";
@@ -169,17 +169,76 @@ export const getCommonBounds = (
 export const getElementAbsoluteCoords = (
   element: ExcalidrawElement,
 ): Bounds => {
-  // if (isFreeDrawElement(element)) {
-  //   return getFreeDrawElementAbsoluteCoords(element);
-  // } else if (isLinearElement(element)) {
-  //   return getLinearElementAbsoluteCoords(element);
-  // }
+  if (isFreeDrawElement(element)) {
+    return getFreeDrawElementAbsoluteCoords(element);
+  } else if (isLinearElement(element)) {
+    return getLinearElementAbsoluteCoords(element);
+  }
+
   return [
     element.x,
     element.y,
     element.x + element.width,
     element.y + element.height,
   ];
+};
+
+
+const getFreeDrawElementAbsoluteCoords = (
+  element: ExcalidrawFreeDrawElement,
+): [number, number, number, number] => {
+  const [minX, minY, maxX, maxY] = getBoundsFromPoints(element.points);
+
+  return [
+    minX + element.x,
+    minY + element.y,
+    maxX + element.x,
+    maxY + element.y,
+  ];
+};
+
+const getLinearElementAbsoluteCoords = (
+  element: ExcalidrawLinearElement,
+): [number, number, number, number] => {
+  let coords: [number, number, number, number];
+
+  if (element.points.length < 2 || !getShapeForElement(element)) {
+    // XXX this is just a poor estimate and not very useful
+    const { minX, minY, maxX, maxY } = element.points.reduce(
+      (limits, [x, y]) => {
+        limits.minY = Math.min(limits.minY, y);
+        limits.minX = Math.min(limits.minX, x);
+
+        limits.maxX = Math.max(limits.maxX, x);
+        limits.maxY = Math.max(limits.maxY, y);
+
+        return limits;
+      },
+      { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity },
+    );
+    coords = [
+      minX + element.x,
+      minY + element.y,
+      maxX + element.x,
+      maxY + element.y,
+    ];
+  } else {
+    const shape = getShapeForElement(element)!;
+
+    // first element is always the curve
+    const ops = getCurvePathOps(shape[0]);
+
+    const [minX, minY, maxX, maxY] = getMinMaxXYFromCurvePathOps(ops);
+
+    coords = [
+      minX + element.x,
+      minY + element.y,
+      maxX + element.x,
+      maxY + element.y,
+    ];
+  }
+
+  return coords;
 };
 
 const getMinMaxXYFromCurvePathOps = (
@@ -320,7 +379,7 @@ const getBezierValueForT = (
 };
 
 const getBoundsFromPoints = (
-  points: ExPoint[],
+  points: ExcalidrawFreeDrawElement["points"],
 ): [number, number, number, number] => {
   let minX = Infinity;
   let minY = Infinity;
