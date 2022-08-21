@@ -38,8 +38,8 @@ describe('ExcalidrawExporter', () => {
   it('text id', () => {
     const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
 
-    const lastElement = exporter.elements[exporter.elements.length - 1];
-    expect(lastElement.text).toEqual('B');
+    const textElements = exporter.elements.filter(e => e.type === 'text');
+    expect(textElements[0].text).toEqual('A');
   });
 
   it('exporter', () => {
