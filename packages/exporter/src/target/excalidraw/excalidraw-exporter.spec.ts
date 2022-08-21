@@ -25,8 +25,12 @@ describe('ExcalidrawExporter', () => {
 
     const exporter = new ExcalidrawExporter(graph).export();
 
-    console.log(JSON.stringify(exporter, null, 2));
     expect(exporter).toBeDefined();
+    expect(exporter.elements.length).toBe(5);
+
+    const arrows = exporter.elements.filter(e => e.type === 'arrow');
+    expect(arrows[0].startBinding).toBeDefined();
+    expect(arrows[0].endBinding).toBeDefined();
     fs.writeFileSync('./test/source-target.excalidraw', JSON.stringify(exporter, null, 2));
   });
 
