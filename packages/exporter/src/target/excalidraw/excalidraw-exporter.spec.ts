@@ -5,10 +5,19 @@ import { DrawioConverter } from "../mxgraph/drawio-converter";
 import { ExcalidrawExporter } from "./excalidraw-exporter";
 import { Graph } from "../../model/graph";
 
+function fromFile(path: string): DrawioConverter {
+  const data = fs.readFileSync(path, 'utf8');
+
+  const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
+  const mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
+
+  return new DrawioConverter(mxGraph);
+}
+
 describe('ExcalidrawExporter', () => {
   let mxGraph: MxGraph;
 
-  const drawioConverter = DrawioConverter.fromFile('_fixtures/drawio/source-target.drawio');
+  const drawioConverter = fromFile('_fixtures/drawio/source-target.drawio');
   const sourceTargetGraph: Graph = drawioConverter.convert();
 
   beforeAll(() => {

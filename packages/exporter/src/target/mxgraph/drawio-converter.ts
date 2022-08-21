@@ -1,9 +1,7 @@
-import { MXCell, Mxfile, MxGraph } from "./mxgraph";
+import { MXCell, MxGraph } from "./mxgraph";
 import { Edge, Graph, Node } from "../../model/graph";
 import { CellStateStyle } from "./cell-state-style";
 import { Converter, FeakinConverter } from "../converter";
-import * as fs from "fs";
-import DrawioEncode from "./drawio-encode";
 
 export class DrawioConverter extends Converter implements FeakinConverter {
   private mxCells: MXCell[];
@@ -11,15 +9,6 @@ export class DrawioConverter extends Converter implements FeakinConverter {
   constructor(graph: MxGraph) {
     super(graph);
     this.mxCells = this.graph.mxGraphModel.root.mxCell;
-  }
-
-  static fromFile(path: string): DrawioConverter {
-    const data = fs.readFileSync(path, 'utf8');
-
-    const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
-    const mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
-
-    return new DrawioConverter(mxGraph);
   }
 
   convert(): Graph {
