@@ -195,7 +195,7 @@ export class ExcalidrawExporter implements FeakinExporter {
       },
 
       endBinding: {
-        targetElementId: edge.data?.target,
+        elementId: edge.data?.target,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         ...calculateFocusAndGap(baseEdge, targetNode, "end")
