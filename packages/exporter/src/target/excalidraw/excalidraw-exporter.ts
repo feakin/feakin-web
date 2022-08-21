@@ -2,6 +2,7 @@ import { FeakinExporter } from '../exporter';
 import { Edge, Graph, Node, NodeExt } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import { Point } from "../../model/geometry/point";
+import { calculateFocusAndGap } from "./collision";
 
 export interface ExportedDataState {
   type: string;
@@ -178,6 +179,22 @@ export class ExcalidrawExporter implements FeakinExporter {
       lastCommittedPoint: null,
       startArrowhead: null,
       endArrowhead: "arrow"
+    })
+
+    Object.assign(baseEdge, {
+      startBinding: {
+        elementId: edge.data?.source,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        ...calculateFocusAndGap(baseEdge, sourceNode, "start")
+      },
+
+      endBinding: {
+        targetElementId: edge.data?.target,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        ...calculateFocusAndGap(baseEdge, targetNode, "end")
+      },
     })
 
     return baseEdge

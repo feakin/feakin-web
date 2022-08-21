@@ -66,7 +66,7 @@ export class NodeExt {
  * vertices x and y is sometimes written xy.
  */
 export interface Edge extends Element, ElementProperty {
-  id?: string | number;
+  id: string;
   label?: string;
   points: Point[];
   data?: EdgeData;

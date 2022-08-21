@@ -25,8 +25,9 @@ describe('ExcalidrawExporter', () => {
 
     const exporter = new ExcalidrawExporter(graph).export();
 
-    console.log(exporter);
+    console.log(JSON.stringify(exporter, null, 2));
     expect(exporter).toBeDefined();
+    fs.writeFileSync('./test/source-target.excalidraw', JSON.stringify(exporter, null, 2));
   });
 
   it('exporter', () => {
