@@ -2,12 +2,12 @@ import { FeakinExporter } from '../exporter';
 import { Edge, Graph, Node, NodeExt } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import {
-  calculateFocusAndGap,
+  calculateFocusAndGap, determineFocusPoint, getPointAtIndexGlobalCoordinates,
   intersectElementWithLine,
 } from "./collision";
 import { FontString, measureText } from "./text-utils";
 import { ExPoint } from "./excalidraw-types";
-import { getElementBounds } from "./bounds";
+import { getCommonBounds, getElementBounds } from "./bounds";
 
 export interface ExportedDataState {
   type: string;
@@ -191,19 +191,11 @@ export class ExcalidrawExporter implements FeakinExporter {
       points: rPoints,
     });
 
-    // console.log(getElementBounds(sourceNode));
-    // todo: count by source and target for relations
-    // const sourceIntersect: ExPoint[] = intersectElementWithLine(sourceNode, rPoints[0], rPoints[1]);
-    // const targetIntersect: ExPoint[] = intersectElementWithLine(targetNode, rPoints[0], rPoints[1]);
-    // console.log(rPoints);
-    // console.log(sourceIntersect, targetIntersect);
-    //
-    // function abs(point: ExPoint) {
-    //   return [Math.abs(point[0]), Math.abs(point[1])];
-    // }
+    const intersections = this.reCalPoint(baseEdge, sourceNode, 'start');
+    const intersections2 = this.reCalPoint(baseEdge, targetNode, 'end');
 
     Object.assign(baseEdge, {
-      points: rPoints,
+      points: [intersections[0], intersections2[0]],
       lastCommittedPoint: null,
       startArrowhead: null,
       endArrowhead: "arrow"
@@ -226,6 +218,29 @@ export class ExcalidrawExporter implements FeakinExporter {
     })
 
     return baseEdge
+  }
+
+  private reCalPoint(baseEdge: any, sourceNode: any, startOrEnd: "start" | "end") {
+    const direction = startOrEnd === "start" ? -1 : 1;
+    const edgePointIndex = direction === -1 ? 0 : baseEdge.points.length - 1;
+    const adjacentPointIndex = edgePointIndex - direction;
+    const adjacentPoint = getPointAtIndexGlobalCoordinates(
+      baseEdge,
+      adjacentPointIndex,
+    );
+
+    const focusPointAbsolute = determineFocusPoint(
+      baseEdge,
+      0,
+      adjacentPoint,
+    );
+
+    const intersections = intersectElementWithLine(
+      sourceNode,
+      adjacentPoint,
+      focusPointAbsolute,
+    );
+    return intersections;
   }
 
   private reCalculateEdgePoints(edge: Edge): [number, number][] {
