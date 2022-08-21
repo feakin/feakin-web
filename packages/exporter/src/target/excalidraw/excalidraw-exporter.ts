@@ -69,11 +69,7 @@ export class ExcalidrawExporter implements FeakinExporter {
   }
 
   createNode(node: Node): object {
-    return {
-      ...this.createBaseNode(node),
-      // a placeholder for checking if the node is a text node
-      text: node.label
-    };
+    return this.createBaseNode(node);
   }
 
   createLabel(node: Node, id?: number): object {
@@ -170,17 +166,6 @@ export class ExcalidrawExporter implements FeakinExporter {
     }
 
     Object.assign(baseEdge, {
-      // todo: refs to excalidraw collision.ts for count focus and gap
-      // startBinding: {
-      //   elementId: edge.data?.source,
-      //   focus: 0.05,
-      //   gap: 1
-      // },
-      // endBinding: {
-      //   elementId: edge.data?.target,
-      //   focus: 0.05,
-      //   gap: 1
-      // },
       points: rPoints,
       lastCommittedPoint: null,
       startArrowhead: null,
