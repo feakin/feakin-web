@@ -66,14 +66,13 @@ export class NodeExt {
  * vertices x and y is sometimes written xy.
  */
 export interface Edge extends Element, ElementProperty {
-  id: string;
+  id?: string;
   label?: string;
   points: Point[];
   data?: EdgeData;
 }
 
 export interface NodeData extends ElementData {
-  id?: string | undefined;
   parent?: string | undefined;
   children?: string[];
 
@@ -81,7 +80,6 @@ export interface NodeData extends ElementData {
 }
 
 export interface EdgeData extends ElementData {
-  id?: string | undefined;
   source: string;
   target: string;
   type?: EdgeType;

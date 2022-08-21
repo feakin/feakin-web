@@ -153,7 +153,7 @@ export class ExcalidrawExporter implements FeakinExporter {
       strokeSharpness: "round",
       seed: randomInteger(),
       version: 205,
-      versionNonce: 0,
+      versionNonce: randomInteger(),
       isDeleted: false,
       boundElements: [],
       updated: Date.now(),

@@ -48,6 +48,7 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
   graph.edges().forEach(function (e) {
     const graphEdge: GraphEdge = graph.edge(e);
     edges.push({
+      id: "1",
       points: graphEdge.points,
     });
   });
