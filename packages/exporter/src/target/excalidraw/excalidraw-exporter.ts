@@ -99,6 +99,8 @@ export class ExcalidrawExporter implements FeakinExporter {
     if(metrics.width != 0) {
       labelNode.width = metrics.width;
       labelNode.height = metrics.height;
+    } else {
+      labelNode.height = 26;
     }
 
     return labelNode;
