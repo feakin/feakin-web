@@ -49,6 +49,11 @@ todos:
 npm install --legacy-peer-deps
 ```
 
+## Refs
+
+- [https://bivector.net/lib.html](https://bivector.net/lib.html)
+- [https://github.com/enkimute/ganja.js](https://github.com/enkimute/ganja.js)
+
 ## License
 
 - Flow parser based on [mermaid.js](https://github.com/mermaid-js/)
