@@ -293,3 +293,191 @@ const ellipseParamsForTest = (
   const tangent = GALine.orthogonalThrough(pointRel, closestPoint);
   return [pointRel, tangent];
 };
+
+
+// Returns 2 or 0 intersection points between line going through `a` and `b`
+// and the `element`, in ascending order of distance from `a`.
+export const intersectElementWithLine = (
+  element: ExcalidrawBindableElement,
+  // Point on the line, in absolute coordinates
+  a: ExPoint,
+  // Another point on the line, in absolute coordinates
+  b: ExPoint,
+  // If given, the element is inflated by this value
+  gap = 0,
+): ExPoint[] => {
+  const relateToCenter = relativizationToElementCenter(element);
+  const aRel = GATransform.apply(relateToCenter, GAPoint.from(a));
+  const bRel = GATransform.apply(relateToCenter, GAPoint.from(b));
+  const line = GALine.through(aRel, bRel);
+  const reverseRelateToCenter = GA.reverse(relateToCenter);
+  const intersections = getSortedElementLineIntersections(
+    element,
+    line,
+    aRel,
+    gap,
+  );
+  return intersections.map((point) =>
+    GAPoint.toTuple(GATransform.apply(reverseRelateToCenter, point)),
+  );
+};
+
+// Returns intersection of `line` with `segment`, with `segment` moved by
+// `gap` in its polar direction.
+// If intersection coincides with second segment point returns empty array.
+const intersectSegment = (
+  line: GA.Line,
+  segment: [GA.Point, GA.Point],
+): GA.Point[] => {
+  const [a, b] = segment;
+  const aDist = GAPoint.distanceToLine(a, line);
+  const bDist = GAPoint.distanceToLine(b, line);
+  if (aDist * bDist >= 0) {
+    // The intersection is outside segment `(a, b)`
+    return [];
+  }
+  return [GAPoint.intersect(line, GALine.through(a, b))];
+};
+
+const offsetSegment = (
+  segment: [GA.Point, GA.Point],
+  distance: number,
+): [GA.Point, GA.Point] => {
+  const [a, b] = segment;
+  const offset = GATransform.translationOrthogonal(
+    GADirection.fromTo(a, b),
+    distance,
+  );
+  return [GATransform.apply(offset, a), GATransform.apply(offset, b)];
+};
+
+const getEllipseIntersections = (
+  element: ExcalidrawEllipseElement,
+  gap: number,
+  line: GA.Line,
+): GA.Point[] => {
+  const a = element.width / 2 + gap;
+  const b = element.height / 2 + gap;
+  const m = line[2];
+  const n = line[3];
+  const c = line[1];
+  const squares = a * a * m * m + b * b * n * n;
+  const discr = squares - c * c;
+  if (squares === 0 || discr <= 0) {
+    return [];
+  }
+  const discrRoot = Math.sqrt(discr);
+  const xn = -a * a * m * c;
+  const yn = -b * b * n * c;
+  return [
+    GA.point(
+      (xn + a * b * n * discrRoot) / squares,
+      (yn - a * b * m * discrRoot) / squares,
+    ),
+    GA.point(
+      (xn - a * b * n * discrRoot) / squares,
+      (yn + a * b * m * discrRoot) / squares,
+    ),
+  ];
+};
+
+export const getCircleIntersections = (
+  center: GA.Point,
+  radius: number,
+  line: GA.Line,
+): GA.Point[] => {
+  if (radius === 0) {
+    return GAPoint.distanceToLine(line, center) === 0 ? [center] : [];
+  }
+  const m = line[2];
+  const n = line[3];
+  const c = line[1];
+  const [a, b] = GAPoint.toTuple(center);
+  const r = radius;
+  const squares = m * m + n * n;
+  const discr = r * r * squares - (m * a + n * b + c) ** 2;
+  if (squares === 0 || discr <= 0) {
+    return [];
+  }
+  const discrRoot = Math.sqrt(discr);
+  const xn = a * n * n - b * m * n - m * c;
+  const yn = b * m * m - a * m * n - n * c;
+
+  return [
+    GA.point((xn + n * discrRoot) / squares, (yn - m * discrRoot) / squares),
+    GA.point((xn - n * discrRoot) / squares, (yn + m * discrRoot) / squares),
+  ];
+};
+
+const getCorners = (
+  element:
+    | ExcalidrawRectangleElement
+    | ExcalidrawImageElement
+    | ExcalidrawDiamondElement
+    | ExcalidrawTextElement,
+  scale = 1,
+): GA.Point[] => {
+  const hx = (scale * element.width) / 2;
+  const hy = (scale * element.height) / 2;
+  switch (element.type) {
+    case "rectangle":
+    case "image":
+    case "text":
+      return [
+        GA.point(hx, hy),
+        GA.point(hx, -hy),
+        GA.point(-hx, -hy),
+        GA.point(-hx, hy),
+      ];
+    case "diamond":
+      return [
+        GA.point(0, hy),
+        GA.point(hx, 0),
+        GA.point(0, -hy),
+        GA.point(-hx, 0),
+      ];
+  }
+};
+
+const getSortedElementLineIntersections = (
+  element: ExcalidrawBindableElement,
+  // Relative to element center
+  line: GA.Line,
+  // Relative to element center
+  nearPoint: GA.Point,
+  gap = 0,
+): GA.Point[] => {
+  let intersections: GA.Point[];
+  switch (element.type) {
+    case "rectangle":
+    case "image":
+    case "text":
+    case "diamond":
+      // eslint-disable-next-line no-case-declarations
+      const corners = getCorners(element);
+      intersections = corners
+        .flatMap((point, i) => {
+          const edge: [GA.Point, GA.Point] = [point, corners[(i + 1) % 4]];
+          return intersectSegment(line, offsetSegment(edge, gap));
+        })
+        .concat(
+          corners.flatMap((point) => getCircleIntersections(point, gap, line)),
+        );
+      break;
+    case "ellipse":
+      intersections = getEllipseIntersections(element, gap, line);
+      break;
+  }
+  if (intersections.length < 2) {
+    // Ignore the "edge" case of only intersecting with a single corner
+    return [];
+  }
+  const sortedIntersections = intersections.sort(
+    (i1, i2) =>
+      GAPoint.distance(i1, nearPoint) - GAPoint.distance(i2, nearPoint),
+  );
+  return [
+    sortedIntersections[0],
+    sortedIntersections[sortedIntersections.length - 1],
+  ];
+};
