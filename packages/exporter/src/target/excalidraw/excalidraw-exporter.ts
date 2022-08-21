@@ -30,17 +30,23 @@ export class ExcalidrawExporter implements FeakinExporter {
       this.createdNodeCaches.set(rectangle.id, rectangle);
     });
 
-    this.graph.edges.forEach(edge => {
-      root.elements.push(this.createEdge(edge));
-    });
-
     this.createdNodeCaches.forEach((node, _id) => {
-      root.elements.push(node);
-
+      const newNode = node;
       const originNode = this.originNodeCaches.get(<string>node.id);
       if (originNode?.label) {
-        root.elements.push(this.createLabel(originNode, node.id));
+        const label = this.createLabel(originNode, node.id);
+        root.elements.push(label);
+        newNode.boundElements.push({
+          id: label.id!,
+          type: "text"
+        })
       }
+
+      root.elements.push(node);
+    });
+
+    this.graph.edges.forEach(edge => {
+      root.elements.push(this.createEdge(edge));
     });
 
     return root;
@@ -72,17 +78,18 @@ export class ExcalidrawExporter implements FeakinExporter {
     return this.createBaseNode(node);
   }
 
-  createLabel(node: Node, id?: number): object {
+  createLabel(node: Node, id?: number): any {
     const labelNode = this.createBaseNode(node);
     labelNode.type = "text";
+
     Object.assign(labelNode, {
-      id: node.id + "-" + randomInteger().toString(),
+      id: randomInteger().toString(),
       text: node.label,
-      fontSize: 12,
+      fontSize: 20,
       fontFamily: 1,
-      textAlign: "left",
-      verticalAlign: "top",
-      baseline: 12,
+      textAlign: "center",
+      verticalAlign: "middle",
+      baseline: 18,
       containerId: id,
       originalText: node.label
     });
@@ -110,7 +117,7 @@ export class ExcalidrawExporter implements FeakinExporter {
       strokeSharpness: "sharp",
       seed: randomInteger(),
       version: 11,
-      versionNonce: 0,
+      versionNonce: randomInteger(),
       isDeleted: false,
       boundElements: [],
       updated: Date.now(),
