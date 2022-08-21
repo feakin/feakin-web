@@ -28,7 +28,7 @@
 // all focus points lie, so it's a number between -1 and 1.
 // The line going through `a` and `b` is a tangent to the "focus image"
 // of the element.
-import { EcPoint, ExcalidrawBindableElement, ExcalidrawElement } from "./excalidraw-types";
+import { ExPoint, ExcalidrawBindableElement, ExcalidrawElement } from "./excalidraw-types";
 
 import * as GA from "./ga/ga";
 import * as GAPoint from "./ga/gapoints";
@@ -39,9 +39,9 @@ import * as GATransform from "./ga/gatransforms";
 export const determineFocusDistance = (
   element: ExcalidrawBindableElement,
   // Point on the line, in absolute coordinates
-  a: EcPoint,
+  a: ExPoint,
   // Another point on the line, in absolute coordinates (closer to element)
-  b: EcPoint,
+  b: ExPoint,
 ): number => {
   const relateToCenter = relativizationToElementCenter(element);
   const aRel = GATransform.apply(relateToCenter, GAPoint.from(a));

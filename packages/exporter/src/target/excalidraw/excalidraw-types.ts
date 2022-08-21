@@ -23,7 +23,7 @@
  *
  */
 export declare type RoughPoint = [number, number];
-export type EcPoint = Readonly<RoughPoint>;
+export type ExPoint = Readonly<RoughPoint>;
 
 type MarkNonNullable<T, K extends keyof T> = {
   [P in K]-?: P extends K ? NonNullable<T[P]> : T[P];
@@ -203,8 +203,8 @@ export type Arrowhead = "arrow" | "bar" | "dot" | "triangle";
 export type ExcalidrawLinearElement = _ExcalidrawElementBase &
   Readonly<{
     type: "line" | "arrow";
-    points: readonly EcPoint[];
-    lastCommittedPoint: EcPoint | null;
+    points: readonly ExPoint[];
+    lastCommittedPoint: ExPoint | null;
     startBinding: PointBinding | null;
     endBinding: PointBinding | null;
     startArrowhead: Arrowhead | null;
@@ -214,10 +214,10 @@ export type ExcalidrawLinearElement = _ExcalidrawElementBase &
 export type ExcalidrawFreeDrawElement = _ExcalidrawElementBase &
   Readonly<{
     type: "freedraw";
-    points: readonly EcPoint[];
+    points: readonly ExPoint[];
     pressures: readonly number[];
     simulatePressure: boolean;
-    lastCommittedPoint: EcPoint | null;
+    lastCommittedPoint: ExPoint | null;
   }>;
 
 export type FileId = string & { _brand: "FileId" };
