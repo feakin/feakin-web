@@ -1,11 +1,11 @@
 {
   "name": "@feakin/cli",
-  "version": "0.2.0-alpha.5",
+  "version": "0.2.0-alpha.6",
   "description": "cli",
   "main": "build/src/index.js",
   "typings": "build/src/index.d.ts",
   "bin": {
-    "feakin": "build/src/index.js"
+    "feakin": "./bin/feakin"
   },
   "module": "build/src/index.js",
   "repository": "https://github.com/phodal/@feakin/cli",
@@ -20,6 +20,7 @@
     "@feakin/parser": "^0.2.0"
   },
   "files": [
+    "bin/feakin",
     "build/src/*.js",
     "!**/*.spec.*",
     "!**/*.json",
