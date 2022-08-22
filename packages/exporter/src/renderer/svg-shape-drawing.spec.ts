@@ -79,6 +79,14 @@ describe('SvgShapeDrawing', () => {
     // start point - control points - end point
     drawing.drawCurvedLine([{ x: 220, y: 180 }, { x: 410, y: 210 }, { x: 410, y: 330 }, { x: 220, y: 300 }]);
 
-    expect(svg.innerHTML).toBe('<path d="M220,180 C410,210 410,330 220,300" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></path>');
+    expect(svg.innerHTML).toBe('<path d="M 220 180 Q410 210 410 270 Q410 330 220 300" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></path>');
+  });
+
+  it('quadratic curve line', () => {
+    const drawing = new SvgShapeDrawing(svg as SVGElement);
+    // start point - control points - end point
+    drawing.drawCurvedLine([{ x: 220, y: 180 }, { x: 430, y: 210 }, { x: 430, y: 360 }, { x: 340, y: 360 }, { x: 220, y: 300 }]);
+
+    expect(svg.innerHTML).toBe('<path d="M 220 180 Q430 210 430 285 Q430 360 385 360 Q340 360 220 300" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></path>');
   });
 });

@@ -25,9 +25,6 @@ export class CanvasShapeDrawing implements ShapeDrawing {
   constructor(context: CanvasRenderingContext2D, property?: ElementProperty) {
     this._ctx = context;
     this.property = property == null ? this.defaultProperty : property;
-
-    // this._ctx.canvas.width = 1000;
-    // this._ctx.canvas.height = 1000;
   }
 
   configProperty() {

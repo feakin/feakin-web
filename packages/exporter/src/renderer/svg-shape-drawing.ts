@@ -152,34 +152,33 @@ export class SvgShapeDrawing implements ShapeDrawing {
       throw new Error("points must have at least 2 points");
     }
 
-    const length = points.length;
-
-    const start = points[0];
-    const end = points[length - 1];
-    const controlPoints: Point[] = [];
-
-    for (let i = 1; i < length - 1; i += 1) {
-      const point = points[i];
-      controlPoints.push(point);
-    }
-
     const pathEl = this.createElement('path');
-    // create bezier curve
-    const path = 'M' + start.x + ',' + start.y + ' C' + controlPoints.map(p => p.x + ',' + p.y).join(' ') + ' ' + end.x + ',' + end.y;
-    pathEl.setAttribute('d', path);
+    pathEl.setAttribute('d', this.createQuadraticCurve(points));
+
     this.configProperty(pathEl);
     this.ctx.appendChild(pathEl);
 
     return this;
   }
 
-  private createBezierLine(start: Point, controlPoints: Point[], end: Point): string {
-    let path = 'M' + start.x + ',' + start.y;
-    for (let i = 0; i < controlPoints.length; i++) {
-      const point = controlPoints[i];
-      path += ' C' + point.x + ',' + point.y;
+  // inspired by maxGraph for align algorithm
+  private createQuadraticCurve(points: Point[]): string {
+    const length = points.length;
+    let path = 'M ' + points[0].x + ' ' + points[0].y;
+
+    for (let i = 1; i < length - 2; i++) {
+      const p0 = points[i];
+      const p1 = points[i + 1];
+      const ix = (p0.x + p1.x) / 2;
+      const iy = (p0.y + p1.y) / 2;
+
+      path += ' Q' + p0.x + ' ' + p0.y + ' ' + ix + ' ' + iy;
     }
-    path += ' ' + end.x + ',' + end.y;
+
+    const p0 = points[length - 2];
+    const p1 = points[length - 1];
+    path += ' Q' + p0.x + ' ' + p0.y + ' ' + p1.x + ' ' + p1.y;
+
     return path;
   }
 
