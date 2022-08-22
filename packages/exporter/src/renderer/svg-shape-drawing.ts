@@ -188,8 +188,4 @@ export class SvgShapeDrawing implements ShapeDrawing {
 
     return path;
   }
-
-  recursiveRender(): this {
-    return this;
-  }
 }

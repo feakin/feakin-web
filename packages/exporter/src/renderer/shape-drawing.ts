@@ -23,6 +23,4 @@ export interface ShapeDrawing {
   drawDiamond(diamond: DiamondShape): this;
 
   drawTriangle(triangle: TriangleShape): this;
-
-  recursiveRender(): this;
 }

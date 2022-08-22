@@ -122,7 +122,6 @@ export class CanvasShapeDrawing implements ShapeDrawing {
   }
 
   drawCurvedLine(points: Point[]): this {
-
     this.configProperty();
     const length = points.length;
 
@@ -141,10 +140,6 @@ export class CanvasShapeDrawing implements ShapeDrawing {
     this._ctx.bezierCurveTo(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, endPoint.x, endPoint.y);
 
     this._ctx.stroke();
-    return this;
-  }
-
-  recursiveRender(): this {
     return this;
   }
 
