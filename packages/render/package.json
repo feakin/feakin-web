@@ -1,10 +1,10 @@
 {
   "name": "@feakin/render",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "private": false,
   "dependencies": {
-    "@feakin/exporter": "^0.1.7",
-    "@feakin/parser": "^0.1.7",
+    "@feakin/exporter": "^0.2.0",
+    "@feakin/parser": "^0.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
