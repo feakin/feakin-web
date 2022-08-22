@@ -53,9 +53,13 @@ todos:
   
 ## Setup
 
+1. install
+
 ```
 npm install --legacy-peer-deps
 ```
+
+2. run by tests
 
 ## Refs
 
