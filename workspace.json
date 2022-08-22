@@ -2,9 +2,10 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "render": "packages/render",
+    "cli": "packages/cli",
     "exporter": "packages/exporter",
     "model": "packages/model",
-    "parser": "packages/parser"
+    "parser": "packages/parser",
+    "render": "packages/render"
   }
 }
