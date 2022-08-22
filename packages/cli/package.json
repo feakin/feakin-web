@@ -1,10 +1,10 @@
 {
   "name": "@feakin/cli",
-  "version": "0.2.0-alpha.2",
+  "version": "0.2.0-alpha.4",
   "description": "cli",
-  "main": "build/main/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
+  "main": "build/src/index.js",
+  "typings": "build/src/index.d.ts",
+  "module": "build/src/index.js",
   "repository": "https://github.com/phodal/@feakin/cli",
   "license": "MIT",
   "keywords": [],
@@ -12,14 +12,16 @@
     "build": "run-p build:*",
     "test": "react-scripts test --watchAll=false"
   },
-  "engines": {
-    "node": ">=10"
-  },
-  "files": [
-    "../../dist/packages/cli"
-  ],
   "dependencies": {
     "@feakin/exporter": "^0.2.0",
     "@feakin/parser": "^0.2.0"
-  }
+  },
+  "files": [
+    "build/src",
+    "!**/*.spec.*",
+    "!**/*.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ]
 }

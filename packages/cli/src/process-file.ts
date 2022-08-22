@@ -37,7 +37,6 @@ export function processFile(inputFile: string, outputFile: string) {
       drawioToExcalidraw(inputContent, outputFile);
       break;
     default:
-      // eslint-disable-next-line functional/no-throw-statement
       throw new Error("Unsupported file type");
   }
 
