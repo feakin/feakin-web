@@ -33,6 +33,18 @@ export enum ArrowType {
   FILLED_DIAMOND = 'filled-diamond',
 }
 
+export interface ArrowStyle {
+  startType: ArrowType;
+  endType: ArrowType;
+  lineStyle: LineStyle;
+}
+
+export const defaultArrowStyle: ArrowStyle = {
+  endType: ArrowType.NONE,
+  startType: ArrowType.NONE,
+  lineStyle: LineStyle.SOLID
+}
+
 export class EdgeTypeUtils {
   static fromString(type: string): EdgeType | undefined {
     switch (type) {

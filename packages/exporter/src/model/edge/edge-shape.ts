@@ -1,5 +1,5 @@
 import { Point } from "../geometry/point";
 
-export interface Edge {
+export interface EdgeShape {
   paintEdgeShape(points: Point[]): any;
 }
