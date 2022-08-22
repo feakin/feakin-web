@@ -20,6 +20,23 @@ export enum LineStyle {
   LONG_DASH_DOT = 'long-dash-dot',
 }
 
+export function LineStyleExt(style: LineStyle, strokeWidth: number): string {
+  switch (style) {
+    case LineStyle.DASH:
+      return `${strokeWidth} ${strokeWidth * 2}`;
+    case LineStyle.DOT:
+      return `${strokeWidth} ${strokeWidth * 2}`;
+    case LineStyle.DOT_DASH:
+      return `${strokeWidth} ${strokeWidth * 2} ${strokeWidth} ${strokeWidth * 2}`;
+    case LineStyle.LONG_DASH:
+      return `${strokeWidth} ${strokeWidth * 4}`;
+    case LineStyle.LONG_DASH_DOT:
+      return `${strokeWidth} ${strokeWidth * 4} ${strokeWidth} ${strokeWidth * 2}`;
+    default:
+      return '';
+  }
+}
+
 export enum ArrowType {
   NONE = 'none',
   NOTCHED = 'notched',
