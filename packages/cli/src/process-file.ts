@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { DrawioConverter, DrawioEncode, ExcalidrawExporter, Executor, Graph } from "@feakin/exporter";
 
 function mermaidToExcalidraw(inputContent: string, outputFile: string) {
@@ -35,6 +37,7 @@ export function processFile(inputFile: string, outputFile: string) {
       drawioToExcalidraw(inputContent, outputFile);
       break;
     default:
+      // eslint-disable-next-line functional/no-throw-statement
       throw new Error("Unsupported file type");
   }
 
