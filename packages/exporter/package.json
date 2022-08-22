@@ -1,9 +1,9 @@
 {
   "name": "@feakin/exporter",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "commonjs",
   "dependencies": {
-    "@feakin/parser": "^0.1.6",
+    "@feakin/parser": "^0.1.7",
     "cheerio": "^1.0.0-rc.12",
     "dagre": "^0.8.5",
     "glob": "^8.0.3",

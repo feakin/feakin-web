@@ -1,13 +1,13 @@
 {
   "name": "@feakin/cli",
-  "version": "0.0.1",
+  "version": "0.1.7",
   "type": "commonjs",
   "bin": {
     "feakin": "index.js"
   },
   "dependencies": {
-    "@feakin/exporter": "^0.1.6",
-    "@feakin/parser": "^0.1.6",
+    "@feakin/exporter": "^0.1.7",
+    "@feakin/parser": "^0.1.7",
     "commander": "^9.4.0"
   },
   "devDependencies": {
