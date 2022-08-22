@@ -23,7 +23,8 @@ export class DrawioConverter extends Converter implements FeakinConverter {
     };
 
     this.mxCells.forEach((cell: MXCell) => {
-        if (cell.attributes?.source && cell.attributes?.target) {
+      const hasSourceAndTarget = cell.attributes?.source && cell.attributes?.target;
+      if (hasSourceAndTarget || cell.attributes?.edge === "1") {
           filtered.edges.push(this.convertEdge(cell));
         } else if (cell.attributes?.value) {
           filtered.nodes.push(this.convertNode(cell));

@@ -67,6 +67,7 @@ export interface Edge extends Element, ElementProperty {
 export interface NodeData extends ElementData {
   parent?: string | undefined;
   children?: string[];
+  curved?: boolean;
 
   [key: string]: any;
 }

@@ -76,7 +76,7 @@ export interface MXCell {
     /**
      * Specifies whether the cell is an edge. Default is false.
      */
-    edge?: boolean;
+    edge?: string;
     value?: string;
     /**
      * Specifies whether the cell is a vertex. Default is false.
