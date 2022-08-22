@@ -2,6 +2,8 @@ import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
 import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
+import { LineShape } from "../model/edge/line-shape";
+import { PolylineShape } from "../model/edge/polyline-shape";
 
 export class CanvasShapeDrawing implements ShapeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
@@ -120,6 +122,10 @@ export class CanvasShapeDrawing implements ShapeDrawing {
 
     return this;
   }
+  //
+  // drawCurvedLine(points: Point[], controlPoints: []): this {
+  //   return this;
+  // }
 
   recursiveRender(): this {
     return this;

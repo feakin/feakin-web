@@ -77,7 +77,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
     return this;
   }
 
-  private pointsToSvgPath(points: Point[]): string {
+  private generatePathString(points: Point[]): string {
     let path = 'M' + points[0].x + ',' + points[0].y;
     for (let i = 1; i < points.length; i++) {
       path += ' L' + points[i].x + ',' + points[i].y;
@@ -87,7 +87,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   drawPath(points: Point[]): this {
-    const path = this.pointsToSvgPath(points);
+    const path = this.generatePathString(points);
 
     const pathEl = this.createElement('path');
     pathEl.setAttribute('d', path);
@@ -145,6 +145,44 @@ export class SvgShapeDrawing implements ShapeDrawing {
     imageEl.setAttribute('href', imageShape.imageSrc);
     this.ctx.appendChild(imageEl);
     return this;
+  }
+
+  drawCurvedLine(points: Point[]): this {
+    if (points.length < 2) {
+      throw new Error("points must have at least 2 points");
+    }
+
+    const length = points.length;
+
+    const start = points[0];
+    const end = points[length - 1];
+    const controlPoints: Point[] = [];
+
+    for (let i = 1; i < length - 1; i += 1) {
+      const point = points[i];
+      controlPoints.push(point);
+    }
+
+    console.log(controlPoints);
+
+    const pathEl = this.createElement('path');
+    // create bezier curve
+    const path = 'M' + start.x + ',' + start.y + ' C' + controlPoints.map(p => p.x + ',' + p.y).join(' ') + ' ' + end.x + ',' + end.y;
+    pathEl.setAttribute('d', path);
+    this.configProperty(pathEl);
+    this.ctx.appendChild(pathEl);
+
+    return this;
+  }
+
+  private createBezierLine(start: Point, controlPoints: Point[], end: Point): string {
+    let path = 'M' + start.x + ',' + start.y;
+    for (let i = 0; i < controlPoints.length; i++) {
+      const point = controlPoints[i];
+      path += ' C' + point.x + ',' + point.y;
+    }
+    path += ' ' + end.x + ',' + end.y;
+    return path;
   }
 
   recursiveRender(): this {

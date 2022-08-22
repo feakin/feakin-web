@@ -69,6 +69,8 @@ describe('ExcalidrawExporter', () => {
     const drawioConverter = fromFile('_fixtures/drawio/source-target-curved.drawio');
     const sourceTargetGraph: Graph = drawioConverter.convert();
 
+    console.log(JSON.stringify(sourceTargetGraph, null, 2));
+
     const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
 
     const nodes = exporter.elements.filter(e => e.type === 'rectangle');

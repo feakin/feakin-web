@@ -11,4 +11,8 @@ export class PolylineShape extends Shape {
     super();
     this.points_ = points;
   }
+
+  override points(): Point[] {
+    return this.points_;
+  }
 }

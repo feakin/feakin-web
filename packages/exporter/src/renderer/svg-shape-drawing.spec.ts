@@ -73,4 +73,12 @@ describe('SvgShapeDrawing', () => {
 
     expect(svg.innerHTML).toBe('<image x="0" y="0" width="100" height="100" href="image.png"></image>');
   });
+
+  it('curved line', () => {
+    const drawing = new SvgShapeDrawing(svg as SVGElement);
+    // start point - control points - end point
+    drawing.drawCurvedLine([{ x: 220, y: 180 }, { x: 410, y: 210 }, { x: 410, y: 330 }, { x: 220, y: 300 }]);
+
+    expect(svg.innerHTML).toBe('<path d="M220,180 C410,210 410,330 220,300" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></path>');
+  });
 });
