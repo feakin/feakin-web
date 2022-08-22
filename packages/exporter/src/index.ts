@@ -2,8 +2,8 @@ export * from './executor/executor';
 
 export * from './layout/dagre-layout';
 export * from './layout/dagre-relation';
-
 export * from './model/edge/arrow-shape';
+export * from './model/edge/edge-shape';
 export * from './model/edge/edge-type';
 export * from './model/edge/line-shape';
 export * from './model/edge/polyline-shape';
@@ -33,21 +33,25 @@ export * from './model/state-style/padding-state';
 export * from './model/state-style/space-state';
 export * from './model/state-style/stroke-state';
 export * from './model/state-style/style-constants';
-
+export * from './renderer/abstract-svg-render';
 export * from './renderer/canvas-shape-drawing';
 export * from './renderer/drawn-style/hand-drawing';
 export * from './renderer/drawn-style/rough-seed';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 export * from './renderer/utils/data-url';
-
 export * from './source/flow.d';
 export * from './source/mermaid-flow';
 export * from './source/mermaid-flowdb';
-
 export * from './target/converter';
+export * from './target/excalidraw/bounds';
+export * from './target/excalidraw/collision';
 export * from './target/excalidraw/excalidraw-exporter';
 export * from './target/excalidraw/excalidraw-types';
+
+export * from './target/excalidraw/math';
+
+export * from './target/excalidraw/type-check';
 export * from './target/exporter';
 export * from './target/mxgraph/cell-state-style';
 export * from './target/mxgraph/drawio-converter';
@@ -55,4 +59,3 @@ export * from './target/mxgraph/drawio-encode';
 export * from './target/mxgraph/drawio-wrapper';
 export * from './target/mxgraph/mxgraph.d';
 export * from './target/mxgraph/xml-converter';
-export { AbstractSvgRender } from "./renderer/abstract-svg-render";

@@ -1,7 +1,6 @@
 {
   "name": "@feakin/exporter",
   "version": "0.2.1",
-  "type": "commonjs",
   "dependencies": {
     "@feakin/parser": "^0.2.1",
     "cheerio": "^1.0.0-rc.12",
@@ -15,6 +14,9 @@
     "gen": "node scripts/gen-import.js",
     "lint": "eslint src/**/*.ts",
     "test": "react-scripts test --watchAll=false"
+  },
+  "publishConfig": {
+    "directory": "dist"
   },
   "jest": {
     "transform": {
