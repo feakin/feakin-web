@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2006-2015, JGraph Ltd
+ * Copyright (c) 2006-2015, Gaudenz Alder
+ * Updated to ES9 syntax by David Morrissey 2021
+ * Type definitions from the typed-mxgraph project
+ */
+
 export interface MxFileRoot {
   mxfile: Mxfile;
 }
@@ -90,6 +97,13 @@ export interface MXCell {
 
 export interface MXGeometry {
   mxPoint?: MxPoint[];
+  /**
+   * Array of {@link Point} which specifies the control points along the edge.
+   * These points are the intermediate points on the edge, for the endpoints
+   * use {@link targetPoint} and {@link sourcePoint} or set the terminals of the edge to
+   * a non-null value. Default is null.
+   */
+  Array?: MXGeometry[];
   attributes?: {
     x?: number;
     y?: number;
