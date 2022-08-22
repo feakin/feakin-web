@@ -48,7 +48,13 @@ export type ShapeValue =
   | 'triangle'
   | 'hexagon';
 
-export type CellStateStyle = {
+export interface CellConnectorStyle {
+  dashPattern?: string;
+  endArrow?: MxArrowType;
+  startArrow?: MxArrowType;
+}
+
+export interface CellStateStyle extends CellConnectorStyle {
   absoluteArcSize?: number;
   align?: AlignValue;
   anchorPointDirection?: boolean;
@@ -61,7 +67,6 @@ export type CellStateStyle = {
   cloneable?: boolean;
   curved?: boolean;
   dashed?: boolean;
-  dashPattern?: string;
   defaultEdge?: CellStateStyle;
   defaultVertex?: CellStateStyle;
   deletable?: boolean;
@@ -69,7 +74,6 @@ export type CellStateStyle = {
   edgeStyle?: string;
   editable?: boolean;
   elbow?: string;
-  endArrow?: MxArrowType;
   endFill?: boolean;
   endSize?: number;
   entryDx?: number;
@@ -155,7 +159,6 @@ export type CellStateStyle = {
   spacingLeft?: number;
   spacingRight?: number;
   spacingTop?: number;
-  startArrow?: MxArrowType;
   startFill?: boolean;
   startSize?: number;
   strokeColor?: ColorValue;
