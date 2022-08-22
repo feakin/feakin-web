@@ -1,9 +1,12 @@
 {
   "name": "@feakin/cli",
-  "version": "0.2.0-alpha.4",
+  "version": "0.2.0-alpha.5",
   "description": "cli",
   "main": "build/src/index.js",
   "typings": "build/src/index.d.ts",
+  "bin": {
+    "feakin": "build/src/index.js"
+  },
   "module": "build/src/index.js",
   "repository": "https://github.com/phodal/@feakin/cli",
   "license": "MIT",
@@ -17,7 +20,7 @@
     "@feakin/parser": "^0.2.0"
   },
   "files": [
-    "build/src",
+    "build/src/*.js",
     "!**/*.spec.*",
     "!**/*.json",
     "CHANGELOG.md",
