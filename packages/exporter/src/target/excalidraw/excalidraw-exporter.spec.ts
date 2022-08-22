@@ -39,9 +39,30 @@ describe('ExcalidrawExporter', () => {
     expect(exporter.elements.length).toBe(5);
 
     const arrows = exporter.elements.filter(e => e.type === 'arrow');
-    expect(arrows[0].startBinding).toBeDefined();
-    expect(arrows[0].endBinding).toBeDefined();
+    const arrow = arrows[0];
+    expect(arrow.id).toEqual('V2nca5gEMj-imVLVonEm-3');
+    expect(arrow.startBinding).toBeDefined();
+    expect(arrow.endBinding).toBeDefined();
     fs.writeFileSync('./test/source-target.excalidraw', JSON.stringify(exporter, null, 2));
+  });
+
+  it('source startBinding', () => {
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
+
+    const arrows = exporter.elements.filter(e => e.type === 'arrow');
+    const arrow = arrows[0];
+
+    expect(arrow.points).toEqual([[290, 370], [290, 450]]);
+    expect(arrow.startBinding).toEqual({
+      "elementId": "V2nca5gEMj-imVLVonEm-1",
+      "focus": 0,
+      "gap": 1
+    });
+    expect(arrow.endBinding).toEqual({
+      "elementId": "V2nca5gEMj-imVLVonEm-2",
+      "focus": 0,
+      "gap": 1
+    });
   });
 
   it('text id', () => {
