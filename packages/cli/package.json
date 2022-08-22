@@ -2,7 +2,7 @@
   "name": "@feakin/cli",
   "version": "0.2.0",
   "bin": {
-    "feakin": "index.js"
+    "feakin": "src/index.js"
   },
   "dependencies": {
     "@feakin/exporter": "^0.2.0",

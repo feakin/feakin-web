@@ -2,8 +2,10 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "es6",
+    "rootDir": "src",
     "module": "commonjs",
     "types" : ["node"],
+    "lib": ["es2017", "dom"],
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
