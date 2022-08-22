@@ -8,6 +8,7 @@ todos:
 
 - [x] Layout Model Design
   - [x] Shape
+  - [ ] Edge
   - [x] Geometry
 - [ ] Render
   - [x] Layout Engine (TODO: split to standalone module)
@@ -26,15 +27,13 @@ todos:
 - [ ] Editor
   - [ ] text Editor with Monaco Editor
   - [ ] interactive Editor with Graphical Editor
-- [ ] Static Pages
-  - Feakin Space
 - [x] Parser
   - [x] [Jison](https://github.com/zaach/jison) with Mermaid
-- [x] Export
-  - [ ] MxGraph
-- [ ] Import
-  - [ ] MxGraph
-  - [ ] Excalidraw
+  - [ ] Antlr ???
+- [ ] Collision Detection
+  - [ ] [SAT.js](https://github.com/jriecken/sat-js) A simple JavaScript library for performing 2D collision detection
+  - [ ] [RBush](https://github.com/mourner/rbush is a high-performance JavaScript library for 2D spatial indexing of points and rectangles.
+  - [ ] [JSTS](https://github.com/bjornharrtell/jsts) is an ECMAScript library of spatial predicates and functions for processing geometry conforming to the Simple Features Specification for SQL published by the Open Geospatial Consortium.
 - [ ] collaboration
   - [ ] [Rope Architecture Model](https://blog.jetbrains.com/zh-hans/fleet/2022/02/fleet-below-deck-part-ii-breaking-down-the-editor/)
   - [ ] [State Management](https://blog.jetbrains.com/zh-hans/fleet/2022/06/fleet-below-deck-part-iii-state-management/)
@@ -43,9 +42,15 @@ todos:
   - [ ] excalidraw
   - [ ] Mermaid.js
   - [ ] Flowchart.js
-- [ ] [ComponentLess](https://componentless.com/) architecture
-  - [ ] WebComponent, like `<feakin data="" layout="" import="" import-type=""></feakin>`
-
+- [ ] Architecture Features
+  - [ ] [ComponentLess](https://componentless.com/) architecture
+    - [ ] WebComponent, like `<feakin data="" layout="" import="" import-type=""></feakin>`
+  - [ ] Static Pages
+    - Feakin Space
+  - [x] Export and Import
+    - [ ] MxGraph
+    - [ ] Excalidraw
+  
 ## Setup
 
 ```
