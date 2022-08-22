@@ -103,7 +103,7 @@ export interface MXGeometry {
    * use {@link targetPoint} and {@link sourcePoint} or set the terminals of the edge to
    * a non-null value. Default is null.
    */
-  Array?: MXGeometry[];
+  Array?: MXGeometry;
   attributes?: {
     x?: number;
     y?: number;
@@ -129,8 +129,10 @@ export interface MXGeometry {
 }
 
 export interface MxPoint {
-  x?: string;
-  y?: string;
+  attributes?: {
+    x?: string;
+    y?: string;
+  }
 }
 
 

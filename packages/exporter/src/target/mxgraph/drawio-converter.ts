@@ -1,4 +1,4 @@
-import { MXCell, MxGraph } from "./mxgraph";
+import { MXCell, MxGraph, MxPoint } from "./mxgraph";
 import { Edge, Graph, Node } from "../../model/graph";
 import { CellStateStyle } from "./cell-state-style";
 import { Converter, FeakinConverter } from "../converter";
@@ -64,15 +64,26 @@ export class DrawioConverter extends Converter implements FeakinConverter {
   }
 
   private calPointsForEdge(cell: MXCell) {
-    const mxPoint = cell.mxGeometry?.mxPoint;
-    if (!mxPoint) {
+    let mxPoints: MxPoint[] = [];
+
+    const controlPoint = cell.mxGeometry?.Array?.mxPoint;
+    if (controlPoint) {
+      mxPoints = Array.isArray(controlPoint) ? controlPoint : [controlPoint];
+    }
+
+    const sourceAndTargetPoints = cell.mxGeometry?.mxPoint;
+    if (sourceAndTargetPoints) {
+      mxPoints = mxPoints.concat(cell.mxGeometry!.mxPoint!);
+    }
+
+    if (mxPoints.length === 0) {
       return [];
     }
 
-    return mxPoint?.map((point: any) => {
+    return mxPoints.map((point: MxPoint) => {
       return {
-        x: parseFloat(point.attributes.x || 0),
-        y: parseFloat(point.attributes.y || 0)
+        x: parseFloat(<string>point.attributes?.x),
+        y: parseFloat(<string>point.attributes?.y)
       }
     }) || [];
   }
