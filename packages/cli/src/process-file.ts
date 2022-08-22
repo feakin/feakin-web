@@ -1,5 +1,6 @@
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
+
 import { DrawioConverter, DrawioEncode, ExcalidrawExporter, Executor, Graph } from "@feakin/exporter";
 
 function mermaidToExcalidraw(inputContent: string, outputFile: string) {
