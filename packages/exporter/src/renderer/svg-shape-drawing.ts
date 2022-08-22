@@ -163,8 +163,6 @@ export class SvgShapeDrawing implements ShapeDrawing {
       controlPoints.push(point);
     }
 
-    console.log(controlPoints);
-
     const pathEl = this.createElement('path');
     // create bezier curve
     const path = 'M' + start.x + ',' + start.y + ' C' + controlPoints.map(p => p.x + ',' + p.y).join(' ') + ' ' + end.x + ',' + end.y;

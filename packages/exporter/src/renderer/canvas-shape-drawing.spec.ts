@@ -114,4 +114,16 @@ describe('CanvasShapeDrawing', () => {
 
     fs.writeFileSync('./test/image.png', fileData.data);
   });
+
+  it('curved line', () => {
+    const drawing = new CanvasShapeDrawing(ctx);
+    drawing.drawCurvedLine([{ x: 22, y: 18 }, { x: 41, y: 21 }, { x: 41, y: 33 }, { x: 22, y: 30 }]);
+
+    const canvasElement = drawing.ctx.canvas;
+
+    const image = canvasElement.toDataURL();
+    const fileData = dataURLtoFileData(image);
+
+    fs.writeFileSync('./test/curved-line.png', fileData.data);
+  });
 });

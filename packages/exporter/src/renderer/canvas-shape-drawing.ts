@@ -2,8 +2,6 @@ import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
 import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
-import { LineShape } from "../model/edge/line-shape";
-import { PolylineShape } from "../model/edge/polyline-shape";
 
 export class CanvasShapeDrawing implements ShapeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
@@ -27,6 +25,9 @@ export class CanvasShapeDrawing implements ShapeDrawing {
   constructor(context: CanvasRenderingContext2D, property?: ElementProperty) {
     this._ctx = context;
     this.property = property == null ? this.defaultProperty : property;
+
+    // this._ctx.canvas.width = 1000;
+    // this._ctx.canvas.height = 1000;
   }
 
   configProperty() {
@@ -122,10 +123,29 @@ export class CanvasShapeDrawing implements ShapeDrawing {
 
     return this;
   }
-  //
-  // drawCurvedLine(points: Point[], controlPoints: []): this {
-  //   return this;
-  // }
+
+  drawCurvedLine(points: Point[]): this {
+
+    this.configProperty();
+    const length = points.length;
+
+    const startPoint = points[0];
+    const endPoint = points[length - 1];
+    const controlPoints: Point[] = [];
+
+    for (let i = 1; i < length - 1; i += 1) {
+      const point = points[i];
+      controlPoints.push(point);
+    }
+
+    this._ctx.beginPath();
+    this._ctx.moveTo(startPoint.x, startPoint.y);
+
+    this._ctx.bezierCurveTo(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, endPoint.x, endPoint.y);
+
+    this._ctx.stroke();
+    return this;
+  }
 
   recursiveRender(): this {
     return this;
