@@ -12,6 +12,8 @@
     "xml-js": "^1.6.11"
   },
   "scripts": {
+    "gen": "node scripts/gen-import.js",
+    "lint": "eslint src/**/*.ts",
     "test": "react-scripts test --watchAll=false"
   },
   "jest": {
