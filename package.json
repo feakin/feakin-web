@@ -19,6 +19,9 @@
     "regenerator-runtime": "0.13.9",
     "tslib": "^2.3.0"
   },
+  "publishConfig": {
+    "directory": "dist"
+  },
   "private": true,
   "devDependencies": {
     "@craco/craco": "^7.0.0-alpha.7",

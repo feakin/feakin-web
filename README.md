@@ -42,6 +42,8 @@ todos:
   - [ ] excalidraw
   - [ ] Mermaid.js
   - [ ] Flowchart.js
+- [ ] Publish to CLI
+  - [ ] upgrade publish script
 - [ ] Architecture Features
   - [ ] [ComponentLess](https://componentless.com/) architecture
     - [ ] WebComponent, like `<feakin data="" layout="" import="" import-type=""></feakin>`
