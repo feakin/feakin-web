@@ -1,7 +1,6 @@
 {
   "name": "@feakin/cli",
   "version": "0.1.7",
-  "type": "commonjs",
   "bin": {
     "feakin": "index.js"
   },
