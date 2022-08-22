@@ -191,11 +191,11 @@ export class ExcalidrawExporter implements FeakinExporter {
       points: rPoints,
     });
 
-    const intersections = this.reCalPoint(baseEdge, sourceNode, 'start');
-    const intersections2 = this.reCalPoint(baseEdge, targetNode, 'end');
+    const startIntersects = this.pointByIntersectElement(baseEdge, sourceNode, 'start');
+    const endIntersects = this.pointByIntersectElement(baseEdge, targetNode, 'end');
 
     Object.assign(baseEdge, {
-      points: [intersections[0], intersections2[0]],
+      points: [startIntersects[0], endIntersects[0]],
       lastCommittedPoint: null,
       startArrowhead: null,
       endArrowhead: "arrow"
@@ -204,15 +204,11 @@ export class ExcalidrawExporter implements FeakinExporter {
     Object.assign(baseEdge, {
       startBinding: {
         elementId: edge.data?.source,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         ...calculateFocusAndGap(baseEdge, sourceNode, "start")
       },
 
       endBinding: {
         elementId: edge.data?.target,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         ...calculateFocusAndGap(baseEdge, targetNode, "end")
       },
     })
@@ -220,7 +216,7 @@ export class ExcalidrawExporter implements FeakinExporter {
     return baseEdge
   }
 
-  private reCalPoint(baseEdge: any, sourceNode: any, startOrEnd: "start" | "end") {
+  private pointByIntersectElement(baseEdge: any, sourceNode: any, startOrEnd: "start" | "end") {
     const direction = startOrEnd === "start" ? -1 : 1;
     const edgePointIndex = direction === -1 ? 0 : baseEdge.points.length - 1;
     const adjacentPointIndex = edgePointIndex - direction;
@@ -240,6 +236,7 @@ export class ExcalidrawExporter implements FeakinExporter {
       adjacentPoint,
       focusPointAbsolute,
     );
+
     return intersections;
   }
 
