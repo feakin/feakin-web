@@ -60,6 +60,7 @@ export interface Edge extends Element, ElementProperty {
   id?: string;
   label?: string;
   points: Point[];
+  controlPoints?: Point[];
   data?: EdgeData;
 }
 

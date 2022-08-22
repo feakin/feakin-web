@@ -53,7 +53,8 @@ export class DrawioConverter extends Converter implements FeakinConverter {
     return {
       id: attrs.id,
       label: attrs.value,
-      points: this.calPointsForEdge(cell),
+      points: this.normalPointsForEdge(cell),
+      controlPoints: this.controlPointsForEdge(cell),
       width: parseFloat(String(cell?.mxGeometry?.attributes?.width || 0)),
       height: parseFloat(String(cell?.mxGeometry?.attributes?.height || 0)),
       data: {
@@ -63,7 +64,7 @@ export class DrawioConverter extends Converter implements FeakinConverter {
     };
   }
 
-  private calPointsForEdge(cell: MXCell) {
+  private controlPointsForEdge(cell: MXCell) {
     let mxPoints: MxPoint[] = [];
 
     const controlPoint = cell.mxGeometry?.Array?.mxPoint;
@@ -71,11 +72,21 @@ export class DrawioConverter extends Converter implements FeakinConverter {
       mxPoints = Array.isArray(controlPoint) ? controlPoint : [controlPoint];
     }
 
+    return this.pointsFromMxPoints(mxPoints);
+  }
+
+  private normalPointsForEdge(cell: MXCell) {
+    let mxPoints: MxPoint[] = [];
+
     const sourceAndTargetPoints = cell.mxGeometry?.mxPoint;
     if (sourceAndTargetPoints) {
       mxPoints = mxPoints.concat(cell.mxGeometry!.mxPoint!);
     }
 
+    return this.pointsFromMxPoints(mxPoints);
+  }
+
+  private pointsFromMxPoints(mxPoints: MxPoint[]) {
     if (mxPoints.length === 0) {
       return [];
     }

@@ -36,7 +36,8 @@ describe('DrawioEncoder', () => {
     const graph = drawioConverter.convert();
 
     const edges = graph.edges.filter((node: Edge) => node.id === "c829ialIT6bnUCAQVo3g-13");
-    expect(edges[0].points.length).toBe(3);
+    expect(edges[0].points.length).toBe(2);
+    expect(edges[0].controlPoints?.length).toBe(1);
   });
 
   it('control points', () => {
@@ -46,7 +47,7 @@ describe('DrawioEncoder', () => {
     const drawioConverter = new DrawioConverter(mxGraph2);
     const graph = drawioConverter.convert();
 
-    const points = graph.edges[0].points;
+    const points = graph.edges[0].controlPoints!;
 
     expect(points.length).toBe(2);
     expect(points[0]).toEqual({ x: 410, y: 210 });
