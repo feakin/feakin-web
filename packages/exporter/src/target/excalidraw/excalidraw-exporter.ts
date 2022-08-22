@@ -2,12 +2,12 @@ import { FeakinExporter } from '../exporter';
 import { Edge, Graph, Node, NodeExt } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import {
-  calculateFocusAndGap, determineFocusPoint, getPointAtIndexGlobalCoordinates,
+  calculateFocusAndGap,
+  determineFocusPoint,
+  getPointAtIndexGlobalCoordinates,
   intersectElementWithLine,
 } from "./collision";
 import { FontString, measureText } from "./text-utils";
-import { ExPoint } from "./excalidraw-types";
-import { getCommonBounds, getElementBounds } from "./bounds";
 
 export interface ExportedDataState {
   type: string;
@@ -231,13 +231,11 @@ export class ExcalidrawExporter implements FeakinExporter {
       adjacentPoint,
     );
 
-    const intersections = intersectElementWithLine(
+    return intersectElementWithLine(
       sourceNode,
       adjacentPoint,
       focusPointAbsolute,
     );
-
-    return intersections;
   }
 
   private reCalculateEdgePoints(edge: Edge): [number, number][] {
