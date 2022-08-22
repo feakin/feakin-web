@@ -23,7 +23,7 @@
  *
  */
 
-import { ExcalidrawElement, ExcalidrawFreeDrawElement, ExcalidrawLinearElement, ExPoint } from "@feakin/exporter";
+import { ExcalidrawElement, ExcalidrawFreeDrawElement, ExcalidrawLinearElement, ExPoint } from "./excalidraw-types";
 import { Bounds } from "./collision";
 import { rotate } from "./math";
 import { isFreeDrawElement, isLinearElement } from "./type-check";

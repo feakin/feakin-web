@@ -1,5 +1,5 @@
 import { FeakinExporter } from '../exporter';
-import { Edge, Graph, Node, NodeExt } from '../../model/graph';
+import { Edge, Graph, Node } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import {
   calculateFocusAndGap,
@@ -243,8 +243,14 @@ export class ExcalidrawExporter implements FeakinExporter {
     const source: Node | undefined = this.createdNodeCaches.get(<string>edge.data?.source);
     const target: Node | undefined = this.createdNodeCaches.get(<string>edge.data?.target);
     if (source && target) {
-      const start = NodeExt.getCenter(source);
-      const end = NodeExt.getCenter(target);
+      const start = {
+        x: source.x! + source.width! / 2,
+        y: source.y! + source.height! / 2,
+      };
+      const end = {
+        x: target.x! + target.width! / 2,
+        y: target.y! + target.height! / 2,
+      };
       rPoints = [
         [start.x, start.y],
         [end.x, end.y]
