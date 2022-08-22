@@ -1,6 +1,6 @@
 {
   "name": "@feakin/cli",
-  "version": "0.2.1",
+  "version": "0.2.2-alpha.0",
   "description": "cli",
   "main": "build/src/index.js",
   "typings": "build/src/index.d.ts",
@@ -16,7 +16,7 @@
     "test": "react-scripts test --watchAll=false"
   },
   "dependencies": {
-    "@feakin/exporter": "^0.2.1",
+    "@feakin/exporter": "^0.2.2-alpha.0",
     "@feakin/parser": "^0.2.1"
   },
   "files": [
