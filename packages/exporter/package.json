@@ -16,7 +16,7 @@
     "test": "react-scripts test --watchAll=false"
   },
   "publishConfig": {
-    "directory": "dist"
+    "directory": "../../dist/packages/exporter"
   },
   "jest": {
     "transform": {
