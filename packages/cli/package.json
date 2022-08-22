@@ -11,5 +11,6 @@
   },
   "devDependencies": {
     "@types/commander": "^2.12.2"
-  }
+  },
+  "gitHead": "a198e199bd402bf3bd72f967daadf0f37a4b9dc5"
 }

@@ -38,5 +38,5 @@
     "webpack-merge": "^5.8.0",
     "webpack-node-externals": "^3.0.0"
   },
-  "gitHead": "d469dc8908cb5a800ce1ccb52c621809ed1335af"
+  "gitHead": "a198e199bd402bf3bd72f967daadf0f37a4b9dc5"
 }

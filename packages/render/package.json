@@ -58,5 +58,6 @@
   },
   "devDependencies": {
     "stream-browserify": "^3.0.0"
-  }
+  },
+  "gitHead": "a198e199bd402bf3bd72f967daadf0f37a4b9dc5"
 }
