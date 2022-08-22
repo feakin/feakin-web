@@ -1,6 +1,8 @@
 # Feakin
 
-[![CI](https://github.com/feakin/feakin/actions/workflows/ci.yml/badge.svg)](https://github.com/feakin/feakin/actions/workflows/ci.yml)
+[![CI](https://github.com/feakin/feakin/actions/workflows/ci.yml/badge.svg)](https://github.com/feakin/feakin/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/feakin/feakin-poc/branch/master/graph/badge.svg?token=XO0930Z3TE)](https://codecov.io/gh/feakin/feakin-poc)
+
+![Code Coverage](https://codecov.io/gh/feakin/feakin-poc/branch/master/graphs/tree.svg?token=XO0930Z3TE)
 
 todos:
 
