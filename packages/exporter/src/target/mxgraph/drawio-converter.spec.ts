@@ -79,6 +79,6 @@ describe('DrawioEncoder', () => {
     const graph: Graph = drawioConverter.convert();
 
     const edges = graph.edges;
-    console.log(edges);
+    expect(edges.length).toBe(21);
   });
 });

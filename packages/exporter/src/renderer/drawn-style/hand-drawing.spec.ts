@@ -53,7 +53,6 @@ describe('CanvasShapeDrawing', () => {
     const drawable = handDrawn.polygon([{ x: 20, y: 20 }, { x: 100, y: 20 }, { x: 100, y: 100 }, { x: 30, y: 110}]);
     const paths = handDrawn.paths(drawable);
 
-    console.log(paths);
     expect(paths.length).toBe(1);
   });
 });
