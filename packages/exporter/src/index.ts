@@ -55,3 +55,4 @@ export * from './target/mxgraph/drawio-encode';
 export * from './target/mxgraph/drawio-wrapper';
 export * from './target/mxgraph/mxgraph.d';
 export * from './target/mxgraph/xml-converter';
+export { AbstractSvgRender } from "./renderer/abstract-svg-render";

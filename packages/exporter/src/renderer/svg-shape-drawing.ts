@@ -3,10 +3,13 @@ import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
 import { CircleShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
 import { DiamondShape } from "../model/node/diamond-shape";
+import { AbstractSvgRender } from "./abstract-svg-render";
 
 export class SvgShapeDrawing implements ShapeDrawing {
   private ctx: SVGElement;
   private readonly _svg: Element;
+  private render: AbstractSvgRender;
+
   get svg(): Element {
     return this._svg;
   }
@@ -27,6 +30,8 @@ export class SvgShapeDrawing implements ShapeDrawing {
     this.ctx = context;
     this.property = property == null ? this.defaultProperty : property;
     this._svg = this.initSvgWrapper();
+
+    this.render = new AbstractSvgRender();
   }
 
   private initSvgWrapper() {
@@ -78,9 +83,10 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   private generatePathString(points: Point[]): string {
-    let path = 'M' + points[0].x + ',' + points[0].y;
+    let path = this.render.moveTo(points[0].x, points[0].y);
+
     for (let i = 1; i < points.length; i++) {
-      path += ' L' + points[i].x + ',' + points[i].y;
+      path += this.render.lineTo(points[i].x, points[i].y);
     }
 
     return path;
@@ -164,7 +170,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
   // inspired by maxGraph for align algorithm
   private createQuadraticCurve(points: Point[]): string {
     const length = points.length;
-    let path = 'M ' + points[0].x + ' ' + points[0].y;
+    let path = this.render.moveTo(points[0].x, points[0].y);
 
     for (let i = 1; i < length - 2; i++) {
       const p0 = points[i];
@@ -172,12 +178,13 @@ export class SvgShapeDrawing implements ShapeDrawing {
       const ix = (p0.x + p1.x) / 2;
       const iy = (p0.y + p1.y) / 2;
 
-      path += ' Q' + p0.x + ' ' + p0.y + ' ' + ix + ' ' + iy;
+      path += this.render.quadTo(p0.x, p0.y, ix, iy);
     }
 
     const p0 = points[length - 2];
     const p1 = points[length - 1];
-    path += ' Q' + p0.x + ' ' + p0.y + ' ' + p1.x + ' ' + p1.y;
+
+    path += this.render.quadTo(p0.x, p0.y, p1.x, p1.y);
 
     return path;
   }
