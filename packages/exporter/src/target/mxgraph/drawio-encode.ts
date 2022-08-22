@@ -3,7 +3,7 @@ import * as pako from 'pako';
 import { xml2js } from './xml-converter';
 import { text } from "cheerio";
 
-const DrawioEncode = {
+export const DrawioEncode = {
   xml2obj: xml2js,
   parseXml: (xml: string) => {
     const $ = cheerio.load(xml);
