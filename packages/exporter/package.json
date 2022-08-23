@@ -15,9 +15,18 @@
     "lint": "eslint src/**/*.ts",
     "test": "react-scripts test --watchAll=false"
   },
-  "publishConfig": {
-    "directory": "../../dist/packages/exporter"
-  },
+  "files": [
+    "bin/feakin",
+    "!**/*.spec.*",
+    "!**/*.json",
+    "!test/**",
+    "!coverage/**",
+    "!_fixtures",
+    "!scripts",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "ts-jest"

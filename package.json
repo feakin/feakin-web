@@ -3,7 +3,7 @@
   "version": "0.1.4",
   "license": "MIT",
   "scripts": {
-    "publish": "npx lerna publish --no-private",
+    "publish": "npx lerna publish  --no-private  --contents dist",
     "build:all": "nx run-many --target=build --all",
     "build:since": "nx affected --target=build",
     "test:all": "nx run-many --target=test --all --collectCoverage --coverage",

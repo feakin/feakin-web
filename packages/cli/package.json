@@ -12,7 +12,6 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "build": "run-p build:*",
     "test": "react-scripts test --watchAll=false"
   },
   "dependencies": {
@@ -21,7 +20,6 @@
   },
   "files": [
     "bin/feakin",
-    "build/src/*.js",
     "!**/*.spec.*",
     "!**/*.json",
     "CHANGELOG.md",
