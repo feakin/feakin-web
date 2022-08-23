@@ -33,6 +33,7 @@ export * from './model/state-style/padding-state';
 export * from './model/state-style/space-state';
 export * from './model/state-style/stroke-state';
 export * from './model/state-style/style-constants';
+
 export * from './renderer/abstract-svg-render';
 export * from './renderer/canvas-shape-drawing';
 
@@ -42,23 +43,22 @@ export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 export * from './renderer/utils/data-url';
 
-export * from './source/mermaid-flow';
-export * from './source/mermaid-flowdb';
+export * from './converter/mermaid/mermaid-flow';
+export * from './converter/mermaid/mermaid-flowdb';
 
-export * from './target/converter';
-export * from './target/excalidraw/bounds';
-export * from './target/excalidraw/collision';
-export * from './target/excalidraw/excalidraw-exporter';
-export * from './target/excalidraw/excalidraw-types';
+export * from './converter/converter';
 
-export * from './target/excalidraw/math';
+export * from './converter/excalidraw/bounds';
+export * from './converter/excalidraw/collision';
+export * from './converter/excalidraw/excalidraw-exporter';
+export * from './converter/excalidraw/excalidraw-types';
+export * from './converter/excalidraw/math';
+export * from './converter/excalidraw/type-check';
 
-export * from './target/excalidraw/type-check';
-
-export * from './target/mxgraph/cell-state-style';
-export * from './target/mxgraph/drawio-importer';
-export * from './target/mxgraph/drawio-encode';
-export * from './target/mxgraph/drawio-exporter';
-export * from './target/mxgraph/xml-converter';
+export * from './converter/mxgraph/cell-state-style';
+export * from './converter/mxgraph/drawio-importer';
+export * from './converter/mxgraph/drawio-encode';
+export * from './converter/mxgraph/drawio-exporter';
+export * from './converter/mxgraph/xml-converter';
 
 export * from './env';
