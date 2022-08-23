@@ -8,6 +8,7 @@ import {
   intersectElementWithLine,
 } from "./collision";
 import { FontString, measureText } from "./text-utils";
+import { isBrowser } from "../../env";
 
 export interface ExportedDataState {
   type: string;
@@ -100,12 +101,15 @@ export class ExcalidrawExporter implements FeakinExporter {
       originalText: node.label
     });
 
-    const metrics = measureText(node.label!, "20px sans-serif" as FontString);
-    if (metrics.width != 0) {
-      labelNode.width = metrics.width;
-      labelNode.height = metrics.height;
-    } else {
-      labelNode.height = 26;
+    // todo: calculate the correct position of the label;
+    labelNode.height = 26;
+
+    if (isBrowser()) {
+      const metrics = measureText(node.label!, "20px sans-serif" as FontString);
+      if (metrics.width != 0) {
+        labelNode.width = metrics.width;
+        labelNode.height = metrics.height;
+      }
     }
 
     return labelNode;

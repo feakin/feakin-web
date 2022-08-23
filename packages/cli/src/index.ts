@@ -7,7 +7,7 @@ program
   .option('--input <input>', 'Input file')
   .option('--output <output>', 'Output file');
 
-program.parse();
+program.parse(process.argv);
 
 const options = program.opts();
 const inputFile = options['input'];
