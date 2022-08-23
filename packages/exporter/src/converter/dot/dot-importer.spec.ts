@@ -11,7 +11,12 @@ describe('DotImporter', () => {
     const graph: Graph = importer.parse();
 
     expect(graph.nodes.length).toBe(2);
+    expect(graph.nodes[0].label).toBe("a");
+    expect(graph.nodes[1].label).toBe("b");
     expect(graph.edges.length).toBe(3);
+    expect(graph.edges[0]).toEqual({ data: { source: "a", target: "b" }, id: "a_b", points: [] });
+    expect(graph.edges[1]).toEqual({ data: { source: "a", target: "b" }, id: "a_b_1", points: [] });
+    expect(graph.edges[2]).toEqual({ data: { source: "b", target: "a" }, id: "b_a", points: [] });
   });
 
   it('label name', () => {

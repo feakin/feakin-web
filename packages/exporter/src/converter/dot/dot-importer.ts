@@ -9,8 +9,6 @@ export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
 
-  currentEdgeOp = '->';
-
   constructor(content: string) {
     super(content);
   }
@@ -22,6 +20,7 @@ export class DotImporter extends Importer {
       this.parseChildren(graph.children, graph);
     })
 
+    // todo: regenerate ids;
     return {
       nodes: Array.from(this.nodes.values()),
       edges: Array.from(this.edges.values())
@@ -55,27 +54,28 @@ export class DotImporter extends Importer {
     if (!this.nodes.has(nodeId)) {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
-        label: undefined
+        label: child.id.toString(),
       });
     }
 
     if (parent.type === "edge_stmt") {
-      if (index > 0) {
+      const isNeedSkipSourceNode = index > 0;
+      if (isNeedSkipSourceNode) {
         const lastNode = children[index - 1];
         const currentNode = child;
 
         let edgeId = `${ lastNode.id }_${ currentNode.id }`;
 
         if (this.edges.has(edgeId)) {
-          edgeId = edgeId + index;
+          edgeId = `${ edgeId }_${ index }`;
         }
 
         this.edges.set(edgeId, {
           id: edgeId,
           points: [],
           data: {
-            source: "",
-            target: ""
+            source: lastNode.id.toString(),
+            target: currentNode.id.toString()
           }
         });
       }
