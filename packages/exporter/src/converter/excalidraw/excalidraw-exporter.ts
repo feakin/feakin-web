@@ -1,5 +1,5 @@
 import { Edge, ElementProperty, Graph, Node } from '../../model/graph';
-import { randomInteger } from '../../renderer/drawn-style/rough-seed';
+import { randomInteger } from './helper/rough-seed';
 import {
   calculateFocusAndGap,
   determineFocusPoint,

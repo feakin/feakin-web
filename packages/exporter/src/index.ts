@@ -37,11 +37,11 @@ export * from './model/state-style/style-constants';
 export * from './renderer/abstract-svg-render';
 export * from './renderer/canvas-shape-drawing';
 
-export * from './renderer/drawn-style/rough-seed';
+export * from './converter/excalidraw/helper/rough-seed';
 
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
-export * from './renderer/utils/data-url';
+export * from './renderer/helper/data-url';
 
 export * from './converter/mermaid/flow-transpiler';
 export * from './converter/mermaid/mermaid-flowdb';
