@@ -1,6 +1,6 @@
 {
   "name": "@feakin/model",
-  "version": "0.2.2-alpha.3",
+  "version": "0.2.2-alpha.4",
   "type": "commonjs",
   "files": [
     "src/**",
