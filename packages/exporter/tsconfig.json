@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "rootDir": "src",
     "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -10,12 +11,12 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node"
   },
-  "files": [],
   "include": [
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules/**"
+    "node_modules/**",
+    "dist/**"
   ],
   "references": [
     {
