@@ -1,5 +1,7 @@
 import { DotImporter } from "./dot-importer";
 import { Graph } from "../../model/graph";
+import { ExcalidrawExporter } from "../excalidraw/excalidraw-exporter";
+import * as fs from "fs";
 
 describe('DotImporter', () => {
   it('edge with', () => {
@@ -50,6 +52,14 @@ describe('DotImporter', () => {
   1 -> 0 [ len=2, label="(0, -1)"];
 }`);
     const graph: Graph = importer.parse();
-    console.log(graph);
+
+    expect(graph.nodes.length).toBe(2);
+    expect(graph.nodes[0].label).toBe("0");
+
+    expect(graph.nodes[0].x).toBe(58);
+    expect(graph.nodes[0].y).toBe(28);
+
+    expect(graph.nodes[0].height).toBe(40);
+    expect(graph.nodes[0].width).toBe(100);
   });
 });

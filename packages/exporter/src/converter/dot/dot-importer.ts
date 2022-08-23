@@ -2,7 +2,7 @@ import parse, { Attr as DotAttr, AttrStmt, EdgeStmt, Graph as DotGraph, NodeId, 
 
 import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
-import { DagreRelation } from "@feakin/exporter";
+import { dagreReLayout } from "../../layout/dagre-layout";
 import { nanoid } from "nanoid";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId);
@@ -38,20 +38,21 @@ export class DotImporter extends Importer {
     const newIdMap: Map<string, string> = new Map();
     graph.nodes.forEach((node) => {
       const newId = nanoid();
-      node.id = newId;
       newIdMap.set(node.id, newId);
+      node.id = newId;
     });
 
     graph.edges.forEach((edge) => {
+      edge.id = nanoid();
       if(edge.data?.source && edge.data?.source.length > 0) {
-        edge.data.source = newIdMap.get(edge.data.source) || 'unknown';
+        edge.data.sourceId = newIdMap.get(edge.data.source) || 'unknown';
       }
       if(edge.data?.target && edge.data?.target.length > 0) {
-        edge.data.target = newIdMap.get(edge.data.target) || 'unknown';
+        edge.data.targetId = newIdMap.get(edge.data.target) || 'unknown';
       }
     });
 
-    return graph;
+    return dagreReLayout(graph);
   }
 
   private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any) {

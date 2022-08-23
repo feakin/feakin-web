@@ -20,7 +20,51 @@ function initGraphOptions(options: LayoutOptions) {
   return graph;
 }
 
-function renderByPosition(graph: graphlib.Graph<any>) {
+export function dagreReLayout(graph: Graph, options: LayoutOptions = defaultLayoutOptions): Graph {
+  const dagreGraph = initGraphOptions(options);
+
+  graph.nodes.forEach(node => {
+    dagreGraph.setNode(node.label!, {
+      width: options.node.width,
+      height: options.node.height,
+      ...node
+    });
+  })
+
+  graph.edges.forEach(edge => {
+    dagreGraph.setEdge(edge.data!.source, edge.data!.target, {
+      ...edge
+    });
+  })
+
+  return calculatePosition(dagreGraph);
+}
+
+export function dagreLayout(relations: DagreRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
+  const dagreGraph = initGraphOptions(options);
+
+  const labelCache: Map<string, boolean> = new Map();
+  relations.forEach(relation => {
+    labelCache.set(relation.source.name, true);
+
+    if (relation.target) {
+      labelCache.set(relation.target.name, true);
+      dagreGraph.setEdge(relation.source.name, relation.target.name, {});
+    }
+  })
+
+  labelCache.forEach((_, name) => {
+    const label = {
+      width: options.node.width,
+      height: options.node.height,
+    };
+    dagreGraph.setNode(name, label);
+  });
+
+  return calculatePosition(dagreGraph);
+}
+
+function calculatePosition(graph: graphlib.Graph<any>) {
   dagre.layout(graph);
 
   const labelIdMap: Map<string, string> = new Map();
@@ -55,28 +99,4 @@ function renderByPosition(graph: graphlib.Graph<any>) {
   return {
     nodes, edges
   }
-}
-
-export function dagreLayout(relations: DagreRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
-  const graph = initGraphOptions(options);
-
-  const labelCache: Map<string, boolean> = new Map();
-  relations.forEach(relation => {
-    labelCache.set(relation.source.name, true);
-
-    if (relation.target) {
-      labelCache.set(relation.target.name, true);
-      graph.setEdge(relation.source.name, relation.target.name, {});
-    }
-  })
-
-  labelCache.forEach((_, name) => {
-    const label = {
-      width: options.node.width,
-      height: options.node.height,
-    };
-    graph.setNode(name, label);
-  });
-
-  return renderByPosition(graph);
 }

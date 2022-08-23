@@ -74,7 +74,9 @@ export interface NodeData extends ElementData {
 
 export interface EdgeData extends ElementData {
   source: string;
+  sourceId?: string;
   target: string;
+  targetId?: string;
   type?: EdgeType;
 
   [key: string]: any;
