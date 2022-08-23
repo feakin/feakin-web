@@ -9,6 +9,8 @@ export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
 
+  currentEdgeOp = '->';
+
   constructor(content: string) {
     super(content);
   }
@@ -26,7 +28,7 @@ export class DotImporter extends Importer {
     };
   }
 
-  private parseChildren(children: DotElement[], parent: DotGraph | DotElement ) {
+  private parseChildren(children: DotElement[], parent: DotGraph | DotElement) {
     children.forEach((child, index) => {
       switch (child.type) {
         case "attr_stmt":
@@ -35,7 +37,6 @@ export class DotImporter extends Importer {
           this.parseChildren(child.edge_list, child);
           break;
         case "node_stmt":
-          console.log(JSON.stringify(child))
           break;
         case "subgraph":
           break;
@@ -51,7 +52,7 @@ export class DotImporter extends Importer {
   private createNode(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number) {
     const nodeId = child.id;
 
-    if(!this.nodes.has(nodeId)) {
+    if (!this.nodes.has(nodeId)) {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
         label: undefined
@@ -63,18 +64,20 @@ export class DotImporter extends Importer {
         const lastNode = children[index - 1];
         const currentNode = child;
 
-        const edgeId = `${lastNode.id}_${currentNode.id}`;
+        let edgeId = `${ lastNode.id }_${ currentNode.id }`;
 
-        if (!this.edges.has(edgeId)) {
-          this.edges.set(edgeId, {
-            id: edgeId,
-            points: [],
-            data: {
-              source: "",
-              target: ""
-            }
-          });
+        if (this.edges.has(edgeId)) {
+          edgeId = edgeId + index;
         }
+
+        this.edges.set(edgeId, {
+          id: edgeId,
+          points: [],
+          data: {
+            source: "",
+            target: ""
+          }
+        });
       }
     }
   }
