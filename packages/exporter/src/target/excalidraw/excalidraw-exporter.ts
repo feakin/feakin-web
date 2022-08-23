@@ -1,4 +1,3 @@
-import { FeakinExporter } from '../exporter';
 import { Edge, Graph, Node } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import {
@@ -19,7 +18,7 @@ export interface ExportedDataState {
   files: any;
 }
 
-export class ExcalidrawExporter implements FeakinExporter {
+export class ExcalidrawExporter {
   graph: Graph;
   originNodeCaches: Map<string, Node> = new Map<string, Node>();
   createdNodeCaches: Map<string, any> = new Map<string, any>();

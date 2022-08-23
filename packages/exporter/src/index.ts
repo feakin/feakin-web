@@ -56,9 +56,9 @@ export * from './target/excalidraw/math';
 export * from './target/excalidraw/type-check';
 
 export * from './target/mxgraph/cell-state-style';
-export * from './target/mxgraph/drawio-converter';
+export * from './target/mxgraph/drawio-importer';
 export * from './target/mxgraph/drawio-encode';
-export * from './target/mxgraph/drawio-wrapper';
+export * from './target/mxgraph/drawio-exporter';
 export * from './target/mxgraph/xml-converter';
 
 export * from './env';

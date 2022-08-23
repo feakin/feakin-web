@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import { wrapperToDrawIo } from "./drawio-wrapper";
+import { wrapperToDrawIo } from "./drawio-exporter";
 import DrawioEncode from "./drawio-encode";
 import { MXCell, MxGraph } from "./mxgraph";
 

@@ -3,7 +3,7 @@ import DrawioEncode from "./drawio-encode";
 import { js2xml } from "./xml-converter";
 import { Node } from "../../model/graph";
 
-export class DrawIoWrapper {
+export class DrawioExporter {
   idIndex = 0;
   GUID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
 
@@ -68,7 +68,7 @@ export class DrawIoWrapper {
 }
 
 export function wrapperToDrawIo() {
-  const wrapper = new DrawIoWrapper();
+  const wrapper = new DrawioExporter();
 
   const cells: MXCell[] = [
     {

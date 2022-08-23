@@ -1,17 +1,17 @@
 import * as fs from "fs";
 import DrawioEncode from "../mxgraph/drawio-encode";
 import { Mxfile, MxGraph } from "../mxgraph/mxgraph";
-import { DrawioConverter } from "../mxgraph/drawio-converter";
+import { DrawioImporter } from "../mxgraph/drawio-importer";
 import { ExcalidrawExporter } from "./excalidraw-exporter";
 import { Graph } from "../../model/graph";
 
-function fromFile(path: string): DrawioConverter {
+function fromFile(path: string): DrawioImporter {
   const data = fs.readFileSync(path, 'utf8');
 
   const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
   const mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
 
-  return new DrawioConverter(mxGraph);
+  return new DrawioImporter(mxGraph);
 }
 
 describe('ExcalidrawExporter', () => {
@@ -99,7 +99,7 @@ describe('ExcalidrawExporter', () => {
   });
 
   it('exporter', () => {
-    const drawioConverter = new DrawioConverter(mxGraph);
+    const drawioConverter = new DrawioImporter(mxGraph);
     const graph: Graph = drawioConverter.convert();
 
     const exporter = new ExcalidrawExporter(graph).export();

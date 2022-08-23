@@ -1,13 +1,13 @@
 import { MXCell, MxGraph, MxPoint } from "./mxgraph";
 import { Edge, Graph, Node } from "../../model/graph";
 import { CellStateStyle } from "./cell-state-style";
-import { Converter, FeakinConverter } from "../converter";
 
-export class DrawioConverter extends Converter implements FeakinConverter {
+export class DrawioImporter {
   private mxCells: MXCell[];
+  private graph: MxGraph;
 
   constructor(graph: MxGraph) {
-    super(graph);
+    this.graph = graph;
     this.mxCells = this.graph.mxGraphModel.root.mxCell;
   }
 
