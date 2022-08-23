@@ -2,7 +2,7 @@
 const Converter = require("@feakin/parser");
 import { FlowDb } from "./mermaid-flowdb";
 
-export function parseFlow(str: string) {
+export function flowTranspiler(str: string) {
   const flowParser = Converter.flowParser();
   const flowDb = new FlowDb();
 

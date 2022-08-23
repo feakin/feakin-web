@@ -10,7 +10,7 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-import { DargeFlowConverter, Edge, flattenPoints } from "@feakin/exporter";
+import { MermaidImporter, Edge, flattenPoints } from "@feakin/exporter";
 
 function Render(props: { text: string }) {
   const [selectedId, selectShape] = React.useState<number | null>(null);
@@ -182,8 +182,8 @@ function Render(props: { text: string }) {
     layer.draw();
   };
 
-  const executor = new DargeFlowConverter();
-  const layout = executor.sourceToDagre(props.text);
+  const executor = new MermaidImporter(props.text);
+  const layout = executor.parse();
 
   return (
     <Stage

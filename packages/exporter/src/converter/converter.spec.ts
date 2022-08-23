@@ -1,18 +1,18 @@
 import * as fs from "fs";
-import { DargeFlowConverter } from "./mermaid/darge-flow-converter";
+import { MermaidImporter } from "./mermaid/mermaid-importer";
 import { Graph } from "../model/graph";
 import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
 
 describe('Converter', () => {
   it('decode for relations', () => {
-    const executor = new DargeFlowConverter();
-    const graph: Graph = executor.sourceToDagre(`
+    const executor = new MermaidImporter(`
 graph TD;
     A-->B;
     A-->C;
     B-->D;
     C-->D;
 `);
+    const graph: Graph = executor.parse();
 
     const output = new ExcalidrawExporter(graph).export();
     const edges = output.elements.filter(e => e.type === "arrow");

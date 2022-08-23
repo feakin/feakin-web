@@ -3,11 +3,11 @@ import * as path from "path";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { DrawioImporterS, DrawioEncode, ExcalidrawExporter, DargeFlowConverter, Graph } from "@feakin/exporter";
+import { DrawioImporterS, DrawioEncode, ExcalidrawExporter, MermaidImporter, Graph } from "@feakin/exporter";
 
 export function mermaidToExcalidraw(inputContent: string, outputFile: string) {
-  const executor = new DargeFlowConverter();
-  const graph: Graph = executor.sourceToDagre(inputContent);
+  const executor = new MermaidImporter(inputContent);
+  const graph: Graph = executor.parse();
   const output = new ExcalidrawExporter(graph).export();
 
   fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));

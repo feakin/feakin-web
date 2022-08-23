@@ -1,8 +1,8 @@
-import { parseFlow } from './mermaid-flow';
+import { flowTranspiler } from './flow-transpiler';
 
-describe('feakinExporter', () => {
+describe('flow transpiler', () => {
   it('should parse basic mermaid graph', () => {
-    const flow = parseFlow(`graph TD;
+    const flow = flowTranspiler(`graph TD;
     A-->B
     B-->C;`);
 
@@ -13,7 +13,7 @@ describe('feakinExporter', () => {
   });
 
   it('should parse subgraph', () => {
-    const flow = parseFlow(`flowchart TB
+    const flow = flowTranspiler(`flowchart TB
     c1-->a2
     subgraph ide1 [one]
     a1-->a2
@@ -24,7 +24,7 @@ describe('feakinExporter', () => {
   });
 
   it('should parse description', () => {
-    const flow = parseFlow(`flowchart LR
+    const flow = flowTranspiler(`flowchart LR
     id1[This is the text in the box]`);
 
     expect(flow.direction).toBe('LR');

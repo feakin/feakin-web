@@ -1,4 +1,4 @@
-export * from './converter/mermaid/darge-flow-converter';
+export * from './converter/mermaid/mermaid-importer';
 
 export * from './layout/dagre-layout';
 export * from './layout/dagre-relation';
@@ -43,10 +43,8 @@ export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 export * from './renderer/utils/data-url';
 
-export * from './converter/mermaid/mermaid-flow';
+export * from './converter/mermaid/flow-transpiler';
 export * from './converter/mermaid/mermaid-flowdb';
-
-export * from './converter/converter';
 
 export * from './converter/excalidraw/helper/bounds';
 export * from './converter/excalidraw/helper/collision';

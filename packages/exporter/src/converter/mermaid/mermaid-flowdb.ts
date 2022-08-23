@@ -44,12 +44,12 @@ export class FlowDb {
       return true;
     }
     return false;
-  };
+  }
 
 
   getDirection() {
     return this.direction.trim();
-  };
+  }
 
   countChar(char: string, str: string) {
     const length = str.length;
@@ -60,7 +60,7 @@ export class FlowDb {
       }
     }
     return count;
-  };
+  }
 
   destructEndLink(_str: string) {
     const str = _str.trim();
@@ -106,7 +106,7 @@ export class FlowDb {
     }
 
     return { type, stroke, length };
-  };
+  }
 
   destructStartLink(_str: string) {
     let str = _str.trim();
@@ -138,7 +138,7 @@ export class FlowDb {
     }
 
     return { type, stroke };
-  };
+  }
 
   destructLink(_str: string, _startStr: string) {
     const info = this.destructEndLink(_str);
@@ -169,7 +169,7 @@ export class FlowDb {
     }
 
     return info;
-  };
+  }
 
   addLink(_start: any[], _end: any[], type: string, linktext: string) {
     let i, j;
@@ -178,7 +178,7 @@ export class FlowDb {
         this.addSingleLink(_start[i], _end[j], type, linktext);
       }
     }
-  };
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   sanitizeText(text: string, config?: string) {
@@ -190,7 +190,7 @@ export class FlowDb {
     //   txt = DOMPurify.sanitize(sanitizeMore(text, config));
     // }
     return text;
-  };
+  }
 
 
   /**
@@ -295,7 +295,7 @@ export class FlowDb {
     }
 
     that.vertices[id].props = props;
-  };
+  }
 
   /**
    * Function to lookup domId from id in the graph definition.
@@ -312,7 +312,7 @@ export class FlowDb {
     }
 
     return id;
-  };
+  }
 
 
 // Todo optimizer this by caching existing nodes
@@ -325,7 +325,7 @@ export class FlowDb {
       }
     });
     return res;
-  };
+  }
 
   /**
    * Deletes an id from all subgraphs
@@ -341,7 +341,7 @@ export class FlowDb {
       }
     });
     return { nodes: res };
-  };
+  }
 
   /**
    * Clears the internal graph db so that a new graph can be parsed.
@@ -416,7 +416,7 @@ export class FlowDb {
     this.subGraphs.push(subGraph);
     this.subGraphLookup[id] = subGraph;
     return id;
-  };
+  }
 
   getSubGraphs() {
     return this.subGraphs;
