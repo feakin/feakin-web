@@ -2,6 +2,8 @@ import parse, { Attr as DotAttr, AttrStmt, EdgeStmt, Graph as DotGraph, NodeId, 
 
 import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
+import { DagreRelation } from "@feakin/exporter";
+import { nanoid } from "nanoid";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId);
 
@@ -13,18 +15,43 @@ export class DotImporter extends Importer {
     super(content);
   }
 
-  //  thanks to: https://github.com/magjac/graphviz-visual-editor/blob/master/src/dot.js
-  override parse(): Graph {
+
+  private parseGraph() {
     const graphs: DotGraph[] = parse(this.content);
     graphs.forEach((graph) => {
       this.parseChildren(graph.children, graph);
     })
+  }
 
-    // todo: regenerate ids;
+  //  thanks to: https://github.com/magjac/graphviz-visual-editor/blob/master/src/dot.js
+  transpile(): Graph {
+    this.parseGraph();
+
     return {
       nodes: Array.from(this.nodes.values()),
       edges: Array.from(this.edges.values())
     };
+  }
+
+  override parse(): Graph {
+    const graph = this.transpile();
+    const newIdMap: Map<string, string> = new Map();
+    graph.nodes.forEach((node) => {
+      const newId = nanoid();
+      node.id = newId;
+      newIdMap.set(node.id, newId);
+    });
+
+    graph.edges.forEach((edge) => {
+      if(edge.data?.source && edge.data?.source.length > 0) {
+        edge.data.source = newIdMap.get(edge.data.source) || 'unknown';
+      }
+      if(edge.data?.target && edge.data?.target.length > 0) {
+        edge.data.target = newIdMap.get(edge.data.target) || 'unknown';
+      }
+    });
+
+    return graph;
   }
 
   private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any) {

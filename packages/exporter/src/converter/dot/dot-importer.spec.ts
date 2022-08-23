@@ -8,7 +8,7 @@ describe('DotImporter', () => {
   a -- b
   b -- a [color=blue]
 }`);
-    const graph: Graph = importer.parse();
+    const graph: Graph = importer.transpile();
 
     expect(graph.nodes.length).toBe(2);
     expect(graph.nodes[0].label).toBe("a");
@@ -25,7 +25,7 @@ describe('DotImporter', () => {
 0 -> 1 [ len=0.5, dir=none, weight=10];
 1 -> 0 [ len=2, label="(0, -1)"];
 }`);
-    const graph: Graph = importer.parse();
+    const graph: Graph = importer.transpile();
 
     expect(graph.nodes.length).toBe(2);
     expect(graph.edges.length).toBe(3);
@@ -36,10 +36,20 @@ describe('DotImporter', () => {
     const importer = new DotImporter(`strict graph {
   sf [label="Sunflowers"]
 }`);
-    const graph: Graph = importer.parse();
+    const graph: Graph = importer.transpile();
 
     expect(graph.nodes.length).toBe(1);
     expect(graph.nodes[0].label).toBe("Sunflowers");
     expect(graph.edges.length).toBe(0);
+  });
+
+  it('new id', () => {
+    const importer = new DotImporter(`strict graph {
+  0 -> 1 [ len=2, label="(1, 0)"];
+  0 -> 1 [ len=0.5, dir=none, weight=10];
+  1 -> 0 [ len=2, label="(0, -1)"];
+}`);
+    const graph: Graph = importer.parse();
+    console.log(graph);
   });
 });
