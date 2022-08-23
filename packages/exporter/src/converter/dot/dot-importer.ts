@@ -1,4 +1,4 @@
-import parse, { AttrStmt, EdgeStmt, Graph as DotGraph, NodeId, NodeStmt, Subgraph } from "dotparser";
+import parse, { AttrStmt, EdgeStmt, Graph as DotGraph, Attr as DotAttr, NodeId, NodeStmt, Subgraph, Attr } from "dotparser";
 
 import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
@@ -27,20 +27,22 @@ export class DotImporter extends Importer {
     };
   }
 
-  private parseChildren(children: DotElement[], parent: DotGraph | DotElement) {
+  private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any) {
     children.forEach((child, index) => {
       switch (child.type) {
         case "attr_stmt":
           break;
         case "edge_stmt":
-          this.parseChildren(child.edge_list, child);
+          // eslint-disable-next-line no-case-declarations
+          let attributes = this.parseAttributes(child.attr_list);
+          this.parseChildren(child.edge_list, child, attributes);
           break;
         case "node_stmt":
           break;
         case "subgraph":
           break;
         case "node_id":
-          this.createNode(child, parent, children as NodeId[], index);
+          this.createNode(child, parent, children as NodeId[], index, attrs);
           break;
         default:
           console.log("unsupported type" + JSON.stringify(child))
@@ -48,7 +50,7 @@ export class DotImporter extends Importer {
     })
   }
 
-  private createNode(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number) {
+  private createNode(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any) {
     const nodeId = child.id;
 
     if (!this.nodes.has(nodeId)) {
@@ -76,9 +78,17 @@ export class DotImporter extends Importer {
           data: {
             source: lastNode.id.toString(),
             target: currentNode.id.toString()
-          }
+          },
+          ...attrs
         });
       }
     }
+  }
+
+  private parseAttributes(attr_list: DotAttr[]): any {
+    return attr_list.reduce((attrs, attr) => {
+      attrs[attr.id] = attr.eq;
+      return attrs;
+    }, {} as any);
   }
 }
