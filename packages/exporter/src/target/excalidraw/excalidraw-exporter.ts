@@ -191,29 +191,45 @@ export class ExcalidrawExporter implements FeakinExporter {
       });
     }
 
+    // console.log(rPoints);
     Object.assign(baseEdge, {
       points: rPoints,
-    });
-
-    const startIntersects = this.pointByIntersectElement(baseEdge, sourceNode, 'start');
-    const endIntersects = this.pointByIntersectElement(baseEdge, targetNode, 'end');
-
-    Object.assign(baseEdge, {
-      points: [startIntersects[0], endIntersects[0]],
       lastCommittedPoint: null,
       startArrowhead: null,
       endArrowhead: "arrow"
-    })
+    });
+
+    // recalculate the points of the edge
+    if(rPoints.length >= 2) {
+      const startIntersects = this.pointByIntersectElement(baseEdge, sourceNode, 'start');
+      const endIntersects = this.pointByIntersectElement(baseEdge, targetNode, 'end');
+
+      Object.assign(baseEdge, {
+        points: [startIntersects[0], endIntersects[0]],
+        startBinding: {
+          elementId: edge.data?.source,
+          ...calculateFocusAndGap(baseEdge, sourceNode, "start")
+        },
+
+        endBinding: {
+          elementId: edge.data?.target,
+          ...calculateFocusAndGap(baseEdge, targetNode, "end")
+        },
+      })
+    }
+
 
     Object.assign(baseEdge, {
       startBinding: {
         elementId: edge.data?.source,
-        ...calculateFocusAndGap(baseEdge, sourceNode, "start")
+        focus: 0,
+        gap: 1
       },
 
       endBinding: {
         elementId: edge.data?.target,
-        ...calculateFocusAndGap(baseEdge, targetNode, "end")
+        focus: 0,
+        gap: 1
       },
     })
 
