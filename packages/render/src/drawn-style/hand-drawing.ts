@@ -1,9 +1,7 @@
 import { Drawable, Options } from "roughjs/bin/core";
 import { RoughGenerator } from "roughjs/bin/generator";
 
-import { RectangleShape, Shape } from "../../model/node";
-import { randomInteger } from "./rough-seed";
-import { Point } from "../../model/geometry/point";
+import { Point, randomInteger, RectangleShape, Shape } from "@feakin/exporter";
 
 const getDashArrayDashed = (strokeWidth: number) => [8, 8 + strokeWidth];
 

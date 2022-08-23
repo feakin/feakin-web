@@ -1,5 +1,5 @@
-import { Random } from "roughjs/bin/math";
-
-const random = new Random(Date.now());
-export const randomInteger = () => Math.floor(random.next() * 2 ** 31);
-
+export const randomInteger = () => {
+  const seed = Date.now();
+  const random = ((2 ** 31 - 1) & (Math.imul(48271, seed))) / 2 ** 31
+  return Math.floor(random * 2 ** 31);
+};

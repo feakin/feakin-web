@@ -1,5 +1,5 @@
 import { generateRoughOptions, HandDrawing } from "./hand-drawing";
-import { RectangleShape } from "../../model/node/rectangle-shape";
+import { RectangleShape } from "@feakin/exporter";
 
 describe('CanvasShapeDrawing', () => {
   it('sample', () => {

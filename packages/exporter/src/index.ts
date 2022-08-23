@@ -35,8 +35,9 @@ export * from './model/state-style/stroke-state';
 export * from './model/state-style/style-constants';
 export * from './renderer/abstract-svg-render';
 export * from './renderer/canvas-shape-drawing';
-export * from './renderer/drawn-style/hand-drawing';
+
 export * from './renderer/drawn-style/rough-seed';
+
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 export * from './renderer/utils/data-url';
