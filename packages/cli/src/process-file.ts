@@ -5,7 +5,7 @@ import * as path from "path";
 // @ts-ignore
 import { DrawioConverter, DrawioEncode, ExcalidrawExporter, Executor, Graph } from "@feakin/exporter";
 
-function mermaidToExcalidraw(inputContent: string, outputFile: string) {
+export function mermaidToExcalidraw(inputContent: string, outputFile: string) {
   const executor = new Executor();
   const graph: Graph = executor.sourceToDagre(inputContent);
   const output = new ExcalidrawExporter(graph).export();
@@ -25,7 +25,6 @@ function drawioToExcalidraw(inputContent: string, outputFile: string) {
 }
 
 export function processFile(inputFile: string, outputFile: string) {
-
   const extname = path.extname(inputFile);
   const inputContent = fs.readFileSync(inputFile, 'utf8');
 

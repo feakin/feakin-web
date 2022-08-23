@@ -4,6 +4,8 @@ import { Node as DagreNode, GraphEdge } from "dagre";
 import { DagreRelation } from "./dagre-relation";
 import { Node, Edge, Graph } from "../model/graph";
 import { defaultLayoutOptions, LayoutOptions } from "../model/layout/layout";
+import { randomInteger } from "../renderer/drawn-style/rough-seed";
+import { nanoid } from "nanoid";
 
 export function dagreLayout(relations: DagreRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
   const graph = new dagre.graphlib.Graph({
@@ -17,18 +19,23 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
     marginy: 8,
   }).setDefaultEdgeLabel(() => ({}));
 
+  let labelCache: Map<string, boolean> = new Map();
   relations.forEach(relation => {
+    labelCache.set(relation.source.name, true);
+
+    if (relation.target) {
+      labelCache.set(relation.target.name, true);
+      graph.setEdge(relation.source.name, relation.target.name, {});
+    }
+  })
+
+  labelCache.forEach((_, name) => {
     const label = {
       width: options.node.width,
       height: options.node.height,
     };
-    graph.setNode(relation.source.name, label);
-
-    if (relation.target) {
-      graph.setNode(relation.target.name, label);
-      graph.setEdge(relation.source.name, relation.target.name, {});
-    }
-  })
+    graph.setNode(name, label);
+  });
 
   dagre.layout(graph);
 
@@ -36,6 +43,7 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
   graph.nodes().forEach(function (v) {
     const node: DagreNode = graph.node(v);
     nodes.push({
+      id: nanoid(),
       x: node.x,
       y: node.y,
       label: v,
@@ -48,7 +56,7 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
   graph.edges().forEach(function (e) {
     const graphEdge: GraphEdge = graph.edge(e);
     edges.push({
-      id: "1",
+      id: nanoid(),
       points: graphEdge.points,
     });
   });

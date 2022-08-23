@@ -6,6 +6,7 @@
     "cheerio": "^1.0.0-rc.12",
     "dagre": "^0.8.5",
     "glob": "^8.0.3",
+    "nanoid": "^4.0.0",
     "pako": "^2.0.4",
     "roughjs": "^4.5.2",
     "xml-js": "^1.6.11"
@@ -36,7 +37,7 @@
       "^.+\\.[t|j]sx?$": "ts-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva))"
+      "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|nanoid|konva))"
     ],
     "resetMocks": false
   },
