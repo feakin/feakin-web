@@ -1,4 +1,4 @@
-import parse, { AttrStmt, EdgeStmt, Graph as DotGraph, Attr as DotAttr, NodeId, NodeStmt, Subgraph, Attr } from "dotparser";
+import parse, { Attr as DotAttr, AttrStmt, EdgeStmt, Graph as DotGraph, NodeId, NodeStmt, Subgraph } from "dotparser";
 
 import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
@@ -30,19 +30,17 @@ export class DotImporter extends Importer {
   private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any) {
     children.forEach((child, index) => {
       switch (child.type) {
-        case "attr_stmt":
-          break;
         case "edge_stmt":
-          // eslint-disable-next-line no-case-declarations
-          let attributes = this.parseAttributes(child.attr_list);
-          this.parseChildren(child.edge_list, child, attributes);
+          this.parseChildren(child.edge_list, child, this.parseAttrs(child.attr_list));
           break;
         case "node_stmt":
+          this.createNode(child);
           break;
         case "subgraph":
+          this.parseChildren(child.children, child);
           break;
         case "node_id":
-          this.createNode(child, parent, children as NodeId[], index, attrs);
+          this.createNodeId(child, parent, children as NodeId[], index, attrs);
           break;
         default:
           console.log("unsupported type" + JSON.stringify(child))
@@ -50,7 +48,7 @@ export class DotImporter extends Importer {
     })
   }
 
-  private createNode(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any) {
+  private createNodeId(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any) {
     const nodeId = child.id;
 
     if (!this.nodes.has(nodeId)) {
@@ -85,10 +83,23 @@ export class DotImporter extends Importer {
     }
   }
 
-  private parseAttributes(attr_list: DotAttr[]): any {
+  private parseAttrs(attr_list: DotAttr[]): any {
     return attr_list.reduce((attrs, attr) => {
       attrs[attr.id] = attr.eq;
       return attrs;
     }, {} as any);
+  }
+
+  private createNode(child: NodeStmt) {
+    const nodeId = child.node_id.id;
+    const attrs = this.parseAttrs(child.attr_list);
+
+    if (!this.nodes.has(nodeId)) {
+      this.nodes.set(nodeId, {
+        id: nodeId.toString(),
+        label: child.node_id.id.toString(),
+        ...attrs
+      });
+    }
   }
 }

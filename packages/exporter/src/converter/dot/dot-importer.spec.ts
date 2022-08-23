@@ -29,6 +29,17 @@ describe('DotImporter', () => {
 
     expect(graph.nodes.length).toBe(2);
     expect(graph.edges.length).toBe(3);
-    expect(graph.edges[0]).toBe({ data: { source: "0", target: "1" }, id: "0_1", label: "(1, 0)", len: 2, points: [] });
+    expect(graph.edges[0]).toEqual({ data: { source: "0", target: "1" }, id: "0_1", label: "(1, 0)", len: 2, points: [] });
+  });
+
+  it('single node', () => {
+    const importer = new DotImporter(`strict graph {
+  sf [label="Sunflowers"]
+}`);
+    const graph: Graph = importer.parse();
+
+    expect(graph.nodes.length).toBe(1);
+    expect(graph.nodes[0].label).toBe("Sunflowers");
+    expect(graph.edges.length).toBe(0);
   });
 });
