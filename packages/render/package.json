@@ -1,9 +1,9 @@
 {
   "name": "@feakin/render",
-  "version": "0.2.2-alpha.8",
+  "version": "0.2.2",
   "private": false,
   "dependencies": {
-    "@feakin/exporter": "^0.2.2-alpha.8",
+    "@feakin/exporter": "^0.2.2",
     "@feakin/parser": "^0.2.2-alpha.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",

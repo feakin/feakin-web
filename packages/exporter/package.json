@@ -1,6 +1,6 @@
 {
   "name": "@feakin/exporter",
-  "version": "0.2.2-alpha.8",
+  "version": "0.2.2",
   "dependencies": {
     "@feakin/parser": "^0.2.2-alpha.6",
     "cheerio": "^1.0.0-rc.12",
