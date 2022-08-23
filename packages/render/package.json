@@ -41,7 +41,7 @@
       "^.+\\.[t|j]sx?$": "ts-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva)/)"
+      "node_modules/(?!(roughjs|points-on-curve|path-data-parser|points-on-path|konva|nanoid)/)"
     ],
     "resetMocks": false
   },
