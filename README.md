@@ -17,7 +17,21 @@ Chinese introduction: Feakin 是一个图形资产管理工具，基于[图表�
 - [ ] 手绘风格。
 - [ ] 多样化图形布局。支持 Dagre、ELK、Cola 等布局。
 
-todos:
+## Demos
+
+Try Online demo: https://online.feakin.com/
+
+Or
+
+Install `@feakin/cli` for diagrams converter: 
+
+```bash
+npm install -g @feakin/cli
+
+feakin --input software-development.drawio --output sd.excalidraw
+```
+
+## Todos
 
 - [x] Layout Model Design
   - [x] Shape
