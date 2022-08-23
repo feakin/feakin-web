@@ -1,10 +1,10 @@
-import { parseFlow } from "../source/mermaid-flow";
-import { FlowEdge, FlowNode } from "../source/flow";
-import { dagreLayout } from "../layout/dagre-layout";
-import { DagreRelation } from "../layout/dagre-relation";
-import { Graph } from "../model/graph";
+import { dagreLayout } from "../../layout/dagre-layout";
+import { DagreRelation } from "../../layout/dagre-relation";
+import { Graph } from "../../model/graph";
+import { FlowEdge, FlowNode } from "./flow";
+import { parseFlow } from "./mermaid-flow";
 
-export class Executor {
+export class DargeFlowConverter {
   // todo: change to strategy;
   flowToDagre(nodes: { [p: string]: FlowNode }, edges: FlowEdge[]): DagreRelation[] {
     const relations: DagreRelation[] = [];

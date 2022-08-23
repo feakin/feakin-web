@@ -1,11 +1,11 @@
 import * as fs from "fs";
-import { Executor } from "../executor/executor";
+import { DargeFlowConverter } from "./mermaid/darge-flow-converter";
 import { Graph } from "../model/graph";
 import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
 
 describe('Converter', () => {
   it('decode for relations', () => {
-    const executor = new Executor();
+    const executor = new DargeFlowConverter();
     const graph: Graph = executor.sourceToDagre(`
 graph TD;
     A-->B;

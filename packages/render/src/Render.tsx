@@ -10,7 +10,7 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-import { Executor, Edge, flattenPoints } from "@feakin/exporter";
+import { DargeFlowConverter, Edge, flattenPoints } from "@feakin/exporter";
 
 function Render(props: { text: string }) {
   const [selectedId, selectShape] = React.useState<number | null>(null);
@@ -182,7 +182,7 @@ function Render(props: { text: string }) {
     layer.draw();
   };
 
-  const executor = new Executor();
+  const executor = new DargeFlowConverter();
   const layout = executor.sourceToDagre(props.text);
 
   return (

@@ -1,8 +1,8 @@
-import { Executor } from "./executor";
+import { DargeFlowConverter } from "./darge-flow-converter";
 
-describe('Executor', () => {
+describe('DagreFlowConverter', () => {
   it('sample', () => {
-    const executor = new Executor();
+    const executor = new DargeFlowConverter();
     const source = `graph TD;
     A-->B
     B-->C;`;
