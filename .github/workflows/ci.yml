@@ -7,6 +7,9 @@ on:
 
 jobs:
   main:
+    permissions:
+      contents: write
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,3 +28,10 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: {{ GITHUB_TOKEN }}
+          repository-name: feakin/online
+          folder: packages/render/dist
