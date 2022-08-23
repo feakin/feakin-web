@@ -5,8 +5,8 @@ import {
   determineFocusPoint,
   getPointAtIndexGlobalCoordinates,
   intersectElementWithLine,
-} from "./collision";
-import { FontString, measureText } from "./text-utils";
+} from "./helper/collision";
+import { FontString, measureText } from "./helper/text-utils";
 import { isBrowser } from "../../env";
 
 export interface ExportedDataState {
@@ -56,14 +56,6 @@ export class ExcalidrawExporter {
     });
 
     return root;
-  }
-
-  footer(): string {
-    return '';
-  }
-
-  header(): string {
-    return '';
   }
 
   createRoot(): ExportedDataState {

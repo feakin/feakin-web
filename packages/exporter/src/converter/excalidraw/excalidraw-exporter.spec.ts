@@ -1,7 +1,7 @@
 import * as fs from "fs";
-import DrawioEncode from "../mxgraph/drawio-encode";
-import { Mxfile, MxGraph } from "../mxgraph/mxgraph";
-import { DrawioImporter } from "../mxgraph/drawio-importer";
+import DrawioEncode from "../drawio/encode/drawio-encode";
+import { Mxfile, MxGraph } from "../drawio/mxgraph";
+import { DrawioImporter } from "../drawio/drawio-importer";
 import { ExcalidrawExporter } from "./excalidraw-exporter";
 import { Graph } from "../../model/graph";
 

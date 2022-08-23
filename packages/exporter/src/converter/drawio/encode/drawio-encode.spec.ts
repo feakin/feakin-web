@@ -1,5 +1,5 @@
 import DrawioEncode from './drawio-encode';
-import { MXCell, Mxfile, MxGraph } from './mxgraph';
+import { MXCell, Mxfile, MxGraph } from '../mxgraph';
 import * as fs from "fs";
 import * as path from "path";
 

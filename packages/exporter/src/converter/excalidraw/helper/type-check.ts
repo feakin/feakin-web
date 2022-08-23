@@ -23,7 +23,7 @@
  *
  */
 
-import { ExcalidrawElement, ExcalidrawFreeDrawElement, ExcalidrawLinearElement } from "./excalidraw-types";
+import { ExcalidrawElement, ExcalidrawFreeDrawElement, ExcalidrawLinearElement } from "../excalidraw-types";
 
 export const isFreeDrawElementType = (
   elementType: ExcalidrawElement["type"],

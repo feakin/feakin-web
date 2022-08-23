@@ -3,7 +3,7 @@ import * as path from "path";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { DrawioImporter, DrawioEncode, ExcalidrawExporter, DargeFlowConverter, Graph } from "@feakin/exporter";
+import { DrawioImporterS, DrawioEncode, ExcalidrawExporter, DargeFlowConverter, Graph } from "@feakin/exporter";
 
 export function mermaidToExcalidraw(inputContent: string, outputFile: string) {
   const executor = new DargeFlowConverter();
@@ -16,7 +16,7 @@ export function mermaidToExcalidraw(inputContent: string, outputFile: string) {
 function drawioToExcalidraw(inputContent: string, outputFile: string) {
   const encoded: any = DrawioEncode.decodeXml(inputContent);
   const mxGraph = DrawioEncode.xml2obj(encoded) as any;
-  const drawioConverter = new DrawioImporter(mxGraph);
+  const drawioConverter = new DrawioImporterS(mxGraph);
   const sourceTargetGraph: Graph = drawioConverter.convert();
 
   const exporter = new ExcalidrawExporter(sourceTargetGraph).export();

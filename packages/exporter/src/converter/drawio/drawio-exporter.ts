@@ -1,6 +1,6 @@
 import { MXCell, MxFileRoot, MxGraph } from "./mxgraph";
-import DrawioEncode from "./drawio-encode";
-import { js2xml } from "./xml-converter";
+import DrawioEncode from "./encode/drawio-encode";
+import { js2xml } from "./encode/xml-converter";
 import { Node } from "../../model/graph";
 
 export class DrawioExporter {

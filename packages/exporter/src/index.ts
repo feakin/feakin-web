@@ -48,17 +48,20 @@ export * from './converter/mermaid/mermaid-flowdb';
 
 export * from './converter/converter';
 
-export * from './converter/excalidraw/bounds';
-export * from './converter/excalidraw/collision';
+export * from './converter/excalidraw/helper/bounds';
+export * from './converter/excalidraw/helper/collision';
 export * from './converter/excalidraw/excalidraw-exporter';
 export * from './converter/excalidraw/excalidraw-types';
-export * from './converter/excalidraw/math';
-export * from './converter/excalidraw/type-check';
+export * from './converter/excalidraw/helper/math';
+export * from './converter/excalidraw/helper/type-check';
 
-export * from './converter/mxgraph/cell-state-style';
-export * from './converter/mxgraph/drawio-importer';
-export * from './converter/mxgraph/drawio-encode';
-export * from './converter/mxgraph/drawio-exporter';
-export * from './converter/mxgraph/xml-converter';
+export * from './converter/drawio/cell-state-style';
+export * from './converter/drawio/drawio-importer';
+export * from './converter/drawio/encode/drawio-encode';
+export * from './converter/drawio/drawio-exporter';
+export * from './converter/drawio/encode/xml-converter';
 
 export * from './env';
+export { Importer } from "./converter/importer";
+export { ExcalidrawImporter } from "./converter/excalidraw/excalidraw-importer";
+export { Exporter } from "./converter/exporter";

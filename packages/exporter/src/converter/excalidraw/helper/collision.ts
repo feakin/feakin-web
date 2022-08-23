@@ -39,13 +39,13 @@ import {
   ExcalidrawTextElement,
   ExPoint,
   NonDeleted
-} from "./excalidraw-types";
+} from "../excalidraw-types";
 
-import * as GA from "./ga/ga";
-import * as GAPoint from "./ga/gapoints";
-import * as GADirection from "./ga/gadirections";
-import * as GALine from "./ga/galines";
-import * as GATransform from "./ga/gatransforms";
+import * as GA from "../ga/ga";
+import * as GAPoint from "../ga/gapoints";
+import * as GADirection from "../ga/gadirections";
+import * as GALine from "../ga/galines";
+import * as GATransform from "../ga/gatransforms";
 import { getElementAbsoluteCoords } from "./bounds";
 import { rotate } from "./math";
 
