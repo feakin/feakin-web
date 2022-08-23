@@ -1,7 +1,5 @@
 import { DotImporter } from "./dot-importer";
 import { Graph } from "../../model/graph";
-import { ExcalidrawExporter } from "../excalidraw/excalidraw-exporter";
-import * as fs from "fs";
 
 describe('DotImporter', () => {
   it('edge with', () => {
