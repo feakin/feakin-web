@@ -10,7 +10,7 @@ describe('DotImporter', () => {
 }`);
     const graph: Graph = importer.parse();
 
-    expect(graph.nodes.length).toBe(0);
-    expect(graph.edges.length).toBe(0);
+    expect(graph.nodes.length).toBe(2);
+    expect(graph.edges.length).toBe(2);
   });
 });
