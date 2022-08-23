@@ -6,26 +6,21 @@ import { ExcalidrawExporter } from "./excalidraw-exporter";
 import { Graph } from "../../model/graph";
 
 function fromFile(path: string): DrawioImporter {
-  const data = fs.readFileSync(path, 'utf8');
-
-  const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
-  const mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
-
-  return new DrawioImporter(mxGraph);
+  return new DrawioImporter(fs.readFileSync(path, 'utf8'));
 }
 
 describe('ExcalidrawExporter', () => {
   let mxGraph: MxGraph;
+  let data: string;
 
   const drawioConverter = fromFile('_fixtures/drawio/source-target.drawio');
-  const sourceTargetGraph: Graph = drawioConverter.convert();
+  const sourceTargetGraph: Graph = drawioConverter.parse();
 
   beforeAll(() => {
-    const data = fs.readFileSync('_fixtures/drawio/android-ag.drawio', 'utf8');
+    data = fs.readFileSync('_fixtures/drawio/android-ag.drawio', 'utf8');
 
     const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
     mxGraph = DrawioEncode.xml2obj(encoded) as MxGraph;
-
 
     if (!fs.existsSync("test")) {
       fs.mkdirSync('test');
@@ -67,7 +62,7 @@ describe('ExcalidrawExporter', () => {
 
   it('curved', () => {
     const drawioConverter = fromFile('_fixtures/drawio/source-target-curved.drawio');
-    const sourceTargetGraph: Graph = drawioConverter.convert();
+    const sourceTargetGraph: Graph = drawioConverter.parse();
 
     console.log(JSON.stringify(sourceTargetGraph, null, 2));
 
@@ -81,7 +76,7 @@ describe('ExcalidrawExporter', () => {
 
   it('bug fix', () => {
     const drawioConverter = fromFile('_fixtures/drawio/functional.drawio');
-    const sourceTargetGraph: Graph = drawioConverter.convert();
+    const sourceTargetGraph: Graph = drawioConverter.parse();
 
     const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
 
@@ -99,8 +94,8 @@ describe('ExcalidrawExporter', () => {
   });
 
   it('exporter', () => {
-    const drawioConverter = new DrawioImporter(mxGraph);
-    const graph: Graph = drawioConverter.convert();
+    const drawioConverter = new DrawioImporter(data);
+    const graph: Graph = drawioConverter.parse();
 
     const exporter = new ExcalidrawExporter(graph).export();
 

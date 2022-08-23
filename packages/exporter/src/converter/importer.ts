@@ -1,7 +1,7 @@
 import { Graph } from "../model/graph";
 
-export class Importer {
-  private content: string;
+export class Importer implements StringParser {
+  content: string;
 
   constructor(content: string) {
     this.content = content;
@@ -10,4 +10,8 @@ export class Importer {
   parse(): Graph {
     return {} as Graph;
   }
+}
+
+export interface StringParser {
+  parse(): Graph;
 }

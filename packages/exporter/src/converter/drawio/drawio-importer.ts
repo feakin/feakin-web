@@ -1,17 +1,22 @@
-import { MXCell, MxGraph, MxPoint } from "./mxgraph";
+import { MXCell, Mxfile, MxGraph, MxPoint } from "./mxgraph";
 import { Edge, Graph, Node } from "../../model/graph";
 import { CellStateStyle } from "./cell-state-style";
+import { Importer } from "../importer";
+import DrawioEncode from "./encode/drawio-encode";
 
-export class DrawioImporter {
+export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
   private graph: MxGraph;
 
-  constructor(graph: MxGraph) {
-    this.graph = graph;
+  constructor(data: string) {
+    super(data);
+
+    const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
+    this.graph = DrawioEncode.xml2obj(encoded) as MxGraph;
     this.mxCells = this.graph.mxGraphModel.root.mxCell;
   }
 
-  convert(): Graph {
+  override parse(): Graph {
     const graphAttrs = this.graph.mxGraphModel?.attributes;
     const filtered: Graph = {
       nodes: [],
@@ -33,7 +38,7 @@ export class DrawioImporter {
     );
 
     return filtered;
-  }
+  };
 
   parseStyle(style: string): CellStateStyle {
     const styles = style.split(";");
