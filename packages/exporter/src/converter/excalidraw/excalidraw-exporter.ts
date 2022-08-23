@@ -1,4 +1,4 @@
-import { Edge, Graph, Node } from '../../model/graph';
+import { Edge, ElementProperty, Graph, Node } from '../../model/graph';
 import { randomInteger } from '../../renderer/drawn-style/rough-seed';
 import {
   calculateFocusAndGap,
@@ -8,6 +8,7 @@ import {
 } from "./helper/collision";
 import { FontString, measureText } from "./helper/text-utils";
 import { isBrowser } from "../../env";
+import { Exporter, Transpiler } from "../exporter";
 
 export interface ExportedDataState {
   type: string;
@@ -18,29 +19,29 @@ export interface ExportedDataState {
   files: any;
 }
 
-export class ExcalidrawExporter {
-  graph: Graph;
+export class ExcalidrawExporter extends Exporter<ExportedDataState> implements Transpiler {
   originNodeCaches: Map<string, Node> = new Map<string, Node>();
   createdNodeCaches: Map<string, any> = new Map<string, any>();
 
   constructor(graph: Graph) {
+    super(graph);
     this.graph = graph;
   }
 
-  export(): ExportedDataState {
+  override export(): ExportedDataState {
     const root = this.createRoot();
 
     this.graph.nodes.forEach(node => {
-      const rectangle: any = this.createNode(node);
+      const rectangle: any = this.transpileNode(node);
       this.originNodeCaches.set(<string>node.id, node);
       this.createdNodeCaches.set(rectangle.id, rectangle);
     });
 
-    this.createdNodeCaches.forEach((node, _id) => {
+    this.createdNodeCaches.forEach((node) => {
       const newNode = node;
       const originNode = this.originNodeCaches.get(<string>node.id);
       if (originNode?.label) {
-        const label = this.createLabel(originNode, node.id);
+        const label = this.transpileLabel(originNode, node.id);
         root.elements.push(label);
         newNode.boundElements.push({
           id: label.id!,
@@ -52,10 +53,14 @@ export class ExcalidrawExporter {
     });
 
     this.graph.edges.forEach(edge => {
-      root.elements.push(this.createEdge(edge));
+      root.elements.push(this.transpileEdge(edge));
     });
 
     return root;
+  }
+
+  transpileStyle(prop: ElementProperty) {
+
   }
 
   createRoot(): ExportedDataState {
@@ -72,11 +77,11 @@ export class ExcalidrawExporter {
     }
   }
 
-  createNode(node: Node): object {
+  transpileNode(node: Node): object {
     return this.createBaseNode(node);
   }
 
-  createLabel(node: Node, id?: number): any {
+  transpileLabel(node: Node, id?: number): any {
     const labelNode = this.createBaseNode(node);
     labelNode.type = "text";
 
@@ -135,7 +140,7 @@ export class ExcalidrawExporter {
     };
   }
 
-  private createEdge(edge: Edge) {
+  transpileEdge(edge: Edge) {
     const baseEdge = {
       id: edge.id,
       type: 'arrow',
@@ -191,7 +196,7 @@ export class ExcalidrawExporter {
     });
 
     // recalculate the points of the edge
-    if(rPoints.length >= 2) {
+    if (rPoints.length >= 2) {
       const startIntersects = this.pointByIntersectElement(baseEdge, sourceNode, 'start');
       const endIntersects = this.pointByIntersectElement(baseEdge, targetNode, 'end');
 
