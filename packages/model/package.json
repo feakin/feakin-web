@@ -2,5 +2,10 @@
   "name": "@feakin/model",
   "version": "0.2.2-alpha.3",
   "type": "commonjs",
+  "files": [
+    "src/**",
+    "LICENSE",
+    "README.md"
+  ],
   "gitHead": "a198e199bd402bf3bd72f967daadf0f37a4b9dc5"
 }

@@ -23,6 +23,7 @@
   },
   "files": [
     "bin/feakin",
+    "src/**",
     "!**/*.spec.*",
     "!**/*.json",
     "CHANGELOG.md",

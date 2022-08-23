@@ -17,6 +17,7 @@
   },
   "files": [
     "bin/feakin",
+    "src/**",
     "!**/*.spec.*",
     "!**/*.json",
     "!test/**",
