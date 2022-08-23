@@ -8,9 +8,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "lib": ["es2017"],
-    "types": ["node"]
+    "moduleResolution": "node"
   },
   "files": [],
   "include": [

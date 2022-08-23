@@ -46,3 +46,4 @@ test.drawio
 docs/models
 test
 **/coverage/
+build

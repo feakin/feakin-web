@@ -38,5 +38,17 @@
     "webpack-merge": "^5.8.0",
     "webpack-node-externals": "^3.0.0"
   },
+  "files": [
+    "dist/**",
+    "!**/*.spec.*",
+    "!**/*.json",
+    "!test/**",
+    "!coverage/**",
+    "!_fixtures",
+    "!scripts",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
   "gitHead": "a198e199bd402bf3bd72f967daadf0f37a4b9dc5"
 }

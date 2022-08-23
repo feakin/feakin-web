@@ -14,6 +14,9 @@
   "scripts": {
     "test": "react-scripts test --watchAll=false"
   },
+  "publishConfig": {
+    "directory": "dist"
+  },
   "dependencies": {
     "@feakin/exporter": "^0.2.2-alpha.2",
     "@feakin/parser": "^0.2.1"

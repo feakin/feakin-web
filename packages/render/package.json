@@ -24,7 +24,7 @@
   "author": "Phodal HUANG <phodal@users.noreply.github.com>",
   "scripts": {
     "start": "craco start",
-    "build": "BUILD_PATH=../../dist/packages/render craco build",
+    "build": "BUILD_PATH=dist craco build",
     "test": "craco test --watchAll=false",
     "eject": "react-scripts eject",
     "serve": "npm start"
