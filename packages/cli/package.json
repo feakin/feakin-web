@@ -2,8 +2,8 @@
   "name": "@feakin/cli",
   "version": "0.2.2-alpha.7",
   "description": "cli",
-  "main": "build/src/index.js",
-  "typings": "build/src/index.d.ts",
+  "main": "src/index.js",
+  "typings": "src/index.d.ts",
   "bin": {
     "feakin": "./bin/feakin"
   },

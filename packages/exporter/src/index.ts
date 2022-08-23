@@ -41,7 +41,7 @@ export * from './renderer/drawn-style/rough-seed';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 export * from './renderer/utils/data-url';
-export * from './source/flow.d';
+
 export * from './source/mermaid-flow';
 export * from './source/mermaid-flowdb';
 
@@ -59,5 +59,4 @@ export * from './target/mxgraph/cell-state-style';
 export * from './target/mxgraph/drawio-converter';
 export * from './target/mxgraph/drawio-encode';
 export * from './target/mxgraph/drawio-wrapper';
-export * from './target/mxgraph/mxgraph.d';
 export * from './target/mxgraph/xml-converter';

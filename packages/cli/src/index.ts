@@ -1,4 +1,6 @@
-import { program } from "commander";
+import { Command } from 'commander';
+const program = new Command();
+
 import { processFile } from "./process-file";
 
 program
