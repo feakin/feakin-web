@@ -15,6 +15,12 @@ graph TD;
 `);
 
     const output = new ExcalidrawExporter(graph).export();
+    const edges = output.elements.filter(e => e.type === "arrow");
+    const nodes = output.elements.filter(e => e.type === "text");
+
+    expect(edges.length).toBe(4);
+    expect(nodes.length).toBe(4);
+
     fs.writeFileSync("./test/from-mermaid.excalidraw", JSON.stringify(output, null, 2));
   });
 });
