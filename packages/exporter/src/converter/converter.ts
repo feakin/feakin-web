@@ -64,6 +64,7 @@ export class Converter {
       default:
         throw new Error("Unsupported file type");
     }
+
     return parser;
   }
 
