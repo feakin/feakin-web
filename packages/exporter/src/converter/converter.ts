@@ -79,6 +79,6 @@ export class Converter {
   }
 
   target(exporter: Exporter<any>): string {
-    return exporter.export(this.graph);
+    return exporter.export();
   }
 }

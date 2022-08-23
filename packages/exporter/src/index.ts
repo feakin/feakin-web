@@ -60,6 +60,6 @@ export * from './converter/drawio/drawio-exporter';
 export * from './converter/drawio/encode/xml-converter';
 
 export * from './env';
-export { Importer } from "./converter/importer";
-export { ExcalidrawImporter } from "./converter/excalidraw/excalidraw-importer";
-export { Exporter } from "./converter/exporter";
+export * from "./converter/importer";
+export * from "./converter/excalidraw/excalidraw-importer";
+export * from "./converter/exporter";
