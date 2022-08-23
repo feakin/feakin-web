@@ -5,6 +5,7 @@
     "@feakin/parser": "^0.2.2-alpha.6",
     "cheerio": "^1.0.0-rc.12",
     "dagre": "^0.8.5",
+    "dotparser": "^1.1.1",
     "glob": "^8.0.3",
     "nanoid": "^4.0.0",
     "pako": "^2.0.4",

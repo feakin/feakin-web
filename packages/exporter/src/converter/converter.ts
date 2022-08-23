@@ -1,8 +1,11 @@
 import { Graph } from "../model/graph";
-import { Importer, StringParser } from "./importer";
-import { ExcalidrawImporter } from "./excalidraw/excalidraw-importer";
+import { Importer } from "./importer";
 import { Exporter } from "./exporter";
+
+import { ExcalidrawImporter } from "./excalidraw/excalidraw-importer";
 import { DrawioImporter } from "./drawio/drawio-importer";
+import { MermaidImporter } from "./mermaid/mermaid-importer";
+import { DotImporter } from "./dot/dot-importer";
 
 const enum SupportedFileType {
   EXCALIDRAW = "excalidraw",
@@ -10,19 +13,6 @@ const enum SupportedFileType {
   MERMAID = "mermaid",
   DOT = "dot",
 }
-
-export class MermaidImporter extends Importer {
-  constructor(content: string) {
-    super(content);
-  }
-}
-
-export class DotImporter extends Importer {
-  constructor(content: string) {
-    super(content);
-  }
-}
-
 
 /**
  * Import a graph to a string representation of the graph, and export a string representation of the graph to a graph.
@@ -49,7 +39,6 @@ export class Converter {
   static fromGraph(graph: Graph) {
     return new Converter(graph);
   }
-
 
   /**
    * Create an exporter from a file extension.

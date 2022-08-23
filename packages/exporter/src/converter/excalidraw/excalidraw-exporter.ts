@@ -60,7 +60,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
   }
 
   transpileStyle(prop: ElementProperty) {
-
+    return "";
   }
 
   createRoot(): ExportedDataState {
