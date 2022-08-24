@@ -1,5 +1,6 @@
 import { Node, Edge, Graph, ElementProperty } from "../model/graph";
 
+
 export class Exporter<K> {
   data: K | undefined;
   graph: Graph;
@@ -9,7 +10,12 @@ export class Exporter<K> {
   }
 
   export(): string {
-    return "";
+    const intermediate = this.intermediate();
+    if (typeof intermediate === "string") {
+      return intermediate;
+    } else {
+      return JSON.stringify(intermediate, null, 2);
+    }
   }
 
   /**
