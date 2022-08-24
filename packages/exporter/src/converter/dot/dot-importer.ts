@@ -1,9 +1,9 @@
 import parse, { Attr as DotAttr, AttrStmt, EdgeStmt, Graph as DotGraph, NodeId, NodeStmt, Subgraph } from "dotparser";
+import { nanoid } from "nanoid";
 
 import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
 import { dagreReLayout } from "../../layout/dagre-layout";
-import { nanoid } from "nanoid";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId);
 
