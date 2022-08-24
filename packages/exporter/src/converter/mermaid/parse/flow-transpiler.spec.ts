@@ -30,4 +30,18 @@ describe('flow transpiler', () => {
     expect(flow.direction).toBe('LR');
     expect(flow.nodes['id1'].text).toBe("This is the text in the box");
   });
+
+  it('support for click event', () => {
+    const flow = flowTranspiler(`flowchart LR
+    A-->B
+    B-->C
+    C-->D
+    click A callback "Tooltip"
+    click B "https://www.github.com" "This is a link"
+    click C call callback() "Tooltip"
+    click D href "https://www.github.com" "This is a link"`);
+
+    expect(flow.direction).toBe('LR');
+    expect(flow.nodes['A'].text).toBe("A");
+  });
 });

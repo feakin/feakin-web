@@ -2,11 +2,18 @@
 const Converter = require("@feakin/parser");
 import { FlowDb } from "./mermaid-flowdb";
 
+const emptyFunc = (args: any) => {
+  //
+};
+
 export function flowTranspiler(str: string) {
   const flowParser = Converter.flowParser();
   const flowDb = new FlowDb();
 
   flowParser.parser.yy = {
+    setTooltip: emptyFunc,
+    setClickEvent: emptyFunc,
+    setLink: emptyFunc,
     setDirection: flowDb.setDirection.bind(flowDb),
     addVertex: flowDb.addVertex.bind(flowDb),
     addLink: flowDb.addLink.bind(flowDb),
