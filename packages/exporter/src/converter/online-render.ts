@@ -46,9 +46,14 @@ export class OnlineRender {
   }
 
   static pakoSerde(content: string): string {
-    const data = new TextEncoder().encode(content);
+    const textEncoder = this.getDecoder();
+    const data = textEncoder.encode(content);
     const compressed = deflate(data, { level: 9 });
     return fromUint8Array(compressed, true);
+  }
+
+  private static getDecoder() {
+    return TextEncoder ? new TextEncoder() : new window.TextEncoder();
   }
 
   static buildMermaidUrl(content: string): URL {

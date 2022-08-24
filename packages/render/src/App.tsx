@@ -1,7 +1,8 @@
-import React, { ChangeEventHandler } from 'react';
+import React from 'react';
 import Render from "./Render";
 import { Button, Menu, MenuItem, TextareaAutosize } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import { Converter, OnlineRender } from "@feakin/exporter";
 
 const App = () => {
   const [text, setText] = React.useState(`graph TD;
@@ -30,6 +31,20 @@ const App = () => {
 
   const importFile = () => {
     console.log("importFile");
+  }
+
+  const onlineRender = (typ: string) => {
+    switch (typ) {
+      case "graphviz":
+        let graphText = Converter.fromContent(text, "mermaid").target("dot");
+        window.open(OnlineRender.buildDotUrl(graphText));
+        break;
+      case "mermaid":
+        window.open(OnlineRender.buildMermaidUrl(text));
+        break;
+      default:
+        console.error("unknown " + typ);
+    }
   }
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -85,8 +100,8 @@ const App = () => {
             <MenuItem onClick={importFile}>Mermaid</MenuItem>
             <MenuItem onClick={importFile}>Excalidraw</MenuItem>
           </Menu>
-          <Button onClick={handleExportMenuClick}>Online (Dot) </Button>
-          <Button onClick={handleExportMenuClick}>Online (Graphviz) </Button>
+          <Button onClick={() => onlineRender('graphviz')}>Online Render (Graphviz) </Button>
+          <Button onClick={() => onlineRender('mermaid')}>Online Render (Mermaid) </Button>
         </Grid2>
         <Grid2 xs={6}>
           <TextareaAutosize

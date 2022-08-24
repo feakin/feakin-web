@@ -17,6 +17,7 @@ export * from './converter/excalidraw/helper/rough-seed';
 export * from './converter/excalidraw/helper/type-check';
 export * from './converter/exporter';
 export * from './converter/importer';
+export * from './converter/online-render';
 export * from './converter/mermaid/parse/flow-transpiler';
 export * from './converter/mermaid/parse/flow.d';
 export * from './converter/mermaid/parse/mermaid-flowdb';
