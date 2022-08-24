@@ -70,10 +70,12 @@ export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
 
     return {
       attributes: {
-        id: this.id(),
-        style: "rounded=0;whiteSpace=wrap;html=1;",
+        id: edge.id ? edge.id : this.id(),
+        style: "edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;",
         edge: "1",
         parent: "1",
+        source: edge.data?.source,
+        target: edge.data?.target,
       },
       mxGeometry: {
         mxPoint: points,
@@ -88,7 +90,7 @@ export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
   transpileNode(node: Node): MXCell {
     return {
       attributes: {
-        id: this.id(),
+        id: node.id ? node.id : this.id(),
         style: "rounded=0;whiteSpace=wrap;html=1;",
         value: node.label,
         vertex: "1",
