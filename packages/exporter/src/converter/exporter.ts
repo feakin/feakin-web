@@ -12,6 +12,14 @@ export class Exporter<K> {
     return {} as K;
   }
 
+  /**
+   * In different diagram types, the export and intermediate type are different. Like in drawio, the intermediate type
+   * is a {MxCell}, but in drawio, the end type is a MxFileRoot, it will wrap MxCell to string into MxFileRoot.
+   */
+  intermediate(): any {
+    return {}
+  }
+
   toString(): string {
     return JSON.stringify(this.data, null, 2);
   }

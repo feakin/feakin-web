@@ -31,6 +31,12 @@ export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
   }
 
   override export(): MxFileRoot {
+    const cells = this.intermediate();
+    const mxGraph = this.wrapperGraph(cells);
+    return this.wrapperRoot(mxGraph);
+  }
+
+  override intermediate() : MXCell[] {
     let cells = [
       {
         attributes: {
@@ -45,13 +51,10 @@ export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
       }] as MXCell[];
 
     cells = cells.concat(this.graph.nodes.map(node => this.transpileNode(node)));
-    cells = cells.concat(this.graph.edges.map(edge => this.transpileEdge(edge)));
-
-    const mxGraph = this.wrapperGraph(cells);
-    return this.wrapperRoot(mxGraph);
+    return cells.concat(this.graph.edges.map(edge => this.transpileEdge(edge)));
   }
 
-  // calculate for new position ??
+// calculate for new position ??
   transpileEdge(edge: Edge): MXCell {
     const points = edge.points.map(point => {
       return {
