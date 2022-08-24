@@ -90,7 +90,16 @@ npm install --legacy-peer-deps
 
 2. run by tests
 
-## Refs
+## Development
+
+### Online demo
+
+- [https://excalidraw.com/](https://excalidraw.com/)
+- [Graphviz Online](https://dreampuf.github.io/GraphvizOnline/)
+- [Mermaid Online](https://mermaid.live/edit)
+- [https://app.diagrams.net/](https://app.diagrams.net/)
+
+### Refs
 
 - [https://bivector.net/lib.html](https://bivector.net/lib.html)
 - [https://github.com/enkimute/ganja.js](https://github.com/enkimute/ganja.js)
