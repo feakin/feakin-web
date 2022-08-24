@@ -60,4 +60,17 @@ describe('DotImporter', () => {
     expect(graph.nodes[0].height).toBe(40);
     expect(graph.nodes[0].width).toBe(100);
   });
+
+  it('import triangle shape', () => {
+    const importer = new DotImporter(`digraph {
+  "A" [shape="triangle"]
+  "B"
+  "C"
+  "A" -> "B";
+}`);
+    const graph: Graph = importer.parse();
+
+    expect(graph.nodes.length).toBe(2);
+    expect(graph.nodes[0].shape).toBe("triangle");
+  });
 });
