@@ -13,8 +13,10 @@ export enum ShapeResourceType {
 export enum ShapeType {
   None,
   Circle = "circle",
+  Line = "line",
   Rectangle = "rectangle",
   Hexagon = "hexagon",
+  Triangle = "triangle",
   Cloud = "cloud",
   Cylinder = "cylinder",
   Text = "text",
