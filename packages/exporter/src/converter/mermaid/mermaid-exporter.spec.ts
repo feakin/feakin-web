@@ -1,6 +1,6 @@
-import { DotExporter } from "./dot-exporter";
+import { MermaidExporter } from "./mermaid-exporter";
 
-describe('DotExporter', function () {
+describe('Mermaid Exporter', () => {
   const graph = {
     nodes: [
       {
@@ -56,13 +56,8 @@ describe('DotExporter', function () {
     }
   };
 
-  it('should be to source', function () {
-    const exporter = new DotExporter(graph);
-    expect(exporter.export()).toBe(`digraph {
-  "A"
-  "B"
-  "C"
-  "A" -> "B";
-}`);
+  xit('guid length', () => {
+    const output = new MermaidExporter(graph);
+    expect(output).toBe("graph TB\nA -- B\nC");
   });
 });

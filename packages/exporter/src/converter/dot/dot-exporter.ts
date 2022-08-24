@@ -1,11 +1,7 @@
 import { Node, Edge, Graph } from "../../model/graph";
-import { Exporter } from "../exporter";
+import { SourceCodeExporter } from "../exporter";
 
-export class DotExporter extends Exporter<string> {
-  nodeMap: Map<string, Node> = new Map<string, Node>();
-  indentLevel = 1;
-  indentSize = 2;
-
+export class DotExporter extends SourceCodeExporter {
   constructor(graph: Graph) {
     super(graph);
   }
@@ -24,7 +20,7 @@ ${ graph.join('\n') }
 }`
   }
 
-  private insertEdge(edge: Edge): string {
+  override insertEdge(edge: Edge): string {
     const source = this.nodeMap.get(edge.data?.source || '');
     const target = this.nodeMap.get(edge.data?.target || '');
 
@@ -43,11 +39,7 @@ ${ graph.join('\n') }
     return ``
   }
 
-  private insertNode(node: Node): string {
+  override insertNode(node: Node): string {
     return `${this.space()}"${node.label}"`;
-  }
-
-  space(): string {
-    return ' '.repeat(this.indentLevel * this.indentSize);
   }
 }

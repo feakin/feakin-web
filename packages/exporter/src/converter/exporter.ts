@@ -1,6 +1,5 @@
 import { Node, Edge, Graph, ElementProperty } from "../model/graph";
 
-
 export class Exporter<K> {
   data: K | undefined;
   graph: Graph;
@@ -28,6 +27,32 @@ export class Exporter<K> {
 
   toString(): string {
     return JSON.stringify(this.data, null, 2);
+  }
+}
+
+export class SourceCodeExporter extends Exporter<string> {
+  nodeMap: Map<string, Node> = new Map<string, Node>();
+  indentLevel = 1;
+  indentSize = 2;
+
+  constructor(graph: Graph) {
+    super(graph);
+  }
+
+  override export(): string {
+    return this.toString();
+  }
+
+  insertEdge(edge: Edge): string {
+    return ""
+  }
+
+  insertNode(node: Node): string {
+    return `${this.space()}"${node.label}"`;
+  }
+
+  space(): string {
+    return ' '.repeat(this.indentLevel * this.indentSize);
   }
 }
 
