@@ -4,7 +4,7 @@ import { js2xml } from "./encode/xml-converter";
 import { Edge, Graph, Node } from "../../model/graph";
 import { Exporter, Transpiler } from "../exporter";
 
-export class DrawioExporter extends Exporter<string> implements Transpiler {
+export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
   idIndex = 0;
   GUID_LENGTH = 20;
   GUID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';

@@ -17,7 +17,7 @@ graph TD;
 `);
     const graph: Graph = executor.parse();
 
-    const output = new ExcalidrawExporter(graph).export();
+    const output = new ExcalidrawExporter(graph).intermediate();
     const edges = output.elements.filter(e => e.type === "arrow");
     const nodes = output.elements.filter(e => e.type === "text");
 
@@ -39,7 +39,7 @@ digraph {
 `);
     const graph: Graph = executor.parse();
 
-    const output = new ExcalidrawExporter(graph).export();
+    const output = new ExcalidrawExporter(graph).intermediate();
     const edges = output.elements.filter(e => e.type === "arrow");
     const nodes = output.elements.filter(e => e.type === "text");
 

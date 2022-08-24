@@ -28,7 +28,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     this.graph = graph;
   }
 
-  override export(): ExportedDataState {
+  override intermediate(): ExportedDataState {
     const root = this.createRoot();
 
     this.graph.nodes.forEach(node => {
@@ -57,6 +57,10 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     });
 
     return root;
+  }
+
+  override export(): string {
+    return JSON.stringify(this.intermediate(), null, 2);
   }
 
   transpileStyle(prop: ElementProperty) {

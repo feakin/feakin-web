@@ -8,16 +8,16 @@ export class Exporter<K> {
     this.graph = graph;
   }
 
-  export(): K {
-    return {} as K;
+  export(): string {
+    return "";
   }
 
   /**
    * In different diagram types, the export and intermediate type are different. Like in drawio, the intermediate type
    * is a {MxCell}, but in drawio, the end type is a MxFileRoot, it will wrap MxCell to string into MxFileRoot.
    */
-  intermediate(): any {
-    return {}
+  intermediate(): K {
+    return {} as K;
   }
 
   toString(): string {

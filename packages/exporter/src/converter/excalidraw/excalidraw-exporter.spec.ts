@@ -28,7 +28,7 @@ describe('ExcalidrawExporter', () => {
   });
 
   it('source and target', () => {
-    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
     expect(exporter).toBeDefined();
     expect(exporter.elements.length).toBe(5);
@@ -42,7 +42,7 @@ describe('ExcalidrawExporter', () => {
   });
 
   it('source startBinding', () => {
-    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
     const arrows = exporter.elements.filter(e => e.type === 'arrow');
     const arrow = arrows[0];
@@ -66,7 +66,7 @@ describe('ExcalidrawExporter', () => {
 
     console.log(JSON.stringify(sourceTargetGraph, null, 2));
 
-    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
     const nodes = exporter.elements.filter(e => e.type === 'rectangle');
     expect(nodes.length).toEqual(3);
@@ -78,7 +78,7 @@ describe('ExcalidrawExporter', () => {
     const drawioConverter = fromFile('_fixtures/drawio/functional.drawio');
     const sourceTargetGraph: Graph = drawioConverter.parse();
 
-    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
     const nodes = exporter.elements.filter(e => e.type === 'rectangle');
     expect(nodes.length).toEqual(58);
@@ -87,7 +87,7 @@ describe('ExcalidrawExporter', () => {
   });
 
   it('text id', () => {
-    const exporter = new ExcalidrawExporter(sourceTargetGraph).export();
+    const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
     const textElements = exporter.elements.filter(e => e.type === 'text');
     expect(textElements[0].text).toEqual('A');

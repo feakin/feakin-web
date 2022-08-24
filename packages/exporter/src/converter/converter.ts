@@ -1,17 +1,25 @@
 import { Graph } from "../model/graph";
 import { Importer } from "./importer";
-import { Exporter } from "./exporter";
 
 import { ExcalidrawImporter } from "./excalidraw/excalidraw-importer";
 import { DrawioImporter } from "./drawio/drawio-importer";
 import { MermaidImporter } from "./mermaid/mermaid-importer";
-import { DotImporter } from "./dot/dot-importer";
+import { DrawioExporter } from "./drawio/drawio-exporter";
+import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
 
-const enum SupportedFileType {
+import { DotImporter } from "./dot/dot-importer";
+import { Exporter } from "./exporter";
+
+export enum SupportedFileType {
   EXCALIDRAW = "excalidraw",
   DRAWIO = "drawio",
   MERMAID = "mermaid",
   DOT = "dot",
+}
+
+export enum SupportedTarget {
+  EXCALIDRAW = "excalidraw",
+  DRAWIO = "drawio"
 }
 
 /**
@@ -68,7 +76,19 @@ export class Converter {
     return parser;
   }
 
-  target(exporter: Exporter<any>): string {
+  target(target: SupportedTarget): string {
+    let exporter: Exporter<any>;
+    switch (target) {
+      case SupportedTarget.EXCALIDRAW:
+        exporter = new ExcalidrawExporter(this.graph);
+        break;
+      case SupportedTarget.DRAWIO:
+        exporter = new DrawioExporter(this.graph);
+        break;
+      default:
+        throw new Error("Unsupported file type");
+    }
+
     return exporter.export();
   }
 }
