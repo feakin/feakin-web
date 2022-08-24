@@ -56,8 +56,8 @@ describe('Mermaid Exporter', () => {
     }
   };
 
-  xit('guid length', () => {
-    const output = new MermaidExporter(graph);
+  it('guid length', () => {
+    const output = new MermaidExporter(graph).export();
     expect(output).toBe("graph TB\nA -- B\nC");
   });
 });
