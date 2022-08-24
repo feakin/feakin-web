@@ -78,7 +78,7 @@ export class Converter {
     return parser;
   }
 
-  target(target: SupportedTarget): string {
+  target(target: string): string {
     let exporter: Exporter<any>;
     switch (target) {
       case SupportedTarget.EXCALIDRAW:
