@@ -9,6 +9,7 @@ import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
 
 import { DotImporter } from "./dot/dot-importer";
 import { Exporter } from "./exporter";
+import { DotExporter } from "./dot/dot-exporter";
 
 export enum SupportedFileType {
   EXCALIDRAW = "excalidraw",
@@ -19,7 +20,8 @@ export enum SupportedFileType {
 
 export enum SupportedTarget {
   EXCALIDRAW = "excalidraw",
-  DRAWIO = "drawio"
+  DRAWIO = "drawio",
+  DOT = "dot"
 }
 
 /**
@@ -84,6 +86,9 @@ export class Converter {
         break;
       case SupportedTarget.DRAWIO:
         exporter = new DrawioExporter(this.graph);
+        break;
+      case SupportedTarget.DOT:
+        exporter = new DotExporter(this.graph);
         break;
       default:
         throw new Error("Unsupported file type");

@@ -1,8 +1,8 @@
 import { dagreLayout } from "../../layout/dagre/dagre-layout";
 import { DagreRelation } from "../../layout/dagre/dagre-relation";
 import { Graph } from "../../model/graph";
-import { FlowEdge, FlowNode } from "./flow";
-import { flowTranspiler } from "./flow-transpiler";
+import { FlowEdge, FlowNode } from "./parse/flow";
+import { flowTranspiler } from "./parse/flow-transpiler";
 import { Importer } from "../importer";
 
 export class MermaidImporter extends Importer {

@@ -5,6 +5,8 @@ import { Graph } from "../model/graph";
 import { DrawioExporter } from "./drawio/drawio-exporter";
 import { MermaidImporter } from "./mermaid/mermaid-importer";
 import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
+import { DrawioImporter } from "./drawio/drawio-importer";
+import { DotExporter } from "./dot/dot-exporter";
 
 describe('Converter', () => {
   it('from mermaid', () => {
@@ -64,5 +66,15 @@ digraph {
     const output = new DrawioExporter(graph).export();
 
     fs.writeFileSync("./test/from-dot.drawio", output);
+  });
+
+  it('from drawio to graphviz', () => {
+    const data = fs.readFileSync('_fixtures/drawio/android-ag.drawio', 'utf8');
+    const executor = new DrawioImporter(data);
+    const graph: Graph = executor.parse();
+
+    const output = new DotExporter(graph).export();
+
+    fs.writeFileSync("./test/from-drawio.dot", output);
   });
 });
