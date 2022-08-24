@@ -27,12 +27,6 @@ export class OnlineRender {
   render(target: SupportedTarget): URL {
     let url: URL;
     switch (target) {
-      case SupportedTarget.EXCALIDRAW:
-        url = OnlineRender.buildExcalidrawUrl("");
-        break;
-      case SupportedTarget.DRAWIO:
-        url = OnlineRender.buildDrawioUrl("");
-        break;
       case SupportedTarget.MERMAID:
         url = OnlineRender.buildMermaidUrl("");
         break;
@@ -44,16 +38,6 @@ export class OnlineRender {
     }
 
     return url;
-  }
-
-  static buildExcalidrawUrl(content: string): URL {
-    const baseUrl = "https://excalidraw.com/";
-    return new URL(baseUrl + "dot");
-  }
-
-  static buildDrawioUrl(content: string): URL {
-    const baseUrl = "https://dreampuf.github.io/GraphvizOnline/#";
-    return new URL(baseUrl + "dot");
   }
 
   static pakoDeSerde(content: string): string {

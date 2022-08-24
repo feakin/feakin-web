@@ -21,6 +21,7 @@ describe('OnlineRender', () => {
     const url = OnlineRender.buildMermaidUrl(`graph TD;
     A --> B
 `);
-    expect(url).toEqual("https://mermaid.live/edit#pako:eNo1zcEKgzAQBNBfCXPWH0ih0KJfYI97Wdy1Bkwi6eZQxH9vCu2cBubBHJizKDyehffVPYYLJddyc31_dXdK6BC1RA7S0PEdCbZqVIJvVXThuhmB0tlo3YVNRwmWC_zC20s7cLU8vdMMb6XqHw2B22f8qfMDaros-Q");
+
+    expect(url.href).toBe("https://mermaid.live/edit#pako:eNo1zcEKgzAQBNBfCXPWH0ih0KJfYI97Wdy1Bkwi6eZQxH9vCu2cBubBHJizKDyehffVPYYLJddyc31_dXdK6BC1RA7S0PEdCbZqVIJvVXThuhmB0tlo3YVNRwmWC_zC20s7cLU8vdMMb6XqHw2B22f8qfMDaros-Q");
   });
 });
