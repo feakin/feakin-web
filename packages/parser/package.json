@@ -15,7 +15,7 @@
     "build:development": "webpack --mode development --progress --color",
     "build:production": "webpack --mode production --progress --color",
     "build": "concurrently \"npm run build:development\" \"npm run build:production\"",
-    "test": "echo \"Error: no test specified\""
+    "test": "jest src/.*"
   },
   "keywords": [],
   "author": "Phodal Huang<h@phodal.com>",

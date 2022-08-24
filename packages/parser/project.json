@@ -2,5 +2,15 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/parser/src",
   "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/parser"],
+      "options": {
+        "jestConfig": "packages/parser/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
   "tags": []
 }
