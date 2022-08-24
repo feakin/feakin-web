@@ -1,9 +1,10 @@
 import { MXCell, MxFileRoot, MxGraph } from "./mxgraph";
 import DrawioEncode from "./encode/drawio-encode";
 import { js2xml } from "./encode/xml-converter";
-import { Node } from "../../model/graph";
+import { Edge, ElementProperty, Node } from "../../model/graph";
+import { Transpiler } from "../exporter";
 
-export class DrawioExporter {
+export class DrawioExporter implements Transpiler {
   idIndex = 0;
   GUID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
 
@@ -24,22 +25,36 @@ export class DrawioExporter {
   }
 
   fromNodes(nodes: Node[]): MXCell[] {
-    return nodes.map(node => {
-      return {
+    return nodes.map(this.transpileNode);
+  }
+
+  transpileEdge(edge: Edge): MXCell {
+    return {} as MXCell;
+  }
+
+  transpileLabel(node: Node, ...args: any[]): MXCell {
+    return {} as MXCell;
+  }
+
+  transpileNode(node: Node): MXCell {
+    return {
+      attributes: {
+        id: this.id(),
+        style: "rounded=0;whiteSpace=wrap;html=1;",
+        value: node.label
+      },
+      mxGeometry: {
         attributes: {
-          id: this.id(),
-          style: "rounded=0;whiteSpace=wrap;html=1;",
-          value: node.label
-        },
-        mxGeometry: {
-          attributes: {
-            as: "geometry",
-            width: 100,
-            height: 60
-          }
+          as: "geometry",
+          width: node.width,
+          height: node.height
         }
-      };
-    });
+      }
+    };
+  }
+
+  transpileStyle(prop: ElementProperty): any {
+    return "";
   }
 
   wrapperGraph(mxCells: MXCell[]): MxGraph {

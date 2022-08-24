@@ -18,11 +18,12 @@ export class Exporter<K> {
 }
 
 export interface Transpiler {
-  transpileStyle(pro: ElementProperty): any | void;
-
   transpileNode(node: Node): any | void;
 
-  transpileLabel(node: Node, ...args: any[]): any | void;
-
   transpileEdge(edge: Edge): any | void;
+
+  // in some diagrams, the label is shown on the node
+  transpileLabel?(node: Node, ...args: any[]): any | void;
+
+  transpileStyle?(prop: ElementProperty): any | void;
 }
