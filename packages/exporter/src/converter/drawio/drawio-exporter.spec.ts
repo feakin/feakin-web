@@ -1,7 +1,12 @@
 import { DrawioExporter } from "./drawio-exporter";
 import * as fs from "fs";
 
-describe('DrawIO Wrapper', () => {
+describe('Drawio Exporter', () => {
+  it('guid length', () => {
+    const id = new DrawioExporter({} as any).guid();
+    expect(id.length).toBe(20);
+  });
+
   it('convert model to file', () => {
     const graph = {
       "nodes": [

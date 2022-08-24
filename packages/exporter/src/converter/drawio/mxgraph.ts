@@ -81,7 +81,7 @@ export interface MXCell {
     /**
      * Specifies whether the cell is a vertex. Default is false.
      */
-    vertex?: boolean;
+    vertex?: string;
     parent?: string;
     children?: MXCell[];
     /**
@@ -120,7 +120,7 @@ export interface MXGeometry {
      *
      * Default is false.
      */
-    relative?: boolean;
+    relative?: string;
     as?: string;
     width?: number;
     height?: number;
@@ -132,6 +132,7 @@ export interface MxPoint {
   attributes?: {
     x?: string;
     y?: string;
+    as?: string;
   }
 }
 
