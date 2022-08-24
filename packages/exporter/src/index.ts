@@ -18,7 +18,7 @@ export * from './converter/excalidraw/helper/type-check';
 export * from './converter/exporter';
 export * from './converter/importer';
 export * from './converter/mermaid/parse/flow-transpiler';
-export * from './converter/mermaid/parse/flow';
+export * from './converter/mermaid/parse/flow.d';
 export * from './converter/mermaid/parse/mermaid-flowdb';
 export * from './converter/mermaid/mermaid-importer';
 
@@ -33,6 +33,7 @@ export * from './model/edge/edge-type';
 export * from './model/edge/line-shape';
 export * from './model/edge/polyline-shape';
 export * from './model/geometry/geometry';
+export * from './model/geometry/point';
 export * from './model/graph';
 export * from './model/layout/algorithm';
 export * from './model/layout/layout-lifecycle';

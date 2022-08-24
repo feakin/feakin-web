@@ -58,6 +58,12 @@ describe('Mermaid Exporter', () => {
 
   it('guid length', () => {
     const output = new MermaidExporter(graph).export();
-    expect(output).toBe("graph TB\nA -- B\nC");
+    expect(output).toBe(`graph TD
+    A
+    B
+    C
+    A --> B
+
+`);
   });
 });
