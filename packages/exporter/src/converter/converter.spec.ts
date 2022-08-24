@@ -1,8 +1,10 @@
 import * as fs from "fs";
-import { MermaidImporter } from "./mermaid/mermaid-importer";
-import { Graph } from "../model/graph";
-import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
+
 import { DotImporter } from "./dot/dot-importer";
+import { Graph } from "../model/graph";
+import { DrawioExporter } from "./drawio/drawio-exporter";
+import { MermaidImporter } from "./mermaid/mermaid-importer";
+import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
 
 describe('Converter', () => {
   it('from mermaid', () => {
@@ -24,6 +26,7 @@ graph TD;
 
     fs.writeFileSync("./test/from-mermaid.excalidraw", JSON.stringify(output, null, 2));
   });
+
   it('from dot', () => {
     const executor = new DotImporter(`
 digraph {
@@ -44,5 +47,22 @@ digraph {
     expect(nodes.length).toBe(5);
 
     fs.writeFileSync("./test/from-dot.excalidraw", JSON.stringify(output, null, 2));
+  });
+
+  it('from dot to drawio', () => {
+    const executor = new DotImporter(`
+digraph {
+  a -> b
+  a -> c
+  b -> d
+  c -> d
+  e
+}
+`);
+    const graph: Graph = executor.parse();
+
+    const output = new DrawioExporter(graph).export();
+
+    fs.writeFileSync("./test/from-dot.drawio", output);
   });
 });

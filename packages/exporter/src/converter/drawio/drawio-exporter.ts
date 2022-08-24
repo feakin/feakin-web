@@ -1,10 +1,10 @@
-import { MXCell, MxFileRoot, MxGraph, MxPoint } from "./mxgraph";
+import { MXCell, MxFileRoot, MxGraph } from "./mxgraph";
 import DrawioEncode from "./encode/drawio-encode";
 import { js2xml } from "./encode/xml-converter";
 import { Edge, Graph, Node } from "../../model/graph";
 import { Exporter, Transpiler } from "../exporter";
 
-export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
+export class DrawioExporter extends Exporter<string> implements Transpiler {
   idIndex = 0;
   GUID_LENGTH = 20;
   GUID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
@@ -30,7 +30,11 @@ export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
     return `${ this.guid() }-${ this.idIndex }`;
   }
 
-  override export(): MxFileRoot {
+  override export(): string {
+    return this.toXml(this.toRoot());
+  }
+
+  private toRoot() : MxFileRoot {
     const cells = this.intermediate();
     const mxGraph = this.wrapperGraph(cells);
     return this.wrapperRoot(mxGraph);
@@ -54,7 +58,7 @@ export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
     return cells.concat(this.graph.edges.map(edge => this.transpileEdge(edge)));
   }
 
-// calculate for new position ??
+  // calculate for new position ??
   transpileEdge(edge: Edge): MXCell {
     const points = edge.points.map(point => {
       return {
@@ -131,7 +135,7 @@ export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
     };
   }
 
-  static toXml(file: MxFileRoot): string {
+  toXml(file: MxFileRoot): string {
     return js2xml(file)
   }
 }

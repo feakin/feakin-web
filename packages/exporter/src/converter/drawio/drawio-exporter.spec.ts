@@ -73,6 +73,6 @@ describe('Drawio Exporter', () => {
     const wrapper = new DrawioExporter(graph);
     const mxfile = wrapper.export();
 
-    fs.writeFileSync('./test/test.drawio', DrawioExporter.toXml(mxfile));
+    fs.writeFileSync('./test/test.drawio', mxfile);
   });
 });
