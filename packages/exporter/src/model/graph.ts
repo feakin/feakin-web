@@ -44,7 +44,7 @@ export interface ElementProperty {
 export interface Node extends ElementProperty {
   id: string;
   // todo: add count for label position ?
-  label: string | undefined;
+  label: string;
   x?: number;
   y?: number;
   data?: NodeData;
@@ -84,4 +84,3 @@ export interface EdgeData {
 
   [key: string]: any;
 }
-

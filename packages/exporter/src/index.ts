@@ -1,7 +1,7 @@
 export * from './converter/mermaid/mermaid-importer';
 
-export * from './layout/dagre-layout';
-export * from './layout/dagre-relation';
+export * from './layout/dagre/dagre-layout';
+export * from './layout/dagre/dagre-relation';
 export * from './model/edge/arrow-shape';
 export * from './model/edge/edge-shape';
 export * from './model/edge/edge-type';

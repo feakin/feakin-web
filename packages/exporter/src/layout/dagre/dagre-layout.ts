@@ -2,8 +2,8 @@ import * as dagre from 'dagre'
 import { Node as DagreNode, GraphEdge, graphlib } from "dagre";
 
 import { DagreRelation } from "./dagre-relation";
-import { Node, Edge, Graph } from "../model/graph";
-import { defaultLayoutOptions, LayoutOptions } from "../model/layout/layout";
+import { Node, Edge, Graph } from "../../model/graph";
+import { defaultLayoutOptions, LayoutOptions } from "../../model/layout/layout";
 import { nanoid } from "nanoid";
 
 function initGraphOptions(options: LayoutOptions) {
@@ -24,7 +24,7 @@ export function dagreReLayout(graph: Graph, options: LayoutOptions = defaultLayo
   const dagreGraph = initGraphOptions(options);
 
   graph.nodes.forEach(node => {
-    dagreGraph.setNode(node.label!, {
+    dagreGraph.setNode(node.label, {
       width: options.node.width,
       height: options.node.height,
       ...node
@@ -32,9 +32,11 @@ export function dagreReLayout(graph: Graph, options: LayoutOptions = defaultLayo
   })
 
   graph.edges.forEach(edge => {
-    dagreGraph.setEdge(edge.data!.source, edge.data!.target, {
-      ...edge
-    });
+    if (edge.data) {
+      dagreGraph.setEdge(edge.data?.source, edge.data?.target, {
+        ...edge
+      });
+    }
   })
 
   return calculatePosition(dagreGraph);
@@ -64,6 +66,10 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
   return calculatePosition(dagreGraph);
 }
 
+/**
+ * Calculate the position of nodes and edges in the graph.
+ * @param graph
+ */
 function calculatePosition(graph: graphlib.Graph<any>) {
   dagre.layout(graph);
 

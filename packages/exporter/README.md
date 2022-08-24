@@ -1,11 +1,5 @@
-# feakin-exporter
+# Feakin Exporter
 
-This library was generated with [Nx](https://nx.dev).
+support for import and export Graph
 
-## Building
 
-Run `nx build exporter` to build the library.
-
-## Running unit tests
-
-Run `nx test exporter` to execute the unit tests via [Jest](https://jestjs.io).

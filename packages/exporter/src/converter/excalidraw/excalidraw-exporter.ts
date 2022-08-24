@@ -44,7 +44,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
         const label = this.transpileLabel(originNode, node.id);
         root.elements.push(label);
         newNode.boundElements.push({
-          id: label.id!,
+          id: label.id,
           type: "text"
         })
       }
@@ -101,7 +101,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     labelNode.height = 26;
 
     if (isBrowser()) {
-      const metrics = measureText(node.label!, "20px sans-serif" as FontString);
+      const metrics = measureText(node.label, "20px sans-serif" as FontString);
       if (metrics.width != 0) {
         labelNode.width = metrics.width;
         labelNode.height = metrics.height;

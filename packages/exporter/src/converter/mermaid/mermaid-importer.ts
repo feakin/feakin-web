@@ -1,5 +1,5 @@
-import { dagreLayout } from "../../layout/dagre-layout";
-import { DagreRelation } from "../../layout/dagre-relation";
+import { dagreLayout } from "../../layout/dagre/dagre-layout";
+import { DagreRelation } from "../../layout/dagre/dagre-relation";
 import { Graph } from "../../model/graph";
 import { FlowEdge, FlowNode } from "./flow";
 import { flowTranspiler } from "./flow-transpiler";

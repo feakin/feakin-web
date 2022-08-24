@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
-import { dagreReLayout } from "../../layout/dagre-layout";
+import { dagreReLayout } from "../../layout/dagre/dagre-layout";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId);
 
