@@ -19,7 +19,9 @@
   },
   "dependencies": {
     "@feakin/exporter": "^0.2.3",
-    "@feakin/parser": "^0.2.2-alpha.6"
+    "@feakin/parser": "^0.2.2-alpha.6",
+    "@types/jest": "^28.1.7",
+    "@types/node": "^18.7.12"
   },
   "jest": {
     "transform": {
