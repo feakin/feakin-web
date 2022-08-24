@@ -21,6 +21,7 @@ export enum SupportedFileType {
 export enum SupportedTarget {
   EXCALIDRAW = "excalidraw",
   DRAWIO = "drawio",
+  MERMAID = "mermaid",
   DOT = "dot"
 }
 
