@@ -1,26 +1,40 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import Render from "./Render";
 import { Button, Menu, MenuItem, TextareaAutosize } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 
 const App = () => {
+  const [text, setText] = React.useState(`graph TD;
+    A-->B
+    A-->C
+    B-->C;`);
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
+  const [exportEl, setExportEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(fileEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleFieMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setFileEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  const handleFileMenuClose = () => {
     setFileEl(null);
+  };
+
+  const handleExportMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setExportEl(event.currentTarget);
+  };
+
+  const handleExportMenuClose = () => {
+    setExportEl(null);
   };
 
   const importFile = () => {
     console.log("importFile");
   }
 
-  const text = `graph TD;
-    A-->B
-    A-->C
-    B-->C;`;
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(event.target.value);
+  }
 
   return (
     <div>
@@ -31,7 +45,7 @@ const App = () => {
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            onClick={handleFieMenuClick}
           >
             File
           </Button>
@@ -39,7 +53,7 @@ const App = () => {
             id="basic-menu"
             anchorEl={fileEl}
             open={open}
-            onClose={handleClose}
+            onClose={handleFileMenuClose}
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}
@@ -53,15 +67,15 @@ const App = () => {
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            onClick={handleExportMenuClick}
           >
             Export
           </Button>
           <Menu
             id="basic-menu"
-            anchorEl={fileEl}
+            anchorEl={exportEl}
             open={open}
-            onClose={handleClose}
+            onClose={handleFileMenuClose}
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}
@@ -71,10 +85,14 @@ const App = () => {
             <MenuItem onClick={importFile}>Mermaid</MenuItem>
             <MenuItem onClick={importFile}>Excalidraw</MenuItem>
           </Menu>
+          <Button onClick={handleExportMenuClick}>Online (Dot) </Button>
+          <Button onClick={handleExportMenuClick}>Online (Graphviz) </Button>
         </Grid2>
         <Grid2 xs={6}>
           <TextareaAutosize
             aria-label="minimum height"
+            value={text}
+            onChange={handleTextChange}
             minRows={6}
             placeholder="Minimum 3 rows"
           />
