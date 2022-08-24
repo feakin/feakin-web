@@ -64,7 +64,14 @@ export class OnlineRender {
     return new URL(baseUrl + "pako:" + this.pakoSerde(JSON.stringify(config)));
   }
 
+  // Graphviz official use playground, like in: [https://graphviz.org/doc/info/attrs.html](https://graphviz.org/doc/info/attrs.html)
   static buildDotUrl(content: string): URL {
+    const baseUrl = "http://magjac.com/graphviz-visual-editor/?dot=";
+    return new URL(baseUrl + encodeURI(content));
+  }
+
+  // old
+  static buildDotUrl2(content: string): URL {
     const baseUrl = "https://dreampuf.github.io/GraphvizOnline/#";
     return new URL(baseUrl + encodeURI(content));
   }

@@ -67,6 +67,7 @@ feakin --input software-development.drawio --output sd.excalidraw
 - [ ] Publish to CLI
   - [ ] upgrade publish script
 - [ ] Architecture Features
+  - [ ] Playground
   - [ ] [ComponentLess](https://componentless.com/) architecture
     - [ ] WebComponent, like `<feakin data="" layout="" import="" import-type=""></feakin>`
   - [ ] Templates

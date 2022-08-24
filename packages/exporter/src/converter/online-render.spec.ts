@@ -2,7 +2,7 @@ import { OnlineRender } from "./online-render";
 
 describe('OnlineRender', () => {
   it('from graphviz', () => {
-    const output = OnlineRender.buildDotUrl(`digraph {
+    const output = OnlineRender.buildDotUrl2(`digraph {
   "A"
   "B"
   "C"
@@ -10,6 +10,17 @@ describe('OnlineRender', () => {
 }`);
 
     expect(output.href).toBe("https://dreampuf.github.io/GraphvizOnline/#digraph%20%7B%0A%20%20%22A%22%0A%20%20%22B%22%0A%20%20%22C%22%0A%20%20%22A%22%20-%3E%20%22B%22;%0A%7D");
+  });
+
+  it('visual graphviz', () => {
+    const output = OnlineRender.buildDotUrl(`digraph {
+  "A"
+  "B"
+  "C"
+  "A" -> "B";
+}`);
+
+    expect(output.href).toBe("http://magjac.com/graphviz-visual-editor/?dot=digraph%20%7B%0A%20%20%22A%22%0A%20%20%22B%22%0A%20%20%22C%22%0A%20%20%22A%22%20-%3E%20%22B%22;%0A%7D");
   });
 
   it('pako serde', () => {
