@@ -2,9 +2,9 @@
 
 > Modernize graph assets management, based on Diagram-as-code, so you can create, share and edit diagram. Support for import Mermaid, PlantUML, Excalidraw, Dot and more.
 
-[![CI](https://github.com/feakin/feakin/actions/workflows/ci.yml/badge.svg)](https://github.com/feakin/feakin/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/feakin/feakin-poc/branch/master/graph/badge.svg?token=XO0930Z3TE)](https://codecov.io/gh/feakin/feakin-poc) ![npm](https://img.shields.io/npm/v/@feakin/parser)
+[![CI](https://github.com/feakin/feakin/actions/workflows/ci.yml/badge.svg)](https://github.com/feakin/feakin/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/feakin/feakin/branch/master/graph/badge.svg?token=XO0930Z3TE)](https://codecov.io/gh/feakin/feakin) ![npm](https://img.shields.io/npm/v/@feakin/parser)
 
-[![Code Coverage](https://codecov.io/gh/feakin/feakin-poc/branch/master/graphs/tree.svg?token=XO0930Z3TE)](https://app.codecov.io/gh/feakin/feakin-poc)
+[![Code Coverage](https://codecov.io/gh/feakin/feakin/branch/master/graphs/tree.svg?token=XO0930Z3TE)](https://app.codecov.io/gh/feakin/feakin)
 
 Chinese introduction: Feakin 是一个图形资产管理工具，基于[图表即代码](https://www.phodal.com/blog/diagram-as-code/) 的思想体系，支持导入 Mermaid, PlantUML, Excalidraw, Dot 等图形资产格式。
 
