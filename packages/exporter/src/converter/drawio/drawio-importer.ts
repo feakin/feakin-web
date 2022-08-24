@@ -38,7 +38,7 @@ export class DrawioImporter extends Importer {
     );
 
     return filtered;
-  };
+  }
 
   parseStyle(style: string): CellStateStyle {
     const styles = style.split(";");
@@ -116,7 +116,7 @@ export class DrawioImporter extends Importer {
 
     return {
       id: attrs.id,
-      label: attrs.value,
+      label: attrs.value || '',
       x: point.x,
       y: point.y,
       width: parseFloat(String(geoAttrs?.width || 0)),

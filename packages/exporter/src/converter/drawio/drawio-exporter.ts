@@ -1,12 +1,17 @@
 import { MXCell, MxFileRoot, MxGraph } from "./mxgraph";
 import DrawioEncode from "./encode/drawio-encode";
 import { js2xml } from "./encode/xml-converter";
-import { Edge, ElementProperty, Node } from "../../model/graph";
-import { Transpiler } from "../exporter";
+import { Edge, ElementProperty, Graph, Node } from "../../model/graph";
+import { Exporter, Transpiler } from "../exporter";
 
-export class DrawioExporter implements Transpiler {
+export class DrawioExporter extends Exporter<MxFileRoot> implements Transpiler {
   idIndex = 0;
   GUID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_';
+
+  constructor(graph: Graph) {
+    super(graph);
+    this.graph = graph;
+  }
 
   guid(): string {
     const len = (length != null) ? length : this.GUID_ALPHABET;
@@ -24,8 +29,11 @@ export class DrawioExporter implements Transpiler {
     return `${ this.guid() }-${ this.idIndex }`;
   }
 
-  fromNodes(nodes: Node[]): MXCell[] {
-    return nodes.map(this.transpileNode);
+  override export(): MxFileRoot {
+    const cells = this.graph.nodes.map(this.transpileNode.bind(this));
+
+    const mxGraph = this.wrapperGraph(cells);
+    return this.wrapperRoot(mxGraph);
   }
 
   transpileEdge(edge: Edge): MXCell {
@@ -77,38 +85,8 @@ export class DrawioExporter implements Transpiler {
     };
   }
 
-  toXml(file: MxFileRoot): string {
+  static toXml(file: MxFileRoot): string {
     return js2xml(file)
   }
 }
 
-export function wrapperToDrawIo() {
-  const wrapper = new DrawioExporter();
-
-  const cells: MXCell[] = [
-    {
-      attributes: {
-        id: "0",
-      }
-    },
-    {
-      attributes: {
-        id: `${ wrapper.id() }`,
-        vertex: true,
-        style: "rounded=0;whiteSpace=wrap;html=1;",
-        value: "Hello, world!",
-        parent: "0"
-      },
-      mxGeometry: {
-        attributes: {
-          as: "geometry",
-          width: 100,
-          height: 60
-        }
-      }
-    }
-  ];
-
-  const mxGraph = wrapper.wrapperGraph(cells);
-  return wrapper.toXml(wrapper.wrapperRoot(mxGraph));
-}
