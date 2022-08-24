@@ -1,4 +1,4 @@
-import { Layers } from "../graph";
+import { Layer } from "../graph";
 
 export interface LayoutLifecycle {
   /**
@@ -8,7 +8,7 @@ export interface LayoutLifecycle {
   /**
    * transition layout.
    */
-  transform?: (element: Layers) => void;
+  transform?: (element: Layer) => void;
   /**
    * Called when the layout is stopped.
    */
