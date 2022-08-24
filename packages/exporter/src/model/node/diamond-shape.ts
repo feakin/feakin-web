@@ -1,5 +1,4 @@
-import { Shape } from "./shape";
-import { ShapeType } from "./shape-type";
+import { Shape, ShapeType } from "./shape";
 import { Point } from "../geometry/point";
 
 /**

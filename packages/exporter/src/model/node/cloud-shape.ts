@@ -1,5 +1,4 @@
-import { Shape } from "./shape";
-import { ShapeType } from "./shape-type";
+import { Shape, ShapeType } from "./shape";
 
 export class CloudShape extends Shape {
   width: number;

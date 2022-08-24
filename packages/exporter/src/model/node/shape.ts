@@ -1,5 +1,30 @@
 import { Point } from "../geometry/point";
-import { ShapeType } from "./shape-type";
+
+export interface ShapeResource {
+  type: ShapeResourceType;
+  src: string;
+}
+
+export enum ShapeResourceType {
+  None,
+  Image = "image",
+}
+
+export enum ShapeType {
+  None,
+  Circle = "circle",
+  Rectangle = "rectangle",
+  Hexagon = "hexagon",
+  Cloud = "cloud",
+  Cylinder = "cylinder",
+  Text = "text",
+  Polygon = "polygon",
+  Diamond = "diamond",
+  Image = "image",
+  Arrow = "arrow",
+  Custom = "custom",
+}
+
 
 /**
  * Base class for all shapes.
@@ -74,14 +99,4 @@ export class Shape {
   rotate() {
     //
   }
-}
-
-export interface ShapeResource {
-  type: ShapeResourceType;
-  src: string;
-}
-
-export enum ShapeResourceType {
-  None,
-  Image = "image",
 }

@@ -1,5 +1,4 @@
-import { Shape, ShapeResourceType } from "./shape";
-import { ShapeType } from "./shape-type";
+import { Shape, ShapeResourceType, ShapeType } from "./shape";
 
 export class ImageShape extends Shape {
   override hasResource = true;

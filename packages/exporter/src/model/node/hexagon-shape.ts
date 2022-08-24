@@ -1,6 +1,5 @@
-import { Shape } from "./shape";
+import { Shape, ShapeType } from "./shape";
 import { Point } from "../geometry/point";
-import { ShapeType } from "./shape-type";
 
 export class HexagonShape extends Shape {
   width: number;
