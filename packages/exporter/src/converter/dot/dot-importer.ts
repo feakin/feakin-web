@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 
 import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
-import { dagreReLayout } from "../../layout/dagre/dagre-layout";
+import { layoutFromGraph } from "../../layout/dagre/dagre-layout";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph);
 
@@ -34,24 +34,28 @@ export class DotImporter extends Importer {
 
   override parse(): Graph {
     const graph = this.transpile();
-    const newIdMap: Map<string, string> = new Map();
+    const idNewIdMap: Map<string, string> = new Map();
+    const labelIdMap: Map<string, string> = new Map();
     graph.nodes.forEach((node) => {
       const newId = nanoid();
-      newIdMap.set(node.id, newId);
+      idNewIdMap.set(node.id, newId);
       node.id = newId;
+      labelIdMap.set(node.id, node.label);
     });
 
     graph.edges.forEach((edge) => {
       edge.id = nanoid();
       if(edge.data?.source && edge.data?.source.length > 0) {
-        edge.data.sourceId = newIdMap.get(edge.data.source) || 'unknown';
+        edge.data.sourceId = idNewIdMap.get(edge.data.source) || 'unknown';
+        edge.data.source = labelIdMap.get(edge.data.sourceId) || 'unknown';
       }
       if(edge.data?.target && edge.data?.target.length > 0) {
-        edge.data.targetId = newIdMap.get(edge.data.target) || 'unknown';
+        edge.data.targetId = idNewIdMap.get(edge.data.target) || 'unknown';
+        edge.data.target = labelIdMap.get(edge.data.targetId) || 'unknown';
       }
     });
 
-    return dagreReLayout(graph);
+    return layoutFromGraph(graph);
   }
 
   private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any, graphId?: string | number | undefined) {

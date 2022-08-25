@@ -22,7 +22,7 @@ function initGraphOptions(options: LayoutOptions) {
   return graph;
 }
 
-export function dagreReLayout(graph: Graph, options: LayoutOptions = defaultLayoutOptions): Graph {
+export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLayoutOptions): Graph {
   const rootGraph = initGraphOptions(options);
 
   graph.nodes.forEach(node => {
