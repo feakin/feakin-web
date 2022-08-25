@@ -15,7 +15,6 @@ import { Converter, OnlineRender } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
 import * as monacoEditor from "monaco-editor";
 import { addDotLang } from "./editor/dot-lang";
-import path from "path";
 
 const DOT_LANG = "dot";
 const App = () => {

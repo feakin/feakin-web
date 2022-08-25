@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Arrow,
   Group,
@@ -10,7 +10,7 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-import { Edge, flattenPoints, DotImporter } from "@feakin/exporter";
+import { Edge, flattenPoints, DotImporter, Graph } from "@feakin/exporter";
 
 function Render(props: { text: string }) {
   const [selectedId, selectShape] = React.useState<number | null>(null);
@@ -18,6 +18,12 @@ function Render(props: { text: string }) {
   const layerRef = React.useRef<Konva.Layer | null>(null);
   const trRef = React.useRef<Konva.Transformer | null>(null);
   const selectionRectRef = React.useRef<Konva.Rect | null>(null);
+
+  const [layout, setLayout] = React.useState<Graph>(
+    {
+      nodes: [],
+      edges: []
+    });
 
   const [lines, setLines] = React.useState([] as any);
   const isDrawing = React.useRef(false);
@@ -182,17 +188,15 @@ function Render(props: { text: string }) {
     layer.draw();
   };
 
-  let layout: any = {
-    nodes: [],
-    edges: []
-  };
-
-  try {
-    const executor = new DotImporter(props.text);
-    layout = executor.parse();
-  } catch (e) {
-    console.error(e);
-  }
+ useEffect(() => {
+   try {
+     const executor = new DotImporter(props.text);
+     let graph = executor.parse();
+     setLayout(graph);
+   } catch (e) {
+     console.error(e);
+   }
+ }, [props.text]);
 
   return (
     <Stage
@@ -212,7 +216,7 @@ function Render(props: { text: string }) {
             <FkRect
               node={ node }
               label={ node.label }
-              key={ 'node-' + index }
+              key={ 'node-' + node.id }
               isSelected={ !!selectedId && node.id === selectedId }
               draggable={ true }
               onSelect={ (e) => {
