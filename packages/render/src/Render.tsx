@@ -182,8 +182,17 @@ function Render(props: { text: string }) {
     layer.draw();
   };
 
-  const executor = new MermaidImporter(props.text);
-  const layout = executor.parse();
+  let layout: any = {
+    nodes: [],
+    edges: []
+  };
+
+  try {
+    const executor = new MermaidImporter(props.text);
+    layout = executor.parse();
+  } catch (e) {
+    console.error(e);
+  }
 
   return (
     <Stage
