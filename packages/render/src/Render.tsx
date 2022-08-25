@@ -10,7 +10,7 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
-import { MermaidImporter, Edge, flattenPoints } from "@feakin/exporter";
+import { Edge, flattenPoints, DotImporter } from "@feakin/exporter";
 
 function Render(props: { text: string }) {
   const [selectedId, selectShape] = React.useState<number | null>(null);
@@ -188,7 +188,7 @@ function Render(props: { text: string }) {
   };
 
   try {
-    const executor = new MermaidImporter(props.text);
+    const executor = new DotImporter(props.text);
     layout = executor.parse();
   } catch (e) {
     console.error(e);
@@ -197,8 +197,8 @@ function Render(props: { text: string }) {
   return (
     <Stage
       ref={ stageRef }
-      width={ window.innerWidth }
-      height={ window.innerHeight }
+      width={ window.innerWidth / 2 - 200 }
+      height={ window.innerHeight - 200 }
       onMouseDown={ checkDeselect }
       onMouseUp={ onMouseUp }
       onMouseMove={ onMouseMove }

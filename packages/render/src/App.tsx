@@ -6,19 +6,23 @@ import {
   Button, IconButton,
   Menu,
   MenuItem,
-  TextareaAutosize,
   Toolbar,
   Typography
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Converter, OnlineRender } from "@feakin/exporter";
+import MonacoEditor from "react-monaco-editor";
+import * as monacoEditor from "monaco-editor";
+import { addDotLang } from "./editor/dot-lang";
 
 const App = () => {
-  const [text, setText] = React.useState(`graph TD;
-    A-->B
-    A-->C
-    B-->C;`);
+  const [text, setText] = React.useState(`digraph {
+    A -> B
+    A -> C
+    B -> C
+}
+`);
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
   const [exportEl, setExportEl] = React.useState<null | HTMLElement>(null);
   const [templateEl, setTemplateEl] = React.useState<null | HTMLElement>(null);
@@ -52,7 +56,7 @@ const App = () => {
   };
 
   const exportFile = (outputType: string) => {
-    let output = Converter.fromContent(text, "mermaid").target(outputType);
+    let output = Converter.fromContent(text, "dot").target(outputType);
 
     const element = document.createElement("a");
     const file = new Blob([output], {
@@ -73,7 +77,7 @@ const App = () => {
   const onlineRender = (typ: string) => {
     switch (typ) {
       case "graphviz":
-        let graphText = Converter.fromContent(text, "mermaid").target("dot");
+        let graphText = Converter.fromContent(text, "dot").target("dot");
         window.open(OnlineRender.buildDotUrl(graphText));
         break;
       case "mermaid":
@@ -84,8 +88,13 @@ const App = () => {
     }
   }
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(event.target.value);
+  const handleTextChange = (newValue: string, event: monacoEditor.editor.IModelContentChangedEvent) => {
+    setText(newValue);
+  }
+
+  const editorDidMount = (editor: any, monaco: any) => {
+    addDotLang(monaco);
+    editor.focus();
   }
 
   let exportMenus = <Menu
@@ -189,12 +198,14 @@ const App = () => {
       </AppBar>
       <Grid2 container spacing={ 3 }>
         <Grid2 xs={ 6 }>
-          <TextareaAutosize
-            aria-label="minimum height"
+          <MonacoEditor
+            width="100%"
+            height={ window.innerHeight - 200 }
+            language="dot"
+            theme="vs-dark"
             value={ text }
             onChange={ handleTextChange }
-            minRows={ 6 }
-            placeholder="Minimum 3 rows"
+            editorDidMount={ editorDidMount }
           />
         </Grid2>
         <Grid2 xs={ 6 }>
