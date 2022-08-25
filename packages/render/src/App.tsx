@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Render from "./Render";
 import {
   AppBar,
@@ -15,9 +15,11 @@ import { Converter, OnlineRender } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
 import * as monacoEditor from "monaco-editor";
 import { addDotLang } from "./editor/dot-lang";
+import path from "path";
 
 const DOT_LANG = "dot";
 const App = () => {
+  const inputFile = useRef<HTMLInputElement | null>(null);
   const [text, setText] = React.useState(`digraph {
     A -> B
     A -> C
@@ -72,7 +74,29 @@ const App = () => {
   }
 
   const importFile = () => {
-    console.log("importFile");
+    if (inputFile.current != null) {
+      inputFile.current.click();
+    }
+
+    setFileEl(null);
+  }
+
+  function getExtension(filename: string) {
+    return filename.split('.').pop();
+  }
+
+  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    if(event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      let ext = getExtension(file.name);
+      if (ext) {
+        file.text().then(text => {
+          console.log(text);
+          setText(Converter.fromContent(text, ext as string).target(DOT_LANG));
+        });
+      }
+    }
   }
 
   const onlineRender = (typ: string) => {
@@ -198,6 +222,7 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <Grid2 container spacing={ 3 }>
+        <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={ onChangeFile }/>
         <Grid2 xs={ 6 }>
           <MonacoEditor
             width="100%"
