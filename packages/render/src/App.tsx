@@ -1,7 +1,17 @@
 import React from 'react';
 import Render from "./Render";
-import { AppBar, Button, Container, Menu, MenuItem, TextareaAutosize, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button, IconButton,
+  Menu,
+  MenuItem,
+  TextareaAutosize,
+  Toolbar,
+  Typography
+} from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
+import GitHubIcon from '@mui/icons-material/GitHub';
 import { Converter, OnlineRender } from "@feakin/exporter";
 
 const App = () => {
@@ -55,67 +65,75 @@ const App = () => {
   return (
     <div>
       <AppBar position="static">
-        <Toolbar sx={ { flexGrow: 1 } }>
-          <Typography variant="h6" noWrap component="a">FEAKIN</Typography>
-          <Button
-            id="basic-button"
-            sx={ { my: 2, color: 'white', display: 'block' } }
-            aria-controls={ isOpenFileMenu ? 'file-menu' : undefined }
-            aria-haspopup="true"
-            aria-expanded={ isOpenFileMenu ? 'true' : undefined }
-            onClick={ handleFieMenuClick }
-          >
-            File
-          </Button>
-          <Menu
-            id="file-menu"
-            anchorEl={ fileEl }
-            open={ isOpenFileMenu }
-            anchorOrigin={ {
-              vertical: 'bottom',
-              horizontal: 'left',
-            } }
-            keepMounted
-            transformOrigin={ {
-              vertical: 'top',
-              horizontal: 'left',
-            } }
-            onClose={ handleFileMenuClose }
-            MenuListProps={ {
-              'aria-labelledby': 'basic-button',
-            } }
-          >
-            <MenuItem onClick={ importFile }>
-              <Typography textAlign="center">Import</Typography>
-            </MenuItem>
-          </Menu>
-          <Button
-            sx={ { my: 2, color: 'white', display: 'block' } }
-            aria-controls={ isOpenFileMenu ? 'export-menu' : undefined }
-            aria-haspopup="true"
-            aria-expanded={ isOpenFileMenu ? 'true' : undefined }
-            onClick={ handleExportMenuClick }
-          >
-            Export
-          </Button>
-          <Menu
-            id="export-menu"
-            anchorEl={ exportEl }
-            open={ isOpenExportMenu }
-            onClose={ handleExportMenuClose }
-            MenuListProps={ {
-              'aria-labelledby': 'basic-button',
-            } }
-          >
-            <MenuItem onClick={ importFile }>Dot</MenuItem>
-            <MenuItem onClick={ importFile }>Graphviz</MenuItem>
-            <MenuItem onClick={ importFile }>Mermaid</MenuItem>
-            <MenuItem onClick={ importFile }>Excalidraw</MenuItem>
-          </Menu>
-          <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('graphviz') }>Online
-            Render (Graphviz) </Button>
-          <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('mermaid') }>Online
-            Render (Mermaid) </Button>
+        <Toolbar>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Button
+              id="basic-button"
+              sx={ { my: 2, color: 'white', display: 'block' } }
+              aria-controls={ isOpenFileMenu ? 'file-menu' : undefined }
+              aria-haspopup="true"
+              aria-expanded={ isOpenFileMenu ? 'true' : undefined }
+              onClick={ handleFieMenuClick }
+            >
+              File
+            </Button>
+            <Menu
+              id="file-menu"
+              anchorEl={ fileEl }
+              open={ isOpenFileMenu }
+              anchorOrigin={ {
+                vertical: 'bottom',
+                horizontal: 'left',
+              } }
+              keepMounted
+              transformOrigin={ {
+                vertical: 'top',
+                horizontal: 'left',
+              } }
+              onClose={ handleFileMenuClose }
+              MenuListProps={ {
+                'aria-labelledby': 'basic-button',
+              } }
+            >
+              <MenuItem onClick={ importFile }>
+                <Typography textAlign="center">Import</Typography>
+              </MenuItem>
+            </Menu>
+            <Button
+              sx={ { my: 2, color: 'white', display: 'block' } }
+              aria-controls={ isOpenFileMenu ? 'export-menu' : undefined }
+              aria-haspopup="true"
+              aria-expanded={ isOpenFileMenu ? 'true' : undefined }
+              onClick={ handleExportMenuClick }
+            >
+              Export
+            </Button>
+            <Menu
+              id="export-menu"
+              anchorEl={ exportEl }
+              open={ isOpenExportMenu }
+              onClose={ handleExportMenuClose }
+              MenuListProps={ {
+                'aria-labelledby': 'basic-button',
+              } }
+            >
+              <MenuItem onClick={ importFile }>Dot</MenuItem>
+              <MenuItem onClick={ importFile }>Graphviz</MenuItem>
+              <MenuItem onClick={ importFile }>Mermaid</MenuItem>
+              <MenuItem onClick={ importFile }>Excalidraw</MenuItem>
+            </Menu>
+            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('graphviz') }>Online
+              Render (Graphviz) </Button>
+            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('mermaid') }>Online
+              Render (Mermaid) </Button>
+          </Box>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <IconButton
+              onClick={ () => window.open("https://github.com/feakin/feakin") }
+              size="large" aria-label="show 4 new mails" color="inherit">
+              <GitHubIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Grid2 container spacing={ 3 }>
