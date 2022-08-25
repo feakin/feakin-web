@@ -1,4 +1,4 @@
-import { Edge, Node, Layer } from "./graph";
+import { Edge, Node, Graph } from "./graph";
 
 export interface RendererContext {
   elementId?: string;
@@ -9,7 +9,7 @@ export interface RendererContext {
  */
 export interface Renderer {
   arrowShapes: () => void;
-  drawingElements: (context: RendererContext, elements: Layer) => void;
+  drawingElements: (context: RendererContext, elements: Graph) => void;
 
   drawingEdges: (edges: Edge[]) => void;
   drawingNodes: (nodes: Node[]) => void;
