@@ -48,6 +48,9 @@ export interface Node extends ElementProperty {
 }
 
 export interface NodeData {
+  /**
+   * In excalidraw, drawio, the graph hierarchy is a tree, but when stored data, it's flat, so we keep in some rules.
+   */
   parentId?: string | undefined;
   children?: string[];
   curved?: boolean;
