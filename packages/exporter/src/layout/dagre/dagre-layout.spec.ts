@@ -101,6 +101,6 @@ describe('feakinExporter', () => {
     }
     const layout = layoutFromGraph(graph);
 
-    expect(layout.nodes.length).toBe(6);
+    expect(layout.nodes.length).toBe(7);
   });
 });
