@@ -40,6 +40,21 @@ const App = () => {
     setExportEl(null);
   };
 
+  const exportFile = (outputType: string) => {
+    let output = Converter.fromContent(text, "mermaid").target(outputType);
+
+    const element = document.createElement("a");
+    const file = new Blob([output], {
+      type: "text/plain"
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = "feakin-export." + outputType;
+    document.body.appendChild(element);
+    element.click();
+
+    setExportEl(null);
+  }
+
   const importFile = () => {
     console.log("importFile");
   }
@@ -117,10 +132,9 @@ const App = () => {
                 'aria-labelledby': 'basic-button',
               } }
             >
-              <MenuItem onClick={ importFile }>Dot</MenuItem>
-              <MenuItem onClick={ importFile }>Graphviz</MenuItem>
-              <MenuItem onClick={ importFile }>Mermaid</MenuItem>
-              <MenuItem onClick={ importFile }>Excalidraw</MenuItem>
+              <MenuItem onClick={ () => exportFile('dot') }>Dot</MenuItem>
+              <MenuItem onClick={ () => exportFile('drawio') }>Draw.io</MenuItem>
+              <MenuItem onClick={ () => exportFile('excalidraw') }>Excalidraw</MenuItem>
             </Menu>
             <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('graphviz') }>Online
               Render (Graphviz) </Button>
