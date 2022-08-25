@@ -7,7 +7,7 @@ import { defaultLayoutOptions, LayoutOptions } from "../../model/layout/layout";
 import { nanoid } from "nanoid";
 
 function initGraphOptions(options: LayoutOptions) {
-  const graph = new dagre.graphlib.Graph({
+  const graph = new graphlib.Graph({
     multigraph: true,
     compound: true,
   }).setGraph({
@@ -31,6 +31,11 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
       width: options.node.width,
       height: options.node.height
     });
+
+    if (node.data?.parentId) {
+      rootGraph.setNode(node.data?.parentId, {label: 'Group', clusterLabelPos: 'top', style: 'fill: #d3d7e8'});
+      rootGraph.setParent(node.label, node.data?.parentId);
+    }
   })
 
   graph.edges.forEach(edge => {
@@ -62,6 +67,7 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
       width: options.node.width,
       height: options.node.height,
     };
+
     dagreGraph.setNode(name, label);
   });
 
