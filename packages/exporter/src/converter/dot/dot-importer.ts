@@ -10,11 +10,6 @@ type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph
 export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
-  // currentGraph: Graph = {
-  //   nodes: [],
-  //   edges: [],
-  //   subgraphs: []
-  // };
 
   constructor(content: string) {
     super(content);
@@ -86,13 +81,16 @@ export class DotImporter extends Importer {
   private createNodeId(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any, graphId?: string | number | undefined) {
     const nodeId = child.id;
 
+    if(graphId) {
+      attrs.parentId = graphId;
+    }
+
     if (!this.nodes.has(nodeId)) {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
         label: child.id.toString(),
         data: {
           ...attrs,
-          parentId: graphId,
         }
       });
     }
@@ -113,11 +111,10 @@ export class DotImporter extends Importer {
           id: edgeId,
           points: [],
           data: {
-            parent: graphId,
+            ...attrs,
             source: lastNode.id.toString(),
-            target: currentNode.id.toString()
+            target: currentNode.id.toString(),
           },
-          ...attrs
         });
       }
     }
@@ -134,12 +131,15 @@ export class DotImporter extends Importer {
     const nodeId = child.node_id.id;
     const attrs = this.parseAttrs(child.attr_list);
 
+    if(graphId) {
+      attrs.parentId = graphId;
+    }
+
     if (!this.nodes.has(nodeId)) {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
         label: attrs.label ? attrs.label : nodeId.toString(),
         data: {
-          parentId: graphId,
           ...attrs
         },
       });
