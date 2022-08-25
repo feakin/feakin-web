@@ -3,6 +3,7 @@ import { FillState } from "./state-style/fill-state";
 import { StrokeState } from "./state-style/stroke-state";
 import { EdgeType } from "./edge/edge-type";
 import { FontState } from "./state-style/font-state";
+import { ShapeType } from "./node/shape";
 
 /**
  * Graph is a class that represents a graph.
@@ -44,6 +45,7 @@ export interface Node extends ElementProperty {
   x?: number;
   y?: number;
   data?: NodeData;
+  shape?: ShapeType;
 }
 
 export interface NodeData {

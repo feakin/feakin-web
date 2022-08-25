@@ -85,7 +85,8 @@ function calculatePosition(graph: graphlib.Graph<any>) {
       y: node.y,
       label: v,
       height: node.height,
-      width: node.width
+      width: node.width,
+      ...node
     });
   });
 

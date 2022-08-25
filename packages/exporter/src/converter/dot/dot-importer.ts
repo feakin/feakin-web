@@ -15,7 +15,6 @@ export class DotImporter extends Importer {
     super(content);
   }
 
-
   private parseGraph() {
     const graphs: DotGraph[] = parse(this.content);
     graphs.forEach((graph) => {

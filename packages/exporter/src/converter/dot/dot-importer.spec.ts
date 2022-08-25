@@ -71,6 +71,6 @@ describe('DotImporter', () => {
     const graph: Graph = importer.parse();
 
     expect(graph.nodes.length).toBe(3);
-    // expect(graph.nodes[0].shape).toBe("triangle");
+    expect(graph.nodes[0].shape).toBe("triangle");
   });
 });
