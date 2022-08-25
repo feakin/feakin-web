@@ -7,12 +7,13 @@ import { FontState } from "./state-style/font-state";
 /**
  * Graph is a class that represents a graph.
  */
-export type Graph = Layer;
 
-export interface Layer {
+export interface Graph {
   nodes: Node[];
   edges: Edge[];
   props?: Element;
+  // sub graph
+  subgraphs?: Graph[];
 }
 
 export type Position = Point;
