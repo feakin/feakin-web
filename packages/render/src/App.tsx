@@ -16,6 +16,7 @@ import MonacoEditor from "react-monaco-editor";
 import * as monacoEditor from "monaco-editor";
 import { addDotLang } from "./editor/dot-lang";
 
+const DOT_LANG = "dot";
 const App = () => {
   const [text, setText] = React.useState(`digraph {
     A -> B
@@ -56,7 +57,7 @@ const App = () => {
   };
 
   const exportFile = (outputType: string) => {
-    let output = Converter.fromContent(text, "dot").target(outputType);
+    let output = Converter.fromContent(text, DOT_LANG).target(outputType);
 
     const element = document.createElement("a");
     const file = new Blob([output], {
@@ -77,11 +78,11 @@ const App = () => {
   const onlineRender = (typ: string) => {
     switch (typ) {
       case "graphviz":
-        let graphText = Converter.fromContent(text, "dot").target("dot");
-        window.open(OnlineRender.buildDotUrl(graphText));
+        window.open(OnlineRender.buildDotUrl(text));
         break;
       case "mermaid":
-        window.open(OnlineRender.buildMermaidUrl(text));
+        let graphText = Converter.fromContent(text, DOT_LANG).target("mermaid");
+        window.open(OnlineRender.buildMermaidUrl(graphText));
         break;
       default:
         console.error("unknown " + typ);
@@ -106,7 +107,7 @@ const App = () => {
       'aria-labelledby': 'basic-button',
     } }
   >
-    <MenuItem onClick={ () => exportFile('dot') }>Dot</MenuItem>
+    <MenuItem onClick={ () => exportFile(DOT_LANG) }>Dot</MenuItem>
     <MenuItem onClick={ () => exportFile('drawio') }>Draw.io</MenuItem>
     <MenuItem onClick={ () => exportFile('excalidraw') }>Excalidraw</MenuItem>
   </Menu>;

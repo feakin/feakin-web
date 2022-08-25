@@ -10,6 +10,7 @@ import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
 import { DotImporter } from "./dot/dot-importer";
 import { Exporter } from "./exporter";
 import { DotExporter } from "./dot/dot-exporter";
+import { MermaidExporter } from "./mermaid/mermaid-exporter";
 
 export enum SupportedFileType {
   EXCALIDRAW = "excalidraw",
@@ -87,6 +88,9 @@ export class Converter {
         break;
       case SupportedTarget.DRAWIO:
         exporter = new DrawioExporter(this.graph);
+        break;
+      case SupportedTarget.MERMAID:
+        exporter = new MermaidExporter(this.graph);
         break;
       case SupportedTarget.DOT:
         exporter = new DotExporter(this.graph);
