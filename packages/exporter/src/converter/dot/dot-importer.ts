@@ -23,7 +23,7 @@ export class DotImporter extends Importer {
   private parseGraph() {
     const graphs: DotGraph[] = parse(this.content);
     graphs.forEach((graph) => {
-      this.parseChildren(graph.children, graph);
+      this.parseChildren(graph.children, graph, undefined);
     })
   }
 
@@ -59,20 +59,20 @@ export class DotImporter extends Importer {
     return dagreReLayout(graph);
   }
 
-  private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any) {
+  private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any, graphId?: string | number | undefined) {
     children.forEach((child, index) => {
       switch (child.type) {
         case "edge_stmt":
-          this.parseChildren(child.edge_list, child, this.parseAttrs(child.attr_list));
+          this.parseChildren(child.edge_list, child, this.parseAttrs(child.attr_list), graphId);
           break;
         case "node_stmt":
-          this.createNode(child);
+          this.createNode(child, graphId);
           break;
         case "subgraph":
-          this.parseChildren(child.children, child);
+          this.parseChildren(child.children, child, null, child.id);
           break;
         case "node_id":
-          this.createNodeId(child, parent, children as NodeId[], index, attrs);
+          this.createNodeId(child, parent, children as NodeId[], index, attrs, graphId);
           break;
         case "attr_stmt":
           // todo: add support for attrs
@@ -83,13 +83,17 @@ export class DotImporter extends Importer {
     })
   }
 
-  private createNodeId(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any) {
+  private createNodeId(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any, graphId?: string | number | undefined) {
     const nodeId = child.id;
 
     if (!this.nodes.has(nodeId)) {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
         label: child.id.toString(),
+        data: {
+          ...attrs,
+          parentId: graphId,
+        }
       });
     }
 
@@ -109,6 +113,7 @@ export class DotImporter extends Importer {
           id: edgeId,
           points: [],
           data: {
+            parent: graphId,
             source: lastNode.id.toString(),
             target: currentNode.id.toString()
           },
@@ -125,15 +130,18 @@ export class DotImporter extends Importer {
     }, {} as any);
   }
 
-  private createNode(child: NodeStmt) {
+  private createNode(child: NodeStmt, graphId: string | number | undefined) {
     const nodeId = child.node_id.id;
     const attrs = this.parseAttrs(child.attr_list);
 
     if (!this.nodes.has(nodeId)) {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
-        label: child.node_id.id.toString(),
-        ...attrs
+        label: attrs.label ? attrs.label : nodeId.toString(),
+        data: {
+          parentId: graphId,
+          ...attrs
+        },
       });
     }
   }

@@ -71,7 +71,7 @@ describe('DotImporter', () => {
     const graph: Graph = importer.parse();
 
     expect(graph.nodes.length).toBe(3);
-    expect(graph.nodes[0].shape).toBe("triangle");
+    expect(graph.nodes[0].data!.shape).toBe("triangle");
   });
 
   it('subgraph', () => {
@@ -88,9 +88,8 @@ describe('DotImporter', () => {
 }`);
     const graph: Graph = importer.parse();
 
-    // expect(graph.nodes.length).toBe(0);
-    // expect(graph.subgraphs).toBe(2);
-    // expect(graph.subgraphs![0].nodes.length).toBe(4);
-    // expect(graph.subgraphs![1].nodes.length).toBe(2);
+    expect(graph.nodes.length).toBe(7);
+    expect(graph.nodes[0].data!.parentId).toBe("cluster0");
+    expect(graph.nodes[6].data!.parentId).toBe("cluster1");
   });
 });

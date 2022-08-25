@@ -25,9 +25,9 @@ export function dagreReLayout(graph: Graph, options: LayoutOptions = defaultLayo
 
   graph.nodes.forEach(node => {
     dagreGraph.setNode(node.label, {
+      ...node,
       width: options.node.width,
-      height: options.node.height,
-      ...node
+      height: options.node.height
     });
   })
 
@@ -80,13 +80,13 @@ function calculatePosition(graph: graphlib.Graph<any>) {
     const nodeId = node['id'] ? node['id'] : nanoid();
     labelIdMap.set(v, nodeId);
     nodes.push({
+      ...node,
       id: nodeId,
       x: node.x,
       y: node.y,
       label: v,
       height: node.height,
-      width: node.width,
-      ...node
+      width: node.width
     });
   });
 
@@ -97,8 +97,9 @@ function calculatePosition(graph: graphlib.Graph<any>) {
       id: graphEdge['id'] ? graphEdge['id'] : nanoid(),
       points: graphEdge.points,
       data: {
+        ...graphEdge['data'],
         source: labelIdMap.get(e.v) || e.v,
-        target: labelIdMap.get(e.w) || e.w,
+        target: labelIdMap.get(e.w) || e.w
       }
     });
   });

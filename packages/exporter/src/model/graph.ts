@@ -45,13 +45,13 @@ export interface Node extends ElementProperty {
   x?: number;
   y?: number;
   data?: NodeData;
-  shape?: ShapeType;
 }
 
 export interface NodeData {
-  parent?: string | undefined;
+  parentId?: string | undefined;
   children?: string[];
   curved?: boolean;
+  shape?: ShapeType;
 
   [key: string]: any;
 }
@@ -68,6 +68,8 @@ export interface Edge extends ElementProperty {
 }
 
 export interface EdgeData {
+  parentId?: string;
+
   source: string;
   sourceId?: string;
   target: string;
