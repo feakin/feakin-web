@@ -25,7 +25,7 @@ export const dotTokenConfig = {
   ],
 
   // we include these common regular expressions
-  symbols: /[=><!~?:&|+\-*\/\^%]+/,
+  symbols: /[=><!~?:&|+\-*/^%]+/,
 
 
   // The main tokenizer for our languages
@@ -48,7 +48,7 @@ export const dotTokenConfig = {
       [/<<(?!@symbols)/, { token: 'string.html.quote', bracket: '@open', next: 'html' }],
 
       // delimiters and operators
-      [/[{}()\[\]]/, '@brackets'],
+      [/[{}()[\]]/, '@brackets'],
       [/@symbols/, {
         cases: {
           '@keywords': 'keyword',
@@ -60,7 +60,7 @@ export const dotTokenConfig = {
       [/[;,]/, 'delimiter'],
 
       // numbers
-      [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
+      [/\d*\.\d+([eE][-+]?\d+)?/, 'number.float'],
       [/0[xX][0-9a-fA-F]+/, 'number.hex'],
       [/\d+/, 'number'],
 
@@ -70,10 +70,10 @@ export const dotTokenConfig = {
     ],
 
     comment: [
-      [/[^\/*]+/, 'comment'],
+      [/[^/*]+/, 'comment'],
       [/\/\*/, 'comment', '@push'],    // nested comment
       ["\\*/", 'comment', '@pop'],
-      [/[\/*]/, 'comment']
+      [/[/*]/, 'comment']
     ],
 
     html: [
