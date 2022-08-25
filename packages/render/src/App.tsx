@@ -21,8 +21,11 @@ const App = () => {
     B-->C;`);
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
   const [exportEl, setExportEl] = React.useState<null | HTMLElement>(null);
+  const [templateEl, setTemplateEl] = React.useState<null | HTMLElement>(null);
+
   const isOpenFileMenu = Boolean(fileEl);
   const isOpenExportMenu = Boolean(exportEl);
+  const isOpenTemplateMenu = Boolean(templateEl);
 
   const handleFieMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setFileEl(event.currentTarget);
@@ -30,6 +33,14 @@ const App = () => {
 
   const handleFileMenuClose = () => {
     setFileEl(null);
+  };
+
+  const handleTemplateMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setTemplateEl(event.currentTarget);
+  };
+
+  const handleTemplateMenuClose = () => {
+    setTemplateEl(null);
   };
 
   const handleExportMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -77,11 +88,68 @@ const App = () => {
     setText(event.target.value);
   }
 
+  let exportMenus = <Menu
+    id="export-menu"
+    anchorEl={ exportEl }
+    open={ isOpenExportMenu }
+    onClose={ handleExportMenuClose }
+    MenuListProps={ {
+      'aria-labelledby': 'basic-button',
+    } }
+  >
+    <MenuItem onClick={ () => exportFile('dot') }>Dot</MenuItem>
+    <MenuItem onClick={ () => exportFile('drawio') }>Draw.io</MenuItem>
+    <MenuItem onClick={ () => exportFile('excalidraw') }>Excalidraw</MenuItem>
+  </Menu>;
+
+  let fileMenus = <Menu
+    id="file-menu"
+    anchorEl={ fileEl }
+    open={ isOpenFileMenu }
+    anchorOrigin={ {
+      vertical: 'bottom',
+      horizontal: 'left',
+    } }
+    keepMounted
+    transformOrigin={ {
+      vertical: 'top',
+      horizontal: 'left',
+    } }
+    onClose={ handleFileMenuClose }
+    MenuListProps={ {
+      'aria-labelledby': 'basic-button',
+    } }
+  >
+    <MenuItem onClick={ importFile }>
+      <Typography textAlign="center">Import</Typography>
+    </MenuItem>
+  </Menu>;
+
+  let templateMenus = <><Button
+    sx={ { my: 2, color: 'white', display: 'block' } }
+    aria-controls={ isOpenTemplateMenu ? 'template-menu' : undefined }
+    aria-haspopup="true"
+    aria-expanded={ isOpenTemplateMenu ? 'true' : undefined }
+    onClick={ handleTemplateMenuClick }
+  >
+    Templates
+  </Button>
+    <Menu
+      id="template-menu"
+      anchorEl={ templateEl }
+      open={ isOpenTemplateMenu }
+      onClose={ handleTemplateMenuClose }
+    >
+      <MenuItem>
+        <Typography textAlign="center">Coming soon</Typography>
+      </MenuItem>
+    </Menu></>;
+
   return (
     <div>
       <AppBar position="static">
         <Toolbar>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={ { display: { xs: 'none', md: 'flex', flexGrow: 1 } } }>
             <Button
               id="basic-button"
               sx={ { my: 2, color: 'white', display: 'block' } }
@@ -92,28 +160,8 @@ const App = () => {
             >
               File
             </Button>
-            <Menu
-              id="file-menu"
-              anchorEl={ fileEl }
-              open={ isOpenFileMenu }
-              anchorOrigin={ {
-                vertical: 'bottom',
-                horizontal: 'left',
-              } }
-              keepMounted
-              transformOrigin={ {
-                vertical: 'top',
-                horizontal: 'left',
-              } }
-              onClose={ handleFileMenuClose }
-              MenuListProps={ {
-                'aria-labelledby': 'basic-button',
-              } }
-            >
-              <MenuItem onClick={ importFile }>
-                <Typography textAlign="center">Import</Typography>
-              </MenuItem>
-            </Menu>
+            { fileMenus }
+            { templateMenus }
             <Button
               sx={ { my: 2, color: 'white', display: 'block' } }
               aria-controls={ isOpenFileMenu ? 'export-menu' : undefined }
@@ -123,29 +171,18 @@ const App = () => {
             >
               Export
             </Button>
-            <Menu
-              id="export-menu"
-              anchorEl={ exportEl }
-              open={ isOpenExportMenu }
-              onClose={ handleExportMenuClose }
-              MenuListProps={ {
-                'aria-labelledby': 'basic-button',
-              } }
-            >
-              <MenuItem onClick={ () => exportFile('dot') }>Dot</MenuItem>
-              <MenuItem onClick={ () => exportFile('drawio') }>Draw.io</MenuItem>
-              <MenuItem onClick={ () => exportFile('excalidraw') }>Excalidraw</MenuItem>
-            </Menu>
-            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('graphviz') }>Online
-              Render (Graphviz) </Button>
-            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('mermaid') }>Online
-              Render (Mermaid) </Button>
+            { exportMenus }
           </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
-              onClick={ () => window.open("https://github.com/feakin/feakin") }
-              size="large" aria-label="show 4 new mails" color="inherit">
-              <GitHubIcon />
+          <Box sx={ { display: { xs: 'none', md: 'flex' } } }>
+            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('graphviz') }>
+              Online Render (Graphviz) </Button>
+            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('mermaid') }>
+              Online Render (Mermaid)
+            </Button>
+
+            <IconButton onClick={ () => window.open("https://github.com/feakin/feakin") } size="large"
+                        aria-label="GitHub" color="inherit">
+              <GitHubIcon/>
             </IconButton>
           </Box>
         </Toolbar>
