@@ -12,7 +12,7 @@ module.exports = {
         (plugin) => !(plugin instanceof ModuleScopePlugin)
       );
 
-      config.plugins.push(new MonacoWebpackPlugin({
+      config.resolve.plugins.push(new MonacoWebpackPlugin({
         languages: ['json', 'javascript']
       }));
 
