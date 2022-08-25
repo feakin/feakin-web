@@ -73,4 +73,24 @@ describe('DotImporter', () => {
     expect(graph.nodes.length).toBe(3);
     expect(graph.nodes[0].shape).toBe("triangle");
   });
+
+  it('subgraph', () => {
+    const importer = new DotImporter(`digraph G {
+  compound=true;
+  subgraph cluster0 {
+    a -> b;
+    c -> d;
+  }
+  subgraph cluster1 {
+    e -> g;
+    e -> f;
+  }
+}`);
+    const graph: Graph = importer.parse();
+
+    // expect(graph.nodes.length).toBe(0);
+    // expect(graph.subgraphs).toBe(2);
+    // expect(graph.subgraphs![0].nodes.length).toBe(4);
+    // expect(graph.subgraphs![1].nodes.length).toBe(2);
+  });
 });

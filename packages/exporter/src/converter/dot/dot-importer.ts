@@ -5,11 +5,16 @@ import { Importer } from "../importer";
 import { Edge, Graph, Node } from "../../model/graph";
 import { dagreReLayout } from "../../layout/dagre/dagre-layout";
 
-type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId);
+type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph);
 
 export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
+  // currentGraph: Graph = {
+  //   nodes: [],
+  //   edges: [],
+  //   subgraphs: []
+  // };
 
   constructor(content: string) {
     super(content);
@@ -69,8 +74,11 @@ export class DotImporter extends Importer {
         case "node_id":
           this.createNodeId(child, parent, children as NodeId[], index, attrs);
           break;
+        case "attr_stmt":
+          // todo: add support for attrs
+          break;
         default:
-          console.log("unsupported type" + JSON.stringify(child))
+          console.error("unsupported type" + JSON.stringify(child))
       }
     })
   }
