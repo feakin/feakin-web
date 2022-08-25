@@ -1,6 +1,7 @@
 const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
   webpack: {
@@ -10,6 +11,11 @@ module.exports = {
       config.resolve.plugins = config.resolve.plugins.filter(
         (plugin) => !(plugin instanceof ModuleScopePlugin)
       );
+
+      config.plugins.push(new MonacoWebpackPlugin({
+        languages: ['json', 'javascript']
+      }));
+
       // Add support for importing workspace projects.
       config.resolve.plugins.push(
         new TsConfigPathsPlugin({
