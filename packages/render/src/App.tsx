@@ -1,6 +1,6 @@
 import React from 'react';
 import Render from "./Render";
-import { Button, Menu, MenuItem, TextareaAutosize } from "@mui/material";
+import { AppBar, Button, Container, Menu, MenuItem, TextareaAutosize, Toolbar, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { Converter, OnlineRender } from "@feakin/exporter";
 
@@ -11,7 +11,8 @@ const App = () => {
     B-->C;`);
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
   const [exportEl, setExportEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(fileEl);
+  const isOpenFileMenu = Boolean(fileEl);
+  const isOpenExportMenu = Boolean(exportEl);
 
   const handleFieMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setFileEl(event.currentTarget);
@@ -53,66 +54,79 @@ const App = () => {
 
   return (
     <div>
-      <Grid2 container spacing={3}>
-        <Grid2 xs={6} md={6}>
-          <Button
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleFieMenuClick}
-          >
-            File
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={fileEl}
-            open={open}
-            onClose={handleFileMenuClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            <MenuItem onClick={importFile}>Import</MenuItem>
-          </Menu>
-        </Grid2>
-        <Grid2 xs={6}>
-          <Button
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleExportMenuClick}
-          >
-            Export
-          </Button>
-          <Menu
-            id="basic-menu"
-            anchorEl={exportEl}
-            open={open}
-            onClose={handleFileMenuClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-          >
-            <MenuItem onClick={importFile}>Dot</MenuItem>
-            <MenuItem onClick={importFile}>Graphviz</MenuItem>
-            <MenuItem onClick={importFile}>Mermaid</MenuItem>
-            <MenuItem onClick={importFile}>Excalidraw</MenuItem>
-          </Menu>
-          <Button onClick={() => onlineRender('graphviz')}>Online Render (Graphviz) </Button>
-          <Button onClick={() => onlineRender('mermaid')}>Online Render (Mermaid) </Button>
-        </Grid2>
-        <Grid2 xs={6}>
+      <AppBar position="static">
+        <Container>
+          <Toolbar>
+            <Typography variant="h6" noWrap component="a">Feakin</Typography>
+            <Button
+              id="basic-button"
+              aria-controls={ isOpenFileMenu ? 'file-menu' : undefined }
+              aria-haspopup="true"
+              aria-expanded={ isOpenFileMenu ? 'true' : undefined }
+              onClick={ handleFieMenuClick }
+            >
+              File
+            </Button>
+            <Menu
+              id="file-menu"
+              anchorEl={ fileEl }
+              open={ isOpenFileMenu }
+              anchorOrigin={ {
+                vertical: 'bottom',
+                horizontal: 'left',
+              } }
+              keepMounted
+              transformOrigin={ {
+                vertical: 'top',
+                horizontal: 'left',
+              } }
+              onClose={ handleFileMenuClose }
+              MenuListProps={ {
+                'aria-labelledby': 'basic-button',
+              } }
+            >
+              <MenuItem onClick={ importFile }>
+                <Typography textAlign="center">Import</Typography>
+              </MenuItem>
+            </Menu>
+            <Button
+              aria-controls={ isOpenFileMenu ? 'export-menu' : undefined }
+              aria-haspopup="true"
+              aria-expanded={ isOpenFileMenu ? 'true' : undefined }
+              onClick={ handleExportMenuClick }
+            >
+              Export
+            </Button>
+            <Menu
+              id="export-menu"
+              anchorEl={ exportEl }
+              open={ isOpenExportMenu }
+              onClose={ handleExportMenuClose }
+              MenuListProps={ {
+                'aria-labelledby': 'basic-button',
+              } }
+            >
+              <MenuItem onClick={ importFile }>Dot</MenuItem>
+              <MenuItem onClick={ importFile }>Graphviz</MenuItem>
+              <MenuItem onClick={ importFile }>Mermaid</MenuItem>
+              <MenuItem onClick={ importFile }>Excalidraw</MenuItem>
+            </Menu>
+            <Button onClick={ () => onlineRender('graphviz') }>Online Render (Graphviz) </Button>
+            <Button onClick={ () => onlineRender('mermaid') }>Online Render (Mermaid) </Button>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <Grid2 container spacing={ 3 }>
+        <Grid2 xs={ 6 }>
           <TextareaAutosize
             aria-label="minimum height"
-            value={text}
-            onChange={handleTextChange}
-            minRows={6}
+            value={ text }
+            onChange={ handleTextChange }
+            minRows={ 6 }
             placeholder="Minimum 3 rows"
           />
         </Grid2>
-        <Grid2 xs={6}>
+        <Grid2 xs={ 6 }>
           <Render text={ text }/>
         </Grid2>
       </Grid2>
