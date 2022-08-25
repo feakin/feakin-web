@@ -33,10 +33,6 @@ feakin --input software-development.drawio --output sd.excalidraw
 
 ## Todos
 
-- [x] Layout Model Design
-  - [x] Shape
-  - [ ] Edge
-  - [x] Geometry
 - [ ] Render
   - [x] Layout Engine (TODO: split to standalone module)
     - [x] [dagre](https://github.com/dagrejs/dagre)
@@ -52,10 +48,11 @@ feakin --input software-development.drawio --output sd.excalidraw
     - [x] [roughjs](https://github.com/rough-stuff/rough): sketchy, hand-drawn-like, style
     - [ ] [perfect freehand](https://github.com/steveruizok/perfect-freehand)
 - [ ] Editor
-  - [ ] text Editor with Monaco Editor
+  - [x] text Editor with Monaco Editor
   - [ ] interactive Editor with Graphical Editor
 - [x] Parser
   - [x] [Jison](https://github.com/zaach/jison) with Mermaid
+  - [ ] Pegjs?
   - [ ] Antlr ???
 - [ ] Collision Detection
   - [ ] [SAT.js](https://github.com/jriecken/sat-js) A simple JavaScript library for performing 2D collision detection
@@ -63,6 +60,7 @@ feakin --input software-development.drawio --output sd.excalidraw
   - [ ] [JSTS](https://github.com/bjornharrtell/jsts) is an ECMAScript library of spatial predicates and functions for processing geometry conforming to the Simple Features Specification for SQL published by the Open Geospatial Consortium.
 - [ ] collaboration
   - [ ] [Rope Architecture Model](https://blog.jetbrains.com/zh-hans/fleet/2022/02/fleet-below-deck-part-ii-breaking-down-the-editor/)
+    - [Rope](https://github.com/component/rope)
   - [ ] [State Management](https://blog.jetbrains.com/zh-hans/fleet/2022/06/fleet-below-deck-part-iii-state-management/)
 - [ ] Publish to CLI
   - [ ] upgrade publish script
@@ -77,8 +75,8 @@ feakin --input software-development.drawio --output sd.excalidraw
   - [ ] Static Pages
     - Feakin Space
   - [x] Export and Import
-    - [ ] MxGraph
-    - [ ] Excalidraw
+    - [x] MxGraph
+    - [x] Excalidraw
     - [ ] PlantUML
   
 ## Setup
