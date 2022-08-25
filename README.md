@@ -110,4 +110,4 @@ npm install --legacy-peer-deps
 - Flow parser based on [mermaid.js](https://github.com/mermaid-js/)
 - Excalidraw's type based on [excalidraw](https://github.com/excalidraw/excalidraw)
 
-@2022 This code is distributed under the MPL license. See `LICENSE` in this directory.
+@2022 Thoughtworks This code is distributed under the MPL license. See `LICENSE` in this directory.
