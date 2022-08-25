@@ -16,15 +16,17 @@ function initGraphOptions(options: LayoutOptions) {
     ranksep: 50,
     marginx: 8,
     marginy: 8,
-  }).setDefaultEdgeLabel(() => ({}));
+  });
+
+  graph.setDefaultEdgeLabel(() => ({}));
   return graph;
 }
 
 export function dagreReLayout(graph: Graph, options: LayoutOptions = defaultLayoutOptions): Graph {
-  const dagreGraph = initGraphOptions(options);
+  const rootGraph = initGraphOptions(options);
 
   graph.nodes.forEach(node => {
-    dagreGraph.setNode(node.label, {
+    rootGraph.setNode(node.label, {
       ...node,
       width: options.node.width,
       height: options.node.height
@@ -33,13 +35,13 @@ export function dagreReLayout(graph: Graph, options: LayoutOptions = defaultLayo
 
   graph.edges.forEach(edge => {
     if (edge.data) {
-      dagreGraph.setEdge(edge.data?.source, edge.data?.target, {
+      rootGraph.setEdge(edge.data?.source, edge.data?.target, {
         ...edge
       });
     }
   })
 
-  return calculatePosition(dagreGraph);
+  return calculatePosition(rootGraph);
 }
 
 export function dagreLayout(relations: DagreRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
