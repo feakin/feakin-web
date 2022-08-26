@@ -71,6 +71,14 @@ describe('feakinExporter', () => {
   it('layout from graph', () => {
     const graph = {
       nodes: [{
+        id: "cluster0",
+        label: "cluster0",
+        subgraph: true,
+      },{
+        label: "cluster1",
+        id: "cluster1",
+        subgraph: true,
+      }, {
         id: "U2jQUtbIudP6mcK3m-h9A",
         label: "a",
         data: { parentId: "cluster0" }

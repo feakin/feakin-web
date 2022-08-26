@@ -10,6 +10,7 @@ type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph
 export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
+  subgraphNode: Map<(string | number), string> = new Map();
 
   constructor(content: string) {
     super(content);
@@ -55,6 +56,14 @@ export class DotImporter extends Importer {
       }
     });
 
+    this.subgraphNode.forEach((label, id) => {
+      graph.nodes.push({
+        id: id.toString(),
+        label: label,
+        subgraph: true,
+      })
+    });
+
     return layoutFromGraph(graph);
   }
 
@@ -69,17 +78,34 @@ export class DotImporter extends Importer {
           break;
         case "subgraph":
           this.parseChildren(child.children, child, null, child.id);
+          this.maybeFillLabelWhenEmpty(child);
           break;
         case "node_id":
           this.createNodeId(child, parent, children as NodeId[], index, attrs, graphId);
           break;
         case "attr_stmt":
           // todo: add support for attrs
+          if(child.attr_list && parent.type === "subgraph") {
+            const attrs = this.parseAttrs(child.attr_list);
+            if (attrs['label']) {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              this.subgraphNode.set(parent.id!, attrs['label']);
+            }
+          }
           break;
         default:
           console.error("unsupported type" + JSON.stringify(child))
       }
     })
+  }
+
+  private maybeFillLabelWhenEmpty(child: Subgraph) {
+    // attributes will parse before label, so if we have label, we don't want to override it
+    const isAlreadyContainLabel = !this.subgraphNode.has(child.id!);
+    if (isAlreadyContainLabel) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.subgraphNode.set(child.id!, child.id!.toString());
+    }
   }
 
   private createNodeId(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any, graphId?: string | number | undefined) {

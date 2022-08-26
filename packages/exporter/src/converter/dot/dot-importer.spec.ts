@@ -105,4 +105,18 @@ describe('DotImporter', () => {
 
     expect(graph.nodes.length).toBe(1);
   });
+
+  it('subgraph label', () => {
+    const importer = new DotImporter(`digraph G {
+    subgraph cluster_frontend {
+        label="Frontend";
+        React;
+        Bootstrap;
+    }
+}`);
+    const graph: Graph = importer.parse();
+
+    expect(graph.nodes.length).toBe(3);
+    expect(graph.nodes[0].label).toBe("Frontend");
+  });
 });

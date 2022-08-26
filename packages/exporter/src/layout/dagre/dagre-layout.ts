@@ -22,11 +22,9 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
   const rootGraph = initGraphOptions(options);
 
   // create parent graph first;
-  graph.nodes.filter(node => node.data?.parentId).forEach(node => {
-    rootGraph.setNode(node.data!.parentId!, {
-      id: node.data!.parentId,
-      label: 'Group',
-      subgraph: true
+  graph.nodes.filter(node => node.subgraph).forEach(node => {
+    rootGraph.setNode(node.id!, {
+      ...node
     });
   });
 
@@ -100,7 +98,7 @@ export function calculatePosition(graph: graphlib.Graph<any>): Graph {
       nodes.push({
         ...node,
         id: nodeId,
-        label: v,
+        label: node.label,
         x: node.x - node.width / 2,
         y: node.y - node.height / 2,
         height: node.height,
