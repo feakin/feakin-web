@@ -124,6 +124,10 @@ export class DotImporter extends Importer {
 
   // attributes will parse before label, so if we have label, we don't want to override it
   private maybeFillLabelWhenEmpty(child: Subgraph) {
+    if (!child.id) {
+      return;
+    }
+
     const isAlreadyContainLabel = !this.subgraphNode.has(child.id!);
     if (isAlreadyContainLabel) {
       const parentId = this.tryGetSubgraphNodeId();
