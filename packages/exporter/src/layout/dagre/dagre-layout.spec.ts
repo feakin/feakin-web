@@ -1,5 +1,6 @@
-import { dagreLayout, layoutFromGraph } from './dagre-layout';
+import { calculatePosition, dagreLayout, layoutFromGraph } from './dagre-layout';
 import { DagreRelation } from "./dagre-relation";
+import { graphlib } from "dagre";
 
 describe('feakinExporter', () => {
   it('layout', () => {
@@ -29,6 +30,42 @@ describe('feakinExporter', () => {
     expect(layout.nodes[2].width).toBe(100);
     expect(layout.nodes[2].height).toBe(40);
   });
+
+  it('test data', () => {
+    const g = new graphlib.Graph({ compound: true })
+      .setGraph({})
+      .setDefaultEdgeLabel(function () {
+        return {};
+      });
+
+
+    g.setNode('cluster0', { label: 'cluster0' });
+    g.setNode('cluster1', { label: 'cluster1' });
+
+    g.setNode('a', { label: 'A', width: 100, height: 40 });
+    g.setNode('b', { label: 'B', width: 100, height: 40  });
+    g.setNode('c', { label: 'C', width: 100, height: 40  });
+    g.setNode('d', { label: 'D', width: 100, height: 40  });
+    g.setNode('e', { label: 'E', width: 100, height: 40  });
+    g.setNode('f', { label: 'F', width: 100, height: 40  });
+    g.setNode('g', { label: 'G', width: 100, height: 40  });
+
+    g.setParent('a', 'cluster0');
+    g.setParent('b', 'cluster0');
+    g.setParent('c', 'cluster0');
+    g.setParent('d', 'cluster0');
+    g.setParent('e', 'cluster1');
+    g.setParent('f', 'cluster1');
+    g.setParent('g', 'cluster1');
+
+    g.setEdge('a', 'b');
+    g.setEdge('c', 'd');
+    g.setEdge('e', 'f');
+    g.setEdge('e', 'g');
+
+    let graph = calculatePosition(g);
+    expect(graph.nodes.length).toBe(9);
+  })
 
   it('layout from graph', () => {
     const graph = {

@@ -28,18 +28,22 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
   // create parent graph first;
   graph.nodes.filter(node => node.data?.parentId).forEach(node => {
     rootGraph.setNode(node.data!.parentId!, {
+      ...node,
       label: 'Group',
       subgraph: true
     });
   });
 
   graph.nodes.forEach(node => {
+    if (node.subgraph) {
+      return;
+    }
+
     rootGraph.setNode(node.label, {
       ...node,
       width: options.node.width,
       height: options.node.height
     });
-
     if (node.data?.parentId) {
       rootGraph.setParent(node.label, node.data?.parentId);
     }
@@ -85,7 +89,7 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
  * Calculate the position of nodes and edges in the graph.
  * @param graph
  */
-function calculatePosition(graph: graphlib.Graph<any>) {
+export function calculatePosition(graph: graphlib.Graph<any>): Graph {
   dagre.layout(graph);
 
   const labelIdMap: Map<string, string> = new Map();
