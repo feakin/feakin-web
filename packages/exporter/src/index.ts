@@ -1,6 +1,7 @@
 export * from './converter/converter';
 export * from './converter/dot/dot-exporter';
 export * from './converter/dot/dot-importer';
+export * from "./converter/drawio/cell-state";
 export * from './converter/drawio/cell-state-style';
 export * from './converter/drawio/drawio-exporter';
 export * from './converter/drawio/drawio-importer';
@@ -63,4 +64,3 @@ export * from './renderer/canvas-shape-drawing';
 export * from './renderer/helper/data-url';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
-export { parseCellState } from "./converter/drawio/cell-state";

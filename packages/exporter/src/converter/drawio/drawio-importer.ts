@@ -1,9 +1,7 @@
 import { MXCell, Mxfile, MxGraph, MxPoint } from "./mxgraph";
 import { Edge, Graph, Node } from "../../model/graph";
-import { CellStateStyle } from "./cell-state-style";
 import { Importer } from "../importer";
 import DrawioEncode from "./encode/drawio-encode";
-import { parseCellState } from "./cell-state";
 
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];

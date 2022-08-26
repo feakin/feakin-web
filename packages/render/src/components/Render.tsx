@@ -9,12 +9,13 @@ import {
   Transformer,
 } from 'react-konva';
 import Konva from 'konva';
-import FkRect, { FK_RECT_NAME } from '../graph/shapes/FkRect';
-import { Edge, flattenPoints, DotImporter, Graph } from "@feakin/exporter";
+import { FK_RECT_NAME } from '../graph/shapes/FkRect';
+import { Node, Edge, flattenPoints, DotImporter, Graph } from "@feakin/exporter";
 import { ChangeHistory } from "../repository/change-history";
+import NodeRender from "./NodeRender";
 
 function Render(props: { text: string, history: ChangeHistory }) {
-  const [selectedId, selectShape] = React.useState<number | null>(null);
+  const [_selectedId, selectShape] = React.useState<number | null>(null);
   const stageRef = React.useRef<Konva.Stage | null>(null);
   const layerRef = React.useRef<Konva.Layer | null>(null);
   const trRef = React.useRef<Konva.Transformer | null>(null);
@@ -28,7 +29,7 @@ function Render(props: { text: string, history: ChangeHistory }) {
 
   const [lines, setLines] = React.useState([] as any);
   const isDrawing = React.useRef(false);
-  const [nodesArray, setNodes] = React.useState([] as any);
+  const [_nodesArray, setNodes] = React.useState([] as any);
 
   const oldPos = React.useRef(null);
 
@@ -220,33 +221,7 @@ function Render(props: { text: string, history: ChangeHistory }) {
       onTouchStart={ checkDeselect }
     >
       <Layer ref={ layerRef }>
-        { layout.nodes.map((node: any, index: number) => {
-          return (
-            <FkRect
-              node={ node }
-              label={ node.label }
-              key={ 'node-' + node.id }
-              isSelected={ !!selectedId && node.id === selectedId }
-              draggable={ true }
-              onSelect={ (e) => {
-                if (e.current !== undefined) {
-                  let temp = nodesArray;
-                  if (!nodesArray.includes(e.current)) temp.push(e.current);
-                  setNodes(temp);
-                  trRef.current!!.nodes(nodesArray);
-                  trRef.current!!.getLayer()!!.batchDraw();
-                }
-                selectShape(node.id);
-              } }
-              position={ {
-                x: node.x,
-                y: node.y,
-                width: node.width,
-                height: node.height,
-              } }
-            />
-          );
-        }) }
+        { layout.nodes.map((node: Node) => NodeRender(node)) }
         { layout.edges.map((edge: Edge, index: number) => {
           const { points, label } = edge;
           return (
