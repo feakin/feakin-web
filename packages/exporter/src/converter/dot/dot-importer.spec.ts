@@ -119,4 +119,29 @@ describe('DotImporter', () => {
     expect(graph.nodes.length).toBe(3);
     expect(graph.nodes[0].label).toBe("Frontend");
   });
+
+  it('nested subgraph ', () => {
+    const importer = new DotImporter(`digraph G {
+  subgraph cluster_website {
+      label="*Website*";
+
+      subgraph cluster_frontend {
+          label="*Frontend*";
+          Bootstrap;
+      }
+
+      subgraph cluster_backend {
+          label="*Backend*";
+          expressjs;
+      }
+  }
+}`);
+    const graph: Graph = importer.parse();
+
+    expect(graph.nodes.length).toBe(5);
+    const first = graph.nodes[0];
+    expect(first.label).toBe("*Website*");
+    expect(first.width! > 0).toBeTruthy();
+    expect(first.height! > 0).toBeTruthy();
+  });
 });

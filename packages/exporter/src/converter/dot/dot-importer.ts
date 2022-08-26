@@ -10,7 +10,11 @@ type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph
 export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
-  subgraphNode: Map<(string | number), string> = new Map();
+  subgraphNode: Map<(string | number), {
+    label: string;
+    parentId?: string | number | undefined;
+  }> = new Map();
+  private currentSubgraphIds: (string | number | undefined)[] = [];
 
   constructor(content: string) {
     super(content);
@@ -46,20 +50,20 @@ export class DotImporter extends Importer {
 
     graph.edges.forEach((edge) => {
       edge.id = nanoid();
-      if(edge.data?.source && edge.data?.source.length > 0) {
+      if (edge.data?.source && edge.data?.source.length > 0) {
         edge.data.sourceId = idNewIdMap.get(edge.data.source) || 'unknown';
         edge.data.source = labelIdMap.get(edge.data.sourceId) || 'unknown';
       }
-      if(edge.data?.target && edge.data?.target.length > 0) {
+      if (edge.data?.target && edge.data?.target.length > 0) {
         edge.data.targetId = idNewIdMap.get(edge.data.target) || 'unknown';
         edge.data.target = labelIdMap.get(edge.data.targetId) || 'unknown';
       }
     });
 
-    this.subgraphNode.forEach((label, id) => {
+    this.subgraphNode.forEach((extInfo, id) => {
       graph.nodes.push({
+        ...extInfo,
         id: id.toString(),
-        label: label,
         subgraph: true,
       })
     });
@@ -77,19 +81,25 @@ export class DotImporter extends Importer {
           this.createNode(child, graphId);
           break;
         case "subgraph":
+          this.currentSubgraphIds.push(child.id);
           this.parseChildren(child.children, child, null, child.id);
           this.maybeFillLabelWhenEmpty(child);
+          this.currentSubgraphIds.pop();
           break;
         case "node_id":
           this.createNodeId(child, parent, children as NodeId[], index, attrs, graphId);
           break;
         case "attr_stmt":
           // todo: add support for attrs
-          if(child.attr_list && parent.type === "subgraph") {
+          if (child.attr_list && parent.type === "subgraph") {
             const attrs = this.parseAttrs(child.attr_list);
             if (attrs['label']) {
+              const parentId = this.tryGetSubgraphNodeId();
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              this.subgraphNode.set(parent.id!, attrs['label']);
+              this.subgraphNode.set(parent.id!, {
+                ...parentId,
+                label: attrs['label'],
+              });
             }
           }
           break;
@@ -99,19 +109,35 @@ export class DotImporter extends Importer {
     })
   }
 
+  private tryGetSubgraphNodeId() {
+    let parentId: any = {};
+    if (this.currentSubgraphIds.length > 0) {
+      parentId = {
+        data: {
+          parentId: this.currentSubgraphIds[this.currentSubgraphIds.length - 2]
+        }
+      };
+    }
+
+    return parentId;
+  }
+
+  // attributes will parse before label, so if we have label, we don't want to override it
   private maybeFillLabelWhenEmpty(child: Subgraph) {
-    // attributes will parse before label, so if we have label, we don't want to override it
     const isAlreadyContainLabel = !this.subgraphNode.has(child.id!);
     if (isAlreadyContainLabel) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.subgraphNode.set(child.id!, child.id!.toString());
+      const parentId = this.tryGetSubgraphNodeId();
+      this.subgraphNode.set(child.id!,  {
+        ...parentId,
+        label: child.id!.toString(),
+      });
     }
   }
 
   private createNodeId(child: NodeId, parent: DotElement | DotGraph, children: NodeId[], index: number, attrs?: any, graphId?: string | number | undefined) {
     const nodeId = child.id;
 
-    if(graphId) {
+    if (graphId) {
       attrs.parentId = graphId;
     }
 
@@ -161,7 +187,7 @@ export class DotImporter extends Importer {
     const nodeId = child.node_id.id;
     const attrs = this.parseAttrs(child.attr_list);
 
-    if(graphId) {
+    if (graphId) {
       attrs.parentId = graphId;
     }
 

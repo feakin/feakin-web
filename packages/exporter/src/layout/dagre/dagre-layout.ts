@@ -22,10 +22,14 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
   const rootGraph = initGraphOptions(options);
 
   // create parent graph first;
-  graph.nodes.filter(node => node.subgraph).forEach(node => {
-    rootGraph.setNode(node.id!, {
-      ...node
+  graph.nodes.filter(node => node.subgraph).forEach(subgraph => {
+    rootGraph.setNode(subgraph.id!, {
+      ...subgraph
     });
+
+    if (subgraph.data?.parentId) {
+      rootGraph.setParent(subgraph.id, subgraph.data?.parentId);
+    }
   });
 
   graph.nodes.forEach(node => {
