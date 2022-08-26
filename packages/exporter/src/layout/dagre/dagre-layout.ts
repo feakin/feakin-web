@@ -11,11 +11,7 @@ function initGraphOptions(options: LayoutOptions) {
     multigraph: true,
     compound: true,
   }).setGraph({
-    rankdir: options.rankdir,
-    nodesep: 50,
-    ranksep: 50,
-    marginx: 8,
-    marginy: 8,
+    rankdir: options.rankdir
   });
 
   graph.setDefaultEdgeLabel(() => ({}));
@@ -98,15 +94,29 @@ export function calculatePosition(graph: graphlib.Graph<any>): Graph {
     const node: DagreNode<any> = graph.node(v);
     const nodeId = node['id'] ? node['id'] : nanoid();
     labelIdMap.set(v, nodeId);
-    nodes.push({
-      ...node,
-      id: nodeId,
-      x: node.x,
-      y: node.y,
-      label: v,
-      height: node.height,
-      width: node.width
-    });
+
+    if(node.subgraph) {
+      nodes.push({
+        ...node,
+        id: nodeId,
+        label: v,
+        x: node.x - node.width / 2,
+        y: node.y - node.height / 2,
+        height: node.height,
+        width: node.width,
+        subgraph: true
+      });
+    } else {
+      nodes.push({
+        ...node,
+        id: nodeId,
+        x: node.x - node.width / 2,
+        y: node.y - node.height / 2,
+        label: v,
+        height: node.height,
+        width: node.width
+      });
+    }
   });
 
   const edges: Edge[] = [];

@@ -232,8 +232,8 @@ function Render(props: { text: string, history: ChangeHistory }) {
                 selectShape(node.id);
               } }
               position={ {
-                x: node.x - node.width / 2,
-                y: node.y - node.height / 2,
+                x: node.x,
+                y: node.y,
                 width: node.width,
                 height: node.height,
               } }

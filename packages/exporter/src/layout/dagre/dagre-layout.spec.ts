@@ -63,7 +63,8 @@ describe('feakinExporter', () => {
     g.setEdge('e', 'f');
     g.setEdge('e', 'g');
 
-    let graph = calculatePosition(g);
+    const graph = calculatePosition(g);
+    console.log(JSON.stringify(graph, null, 2));
     expect(graph.nodes.length).toBe(9);
   })
 
