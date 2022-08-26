@@ -1,12 +1,12 @@
 {
   "name": "@feakin/render",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": false,
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@feakin/exporter": "^0.2.3",
-    "@feakin/parser": "^0.2.2-alpha.6",
+    "@feakin/exporter": "^0.2.4",
+    "@feakin/parser": "^0.2.4",
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
     "@testing-library/jest-dom": "^5.16.5",

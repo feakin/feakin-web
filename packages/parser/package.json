@@ -1,6 +1,6 @@
 {
   "name": "@feakin/parser",
-  "version": "0.2.2-alpha.6",
+  "version": "0.2.4",
   "description": "",
   "main": "dist/feakin.core.js",
   "module": "dist/feakin.esm.min.mjs",
