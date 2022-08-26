@@ -117,6 +117,13 @@ function Render(props: { text: string, history: ChangeHistory }) {
   };
 
   const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
+    // if(process.env.NODE_ENV === 'development') {
+    //   const state = stageRef.current?.getStage().getPointerPosition();
+    //   if (state != null) {
+    //     const text = `Cursor position is: ${state.x}, ${ state.y }`;
+    //     console.log(text);
+    //   }
+    // }
     // no drawing - skipping
     if (!isDrawing.current) {
       return;

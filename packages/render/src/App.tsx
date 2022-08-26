@@ -94,7 +94,7 @@ const App = () => {
 
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
 
-    if(event.target.files && event.target.files.length > 0) {
+    if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       let ext = getExtension(file.name);
       if (ext) {
@@ -228,7 +228,7 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <Grid2 container spacing={ 3 }>
-        <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={ onChangeFile }/>
+        <input type='file' id='file' ref={ inputFile } style={ { display: 'none' } } onChange={ onChangeFile }/>
         <Grid2 xs={ 6 }>
           <MonacoEditor
             width="100%"
@@ -241,7 +241,7 @@ const App = () => {
           />
         </Grid2>
         <Grid2 xs={ 6 }>
-          <Render text={ text } history={history}/>
+          <Render text={ text } history={ history }/>
         </Grid2>
       </Grid2>
     </div>
