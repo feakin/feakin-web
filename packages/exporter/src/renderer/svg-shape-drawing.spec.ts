@@ -64,7 +64,7 @@ describe('SvgShapeDrawing', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
     drawing.drawTriangle(new TriangleShape(0, 0, 100, 100));
 
-    expect(svg.innerHTML).toBe('<polygon points="0,0 100,50 0,100 0,0" transform="translate(0,0)" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
+    expect(svg.innerHTML).toBe('<polygon points="50,0 100,100 0,100 50,0" transform="translate(0,0)" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="transparent"></polygon>');
   });
 
   it('image', () => {

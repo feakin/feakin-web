@@ -4,6 +4,7 @@ import { js2xml } from "./encode/xml-converter";
 import { Edge, Graph, Node } from "../../model/graph";
 import { Exporter, Transpiler } from "../exporter";
 import { CellState } from "./cell-state";
+import { ShapeType } from "../../model/node/shape";
 
 export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
   idIndex = 0;
@@ -98,7 +99,10 @@ export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
   transpileNode(node: Node): MXCell {
     let props = "";
     if (node.data) {
-      const data = node.data
+      const data: any = node.data
+      if (data.shape) {
+        data.shape = this.shapeMapping(data.shape)
+      }
       props += CellState.toString(data);
     }
     return {
@@ -143,6 +147,15 @@ export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
 
   toXml(file: MxFileRoot): string {
     return js2xml(file)
+  }
+
+  private shapeMapping(shape: ShapeType) {
+    switch (shape) {
+      case ShapeType.Triangle:
+        return "mxgraph.basic.acute_triangle";
+      default:
+        return shape;
+    }
   }
 }
 

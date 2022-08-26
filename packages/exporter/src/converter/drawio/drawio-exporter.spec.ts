@@ -2,6 +2,7 @@ import { DrawioExporter } from "./drawio-exporter";
 import { Graph } from "../../model/graph";
 import { ShapeType } from "../../model/node/shape";
 import { MXCell } from "./mxgraph";
+import * as fs from "fs";
 
 describe('Drawio Exporter', () => {
   const graph = {
@@ -79,8 +80,8 @@ describe('Drawio Exporter', () => {
         data: {
           shape: ShapeType.Triangle
         },
-        width: 100,
-        height: 40,
+        width: 80,
+        height: 60,
         x: 0,
         y: 0
       }],
@@ -89,6 +90,6 @@ describe('Drawio Exporter', () => {
     const wrapper = new DrawioExporter(triangle);
     const cells: MXCell[] = wrapper.intermediate();
 
-    expect(cells[2].attributes?.style).toContain("shape=triangle");
+    expect(cells[2].attributes?.style).toContain("shape=mxgraph.basic.acute_triangle");
   });
 });

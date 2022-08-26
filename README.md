@@ -107,6 +107,12 @@ npm install --legacy-peer-deps
 - [https://bivector.net/lib.html](https://bivector.net/lib.html)
 - [https://github.com/enkimute/ganja.js](https://github.com/enkimute/ganja.js)
 
+## Known Issues
+
+**Triangle in Draw.io**
+
+Triangle in drawio is not rendered correctly. In Draw.io the triangle will replace to `mxgraph.basic.acute_triangle`;
+
 ## License
 
 - Flow parser based on [mermaid.js](https://github.com/mermaid-js/)
