@@ -58,8 +58,8 @@ describe('DotImporter', () => {
     expect(graph.nodes.length).toBe(2);
     expect(graph.nodes[0].label).toBe("0");
 
-    expect(graph.nodes[0].x).toBe(58);
-    expect(graph.nodes[0].y).toBe(28);
+    expect(graph.nodes[0].x).toBe(0);
+    expect(graph.nodes[0].y).toBe(0);
 
     expect(graph.nodes[0].height).toBe(40);
     expect(graph.nodes[0].width).toBe(100);
