@@ -66,4 +66,27 @@ describe('Mermaid Exporter', () => {
 
 `);
   });
+
+  it('skip subgraph', () => {
+    const graph = {
+      nodes: [
+        {
+          id: "GxnAb7-mbH_Hpxf9r25g-1",
+          label: "A",
+          x: 220,
+          y: 180,
+          width: 120,
+          height: 60,
+          subgraph: true
+        }
+      ],
+      edges: [],
+    };
+    const output = new MermaidExporter(graph).export();
+    expect(output).toBe(`graph TD
+
+
+
+`);
+  })
 });

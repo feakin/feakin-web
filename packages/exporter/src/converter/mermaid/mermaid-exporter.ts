@@ -5,10 +5,12 @@ export class MermaidExporter extends SourceCodeExporter{
   override indentSize = 4;
 
   override export(): string {
-    const nodes = this.graph.nodes.map(node => {
-      this.nodeMap.set(node.id, node)
-      return this.insertNode(node);
-    });
+    const nodes = this.graph.nodes
+      .filter(node => !node.subgraph)
+      .map(node => {
+        this.nodeMap.set(node.id, node)
+        return this.insertNode(node);
+      });
 
     const graph = this.graph.edges.map(edge => this.insertEdge(edge))
 
