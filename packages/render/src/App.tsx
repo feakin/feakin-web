@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import Render from "./Render";
+import Render from "./components/Render";
 import {
   AppBar,
   Box,
@@ -15,9 +15,11 @@ import { Converter, OnlineRender } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
 import * as monacoEditor from "monaco-editor";
 import { addDotLang } from "./components/editor/dot-lang";
+import { ChangeHistory } from "./repository/change-history";
 
 const DOT_LANG = "dot";
 const App = () => {
+  const history = new ChangeHistory();
   const inputFile = useRef<HTMLInputElement | null>(null);
   const [text, setText] = React.useState(`digraph {
     A -> B
@@ -91,7 +93,6 @@ const App = () => {
       let ext = getExtension(file.name);
       if (ext) {
         file.text().then(text => {
-          console.log(text);
           setText(Converter.fromContent(text, ext as string).target(DOT_LANG));
         });
       }
@@ -234,7 +235,7 @@ const App = () => {
           />
         </Grid2>
         <Grid2 xs={ 6 }>
-          <Render text={ text }/>
+          <Render text={ text } history={history}/>
         </Grid2>
       </Grid2>
     </div>

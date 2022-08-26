@@ -9,10 +9,11 @@ import {
   Transformer,
 } from 'react-konva';
 import Konva from 'konva';
-import FkRect, { FK_RECT_NAME } from './graph/shapes/FkRect';
+import FkRect, { FK_RECT_NAME } from '../graph/shapes/FkRect';
 import { Edge, flattenPoints, DotImporter, Graph } from "@feakin/exporter";
+import { ChangeHistory } from "../repository/change-history";
 
-function Render(props: { text: string }) {
+function Render(props: { text: string, history: ChangeHistory }) {
   const [selectedId, selectShape] = React.useState<number | null>(null);
   const stageRef = React.useRef<Konva.Stage | null>(null);
   const layerRef = React.useRef<Konva.Layer | null>(null);
@@ -193,6 +194,7 @@ function Render(props: { text: string }) {
      const executor = new DotImporter(props.text);
      let graph = executor.parse();
      setLayout(graph);
+     props.history.save(props.text);
    } catch (e) {
      console.error(e);
    }
