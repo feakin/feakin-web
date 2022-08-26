@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { flattenPoints, TriangleShape } from "@feakin/exporter";
+import { flattenPoints, PolygonShape } from "@feakin/exporter";
 import { Line, Text } from "react-konva";
 
-interface FkTriangleProps {
+interface FkPolygonShapeProps {
   draggable?: boolean;
   node: any,
-  shape: TriangleShape;
+  shape: PolygonShape;
 }
 
-function FkTriangle(props: FkTriangleProps) {
+function FkPolygonShape(props: FkPolygonShapeProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [labelPosition] = useState(props.shape.labelPosition());
   const [position, setPosition] = useState({
@@ -44,4 +44,4 @@ function FkTriangle(props: FkTriangleProps) {
   );
 }
 
-export default FkTriangle;
+export default FkPolygonShape;

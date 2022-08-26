@@ -1,5 +1,5 @@
 import { NodeImpl } from "./node-impl";
-import { ShapeType } from "./node/shape";
+import { ShapeType } from "./node/base/shape";
 
 describe('NodeImpl', () => {
   it('sample', () => {

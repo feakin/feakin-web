@@ -1,4 +1,4 @@
-import { Point } from "../geometry/point";
+import { Point } from "../../geometry/point";
 
 export interface ShapeResource {
   type: ShapeResourceType;
@@ -10,6 +10,9 @@ export enum ShapeResourceType {
   Image = "image",
 }
 
+/**
+ * Graphviz shape type: https://graphviz.org/doc/info/shapes.html
+ */
 export enum ShapeType {
   None,
   Circle = "circle",

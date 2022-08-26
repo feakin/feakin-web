@@ -1,4 +1,4 @@
-import { Shape, ShapeType } from "./shape";
+import { Shape, ShapeType } from "./base/shape";
 
 export class TextShape extends Shape {
   private dx = 0;

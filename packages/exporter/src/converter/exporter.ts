@@ -1,5 +1,5 @@
 import { Node, Edge, Graph, ElementProperty } from "../model/graph";
-import { ShapeType } from "../model/node/shape";
+import { ShapeType } from "../model/node/base/shape";
 
 export class Exporter<K> {
   data: K | undefined;
@@ -24,6 +24,13 @@ export class Exporter<K> {
    */
   intermediate(): K {
     return {} as K;
+  }
+
+  /**
+   * In different diagram types, the export and intermediate type are different. Like in drawio, the intermediate type
+   */
+  shapeMapping(input: any): string {
+    return "rectangle";
   }
 
   toString(): string {

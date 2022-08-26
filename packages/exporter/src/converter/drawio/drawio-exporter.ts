@@ -4,7 +4,7 @@ import { js2xml } from "./encode/xml-converter";
 import { Edge, Graph, Node } from "../../model/graph";
 import { Exporter, Transpiler } from "../exporter";
 import { CellState } from "./cell-state";
-import { ShapeType } from "../../model/node/shape";
+import { ShapeType } from "../../model/node/base/shape";
 
 export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
   idIndex = 0;
@@ -149,7 +149,7 @@ export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
     return js2xml(file)
   }
 
-  private shapeMapping(shape: ShapeType) {
+  override shapeMapping(shape: ShapeType): any {
     switch (shape) {
       case ShapeType.Triangle:
         return "mxgraph.basic.acute_triangle";

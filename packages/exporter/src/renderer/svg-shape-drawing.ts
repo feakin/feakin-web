@@ -2,7 +2,7 @@ import { Point } from "../model/geometry/point";
 import { ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
 import { CircleShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
-import { DiamondShape } from "../model/node/diamond-shape";
+import { DiamondShape } from "../model/node/base/diamond-shape";
 import { AbstractSvgRender } from "./abstract-svg-render";
 
 export class SvgShapeDrawing implements ShapeDrawing {

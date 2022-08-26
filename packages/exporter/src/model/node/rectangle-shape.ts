@@ -1,15 +1,11 @@
-import { Shape, ShapeType } from "./shape";
+import { ShapeType } from "./base/shape";
+import { PolygonShape } from "./polygon-shape";
 
-export class RectangleShape extends Shape {
-  width: number;
-  height: number;
-
+export class RectangleShape extends PolygonShape {
   override type = ShapeType.Rectangle;
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
-    super(x, y);
-    this.width = width;
-    this.height = height;
+    super(x, y, width, height);
   }
 
   /**

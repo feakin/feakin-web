@@ -1,17 +1,20 @@
-import { Shape, ShapeType } from "./shape";
-import { Point } from "../geometry/point";
+import { Shape, ShapeType } from "./base/shape";
 
 export class PolygonShape extends Shape {
-  private readonly points_: Point[];
-
   override type = ShapeType.Polygon;
+  width: number;
+  height: number;
 
-  constructor(x = 0, y = 0, points: Point[]) {
+  constructor(x = 0, y = 0, width = 0, height = 0) {
     super(x, y);
-    this.points_ = points
+    this.width = width;
+    this.height = height;
   }
 
-  override points(): Point[] {
-    return this.points_;
+  override labelPosition() {
+    return {
+      x: this.x + this.width / 2,
+      y: this.y + this.height / 2 - this.fontSize / 2
+    };
   }
 }

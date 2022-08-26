@@ -1,7 +1,7 @@
 import React from 'react';
-import { Node, ElementProperty, RectangleShape, TriangleShape } from "@feakin/exporter";
+import { Node, ElementProperty, RectangleShape, PolygonShape, TriangleShape, DiamondShape } from "@feakin/exporter";
 import FkRect from "./shapes/FkRect";
-import FkTriangle from "./shapes/FkTriangle";
+import FkPolygonShape from "./shapes/FkPolygonShape";
 
 function NodeRender(node: Node, prop?: ElementProperty) {
   function Rectangle(node: Node) {
@@ -25,13 +25,11 @@ function NodeRender(node: Node, prop?: ElementProperty) {
     />);
   }
 
-  function Triangle(node: Node) {
-    const triangle = new TriangleShape(node.x, node.y, node.width, node.height);
-
-    return (<FkTriangle
+  function Polygon(node: Node, shape: PolygonShape) {
+    return (<FkPolygonShape
       node={ node }
       key={ 'node-' + node.id }
-      shape={ triangle }
+      shape={ shape }
       // onSelect={ (e) => {
       //   if (e.current !== undefined) {
       //     let temp = nodesArray;
@@ -49,8 +47,12 @@ function NodeRender(node: Node, prop?: ElementProperty) {
     switch (node.data?.shape) {
       case 'rectangle':
         return Rectangle(node);
+      case 'diamond':
+        const diamondShape = new DiamondShape(node.x, node.y, node.width, node.height);
+        return Polygon(node, diamondShape);
       case 'triangle':
-        return Triangle(node);
+        const triangle = new TriangleShape(node.x, node.y, node.width, node.height);
+        return Polygon(node, triangle);
       default:
         return Rectangle(node);
     }

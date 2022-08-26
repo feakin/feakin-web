@@ -25,6 +25,7 @@ const App = () => {
   compound=true;
   subgraph cluster0 {
     a [shape="triangle"];
+    b [shape="diamond"];
     a -> b;
     c -> d;
   }

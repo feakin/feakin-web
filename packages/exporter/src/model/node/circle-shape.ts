@@ -1,4 +1,4 @@
-import { Shape, ShapeType } from "./shape";
+import { Shape, ShapeType } from "./base/shape";
 
 export class CircleShape extends Shape {
   override type = ShapeType.Circle;

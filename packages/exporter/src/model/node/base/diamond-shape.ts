@@ -1,19 +1,15 @@
-import { Shape, ShapeType } from "./shape";
-import { Point } from "../geometry/point";
+import { ShapeType } from "./shape";
+import { Point } from "../../geometry/point";
+import { PolygonShape } from "../polygon-shape";
 
 /**
  * Diamond aka Rhombus.
  */
-export class DiamondShape extends Shape {
-  width: number;
-  height: number;
-
+export class DiamondShape extends PolygonShape {
   override type = ShapeType.Diamond;
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
-    super(x, y);
-    this.width = width;
-    this.height = height;
+    super(x, y, width, height);
   }
 
   override points(): Point[] {

@@ -1,6 +1,6 @@
 import { DrawioExporter } from "./drawio-exporter";
 import { Graph } from "../../model/graph";
-import { ShapeType } from "../../model/node/shape";
+import { ShapeType } from "../../model/node/base/shape";
 import { MXCell } from "./mxgraph";
 import * as fs from "fs";
 
