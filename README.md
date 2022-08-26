@@ -8,9 +8,8 @@
 
 Chinese introduction: Feakin 是一个图形资产管理工具，基于[图表即代码](https://www.phodal.com/blog/diagram-as-code/) 的思想体系，支持导入 Mermaid, PlantUML, Excalidraw, Dot 等图形资产格式。
 
-适用场景：架构图管理、知识管理等。
-
-不适用场景：图表
+- 适用场景：架构图管理、知识管理、流程图等。
+- 不适用场景：图表
 
 特性：
 
@@ -23,11 +22,7 @@ Chinese introduction: Feakin 是一个图形资产管理工具，基于[图表�
 
 ## Demos
 
-Try Online demo: https://online.feakin.com/
-
-Or
-
-Install `@feakin/cli` for diagrams converter: 
+Try Online demo: [https://online.feakin.com/](https://online.feakin.com/) Or install `@feakin/cli` for diagrams converter: 
 
 ```bash
 npm install -g @feakin/cli
@@ -42,47 +37,34 @@ feakin --input software-development.drawio --output sd.excalidraw
     - [x] [dagre](https://github.com/dagrejs/dagre)
     - [ ] [ELK](https://github.com/kieler/elkjs)
     - [ ] [cola.js](https://ialab.it.monash.edu/webcola/)
-  - [ ] SVG
   - [x] Canvas
-    - [ ] [D3.js](https://github.com/d3/d3)
     - [x] [Konva.js](https://github.com/konvajs/konva), react: [react-konva](https://github.com/konvajs/react-konva)
-    - [ ] [PixiJS](https://github.com/pixijs/pixijs)
-    - [ ] [Fabric.js](https://github.com/fabricjs/fabric.js) SVG-to-Canvas (& canvas-to-SVG) Parser
-  - [ ] Style
+  - [x] Style
     - [x] [roughjs](https://github.com/rough-stuff/rough): sketchy, hand-drawn-like, style
-    - [ ] [perfect freehand](https://github.com/steveruizok/perfect-freehand)
 - [ ] Editor
   - [x] text Editor with Monaco Editor
   - [ ] interactive Editor with Graphical Editor
 - [x] Parser
   - [x] [Jison](https://github.com/zaach/jison) with Mermaid
-  - [ ] Pegjs?
-  - [ ] Antlr ???
-- [ ] Collision Detection
-  - [ ] [SAT.js](https://github.com/jriecken/sat-js) A simple JavaScript library for performing 2D collision detection
-  - [ ] [RBush](https://github.com/mourner/rbush is a high-performance JavaScript library for 2D spatial indexing of points and rectangles.
-  - [ ] [JSTS](https://github.com/bjornharrtell/jsts) is an ECMAScript library of spatial predicates and functions for processing geometry conforming to the Simple Features Specification for SQL published by the Open Geospatial Consortium.
 - [ ] collaboration
   - [ ] [Rope Architecture Model](https://blog.jetbrains.com/zh-hans/fleet/2022/02/fleet-below-deck-part-ii-breaking-down-the-editor/)
     - [Rope](https://github.com/component/rope)
   - [ ] [State Management](https://blog.jetbrains.com/zh-hans/fleet/2022/06/fleet-below-deck-part-iii-state-management/)
-- [ ] Publish to CLI
-  - [ ] upgrade publish script
+- [x] CLI
+  - [x] upgrade publish script
 - [ ] Architecture Features
-  - [ ] Playground
+  - [x] Playground: [https://online.feakin.com/](https://online.feakin.com/)
   - [ ] [ComponentLess](https://componentless.com/) architecture
     - [ ] WebComponent, like `<feakin data="" layout="" import="" import-type=""></feakin>`
   - [ ] Templates
     - [ ] DDD ?
     - [ ] Layered Architecture
     - [ ] Test Pyramid
-  - [ ] Static Pages
-    - Feakin Space
   - [x] Export and Import
     - [x] MxGraph
     - [x] Excalidraw
     - [ ] PlantUML
-- [ ] Library
+- [ ] Libraries
   - [ ] compatible Excalidraw libraries : https://libraries.excalidraw.com/?theme=light&sort=default
 
 ## Setup
@@ -93,21 +75,9 @@ feakin --input software-development.drawio --output sd.excalidraw
 npm install --legacy-peer-deps
 ```
 
+Note: nx.js use Craco, which will need `--legacy-peer-deps`.
+
 2. run by tests
-
-## Development
-
-### Online demo
-
-- [https://excalidraw.com/](https://excalidraw.com/)
-- [Graphviz Online](https://dreampuf.github.io/GraphvizOnline/)
-- [Mermaid Online](https://mermaid.live/edit)
-- [https://app.diagrams.net/](https://app.diagrams.net/)
-
-### Refs
-
-- [https://bivector.net/lib.html](https://bivector.net/lib.html)
-- [https://github.com/enkimute/ganja.js](https://github.com/enkimute/ganja.js)
 
 ## Known Issues
 
