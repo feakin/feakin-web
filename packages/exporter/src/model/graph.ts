@@ -44,6 +44,7 @@ export interface Node extends ElementProperty {
   label: string;
   x?: number;
   y?: number;
+  subgraph?: boolean;
   data?: NodeData;
 }
 

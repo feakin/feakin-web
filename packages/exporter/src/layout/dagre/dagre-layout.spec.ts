@@ -104,5 +104,6 @@ describe('feakinExporter', () => {
     expect(layout.nodes.length).toBe(9);
     const subgraph = layout.nodes.filter(node => node.label === 'cluster0');
     expect(subgraph.length).toBe(1);
+    expect(subgraph[0].subgraph).toBeTruthy();
   });
 });
