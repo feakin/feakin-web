@@ -30,16 +30,6 @@ function NodeRender(node: Node, prop?: ElementProperty) {
       node={ node }
       key={ 'node-' + node.id }
       shape={ shape }
-      // onSelect={ (e) => {
-      //   if (e.current !== undefined) {
-      //     let temp = nodesArray;
-      //     if (!nodesArray.includes(e.current)) temp.push(e.current);
-      //     setNodes(temp);
-      //     trRef.current!!.nodes(nodesArray);
-      //     trRef.current!!.getLayer()!!.batchDraw();
-      //   }
-      //   selectShape(node.id);
-      // } }
     />);
   }
 
