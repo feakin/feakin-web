@@ -13,6 +13,7 @@ import { FK_RECT_NAME } from './shapes/FkRect';
 import { Node, Edge, flattenPoints, DotImporter, Graph } from "@feakin/exporter";
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
+import EdgeShape from "./EdgeShape";
 
 function Render(props: { text: string, history: ChangeHistory }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -224,15 +225,7 @@ function Render(props: { text: string, history: ChangeHistory }) {
     >
       <Layer ref={ layerRef }>
         { layout.nodes.map((node: Node) => NodeRender(node)) }
-        { layout.edges.map((edge: Edge, index: number) => {
-          const { points, label } = edge;
-          return (
-            <Group key={ 'edge-' + index }>
-              <Arrow points={ flattenPoints(edge.points) } fill="black" stroke="black"/>
-              <Text text={ label } x={ points[0].x } y={ points[0].y }/>
-            </Group>
-          );
-        }) }
+        { layout.edges.map((edge: Edge) => EdgeShape(edge)) }
 
         <Transformer
           ref={ trRef }

@@ -165,8 +165,8 @@ const App = () => {
       open={ isOpenTemplateMenu }
       onClose={ handleTemplateMenuClose }
     >
-      { frontendBackendTemplates.map((template: FkTemplate) =>
-        <MenuItem onClick={ () => setText(template.template) }>
+      { frontendBackendTemplates.map((template: FkTemplate, index: number) =>
+        <MenuItem key={ `key-` + index } onClick={ () => setText(template.template) }>
           <Typography textAlign="center">{ template.label }</Typography>
         </MenuItem>
       ) }
