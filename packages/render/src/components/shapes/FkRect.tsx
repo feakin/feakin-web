@@ -1,14 +1,13 @@
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { Text, Rect, Transformer } from 'react-konva';
 import Konva from "konva";
-import { RectangleShape } from "@feakin/exporter";
+import { Node, RectangleShape } from "@feakin/exporter";
 
 interface FkRectConfig {
 }
 
 interface FkRectProps {
-  node: any,
-  label?: string;
+  node: Node,
   draggable?: boolean;
   isSelected?: boolean;
   onSelect?: (ref: MutableRefObject<Konva.Rect | null>) => void;
@@ -89,7 +88,7 @@ function FkRect(props: FkRectProps) {
           });
         } }
       />
-      { props.label && <Text text={ props.label } x={ labelPosition.x } y={ labelPosition.y }/> }
+      { props.node.label && <Text text={ props.node.label } x={ labelPosition.x } y={ labelPosition.y }/> }
       { props.isSelected && (
         <Transformer
           ref={ trRef }

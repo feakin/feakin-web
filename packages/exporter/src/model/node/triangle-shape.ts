@@ -2,9 +2,9 @@ import { Shape, ShapeType } from "./shape";
 import { Point } from "../geometry/point";
 
 export class TriangleShape extends Shape {
-  override type = ShapeType.Circle;
-  private readonly width: number;
-  private readonly height: number;
+  override type = ShapeType.Triangle;
+  width: number;
+  height: number;
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
     super(x, y);
@@ -23,5 +23,12 @@ export class TriangleShape extends Shape {
     ]
 
     return [...points, points[0]];
+  }
+
+  override labelPosition() {
+    const width = this.width;
+    const height = this.height;
+
+    return { x: width / 2, y: height / 2 };
   }
 }

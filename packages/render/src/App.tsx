@@ -24,6 +24,7 @@ const App = () => {
   const [text, setText] = React.useState(`digraph G {
   compound=true;
   subgraph cluster0 {
+    a [shape="triangle"];
     a -> b;
     c -> d;
   }
@@ -31,8 +32,7 @@ const App = () => {
     e -> g;
     e -> f;
   }
-}
-`);
+}`);
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
   const [exportEl, setExportEl] = React.useState<null | HTMLElement>(null);
   const [templateEl, setTemplateEl] = React.useState<null | HTMLElement>(null);
