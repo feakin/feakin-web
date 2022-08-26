@@ -144,4 +144,20 @@ describe('DotImporter', () => {
     expect(first.width! > 0).toBeTruthy();
     expect(first.height! > 0).toBeTruthy();
   });
+
+  xit('one to many', () => {
+    const importer = new DotImporter(`graph happiness {
+  Happiness -- {
+    Peace
+    Love
+    Soul
+    Mind
+    Life
+    Health
+  }
+}`);
+
+    const graph: Graph = importer.parse();
+    console.log(graph);
+  });
 });
