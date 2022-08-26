@@ -5,16 +5,11 @@ import PouchDB from "pouchdb";
 export class ChangeHistory {
   db = new PouchDB('dbname');
 
-  constructor() {
-
-  }
-
   id() {
     return nanoid();
   }
 
   last() {
-
   }
 
   limitHistorySize(size: number = 50) {
@@ -22,8 +17,6 @@ export class ChangeHistory {
       if (response.total_rows <= size) {
         return;
       }
-
-      console.log(response);
 
       this.db.allDocs({
         limit: response.total_rows - size
@@ -41,7 +34,12 @@ export class ChangeHistory {
     });
   }
 
+  // todo: keep history size
   save(code: string) {
+
+  }
+
+  saveForHistory(code: string) {
     this.limitHistorySize();
     this.db.put({
       _id: this.id(),

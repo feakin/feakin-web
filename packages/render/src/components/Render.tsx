@@ -198,7 +198,7 @@ function Render(props: { text: string, history: ChangeHistory }) {
    } catch (e) {
      console.error(e);
    }
- }, [props.text]);
+ }, [props.history, props.text]);
 
   return (
     <Stage
