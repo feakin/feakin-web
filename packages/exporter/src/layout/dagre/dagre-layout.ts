@@ -28,7 +28,7 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
   // create parent graph first;
   graph.nodes.filter(node => node.data?.parentId).forEach(node => {
     rootGraph.setNode(node.data!.parentId!, {
-      ...node,
+      id: node.data!.parentId,
       label: 'Group',
       subgraph: true
     });
