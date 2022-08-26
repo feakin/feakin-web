@@ -14,7 +14,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { Converter, OnlineRender } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
 import * as monacoEditor from "monaco-editor";
-import { addDotLang } from "./editor/dot-lang";
+import { addDotLang } from "./components/editor/dot-lang";
 
 const DOT_LANG = "dot";
 const App = () => {

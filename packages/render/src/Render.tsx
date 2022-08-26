@@ -9,7 +9,7 @@ import {
   Transformer,
 } from 'react-konva';
 import Konva from 'konva';
-import FkRect, { FK_RECT_NAME } from './shapes/FkRect';
+import FkRect, { FK_RECT_NAME } from './graph/shapes/FkRect';
 import { Edge, flattenPoints, DotImporter, Graph } from "@feakin/exporter";
 
 function Render(props: { text: string }) {
