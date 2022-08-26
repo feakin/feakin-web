@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TriangleShape } from "@feakin/exporter";
-import { RegularPolygon, Text } from "react-konva";
+import { flattenPoints, TriangleShape } from "@feakin/exporter";
+import { Line, Text } from "react-konva";
 
 interface FkTriangleProps {
   draggable?: boolean;
@@ -16,15 +16,13 @@ function FkTriangle(props: FkTriangleProps) {
     y: props.shape.y
   });
 
+  // draw the triangle as a line, it is easier to keep polygon shape in same rules.
   return (
     <React.Fragment>
-      <RegularPolygon
-        x={ props.shape.x + props.shape.width / 2}
+      <Line
+        x={ props.shape.x }
         y={ props.shape.y }
-        width={ props.shape.width }
-        height={ props.shape.height }
-        radius={ props.shape.width / 2 }
-        sides={ 3 }
+        points={ flattenPoints(props.shape.points()) }
         draggable={ props.draggable || true }
         fill={ isDragging ? 'green' : '' }
         stroke={ isDragging ? 'green' : 'black' }
