@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
 import {
-  Arrow,
-  Group,
   Layer,
   Rect,
   Stage,
-  Text,
   Transformer,
 } from 'react-konva';
 import Konva from 'konva';
 import { FK_RECT_NAME } from './shapes/FkRect';
-import { Node, Edge, flattenPoints, DotImporter, Graph } from "@feakin/exporter";
+import { Node, Edge, DotImporter, Graph } from "@feakin/exporter";
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
