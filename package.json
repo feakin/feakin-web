@@ -3,7 +3,7 @@
   "version": "0.1.4",
   "license": "MIT",
   "scripts": {
-    "publish": "npx lerna publish --no-private --no-push",
+    "publish": "npx lerna publish --no-private",
     "prepare": "nx run-many --target=build --all",
     "build:all": "nx run-many --target=build --all",
     "build:since": "nx affected --target=build",
