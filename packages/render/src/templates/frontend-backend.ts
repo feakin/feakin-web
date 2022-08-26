@@ -1,6 +1,11 @@
 import { FkTemplate } from "./fk-template";
 
-export const frontendBackendTemplates: FkTemplate[] = [
+export const templates: FkTemplate[] = [
+  {
+    name: 'concept-map',
+    label: 'Concept Map',
+    template: ``
+  },
   {
     name: 'frontend-backend',
     label: 'Frontend-Backend',

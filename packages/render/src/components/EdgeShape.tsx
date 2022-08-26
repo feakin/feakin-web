@@ -1,8 +1,6 @@
 import React from 'react';
 import { Edge, flattenPoints } from "@feakin/exporter";
-import { Arrow, Line, Group, Text } from "react-konva";
-
-const START_END_POINTS_LEN = 6;
+import { Arrow, Group, Text } from "react-konva";
 
 function EdgeShape(edge: Edge) {
   const { points, label } = edge
@@ -10,11 +8,7 @@ function EdgeShape(edge: Edge) {
   let flatPoints = flattenPoints(edge.points);
 
   function getLineShape() {
-    if (flatPoints.length > START_END_POINTS_LEN) {
-      return <Line points={ flatPoints } fill="black" stroke="black" bezier/>
-    } else {
-      return <Arrow points={ flatPoints } fill="black" stroke="black"/>
-    }
+    return <Arrow points={ flatPoints } fill="black" stroke="black" tension={ 0.5 }/>
   }
 
   return <Group key={ edge.id }>
