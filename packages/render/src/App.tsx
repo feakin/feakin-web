@@ -1,14 +1,6 @@
 import React, { useRef } from 'react';
 import Render from "./components/Render";
-import {
-  AppBar,
-  Box,
-  Button, IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography
-} from "@mui/material";
+import { AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Converter, OnlineRender } from "@feakin/exporter";
@@ -16,8 +8,10 @@ import MonacoEditor from "react-monaco-editor";
 import * as monacoEditor from "monaco-editor";
 import { addDotLang } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
+import { fileExport } from "./actions/file-export";
 
 const DOT_LANG = "dot";
+
 const App = () => {
   const history = new ChangeHistory();
   const inputFile = useRef<HTMLInputElement | null>(null);
@@ -67,16 +61,7 @@ const App = () => {
   };
 
   const exportFile = (outputType: string) => {
-    let output = Converter.fromContent(text, DOT_LANG).target(outputType);
-
-    const element = document.createElement("a");
-    const file = new Blob([output], {
-      type: "text/plain"
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = "feakin-export." + outputType;
-    document.body.appendChild(element);
-    element.click();
+    fileExport(text, outputType);
 
     setExportEl(null);
   }

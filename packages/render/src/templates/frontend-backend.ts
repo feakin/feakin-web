@@ -1,5 +1,7 @@
-export const frontendBackendTemplate = {
+export const frontendBackendTemplates = {
   aws: `digraph {
+  compound=true;
+  node [ fontname="Handlee" ];
   subgraph cluster_website {
       label="*Website*";
 
@@ -24,8 +26,7 @@ export const frontendBackendTemplate = {
 
   React -> expressjs;
   expressjs -> "aws-sdk" [constraint=false];
-  "aws-sdk" -> S3;
-  "aws-sdk" -> DynamoDb;
+  "aws-sdk" -> S3 [lhead=cluster_aws];
 }
 `
 }
