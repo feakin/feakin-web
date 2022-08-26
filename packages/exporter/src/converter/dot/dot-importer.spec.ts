@@ -94,6 +94,6 @@ describe('DotImporter', () => {
     const graph: Graph = importer.parse();
 
     expect(graph.nodes.length).toBe(9);
-    expect(graph.nodes[0].data!.parentId).toBe("cluster0");
+    expect(graph.nodes[2].data!.parentId).toBe("cluster0");
   });
 });

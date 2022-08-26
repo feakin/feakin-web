@@ -31,74 +31,7 @@ describe('feakinExporter', () => {
   });
 
   it('layout from graph', () => {
-    const graph = {
-      "nodes": [{
-        "id": "Mm6EZ6yD7r4dToxNLw07_",
-        "label": "a",
-        "data": { "parentId": "cluster0" }
-      }, {
-        "id": "bj2fq3ccEaSrfV5cpPUHg",
-        "label": "b",
-        "data": { "parentId": "cluster0" }
-      }, {
-        "id": "aYSv2ZqTzxU4aGJUt0UP2",
-        "label": "c",
-        "data": { "parentId": "cluster0" }
-      }, {
-        "id": "L9UFo0XLYzCluyYWMGS3p",
-        "label": "d",
-        "data": { "parentId": "cluster0" }
-      }, {
-        "id": "iuPvNK9v0ZkbZrDyc2tMm",
-        "label": "e",
-        "data": { "parentId": "cluster1" }
-      }, {
-        "id": "t86auNKTLOL8kg3frnKgJ",
-        "label": "g",
-        "data": { "parentId": "cluster1" }
-      }, { "id": "91NMBiip9eVTM2kIIRskz", "label": "f", "data": { "parentId": "cluster1" } }],
-      "edges": [{
-        "id": "fnU0eLXcMPxdBVoeupFHr",
-        "points": [],
-        "data": {
-          "parentId": "cluster0",
-          "source": "a",
-          "target": "b",
-          "sourceId": "Mm6EZ6yD7r4dToxNLw07_",
-          "targetId": "bj2fq3ccEaSrfV5cpPUHg"
-        }
-      }, {
-        "id": "oFreFUDioWNi72ZB-Pd_Z",
-        "points": [],
-        "data": {
-          "parentId": "cluster0",
-          "source": "c",
-          "target": "d",
-          "sourceId": "aYSv2ZqTzxU4aGJUt0UP2",
-          "targetId": "L9UFo0XLYzCluyYWMGS3p"
-        }
-      }, {
-        "id": "DEGa93Uimai2DX1-7rk10",
-        "points": [],
-        "data": {
-          "parentId": "cluster1",
-          "source": "e",
-          "target": "g",
-          "sourceId": "iuPvNK9v0ZkbZrDyc2tMm",
-          "targetId": "t86auNKTLOL8kg3frnKgJ"
-        }
-      }, {
-        "id": "D0v4kViC-eRR2D4E7AoSf",
-        "points": [],
-        "data": {
-          "parentId": "cluster1",
-          "source": "e",
-          "target": "f",
-          "sourceId": "iuPvNK9v0ZkbZrDyc2tMm",
-          "targetId": "91NMBiip9eVTM2kIIRskz"
-        }
-      }]
-    }
+    const graph = {"nodes":[{"label":"cluster0","subgraph":true,"x":168,"y":98,"width":320,"height":180,"id":"yNr6kZdqV_1OoeIio2AA7"},{"label":"cluster1","subgraph":true,"x":508,"y":98,"width":320,"height":180,"id":"hZFCufal18PpLumkjBBPF"},{"id":"kEuPirVKzfs0aVqpYFQRf","label":"a","data":{"parentId":"cluster0"},"width":100,"height":40,"x":93,"y":53},{"id":"HN1cw66Ksed4YQ_hRd_Tq","label":"b","data":{"parentId":"cluster0"},"width":100,"height":40,"x":93,"y":143},{"id":"9ZytZgN3_BtFXe8tIDVbq","label":"c","data":{"parentId":"cluster0"},"width":100,"height":40,"x":243,"y":53},{"id":"uy-JwCFfiTDKlR6u7QGtV","label":"d","data":{"parentId":"cluster0"},"width":100,"height":40,"x":243,"y":143},{"id":"iMznUPHsRqTQo9kpjUSsz","label":"e","data":{"parentId":"cluster1"},"width":100,"height":40,"x":508,"y":53},{"id":"n4RZlnMDf_8bH3mGkBbla","label":"g","data":{"parentId":"cluster1"},"width":100,"height":40,"x":433,"y":143},{"id":"NpbEQN50hzVOBFyOxeSec","label":"f","data":{"parentId":"cluster1"},"width":100,"height":40,"x":583,"y":143}],"edges":[{"id":"E9u8LaF5E2BwicvV2UPje","points":[{"x":93,"y":73},{"x":93,"y":98},{"x":93,"y":123}],"data":{"parentId":"cluster0","source":"kEuPirVKzfs0aVqpYFQRf","target":"HN1cw66Ksed4YQ_hRd_Tq","sourceId":"kEuPirVKzfs0aVqpYFQRf","targetId":"HN1cw66Ksed4YQ_hRd_Tq"}},{"id":"_l4FoK0f2iWT1uJcG8jru","points":[{"x":243,"y":73},{"x":243,"y":98},{"x":243,"y":123}],"data":{"parentId":"cluster0","source":"9ZytZgN3_BtFXe8tIDVbq","target":"uy-JwCFfiTDKlR6u7QGtV","sourceId":"9ZytZgN3_BtFXe8tIDVbq","targetId":"uy-JwCFfiTDKlR6u7QGtV"}},{"id":"VW8zly0s-hJefA4I5Ln-z","points":[{"x":474.6666666666667,"y":73},{"x":433,"y":98},{"x":433,"y":123}],"data":{"parentId":"cluster1","source":"iMznUPHsRqTQo9kpjUSsz","target":"n4RZlnMDf_8bH3mGkBbla","sourceId":"iMznUPHsRqTQo9kpjUSsz","targetId":"n4RZlnMDf_8bH3mGkBbla"}},{"id":"GdhjLTb-AvujC0AWR7Q-6","points":[{"x":541.3333333333334,"y":73},{"x":583,"y":98},{"x":583,"y":123}],"data":{"parentId":"cluster1","source":"iMznUPHsRqTQo9kpjUSsz","target":"NpbEQN50hzVOBFyOxeSec","sourceId":"iMznUPHsRqTQo9kpjUSsz","targetId":"NpbEQN50hzVOBFyOxeSec"}}]}
     const layout = layoutFromGraph(graph);
 
     expect(layout.nodes.length).toBe(9);

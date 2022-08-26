@@ -25,6 +25,14 @@ function initGraphOptions(options: LayoutOptions) {
 export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLayoutOptions): Graph {
   const rootGraph = initGraphOptions(options);
 
+  // create parent graph first;
+  graph.nodes.filter(node => node.data?.parentId).forEach(node => {
+    rootGraph.setNode(node.data!.parentId!, {
+      label: 'Group',
+      subgraph: true
+    });
+  });
+
   graph.nodes.forEach(node => {
     rootGraph.setNode(node.label, {
       ...node,
@@ -33,10 +41,6 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
     });
 
     if (node.data?.parentId) {
-      rootGraph.setNode(node.data?.parentId, {
-        label: 'Group',
-        subgraph: true
-      });
       rootGraph.setParent(node.label, node.data?.parentId);
     }
   })

@@ -21,10 +21,16 @@ const DOT_LANG = "dot";
 const App = () => {
   const history = new ChangeHistory();
   const inputFile = useRef<HTMLInputElement | null>(null);
-  const [text, setText] = React.useState(`digraph {
-    A -> B
-    A -> C
-    B -> C
+  const [text, setText] = React.useState(`digraph G {
+  compound=true;
+  subgraph cluster0 {
+    a -> b;
+    c -> d;
+  }
+  subgraph cluster1 {
+    e -> g;
+    e -> f;
+  }
 }
 `);
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
