@@ -82,7 +82,9 @@ feakin --input software-development.drawio --output sd.excalidraw
     - [x] MxGraph
     - [x] Excalidraw
     - [ ] PlantUML
-  
+- [ ] Library
+  - [ ] compatible Excalidraw libraries : https://libraries.excalidraw.com/?theme=light&sort=default
+
 ## Setup
 
 1. install
