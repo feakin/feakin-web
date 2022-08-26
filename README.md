@@ -24,7 +24,7 @@ Chinese introduction: Feakin 是一个图形资产管理工具，基于[图表�
 
 Try Online demo: [https://online.feakin.com/](https://online.feakin.com/) Or install `@feakin/cli` for diagrams converter: 
 
-```bash
+```shell
 npm install -g @feakin/cli
 
 feakin --input software-development.drawio --output sd.excalidraw
@@ -69,15 +69,17 @@ feakin --input software-development.drawio --output sd.excalidraw
 
 ## Setup
 
+We use nx.js for mono-repo architecture.
+
 1. install
 
-```
+```shell
 npm install --legacy-peer-deps
 ```
 
 Note: nx.js use Craco, which will need `--legacy-peer-deps`.
 
-2. run by tests
+2. development exporter, can just run by tests
 
 ## Known Issues
 
