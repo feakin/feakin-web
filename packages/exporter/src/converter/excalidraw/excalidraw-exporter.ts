@@ -9,6 +9,8 @@ import {
 import { FontString, measureText } from "./helper/text-utils";
 import { isBrowser } from "../../env";
 import { Exporter, Transpiler } from "../exporter";
+import { TriangleShape } from "../../model/node";
+import { flattenPoints, groupPoints } from "../../model/geometry/point";
 
 export interface ExportedDataState {
   type: string;
@@ -82,7 +84,18 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
   }
 
   transpileNode(node: Node): object {
-    return this.createBaseNode(node);
+    const baseNode: any = this.createBaseNode(node);
+    const isPolygon = node.data?.shape === "diamond";
+    if(isPolygon) {
+      switch (node.data?.shape) {
+        case "diamond":
+          baseNode.type = "diamond";
+          baseNode.points = groupPoints(new TriangleShape(node.x, node.y, node.width, node.height).points()) as any;
+          break;
+      }
+    }
+
+    return baseNode;
   }
 
   transpileLabel(node: Node, id?: number): any {
@@ -134,7 +147,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
       groupIds: [],
       strokeSharpness: "sharp",
       seed: randomInteger(),
-      version: 11,
+      version: 1,
       versionNonce: randomInteger(),
       isDeleted: false,
       boundElements: [],
@@ -217,7 +230,6 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
         },
       })
     }
-
 
     Object.assign(baseEdge, {
       startBinding: {

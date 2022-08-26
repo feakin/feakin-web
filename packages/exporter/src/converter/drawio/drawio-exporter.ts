@@ -153,6 +153,8 @@ export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
     switch (shape) {
       case ShapeType.Triangle:
         return "mxgraph.basic.acute_triangle";
+      case ShapeType.Diamond:
+        return "rhombus";
       default:
         return shape;
     }
