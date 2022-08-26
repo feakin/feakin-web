@@ -1,5 +1,7 @@
 import { DrawioExporter } from "./drawio-exporter";
-import * as fs from "fs";
+import { Graph } from "../../model/graph";
+import { ShapeType } from "../../model/node/shape";
+import { MXCell } from "./mxgraph";
 
 describe('Drawio Exporter', () => {
   const graph = {
@@ -69,10 +71,24 @@ describe('Drawio Exporter', () => {
     expect(mxCells.length).toBe(6);
   });
 
-  it('convert model to file', () => {
-    const wrapper = new DrawioExporter(graph);
-    const mxfile = wrapper.export();
+  it('export triangle', () => {
+    const triangle: Graph = {
+      nodes: [{
+        id: "4fGrBHPbXxLO9afZ4FaqV",
+        label: "a",
+        data: {
+          shape: ShapeType.Triangle
+        },
+        width: 100,
+        height: 40,
+        x: 0,
+        y: 0
+      }],
+      edges: []
+    };
+    const wrapper = new DrawioExporter(triangle);
+    const cells: MXCell[] = wrapper.intermediate();
 
-    fs.writeFileSync('./test/test.drawio', mxfile);
+    expect(cells[2].attributes?.style).toContain("shape=triangle");
   });
 });

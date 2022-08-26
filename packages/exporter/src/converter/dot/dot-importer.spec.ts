@@ -96,4 +96,13 @@ describe('DotImporter', () => {
     expect(graph.nodes.length).toBe(9);
     expect(graph.nodes[2].data!.parentId).toBe("cluster0");
   });
+
+  it('triangle', () => {
+    const importer = new DotImporter(`digraph G {
+  a [shape="triangle"]
+}`);
+    const graph: Graph = importer.parse();
+
+    expect(graph.nodes.length).toBe(1);
+  });
 });

@@ -1,4 +1,5 @@
 import { CellStateStyle } from "./cell-state-style";
+import { NodeData } from "../../model/graph";
 
 export class CellState implements CellStateStyle {
   static fromString(style: string): CellStateStyle {
@@ -14,7 +15,7 @@ export class CellState implements CellStateStyle {
     return parsed;
   }
 
-  static toString(stateStyle: CellStateStyle): string {
+  static toString(stateStyle: CellStateStyle | NodeData): string {
     const styles = Object.keys(stateStyle)
       .map((key: string) => {
           return `${ key }=${ (stateStyle as any)[key] };`;

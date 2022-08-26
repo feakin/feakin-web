@@ -3,6 +3,7 @@ import DrawioEncode from "./encode/drawio-encode";
 import { js2xml } from "./encode/xml-converter";
 import { Edge, Graph, Node } from "../../model/graph";
 import { Exporter, Transpiler } from "../exporter";
+import { CellState } from "./cell-state";
 
 export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
   idIndex = 0;
@@ -95,10 +96,15 @@ export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
   }
 
   transpileNode(node: Node): MXCell {
+    let props = "";
+    if (node.data) {
+      const data = node.data
+      props += CellState.toString(data);
+    }
     return {
       attributes: {
         id: node.id ? node.id : this.id(),
-        style: "rounded=0;whiteSpace=wrap;html=1;",
+        style: props + "rounded=0;whiteSpace=wrap;html=1;",
         value: node.label,
         vertex: "1",
         parent: "1"
