@@ -40,7 +40,6 @@ export * from './model/graph';
 export * from './model/layout/algorithm';
 export * from './model/layout/layout-lifecycle';
 export * from './model/node/circle-shape';
-export * from './model/node/cloud-shape';
 export * from './model/node/base/diamond-shape';
 export * from './model/node/hexagon-shape';
 export * from './model/node/image-shape';

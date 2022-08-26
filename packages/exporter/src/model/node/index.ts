@@ -1,5 +1,4 @@
 import { CircleShape } from "./circle-shape";
-import { CloudShape } from "./cloud-shape";
 import { HexagonShape } from "./hexagon-shape";
 import { RectangleShape } from "./rectangle-shape";
 import { DiamondShape } from "./base/diamond-shape";
@@ -9,7 +8,6 @@ import { Shape } from "./base/shape";
 
 export {
   CircleShape,
-  CloudShape,
   HexagonShape,
   RectangleShape,
   DiamondShape,
