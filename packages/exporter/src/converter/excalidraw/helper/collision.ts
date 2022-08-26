@@ -437,7 +437,10 @@ const getSortedElementLineIntersections = (
     case "ellipse":
       intersections = getEllipseIntersections(element, gap, line);
       break;
+    default:
+      intersections = [];
   }
+
   if (intersections.length < 2) {
     // Ignore the "edge" case of only intersecting with a single corner
     return [];

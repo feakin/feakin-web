@@ -111,9 +111,10 @@ npm install --legacy-peer-deps
 
 ## Known Issues
 
-**Triangle in Draw.io**
+**Triangle**
 
-Triangle in drawio is not rendered correctly. In Draw.io the triangle will replace to `mxgraph.basic.acute_triangle`;
+- Triangle in drawio is not rendered correctly. In Draw.io the triangle will replace to `mxgraph.basic.acute_triangle`;
+- Excalidraw don't have triangle.
 
 ## License
 

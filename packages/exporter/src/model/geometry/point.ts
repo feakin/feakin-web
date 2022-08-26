@@ -11,3 +11,9 @@ export const flattenPoints = (points: Point[]): number[] => {
   points.forEach(({ x, y }) => flatten.push(x, y));
   return flatten;
 };
+
+export const groupPoints = (points: Point[]): number[][] => {
+  const flatten: number[][] = [];
+  points.forEach(({ x, y }) => flatten.push([x, y]));
+  return flatten;
+};
