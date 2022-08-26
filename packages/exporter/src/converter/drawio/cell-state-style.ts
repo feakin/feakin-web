@@ -175,4 +175,4 @@ export interface CellStateStyle extends CellConnectorStyle {
   verticalAlign?: VAlignValue;
   verticalLabelPosition?: VAlignValue;
   whiteSpace?: WhiteSpaceValue;
-};
+}

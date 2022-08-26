@@ -40,6 +40,7 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
       width: options.node.width,
       height: options.node.height
     });
+
     if (node.data?.parentId) {
       rootGraph.setParent(node.label, node.data?.parentId);
     }

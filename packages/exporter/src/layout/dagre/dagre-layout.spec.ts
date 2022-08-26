@@ -42,13 +42,13 @@ describe('feakinExporter', () => {
     g.setNode('cluster0', { label: 'cluster0' });
     g.setNode('cluster1', { label: 'cluster1' });
 
-    g.setNode('a', { label: 'A', width: 100, height: 40 });
-    g.setNode('b', { label: 'B', width: 100, height: 40  });
-    g.setNode('c', { label: 'C', width: 100, height: 40  });
-    g.setNode('d', { label: 'D', width: 100, height: 40  });
-    g.setNode('e', { label: 'E', width: 100, height: 40  });
-    g.setNode('f', { label: 'F', width: 100, height: 40  });
-    g.setNode('g', { label: 'G', width: 100, height: 40  });
+    g.setNode('a', { });
+    g.setNode('b', { });
+    g.setNode('c', { });
+    g.setNode('d', { });
+    g.setNode('e', { });
+    g.setNode('f', { });
+    g.setNode('g', { });
 
     g.setParent('a', 'cluster0');
     g.setParent('b', 'cluster0');

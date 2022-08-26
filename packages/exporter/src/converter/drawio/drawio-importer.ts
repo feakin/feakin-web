@@ -3,6 +3,7 @@ import { Edge, Graph, Node } from "../../model/graph";
 import { CellStateStyle } from "./cell-state-style";
 import { Importer } from "../importer";
 import DrawioEncode from "./encode/drawio-encode";
+import { parseCellState } from "./cell-state";
 
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
@@ -38,19 +39,6 @@ export class DrawioImporter extends Importer {
     );
 
     return filtered;
-  }
-
-  parseStyle(style: string): CellStateStyle {
-    const styles = style.split(";");
-    const parsed: any = {};
-
-    styles.forEach((style: string) => {
-        const [key, value] = style.split("=");
-        parsed[key] = value;
-      }
-    );
-
-    return parsed;
   }
 
   private convertEdge(cell: MXCell): Edge {
