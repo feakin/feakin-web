@@ -17,8 +17,8 @@ export class TriangleShape extends Shape {
     const height = this.height;
 
     const points = [
-      { x: 0, y: 0 },
-      { x: width, y: 0.5 * height },
+      { x: 0.5 * width, y: 0 },
+      { x: width, y: height },
       { x: 0, y: height }
     ]
 
@@ -29,6 +29,6 @@ export class TriangleShape extends Shape {
     const width = this.width;
     const height = this.height;
 
-    return { x: width / 2, y: height / 2 };
+    return { x: this.x + width / 2, y: this.y + height / 2 };
   }
 }
