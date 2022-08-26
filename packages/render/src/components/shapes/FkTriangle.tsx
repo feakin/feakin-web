@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RectangleShape, TriangleShape } from "@feakin/exporter";
+import { TriangleShape } from "@feakin/exporter";
 import { RegularPolygon, Text } from "react-konva";
 
 interface FkTriangleProps {
@@ -9,7 +9,6 @@ interface FkTriangleProps {
 }
 
 function FkTriangle(props: FkTriangleProps) {
-  console.log(props);
   const [isDragging, setIsDragging] = useState(false);
   const [labelPosition] = useState(props.shape.labelPosition());
   const [position, setPosition] = useState({

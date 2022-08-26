@@ -15,6 +15,7 @@ import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 
 function Render(props: { text: string, history: ChangeHistory }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_selectedId, selectShape] = React.useState<number | null>(null);
   const stageRef = React.useRef<Konva.Stage | null>(null);
   const layerRef = React.useRef<Konva.Layer | null>(null);
@@ -29,6 +30,7 @@ function Render(props: { text: string, history: ChangeHistory }) {
 
   const [lines, setLines] = React.useState([] as any);
   const isDrawing = React.useRef(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_nodesArray, setNodes] = React.useState([] as any);
 
   const oldPos = React.useRef(null);
