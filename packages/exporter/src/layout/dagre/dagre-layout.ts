@@ -33,7 +33,14 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
     });
 
     if (node.data?.parentId) {
-      rootGraph.setNode(node.data?.parentId, {label: 'Group', subgraph: true, data: { clusterLabelPos: 'top', style: 'fill: #d3d7e8'}});
+      rootGraph.setNode(node.data?.parentId, {
+        label: 'Group',
+        subgraph: true,
+        fill: {
+          color: '#d3d7e8'
+        },
+        data: { clusterLabelPos: 'top' }
+      });
       rootGraph.setParent(node.label, node.data?.parentId);
     }
   })

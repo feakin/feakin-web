@@ -1,4 +1,4 @@
 export interface FillState {
   transparent?: boolean;
-  fillColor?: string;
+  color?: string;
 }
