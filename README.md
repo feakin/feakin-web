@@ -8,13 +8,17 @@
 
 Chinese introduction: Feakin 是一个图形资产管理工具，基于[图表即代码](https://www.phodal.com/blog/diagram-as-code/) 的思想体系，支持导入 Mermaid, PlantUML, Excalidraw, Dot 等图形资产格式。
 
+适用场景：架构图管理、知识管理等。
+
+不适用场景：图表
+
 特性：
 
-- [ ] 跨图表工具转换。支持导入 Mermaid, PlantUML, Excalidraw, Dot 等图形资产格式，并基于 Graph MIR 进行转换。
+- [x] 跨图工具转换。支持导入 Mermaid, PlantUML, Excalidraw, Dot 等图形资产格式，并基于 Graph MIR 进行转换。
+- [x] 广泛的图表格式导出。
 - [ ] 模板创建。支持创建模板，并基于 Graph MIR 进行转换，转换成其它图表格式。
 - [ ] 在线协作编辑。基于 Rope 架构模型和 Graph MIR 进行在线协作编辑。
-- [ ] 广泛的图表格式导出。
-- [ ] 手绘风格。
+- [ ] 手绘风格。通过 Rough.js
 - [ ] 多样化图形布局。支持 Dagre、ELK、Cola 等布局。
 
 ## Demos
