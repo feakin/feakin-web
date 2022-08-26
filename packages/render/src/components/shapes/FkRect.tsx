@@ -1,7 +1,6 @@
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import { Text, Rect, Transformer } from 'react-konva';
 import Konva from "konva";
-import { FkLocation } from '../geometry/FkLocation';
 import { RectangleShape } from "@feakin/exporter";
 
 interface FkRectConfig {
@@ -13,7 +12,7 @@ interface FkRectProps {
   draggable?: boolean;
   isSelected?: boolean;
   onSelect?: (ref: MutableRefObject<Konva.Rect | null>) => void;
-  position: FkLocation;
+  shape: RectangleShape;
   config?: FkRectConfig;
 }
 
@@ -23,10 +22,12 @@ function FkRect(props: FkRectProps) {
   const shapeRef = React.useRef<Konva.Rect | null>(null);
   const trRef: any = React.useRef<Konva.Transformer | null>(null);
 
+  const [labelPosition] = useState(props.shape.labelPosition());
   const [isDragging, setIsDragging] = useState(false);
-
-  const [position, setPosition] = useState(props.position);
-  const [labelPosition, setLabelPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({
+    x: props.shape.x,
+    y: props.shape.y
+  });
 
   useEffect(() => {
     if (props.isSelected) {
@@ -35,18 +36,10 @@ function FkRect(props: FkRectProps) {
     }
   }, [props.isSelected]);
 
-  useEffect(() => {
-    const rectangle = new RectangleShape(props.position.x, props.position.y, props.node.width, props.node.height);
-    setLabelPosition(rectangle.labelPosition());
-  }, [props.node, props.position]);
-
-
-  function onChange(param: FkLocation) {
+  function onChange(param: any) {
     setPosition({
       x: param.x,
       y: param.y,
-      width: param.width,
-      height: param.height,
     });
   }
 
@@ -54,10 +47,10 @@ function FkRect(props: FkRectProps) {
     <React.Fragment>
       <Rect
         name="fk-rect"
-        x={ position.x }
-        y={ position.y }
-        width={ position.width }
-        height={ position.height }
+        x={ props.shape.x }
+        y={ props.shape.y }
+        width={ props.shape.width }
+        height={ props.shape.height }
         onClick={ () => props.onSelect && props.onSelect(shapeRef) }
         onTap={ () => props.onSelect && props.onSelect(shapeRef) }
         ref={ shapeRef }

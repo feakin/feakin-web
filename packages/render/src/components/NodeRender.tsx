@@ -1,14 +1,17 @@
 import React from 'react';
-import { Node, ElementProperty } from "@feakin/exporter";
-import FkRect from "../graph/shapes/FkRect";
+import { Node, ElementProperty, RectangleShape } from "@feakin/exporter";
+import FkRect from "./shapes/FkRect";
 
 function NodeRender(node: Node, prop?: ElementProperty) {
   function Rectangle(node: Node) {
+    const rectangle = new RectangleShape(node.x, node.y, node.width, node.height);
+
     return (<FkRect
       node={ node }
       label={ node.label }
       key={ 'node-' + node.id }
       draggable={ true }
+      shape={ rectangle }
       // onSelect={ (e) => {
       //   if (e.current !== undefined) {
       //     let temp = nodesArray;
@@ -19,12 +22,6 @@ function NodeRender(node: Node, prop?: ElementProperty) {
       //   }
       //   selectShape(node.id);
       // } }
-      position={ {
-        x: node.x || 0,
-        y: node.y || 0,
-        width: node.width || 0,
-        height: node.height || 0,
-      } }
     />);
   }
 
