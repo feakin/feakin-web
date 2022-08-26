@@ -1,5 +1,8 @@
-export const frontendBackendTemplates = {
-  aws: `digraph {
+export const frontendBackendTemplates = [
+  {
+    name: 'frontend-backend',
+    label: 'Frontend-Backend',
+    template: `digraph {
   compound=true;
   node [ fontname="Handlee" ];
   subgraph cluster_website {
@@ -29,4 +32,5 @@ export const frontendBackendTemplates = {
   "aws-sdk" -> S3 [lhead=cluster_aws];
 }
 `
-}
+  }
+]

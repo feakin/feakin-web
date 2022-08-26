@@ -1,14 +1,16 @@
 import React, { useRef } from 'react';
-import Render from "./components/Render";
 import { AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Converter, OnlineRender } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
 import * as monacoEditor from "monaco-editor";
+
+import Render from "./components/Render";
 import { addDotLang } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
 import { fileExport } from "./actions/file-export";
+import { getExtension } from "./helper/file-ext";
 
 const DOT_LANG = "dot";
 
@@ -74,12 +76,7 @@ const App = () => {
     setFileEl(null);
   }
 
-  function getExtension(filename: string) {
-    return filename.split('.').pop();
-  }
-
   const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       let ext = getExtension(file.name);
