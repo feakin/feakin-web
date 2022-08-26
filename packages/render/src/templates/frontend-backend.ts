@@ -1,4 +1,6 @@
-export const frontendBackendTemplates = [
+import { FkTemplate } from "./fk-template";
+
+export const frontendBackendTemplates: FkTemplate[] = [
   {
     name: 'frontend-backend',
     label: 'Frontend-Backend',

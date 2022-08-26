@@ -11,6 +11,8 @@ import { addDotLang } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
 import { fileExport } from "./actions/file-export";
 import { getExtension } from "./helper/file-ext";
+import { frontendBackendTemplates } from "./templates/frontend-backend";
+import { FkTemplate } from "./templates/fk-template";
 
 const DOT_LANG = "dot";
 
@@ -163,9 +165,11 @@ const App = () => {
       open={ isOpenTemplateMenu }
       onClose={ handleTemplateMenuClose }
     >
-      <MenuItem>
-        <Typography textAlign="center">Coming soon</Typography>
-      </MenuItem>
+      { frontendBackendTemplates.map((template: FkTemplate) =>
+        <MenuItem onClick={ () => setText(template.template) }>
+          <Typography textAlign="center">{ template.label }</Typography>
+        </MenuItem>
+      ) }
     </Menu></>;
 
   return (
