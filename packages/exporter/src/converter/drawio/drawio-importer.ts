@@ -1,11 +1,12 @@
 import { MXCell, Mxfile, MxGraph, MxPoint } from "./mxgraph";
-import { Edge, Graph, Node } from "../../model/graph";
+import { Edge, Graph, Node, NodeData } from "../../model/graph";
 import { Importer } from "../importer";
 import DrawioEncode from "./encode/drawio-encode";
 
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
   private graph: MxGraph;
+  private oldCellMap: Map<string, MXCell> = new Map<string, MXCell>();
 
   constructor(data: string) {
     super(data);
@@ -27,14 +28,39 @@ export class DrawioImporter extends Importer {
     };
 
     this.mxCells.forEach((cell: MXCell) => {
-      const hasSourceAndTarget = cell.attributes?.source && cell.attributes?.target;
-      if (hasSourceAndTarget || cell.attributes?.edge === "1") {
+        const hasSourceAndTarget = cell.attributes?.source && cell.attributes?.target;
+        if (hasSourceAndTarget || cell.attributes?.edge === "1") {
           filtered.edges.push(this.convertEdge(cell));
         } else if (cell.attributes?.value) {
           filtered.nodes.push(this.convertNode(cell));
         }
+
+        if (cell.attributes?.id != null) {
+          if (cell.mxGeometry?.mxPoint) {
+            this.oldCellMap.set(cell.attributes?.id, cell);
+          }
+        }
       }
     );
+
+    filtered.nodes.filter(node => node.data?.parentId)
+      .forEach(node => {
+        if (!(node.data?.parentId && this.oldCellMap.has(node.data?.parentId))) {
+          return;
+        }
+
+        const parentNode: MXCell | undefined = this.oldCellMap.get(node.data?.parentId);
+        const parentPoint = parentNode?.mxGeometry?.mxPoint;
+        if (!Array.isArray(parentPoint)) {
+          return;
+        }
+
+        const startPoint = parentPoint[0];
+        if (startPoint.attributes?.x && startPoint.attributes?.y) {
+          node.x = parseFloat(<string>startPoint.attributes?.x) + (node.x ?? 0);
+          node.y = parseFloat(<string>startPoint.attributes?.y) + (node.y ?? 0);
+        }
+      });
 
     return filtered;
   }
@@ -100,6 +126,12 @@ export class DrawioImporter extends Importer {
       y: parseFloat(String(geoAttrs?.y || 0)),
     }
 
+    const ext: NodeData = {};
+
+    if (cell.attributes?.parent != "1") {
+      ext.parentId = cell.attributes?.parent;
+    }
+
     return {
       id: attrs.id,
       label: attrs.value || '',
@@ -107,6 +139,7 @@ export class DrawioImporter extends Importer {
       y: point.y,
       width: parseFloat(String(geoAttrs?.width || 0)),
       height: parseFloat(String(geoAttrs?.height || 0)),
+      data: ext
     };
   }
 }

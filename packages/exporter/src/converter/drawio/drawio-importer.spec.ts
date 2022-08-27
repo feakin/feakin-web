@@ -75,4 +75,15 @@ describe('DrawioEncoder', () => {
     const edges = graph.edges;
     expect(edges.length).toBe(21);
   });
+
+  it('label', () => {
+    const drawioConverter = new DrawioImporter(data);
+    const graph: Graph = drawioConverter.parse();
+
+    const nodes = graph.nodes.filter(node => node.label == "取决于");
+    expect(nodes.length).toBe(1);
+
+    expect(nodes[0].x!.toFixed(0)).toEqual("880");
+    expect(nodes[0].y).toEqual(640);
+  });
 });
