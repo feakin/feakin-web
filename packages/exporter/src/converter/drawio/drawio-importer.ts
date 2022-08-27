@@ -20,7 +20,7 @@ export class DrawioImporter extends Importer {
     const filtered: Graph = {
       nodes: [],
       edges: [],
-      props: {
+      prop: {
         width: parseFloat(<string>graphAttrs?.pageWidth) || 0,
         height: parseFloat(<string>graphAttrs?.pageHeight) || 0,
       },

@@ -52,8 +52,8 @@ describe('DrawioEncoder', () => {
     const drawioConverter = new DrawioImporter(data);
     const graph: Graph = drawioConverter.parse();
 
-    expect(graph.props?.height).toBe(1100);
-    expect(graph.props?.width).toBe(850);
+    expect(graph.prop?.height).toBe(1100);
+    expect(graph.prop?.width).toBe(850);
 
     const nodes = graph.nodes;
     expect(nodes.length).toBe(39);

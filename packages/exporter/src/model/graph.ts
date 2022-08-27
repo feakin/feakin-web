@@ -12,14 +12,14 @@ import { ShapeType } from "./node/base/shape";
 export interface Graph {
   nodes: Node[];
   edges: Edge[];
-  props?: Element;
+  prop?: GraphProperty;
   // sub graph
   subgraphs?: Graph[];
 }
 
 export type Position = Point;
 
-interface Element extends ElementProperty {
+interface GraphProperty extends ElementProperty {
   data?: NodeData | EdgeData;
   position?: Position | undefined;
   css?: any | undefined;
