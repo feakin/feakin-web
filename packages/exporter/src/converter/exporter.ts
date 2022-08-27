@@ -1,5 +1,4 @@
 import { Node, Edge, Graph, ElementProperty } from "../model/graph";
-import { ShapeType } from "../model/node/base/shape";
 
 export class Exporter<K> {
   data: K | undefined;
