@@ -11,6 +11,7 @@ import { isBrowser } from "../../env";
 import { Exporter, Transpiler } from "../exporter";
 import { TriangleShape } from "../../model/node";
 import { groupPoints } from "../../model/geometry/point";
+import { nanoid } from "nanoid";
 
 export interface ExportedDataState {
   type: string;
@@ -53,7 +54,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
 
     this.graph.edges.forEach(edge => {
       const maybeValidEdge = this.transpileEdge(edge);
-      if(maybeValidEdge !== null) {
+      if (maybeValidEdge !== null) {
         root.elements.push(maybeValidEdge);
       }
     });
@@ -65,7 +66,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     const label = this.transpileLabel(originNode, newNode.id);
     root.elements.push(label);
 
-    if (!this.isValidPolygon(originNode)) {
+    if (!this.isUnsupportedPolygon(originNode)) {
       newNode.boundElements.push({
         id: label.id,
         type: "text"
@@ -97,7 +98,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
 
   transpileNode(node: Node): ExNode {
     const baseNode: any = this.createBaseNode(node);
-    if(this.isValidPolygon(node)) {
+    if (this.isUnsupportedPolygon(node)) {
       switch (node.data?.shape) {
         case "triangle":
           // Node to Edge
@@ -114,7 +115,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
   /**
    * in Excalidraw, a polygon is a polyline with a start and end point
    */
-  private isValidPolygon(node: Node) {
+  private isUnsupportedPolygon(node: Node) {
     return node.data?.shape === "triangle";
   }
 
@@ -135,14 +136,14 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     labelNode.type = "text";
 
     Object.assign(labelNode, {
-      id: randomInteger().toString(),
+      id: nanoid(),
       text: node.label,
       fontSize: 20,
       fontFamily: 1,
       textAlign: "center",
       verticalAlign: "middle",
       baseline: 18,
-      containerId: id,
+      containerId: this.isUnsupportedPolygon(node) ? null : id,
       originalText: node.label
     });
 
@@ -221,6 +222,22 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     const rPoints = this.reCalculateEdgePoints(edge);
 
     const sourceNode = this.createdNodeCaches.get(<string>edge.data?.source);
+    const targetNode = this.createdNodeCaches.get(<string>edge.data?.target);
+
+    const isCustomShape = sourceNode && targetNode && (sourceNode.type == "line" || targetNode.type == "line");
+    if (isCustomShape) {
+      Object.assign(baseEdge, {
+        points: groupPoints(edge.points),
+        lastCommittedPoint: null,
+        startArrowhead: null,
+        startBinding: null,
+        endBinding: null,
+        endArrowhead: "arrow"
+      });
+
+      return baseEdge;
+    }
+
     if (edge.data?.source && sourceNode != undefined) {
       sourceNode.boundElements.push({
         id: edge.id,
@@ -228,7 +245,6 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
       });
     }
 
-    const targetNode = this.createdNodeCaches.get(<string>edge.data?.target);
     if (edge.data?.target && targetNode != undefined) {
       targetNode.boundElements.push({
         id: edge.id,
@@ -236,13 +252,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
       });
     }
 
-    if(sourceNode && targetNode) {
-      if(sourceNode.type == "line" || targetNode.type == "line") {
-        return null;
-      }
-    }
 
-    // console.log(rPoints);
     Object.assign(baseEdge, {
       points: rPoints,
       lastCommittedPoint: null,

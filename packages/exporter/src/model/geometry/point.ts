@@ -12,6 +12,9 @@ export const flattenPoints = (points: Point[]): number[] => {
   return flatten;
 };
 
+/**
+ * for excalidraw
+ */
 export const groupPoints = (points: Point[]): number[][] => {
   const flatten: number[][] = [];
   points.forEach(({ x, y }) => flatten.push([x, y]));
