@@ -6,6 +6,10 @@ export interface Point {
   y: number;
 }
 
+export const nestedPoints = (points: number[][]): Point[] => {
+  return points.map(([x, y]) => ({ x, y }));
+}
+
 export const flattenPoints = (points: Point[]): number[] => {
   const flatten: number[] = [];
   points.forEach(({ x, y }) => flatten.push(x, y));

@@ -2,6 +2,7 @@ import { MXCell, Mxfile, MxGraph, MxPoint } from "./mxgraph";
 import { Edge, Graph, Node, NodeData } from "../../model/graph";
 import { Importer } from "../importer";
 import DrawioEncode from "./encode/drawio-encode";
+import { ShapeType } from "../../model/node/base/shape-type";
 
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
@@ -158,6 +159,10 @@ export class DrawioImporter extends Importer {
 
     if (cell.attributes?.parent != "1") {
       ext.parentId = cell.attributes?.parent;
+    }
+
+    if (attrs.connectable == "0") {
+      ext.shape = ShapeType.Text;
     }
 
     return {

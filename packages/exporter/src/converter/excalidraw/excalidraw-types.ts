@@ -22,6 +22,19 @@
  * SOFTWARE.
  *
  */
+
+export interface ImportedDataState {
+  type?: string;
+  version?: number;
+  source?: string;
+  elements?: readonly ExcalidrawElement[] | null;
+  appState?: Readonly<Partial<any>> | null;
+  scrollToContent?: boolean;
+  libraryItems?: any;
+  files?: any;
+}
+
+
 export declare type RoughPoint = [number, number];
 export type ExPoint = Readonly<RoughPoint>;
 

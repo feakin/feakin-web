@@ -1,7 +1,7 @@
 import React, { MutableRefObject, useEffect, useState } from 'react';
-import { Text, Rect, Transformer } from 'react-konva';
+import { Rect, Text, Transformer } from 'react-konva';
 import Konva from "konva";
-import { Node, RectangleShape } from "@feakin/exporter";
+import { Node, RectangleShape, ShapeType } from "@feakin/exporter";
 
 interface FkRectConfig {
 }
@@ -56,7 +56,7 @@ function FkRect(props: FkRectProps) {
         draggable={ props.draggable || true }
         fill={ isDragging ? 'green' : '' }
         stroke={ isDragging ? 'green' : 'black' }
-        strokeWidth={ 1 }
+        strokeWidth={ props.node.data?.shape === ShapeType.Text ? 0 : 1 }
         onDragStart={ () => {
           setIsDragging(true);
         } }

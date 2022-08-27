@@ -91,7 +91,7 @@ export interface MXCell {
     /**
      * Specifies whether the cell is connectable. Default is true.
      */
-    connectable?: boolean;
+    connectable?: string;
   }
 }
 
