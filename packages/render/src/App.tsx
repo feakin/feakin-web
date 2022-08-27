@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { Converter, OnlineRender, SupportedFileType } from "@feakin/exporter";
+import { Converter, SupportedFileType } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
 
 import Render from "./components/Render";
@@ -103,20 +103,6 @@ const App = () => {
       } else {
         alert("not support type, for example: .dot, .mermaid, .excalidraw");
       }
-    }
-  }
-
-  const onlineRender = (typ: string) => {
-    let converter = Converter.fromContent(code.content, code.sourceType);
-    switch (typ) {
-      case "graphviz":
-        window.open(OnlineRender.buildDotUrl(converter.target(typ)));
-        break;
-      case "mermaid":
-        window.open(OnlineRender.buildMermaidUrl(converter.target(typ)));
-        break;
-      default:
-        console.error("unknown " + typ);
     }
   }
 
@@ -225,12 +211,6 @@ const App = () => {
             { exportMenus }
           </Box>
           <Box sx={ { display: { xs: 'none', md: 'flex' } } }>
-            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('graphviz') }>
-              Online Render (Graphviz) </Button>
-            <Button sx={ { my: 2, color: 'white', display: 'block' } } onClick={ () => onlineRender('mermaid') }>
-              Online Render (Mermaid)
-            </Button>
-
             <IconButton onClick={ () => window.open("https://github.com/feakin/feakin") } size="large"
                         aria-label="GitHub" color="inherit">
               <GitHubIcon/>
