@@ -1,17 +1,12 @@
-import { Shape } from "./base/shape";
 import { Point } from "../geometry/point";
 import { ShapeType } from "./base/shape-type";
+import { PolygonShape } from "./polygon-shape";
 
-export class HexagonShape extends Shape {
-  width: number;
-  height: number;
-
+export class HexagonShape extends PolygonShape {
   override type = ShapeType.Hexagon;
 
   constructor(x = 0, y = 0, width = 0, height = 0) {
-    super(x, y);
-    this.width = width;
-    this.height = height;
+    super(x, y, width, height);
   }
 
   override points(): Point[] {
