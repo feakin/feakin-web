@@ -11,7 +11,6 @@ function EdgeShape(edge: Edge) {
     return <Arrow points={ flatPoints } fill="black" stroke="black" tension={ 0.5 }/>
   }
 
-  console.log(points);
   return <Group key={ edge.id }>
     { getLineShape() }
     { points.length > 0 && <Text text={ label } x={ points[0].x } y={ points[0].y }/> }
