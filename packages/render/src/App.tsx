@@ -10,7 +10,7 @@ import { addDotLang } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
 import { fileExport } from "./actions/file-export";
 import { extToCodeType, getExtension } from "./helper/file-ext";
-import { templates } from "./templates/frontend-backend";
+import { templates } from "./templates/templates";
 import { FkTemplate } from "./templates/fk-template";
 import { CodeProp, SupportedCodeLang } from "./type";
 
@@ -107,13 +107,13 @@ const App = () => {
   }
 
   const onlineRender = (typ: string) => {
-    let converter = Converter.fromContent(code.content, DOT_LANG);
+    let converter = Converter.fromContent(code.content, code.sourceType);
     switch (typ) {
       case "graphviz":
-        window.open(OnlineRender.buildDotUrl(converter.target("graphviz")));
+        window.open(OnlineRender.buildDotUrl(converter.target(typ)));
         break;
       case "mermaid":
-        window.open(OnlineRender.buildMermaidUrl(converter.target("mermaid")));
+        window.open(OnlineRender.buildMermaidUrl(converter.target(typ)));
         break;
       default:
         console.error("unknown " + typ);
@@ -169,6 +169,11 @@ const App = () => {
     </MenuItem>
   </Menu>;
 
+  function selectTemplate(template: FkTemplate) {
+    setCode(template.template);
+    setTemplateEl(null);
+  }
+
   let templateMenus = <><Button
     sx={ { my: 2, color: 'white', display: 'block' } }
     aria-controls={ isOpenTemplateMenu ? 'template-menu' : undefined }
@@ -185,7 +190,7 @@ const App = () => {
       onClose={ handleTemplateMenuClose }
     >
       { templates.map((template: FkTemplate, index: number) =>
-        <MenuItem key={ `key-` + index } onClick={ () => setCode(template.template) }>
+        <MenuItem key={ `key-` + index } onClick={ () => selectTemplate(template) }>
           <Typography textAlign="center">{ template.label }</Typography>
         </MenuItem>
       ) }
