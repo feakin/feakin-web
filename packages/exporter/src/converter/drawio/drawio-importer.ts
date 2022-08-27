@@ -43,26 +43,31 @@ export class DrawioImporter extends Importer {
       }
     );
 
-    filtered.nodes.filter(node => node.data?.parentId)
-      .forEach(node => {
-        if (!(node.data?.parentId && this.oldCellMap.has(node.data?.parentId))) {
-          return;
-        }
-
-        const parentNode: MXCell | undefined = this.oldCellMap.get(node.data?.parentId);
-        const parentPoint = parentNode?.mxGeometry?.mxPoint;
-        if (!Array.isArray(parentPoint)) {
-          return;
-        }
-
-        const startPoint = parentPoint[0];
-        if (startPoint.attributes?.x && startPoint.attributes?.y) {
-          node.x = parseFloat(<string>startPoint.attributes?.x) + (node.x ?? 0);
-          node.y = parseFloat(<string>startPoint.attributes?.y) + (node.y ?? 0);
-        }
-      });
+    const isNeedUpdateRelativeParent = filtered.nodes.filter(node => {
+      const hasParent = node.data?.parentId && node.data?.parentId !== "1";
+      return hasParent && this.oldCellMap.has(node.data!.parentId!);
+    });
+    if (isNeedUpdateRelativeParent.length > 0) {
+      this.fixEdgeLabelNotPositionIssue(isNeedUpdateRelativeParent);
+    }
 
     return filtered;
+  }
+
+  private fixEdgeLabelNotPositionIssue(nodes: Node[]) {
+    nodes.forEach(node => {
+      const parentNode: MXCell | undefined = this.oldCellMap.get(node.data!.parentId!);
+      const parentPoint = parentNode?.mxGeometry?.mxPoint;
+      if (!Array.isArray(parentPoint)) {
+        return;
+      }
+
+      const startPoint = parentPoint[0];
+      if (startPoint.attributes?.x && startPoint.attributes?.y) {
+        node.x = parseFloat(<string>startPoint.attributes?.x) + (node.x ?? 0);
+        node.y = parseFloat(<string>startPoint.attributes?.y) + (node.y ?? 0);
+      }
+    });
   }
 
   private convertEdge(cell: MXCell): Edge {
