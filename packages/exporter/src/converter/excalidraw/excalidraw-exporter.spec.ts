@@ -65,8 +65,6 @@ describe('ExcalidrawExporter', () => {
     const drawioConverter = fromFile('_fixtures/drawio/source-target-curved.drawio');
     const sourceTargetGraph: Graph = drawioConverter.parse();
 
-    console.log(JSON.stringify(sourceTargetGraph, null, 2));
-
     const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
     const nodes = exporter.elements.filter(e => e.type === 'rectangle');
@@ -75,14 +73,15 @@ describe('ExcalidrawExporter', () => {
     fs.writeFileSync('./test/source-target-curved.excalidraw', JSON.stringify(exporter, null, 2));
   });
 
-  it('bug fix', () => {
+  it('fix rect not correct issue', () => {
     const drawioConverter = fromFile('_fixtures/drawio/functional.drawio');
     const sourceTargetGraph: Graph = drawioConverter.parse();
 
     const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
     const nodes = exporter.elements.filter(e => e.type === 'rectangle');
-    expect(nodes.length).toEqual(58);
+    expect(nodes.length).toEqual(47);
+    expect(exporter.elements.length).toEqual(152);
 
     fs.writeFileSync('./test/functional.excalidraw', JSON.stringify(exporter, null, 2));
   });
