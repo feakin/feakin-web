@@ -10,7 +10,7 @@ import { FontString, measureText } from "./helper/text-utils";
 import { isBrowser } from "../../env";
 import { Exporter, Transpiler } from "../exporter";
 import { TriangleShape } from "../../model/node";
-import { flattenPoints, groupPoints } from "../../model/geometry/point";
+import { groupPoints } from "../../model/geometry/point";
 
 export interface ExportedDataState {
   type: string;
@@ -21,9 +21,11 @@ export interface ExportedDataState {
   files: any;
 }
 
+export type ExNode = any;
+
 export class ExcalidrawExporter extends Exporter<ExportedDataState> implements Transpiler {
   originNodeCaches: Map<string, Node> = new Map<string, Node>();
-  createdNodeCaches: Map<string, any> = new Map<string, any>();
+  createdNodeCaches: Map<string, ExNode> = new Map<string, any>();
 
   constructor(graph: Graph) {
     super(graph);
@@ -34,31 +36,41 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     const root = this.createRoot();
 
     this.graph.nodes.forEach(node => {
-      const rectangle: any = this.transpileNode(node);
+      const rectangle: ExNode = this.transpileNode(node);
       this.originNodeCaches.set(<string>node.id, node);
       this.createdNodeCaches.set(rectangle.id, rectangle);
     });
 
     this.createdNodeCaches.forEach((node) => {
       const newNode = node;
-      const originNode = this.originNodeCaches.get(<string>node.id);
+      const originNode: Node | undefined = this.originNodeCaches.get(<string>node.id);
       if (originNode?.label) {
-        const label = this.transpileLabel(originNode, node.id);
-        root.elements.push(label);
-        newNode.boundElements.push({
-          id: label.id,
-          type: "text"
-        })
+        this.createLabel(originNode, newNode, root);
       }
 
       root.elements.push(node);
     });
 
     this.graph.edges.forEach(edge => {
-      root.elements.push(this.transpileEdge(edge));
+      const maybeValidEdge = this.transpileEdge(edge);
+      if(maybeValidEdge !== null) {
+        root.elements.push(maybeValidEdge);
+      }
     });
 
     return root;
+  }
+
+  private createLabel(originNode: Node, newNode: ExNode, root: ExportedDataState) {
+    const label = this.transpileLabel(originNode, newNode.id);
+    root.elements.push(label);
+
+    if (!this.isValidPolygon(originNode)) {
+      newNode.boundElements.push({
+        id: label.id,
+        type: "text"
+      })
+    }
   }
 
   override export(): string {
@@ -83,19 +95,39 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
     }
   }
 
-  transpileNode(node: Node): object {
+  transpileNode(node: Node): ExNode {
     const baseNode: any = this.createBaseNode(node);
-    const isPolygon = node.data?.shape === "diamond";
-    if(isPolygon) {
+    if(this.isValidPolygon(node)) {
       switch (node.data?.shape) {
-        case "diamond":
-          baseNode.type = "diamond";
-          baseNode.points = groupPoints(new TriangleShape(node.x, node.y, node.width, node.height).points()) as any;
+        case "triangle":
+          // Node to Edge
+          // eslint-disable-next-line no-case-declarations
+          const points = groupPoints(new TriangleShape(node.x, node.y, node.width, node.height).points()) as any;
+          this.NodeToPolylineShape(baseNode, node, points);
           break;
       }
     }
 
     return baseNode;
+  }
+
+  /**
+   * in Excalidraw, a polygon is a polyline with a start and end point
+   */
+  private isValidPolygon(node: Node) {
+    return node.data?.shape === "triangle";
+  }
+
+  private NodeToPolylineShape(baseNode: any, node: Node, points: number[][]) {
+    Object.assign(baseNode, {
+      type: "line",
+      points: points,
+      lastCommittedPoint: null,
+      startBinding: null,
+      endBinding: null,
+      startArrowhead: null,
+      endArrowhead: null
+    })
   }
 
   transpileLabel(node: Node, id?: number): any {
@@ -202,6 +234,12 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
         id: edge.id,
         type: "arrow"
       });
+    }
+
+    if(sourceNode && targetNode) {
+      if(sourceNode.type == "line" || targetNode.type == "line") {
+        return null;
+      }
     }
 
     // console.log(rPoints);
