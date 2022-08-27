@@ -12,8 +12,7 @@ import { ShapeType } from "./node/base/shape";
 export interface Graph {
   nodes: Node[];
   edges: Edge[];
-  prop?: GraphProperty;
-  // sub graph
+  props?: GraphProperty;
   subgraphs?: Graph[];
 }
 
