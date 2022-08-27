@@ -86,4 +86,15 @@ describe('DrawioEncoder', () => {
     expect(nodes[0].x!.toFixed(0)).toEqual("880");
     expect(nodes[0].y).toEqual(640);
   });
+
+  it('relative edge', () => {
+    const drawioConverter = new DrawioImporter(data);
+    const graph: Graph = drawioConverter.parse();
+
+    const nodes = graph.nodes.filter(node => node.label == "影响到");
+    expect(nodes.length).toBe(1);
+
+    expect(nodes[0].x!.toFixed(0)).toEqual("270");
+    expect(nodes[0].y).toEqual(603);
+  });
 });

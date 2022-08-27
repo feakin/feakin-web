@@ -27,45 +27,68 @@ export class DrawioImporter extends Importer {
       },
     };
 
+    const needUpdatedEdges: Edge[] = [];
+    const edgeMap: Map<string, Edge> = new Map<string, Edge>();
+    const nodeMap: Map<string, Node> = new Map<string, Node>();
+
     this.mxCells.forEach((cell: MXCell) => {
         const hasSourceAndTarget = cell.attributes?.source && cell.attributes?.target;
         if (hasSourceAndTarget || cell.attributes?.edge === "1") {
-          filtered.edges.push(this.convertEdge(cell));
-        } else if (cell.attributes?.value) {
-          filtered.nodes.push(this.convertNode(cell));
-        }
+          const edge = this.convertEdge(cell);
+          edgeMap.set(edge.id, edge);
 
-        if (cell.attributes?.id != null) {
-          if (cell.mxGeometry?.mxPoint) {
-            this.oldCellMap.set(cell.attributes?.id, cell);
+          if (cell.attributes?.source && cell.attributes?.target) {
+            if (!cell.mxGeometry?.mxPoint?.length) {
+              needUpdatedEdges.push(edge);
+            }
           }
+        } else if (cell.attributes?.value) {
+          const node = this.convertNode(cell);
+          nodeMap.set(node.id, node);
+          filtered.nodes.push(node);
         }
       }
     );
 
-    const isNeedUpdateRelativeParent = filtered.nodes.filter(node => {
-      const hasParent = node.data?.parentId && node.data?.parentId !== "1";
-      return hasParent && this.oldCellMap.has(node.data!.parentId!);
+    needUpdatedEdges.forEach((edge: Edge) => {
+      const source = {
+        x: nodeMap.get(edge.data!.source)?.x || 0,
+        y: nodeMap.get(edge.data!.source)?.y || 0,
+      };
+      const target = {
+        x: nodeMap.get(edge.data!.target)?.x || 0,
+        y: nodeMap.get(edge.data!.target)?.y || 0,
+      };
+
+      edge.points.push(source);
+      edge.points.push(target);
     });
-    if (isNeedUpdateRelativeParent.length > 0) {
-      this.fixEdgeLabelNotPositionIssue(isNeedUpdateRelativeParent);
+
+    filtered.nodes = Array.from(nodeMap.values());
+    filtered.edges = Array.from(edgeMap.values());
+
+    const maybeUpdateEdgeLabelPosition = filtered.nodes.filter(node => {
+      const hasParent = node.data?.parentId && node.data?.parentId !== "1";
+      return hasParent && (edgeMap.has(node.data!.parentId!));
+    });
+    if (maybeUpdateEdgeLabelPosition.length > 0) {
+      this.fixEdgeLabelNotPositionIssue(maybeUpdateEdgeLabelPosition, edgeMap);
     }
 
     return filtered;
   }
 
-  private fixEdgeLabelNotPositionIssue(nodes: Node[]) {
+  private fixEdgeLabelNotPositionIssue(nodes: Node[], cellMap: Map<string, Edge>) {
     nodes.forEach(node => {
-      const parentNode: MXCell | undefined = this.oldCellMap.get(node.data!.parentId!);
-      const parentPoint = parentNode?.mxGeometry?.mxPoint;
-      if (!Array.isArray(parentPoint)) {
+      const parentNode: Edge | undefined = cellMap.get(node.data!.parentId!);
+      if (parentNode?.points.length == 0) {
         return;
       }
 
-      const startPoint = parentPoint[0];
-      if (startPoint.attributes?.x && startPoint.attributes?.y) {
-        node.x = parseFloat(<string>startPoint.attributes?.x) + (node.x ?? 0);
-        node.y = parseFloat(<string>startPoint.attributes?.y) + (node.y ?? 0);
+      const startPoint = parentNode?.points[0];
+      if (startPoint?.x && startPoint?.y) {
+        node.x = startPoint?.x + (node.x ?? 0);
+        node.y = startPoint?.y + (node.y ?? 0);
       }
     });
   }
