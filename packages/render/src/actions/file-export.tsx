@@ -1,12 +1,6 @@
-import { Converter } from "@feakin/exporter";
-
-const DOT_LANG = "dot";
-
 export function fileExport(text: string, outputType: string) {
-  let output = Converter.fromContent(text, DOT_LANG).target(outputType);
-
   const element = document.createElement("a");
-  const file = new Blob([output], {
+  const file = new Blob([text], {
     type: "text/plain"
   });
   element.href = URL.createObjectURL(file);

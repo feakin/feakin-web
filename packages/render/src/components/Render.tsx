@@ -1,13 +1,8 @@
 import React, { useEffect } from 'react';
-import {
-  Layer,
-  Rect,
-  Stage,
-  Transformer,
-} from 'react-konva';
+import { Layer, Rect, Stage, Transformer, } from 'react-konva';
 import Konva from 'konva';
 import { FK_RECT_NAME } from './shapes/FkRect';
-import { Node, Edge, DotImporter, Graph, Converter } from "@feakin/exporter";
+import { Converter, Edge, Graph, Node, SupportedFileType } from "@feakin/exporter";
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
@@ -198,14 +193,26 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
     layer.draw();
   };
 
- useEffect(() => {
-   try {
-     const converter = Converter.fromContent(props.code.content, props.code.sourceType);
-     setLayout(converter.graph);
-   } catch (e) {
-     console.error(e);
-   }
- }, [props.code]);
+  useEffect(() => {
+    try {
+      switch (props.code.sourceType) {
+        case SupportedFileType.GRAPHVIZ:
+        case SupportedFileType.MERMAID:
+          setLayout(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          break;
+        case SupportedFileType.DRAWIO:
+          setLayout(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          break;
+        case SupportedFileType.EXCALIDRAW:
+          setLayout(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
+        default:
+          throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [props.code]);
 
   return (
     <Stage
@@ -220,8 +227,8 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
       onTouchStart={ checkDeselect }
     >
       <Layer ref={ layerRef }>
-        { layout.nodes.map((node: Node) => NodeRender(node)) }
-        { layout.edges.map((edge: Edge) => EdgeShape(edge)) }
+        { layout.nodes && layout.nodes.map((node: Node) => NodeRender(node)) }
+        { layout.edges && layout.edges.map((edge: Edge) => EdgeShape(edge)) }
 
         <Transformer
           ref={ trRef }
