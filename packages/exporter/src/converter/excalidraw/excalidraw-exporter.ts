@@ -137,6 +137,10 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
 
     Object.assign(labelNode, {
       id: nanoid(),
+      x: node.x || 0,
+      y: node.y || 0,
+      width: node.width || 0,
+      height: node.height || 0,
       text: node.label,
       fontSize: 20,
       fontFamily: 1,
@@ -147,10 +151,10 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
       originalText: node.label
     });
 
-    // todo: calculate the correct position of the label;
     labelNode.height = 26;
 
     if (isBrowser()) {
+      // todo: resize the parent container to fit the label
       const metrics = measureText(node.label, "20px sans-serif" as FontString);
       if (metrics.width != 0) {
         labelNode.width = metrics.width;
@@ -164,7 +168,7 @@ export class ExcalidrawExporter extends Exporter<ExportedDataState> implements T
   private createBaseNode(node: Node) {
     return {
       id: node.id,
-      type: 'rectangle',
+      type: node.data?.shape || "rectangle",
       x: node.x,
       y: node.y,
       width: node.width || 0,
