@@ -1,5 +1,5 @@
 import { Node } from './graph';
-import { ShapeType } from "./node/base/shape";
+import { ShapeType } from "./node/base/shape-type";
 
 export interface DataExt<D> {
   data(): D;

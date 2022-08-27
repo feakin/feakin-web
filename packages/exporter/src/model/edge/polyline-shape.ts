@@ -1,6 +1,6 @@
 import { Shape } from "../node";
 import { Point } from "../geometry/point";
-import { ShapeType } from "../node/base/shape";
+import { ShapeType } from "../node/base/shape-type";
 
 export class PolylineShape extends Shape {
   private points_: Point[];

@@ -1,7 +1,7 @@
 import { Shape } from "../node";
 import { Point } from "../geometry/point";
 import { ArrowStyle, ArrowType, defaultArrowStyle } from "./edge-type";
-import { ShapeType } from "../node/base/shape";
+import { ShapeType } from "../node/base/shape-type";
 
 export class ArrowShape extends Shape {
   private points_: Point[];

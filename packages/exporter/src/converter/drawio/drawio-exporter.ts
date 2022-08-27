@@ -4,7 +4,7 @@ import { js2xml } from "./encode/xml-converter";
 import { Edge, Graph, Node } from "../../model/graph";
 import { Exporter, Transpiler } from "../exporter";
 import { CellState } from "./cell-state";
-import { ShapeType } from "../../model/node/base/shape";
+import { ShapeType } from "../../model/node/base/shape-type";
 
 export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
   idIndex = 0;

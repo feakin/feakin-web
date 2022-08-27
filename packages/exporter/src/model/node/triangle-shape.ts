@@ -1,6 +1,6 @@
-import { ShapeType } from "./base/shape";
 import { Point } from "../geometry/point";
 import { PolygonShape } from "./polygon-shape";
+import { ShapeType } from "./base/shape-type";
 
 export class TriangleShape extends PolygonShape {
   override type = ShapeType.Triangle;

@@ -1,6 +1,6 @@
-import { ShapeType } from "./shape";
-import { Point } from "../../geometry/point";
-import { PolygonShape } from "../polygon-shape";
+import { Point } from "../geometry/point";
+import { PolygonShape } from "./polygon-shape";
+import { ShapeType } from "./base/shape-type";
 
 /**
  * Diamond aka Rhombus.

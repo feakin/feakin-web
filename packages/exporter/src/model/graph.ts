@@ -3,7 +3,7 @@ import { FillState } from "./state-style/fill-state";
 import { StrokeState } from "./state-style/stroke-state";
 import { EdgeType } from "./edge/edge-type";
 import { FontState } from "./state-style/font-state";
-import { ShapeType } from "./node/base/shape";
+import { ShapeType } from "./node/base/shape-type";
 
 /**
  * Graph is a class that represents a graph.

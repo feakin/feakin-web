@@ -1,4 +1,5 @@
-import { Shape, ShapeType } from "./base/shape";
+import { Shape } from "./base/shape";
+import { ShapeType } from "./base/shape-type";
 
 export class PolygonShape extends Shape {
   override type = ShapeType.Polygon;
