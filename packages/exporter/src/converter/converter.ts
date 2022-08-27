@@ -16,7 +16,7 @@ export enum SupportedFileType {
   EXCALIDRAW = "excalidraw",
   DRAWIO = "drawio",
   MERMAID = "mermaid",
-  DOT = "dot",
+  GRAPHVIZ = "graphviz",
 }
 
 export enum SupportedTarget {
@@ -30,10 +30,13 @@ export enum SupportedTarget {
  * Import a graph to a string representation of the graph, and export a string representation of the graph to a graph.
  */
 export class Converter {
-  protected graph: Graph;
+  get graph(): Graph {
+    return this._graph;
+  }
+  private readonly _graph: Graph;
 
   constructor(graph: Graph) {
-    this.graph = graph;
+    this._graph = graph;
   }
 
   /**
@@ -70,7 +73,7 @@ export class Converter {
       case SupportedFileType.MERMAID:
         parser = new MermaidImporter(content);
         break;
-      case SupportedFileType.DOT:
+      case SupportedFileType.GRAPHVIZ:
         parser = new DotImporter(content);
         break;
       default:
@@ -84,16 +87,16 @@ export class Converter {
     let exporter: Exporter<any>;
     switch (target) {
       case SupportedTarget.EXCALIDRAW:
-        exporter = new ExcalidrawExporter(this.graph);
+        exporter = new ExcalidrawExporter(this._graph);
         break;
       case SupportedTarget.DRAWIO:
-        exporter = new DrawioExporter(this.graph);
+        exporter = new DrawioExporter(this._graph);
         break;
       case SupportedTarget.MERMAID:
-        exporter = new MermaidExporter(this.graph);
+        exporter = new MermaidExporter(this._graph);
         break;
       case SupportedTarget.DOT:
-        exporter = new DotExporter(this.graph);
+        exporter = new DotExporter(this._graph);
         break;
       default:
         throw new Error("Unsupported file type");

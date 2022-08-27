@@ -1,15 +1,24 @@
 import { FkTemplate } from "./fk-template";
+import { SupportedFileType } from "@feakin/exporter";
+import { SupportedCodeLang } from "../type";
 
 export const templates: FkTemplate[] = [
   {
     name: 'concept-map',
     label: 'Concept Map',
-    template: ``
+    template: {
+      sourceType: SupportedFileType.DRAWIO,
+      language: SupportedCodeLang.xml,
+      content: ``
+    }
   },
   {
     name: 'frontend-backend',
     label: 'Frontend-Backend',
-    template: `digraph {
+    template: {
+      sourceType: SupportedFileType.GRAPHVIZ,
+      language: SupportedCodeLang.dot,
+      content: `digraph {
   compound=true;
   node [ fontname="Handlee" ];
   subgraph cluster_website {
@@ -39,5 +48,6 @@ export const templates: FkTemplate[] = [
   "aws-sdk" -> S3 [lhead=cluster_aws];
 }
 `
+    }
   }
 ]

@@ -2,24 +2,27 @@ import React, { useRef } from 'react';
 import { AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { Converter, OnlineRender } from "@feakin/exporter";
+import { Converter, OnlineRender, SupportedFileType } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
-import * as monacoEditor from "monaco-editor";
 
 import Render from "./components/Render";
 import { addDotLang } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
 import { fileExport } from "./actions/file-export";
-import { getExtension } from "./helper/file-ext";
+import { extToCodeType, getExtension } from "./helper/file-ext";
 import { templates } from "./templates/frontend-backend";
 import { FkTemplate } from "./templates/fk-template";
+import { CodeProp, SupportedCodeLang } from "./type";
 
 const DOT_LANG = "dot";
 
 const App = () => {
   const history = new ChangeHistory();
   const inputFile = useRef<HTMLInputElement | null>(null);
-  const [text, setText] = React.useState(`digraph G {
+  const [code, setCode] = React.useState({
+    language: SupportedCodeLang.dot,
+    sourceType: SupportedFileType.GRAPHVIZ,
+    content: `digraph G {
   compound=true;
   subgraph cluster0 {
     a [shape="triangle"];
@@ -31,7 +34,8 @@ const App = () => {
     e -> g;
     e -> f;
   }
-}`);
+}`
+  } as CodeProp);
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
   const [exportEl, setExportEl] = React.useState<null | HTMLElement>(null);
   const [templateEl, setTemplateEl] = React.useState<null | HTMLElement>(null);
@@ -65,8 +69,8 @@ const App = () => {
   };
 
   const exportFile = (outputType: string) => {
-    fileExport(text, outputType);
-
+    const outputCode = Converter.fromContent(code.content, code.sourceType).target(outputType);
+    fileExport(outputCode, outputType);
     setExportEl(null);
   }
 
@@ -82,30 +86,45 @@ const App = () => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       let ext = getExtension(file.name);
-      if (ext) {
+      if (ext == null) {
+        alert("not support type, for example: .dot, .mermaid, .excalidraw");
+        return;
+      }
+
+      let codeType = extToCodeType(ext!);
+      if (codeType != null) {
         file.text().then(text => {
-          setText(Converter.fromContent(text, ext as string).target(DOT_LANG));
+          setCode({
+            language: codeType!.lang,
+            sourceType: codeType!.sourceType,
+            content: text
+          });
         });
+      } else {
+        alert("not support type, for example: .dot, .mermaid, .excalidraw");
       }
     }
   }
 
   const onlineRender = (typ: string) => {
+    let converter = Converter.fromContent(code.content, DOT_LANG);
     switch (typ) {
       case "graphviz":
-        window.open(OnlineRender.buildDotUrl(text));
+        window.open(OnlineRender.buildDotUrl(converter.target("graphviz")));
         break;
       case "mermaid":
-        let graphText = Converter.fromContent(text, DOT_LANG).target("mermaid");
-        window.open(OnlineRender.buildMermaidUrl(graphText));
+        window.open(OnlineRender.buildMermaidUrl(converter.target("mermaid")));
         break;
       default:
         console.error("unknown " + typ);
     }
   }
 
-  const handleTextChange = (newValue: string, event: monacoEditor.editor.IModelContentChangedEvent) => {
-    setText(newValue);
+  const handleTextChange = (newValue: string) => {
+    setCode({
+      ...code,
+      content: newValue
+    });
   }
 
   const editorDidMount = (editor: any, monaco: any) => {
@@ -166,7 +185,7 @@ const App = () => {
       onClose={ handleTemplateMenuClose }
     >
       { templates.map((template: FkTemplate, index: number) =>
-        <MenuItem key={ `key-` + index } onClick={ () => setText(template.template) }>
+        <MenuItem key={ `key-` + index } onClick={ () => setCode(template.template) }>
           <Typography textAlign="center">{ template.label }</Typography>
         </MenuItem>
       ) }
@@ -220,15 +239,15 @@ const App = () => {
           <MonacoEditor
             width="100%"
             height={ window.innerHeight - 200 }
-            language="dot"
+            language={ code.language }
             theme="vs-dark"
-            value={ text }
+            value={ code.content }
             onChange={ handleTextChange }
             editorDidMount={ editorDidMount }
           />
         </Grid2>
         <Grid2 xs={ 6 }>
-          <Render text={ text } history={ history }/>
+          <Render code={ code } history={ history }/>
         </Grid2>
       </Grid2>
     </div>

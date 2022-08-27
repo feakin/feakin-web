@@ -77,14 +77,14 @@ export const addVertex = function (_id, text, type, style, classes, dir, props =
       txt = txt.substring(1, txt.length - 1);
     }
 
-    vertices[id].text = txt;
+    vertices[id].code = txt;
   } else {
     if (typeof vertices[id].text === 'undefined') {
-      vertices[id].text = _id;
+      vertices[id].code = _id;
     }
   }
   if (typeof type !== 'undefined') {
-    vertices[id].type = type;
+    vertices[id].sourceType = type;
   }
   if (typeof style !== 'undefined') {
     if (style !== null) {

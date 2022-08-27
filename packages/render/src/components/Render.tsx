@@ -7,12 +7,13 @@ import {
 } from 'react-konva';
 import Konva from 'konva';
 import { FK_RECT_NAME } from './shapes/FkRect';
-import { Node, Edge, DotImporter, Graph } from "@feakin/exporter";
+import { Node, Edge, DotImporter, Graph, Converter } from "@feakin/exporter";
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
+import { CodeProp } from "../type";
 
-function Render(props: { text: string, history: ChangeHistory }) {
+function Render(props: { code: CodeProp, history: ChangeHistory }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_selectedId, selectShape] = React.useState<number | null>(null);
   const stageRef = React.useRef<Konva.Stage | null>(null);
@@ -199,14 +200,12 @@ function Render(props: { text: string, history: ChangeHistory }) {
 
  useEffect(() => {
    try {
-     const executor = new DotImporter(props.text);
-     let graph = executor.parse();
-     setLayout(graph);
-     props.history.save(props.text);
+     const converter = Converter.fromContent(props.code.content, props.code.sourceType);
+     setLayout(converter.graph);
    } catch (e) {
      console.error(e);
    }
- }, [props.history, props.text]);
+ }, [props.code]);
 
   return (
     <Stage
