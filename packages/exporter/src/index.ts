@@ -50,11 +50,11 @@ export * from './model/node/base/shape';
 export * from './model/node/text-shape';
 export * from './model/node/triangle-shape';
 export * from './model/renderer';
-export * from './model/prop/fill-prop';
+export * from './model/prop/fill-style-prop';
 export * from './model/prop/font-props';
 export * from './model/prop/image-prop';
 export * from './model/prop/padding-prop';
-export * from './model/prop/stroke-prop';
+export * from './model/prop/stroke-style-prop';
 export * from './model/prop/style-constants';
 
 export * from './renderer/abstract-svg-render';

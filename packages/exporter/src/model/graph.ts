@@ -1,6 +1,6 @@
 import { Point } from "./geometry/point";
-import { FillProp } from "./prop/fill-prop";
-import { StrokeProp } from "./prop/stroke-prop";
+import { FillStyleProp } from "./prop/fill-style-prop";
+import { StrokeStyleProp } from "./prop/stroke-style-prop";
 import { EdgeType } from "./edge/edge-type";
 import { FontProps } from "./prop/font-props";
 import { ShapeType } from "./node/base/shape-type";
@@ -29,9 +29,8 @@ export interface ElementProperty {
   height?: number;
 
   color?: string;
-  position?: Position | undefined;
-  fill?: FillProp;
-  stroke?: StrokeProp;
+  fill?: FillStyleProp;
+  stroke?: StrokeStyleProp;
   font?: FontProps;
 }
 
