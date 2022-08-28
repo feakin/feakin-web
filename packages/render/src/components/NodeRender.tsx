@@ -1,37 +1,18 @@
 import React from 'react';
-import { Node, ElementProperty, RectangleShape, PolygonShape, TriangleShape, DiamondShape } from "@feakin/exporter";
+import { DiamondShape, ElementProperty, Node, PolygonShape, RectangleShape, TriangleShape } from "@feakin/exporter";
 import FkRect from "./shapes/FkRect";
 import FkPolygonShape from "./shapes/FkPolygonShape";
-import { RenderOptions } from "./render-options";
+import { RenderOptions } from "../type";
 
 function NodeRender(node: Node, prop?: ElementProperty, options: RenderOptions = {}) {
   function Rectangle(node: Node) {
     const rectangle = new RectangleShape(node.x, node.y, node.width, node.height);
 
-    return (<FkRect
-      node={ node }
-      key={ 'node-' + node.id }
-      draggable={ true }
-      shape={ rectangle }
-      // onSelect={ (e) => {
-      //   if (e.current !== undefined) {
-      //     let temp = nodesArray;
-      //     if (!nodesArray.includes(e.current)) temp.push(e.current);
-      //     setNodes(temp);
-      //     trRef.current!!.nodes(nodesArray);
-      //     trRef.current!!.getLayer()!!.batchDraw();
-      //   }
-      //   selectShape(node.id);
-      // } }
-    />);
+    return (<FkRect node={ node } key={ 'node-' + node.id } draggable={ true } shape={ rectangle }/>);
   }
 
   function Polygon(node: Node, shape: PolygonShape) {
-    return (<FkPolygonShape
-      node={ node }
-      key={ 'node-' + node.id }
-      shape={ shape }
-    />);
+    return (<FkPolygonShape node={ node } key={ 'node-' + node.id } shape={ shape }/>);
   }
 
   const renderNode = (node: Node, prop?: ElementProperty) => {

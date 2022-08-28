@@ -6,8 +6,7 @@ import { Converter, Edge, Graph, Node, SupportedFileType } from "@feakin/exporte
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
-import { CodeProp } from "../type";
-import { RenderOptions } from "./render-options";
+import { CodeProp, RenderOptions } from "../type";
 
 function Render(props: { code: CodeProp, history: ChangeHistory, options: RenderOptions }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

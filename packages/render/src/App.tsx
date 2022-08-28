@@ -11,13 +11,11 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Render from "./components/Render";
 import { addDotLang } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
-import { CodeProp, SupportedCodeLang } from "./type";
-import { RenderOptions } from "./components/render-options";
+import { CodeProp, RenderOptions, SupportedCodeLang } from "./type";
 import { HandDrawing } from "./graph/drawn-style/hand-drawing";
 import { NavBar } from "./layout/nav-bar";
 
-
-const App = () => {
+export const App = () => {
   const history = new ChangeHistory();
   const [formats, setFormats] = React.useState<string[]>(() => []);
   const [renderOptions, setRenderOptions] = React.useState<RenderOptions>({
@@ -25,7 +23,7 @@ const App = () => {
     paintInstance: new HandDrawing()
   });
 
-  // todo: add AppState to store the code and history
+  // todo: add @{AppState} to store the code and history
   const [code, setCode] = React.useState({
     language: SupportedCodeLang.dot,
     sourceType: SupportedFileType.GRAPHVIZ,
@@ -99,5 +97,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

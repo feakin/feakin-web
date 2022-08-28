@@ -1,8 +1,8 @@
 import React from 'react';
 import { Edge, flattenPoints } from "@feakin/exporter";
-import { Arrow, Line, Group, Text } from "react-konva";
+import { Arrow, Group, Line, Text } from "react-konva";
 import { Drawable } from "roughjs/bin/core";
-import { RenderOptions } from './render-options';
+import { RenderOptions } from "../type";
 
 function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
   const { points, label } = props.edge
