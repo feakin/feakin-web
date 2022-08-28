@@ -1,4 +1,4 @@
-import { Drawable, Options } from "roughjs/bin/core";
+import { Drawable, Op, OpSet, Options } from "roughjs/bin/core";
 import { RoughGenerator } from "roughjs/bin/generator";
 
 import { Point, randomInteger, RectangleShape, Shape } from "@feakin/exporter";
@@ -50,7 +50,8 @@ export class HandDrawing {
   }
 
   line(start: Point, end: Point) {
-    return this.generator.line(start.x, start.y, end.x, end.y);
+    const options = generateRoughOptions(new Shape());
+    return this.generator.line(start.x, start.y, end.x, end.y, options);
   }
 
   path(points: Point[]) {
@@ -65,7 +66,7 @@ export class HandDrawing {
 
   polygon(points: Point[]) {
     const rPoints: [number, number][] = points.map(p => [p.x, p.y]);
-    return this.generator.polygon(rPoints);
+    return this.generator.polygon(rPoints, generateRoughOptions(new Shape()));
   }
 
   /**
@@ -73,5 +74,30 @@ export class HandDrawing {
    */
   paths(drawable: Drawable) {
     return this.generator.toPaths(drawable);
+  }
+
+  drawLine(ctx: CanvasRenderingContext2D, drawable: Drawable) {
+    ctx.beginPath();
+
+    drawable.sets.forEach((set: OpSet) => {
+      set.ops.forEach((op: Op) => {
+          switch (op.op) {
+            case "move":
+              ctx.moveTo(op.data[0], op.data[1]);
+              break;
+            case "lineTo":
+              ctx.lineTo(op.data[0], op.data[1]);
+              break;
+            case "bcurveTo":
+              ctx.bezierCurveTo(op.data[0], op.data[1], op.data[2], op.data[3], op.data[4], op.data[5]);
+              break;
+            default:
+              throw new Error(`Unknown operation ${ op.op }`);
+          }
+        }
+      );
+    });
+
+    ctx.stroke();
   }
 }

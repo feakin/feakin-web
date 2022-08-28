@@ -18,15 +18,17 @@ import { templates } from "./templates/templates";
 import { FkTemplate } from "./templates/fk-template";
 import { CodeProp, SupportedCodeLang } from "./type";
 import { RenderOptions } from "./components/render-options";
+import { HandDrawing } from "./graph/drawn-style/hand-drawing";
 
 const DOT_LANG = "dot";
 
 const App = () => {
   const history = new ChangeHistory();
   const inputFile = useRef<HTMLInputElement | null>(null);
-  const [formats, setFormats] = React.useState(() => []);
+  const [formats, setFormats] = React.useState<string[]>(() => []);
   const [renderOptions, setRenderOptions] = React.useState<RenderOptions>({
     paintStyle: false,
+    paintInstance: new HandDrawing()
   });
   const [code, setCode] = React.useState({
     language: SupportedCodeLang.dot,
@@ -130,7 +132,11 @@ const App = () => {
   const updateRenderFormats = (event: React.MouseEvent<HTMLElement>, newFormats: string[],) => {
     const newOptions: RenderOptions = {};
     newOptions.paintStyle = newFormats.includes("paintStyle");
-    setRenderOptions(newOptions)
+    setFormats(newFormats);
+    setRenderOptions({
+      ...renderOptions,
+      ...newOptions
+    })
   };
 
   let exportMenus = <Menu
