@@ -231,7 +231,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
           break;
         case SupportedFileType.EXCALIDRAW:
           setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
-          throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
+          break;
         default:
           throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
       }
