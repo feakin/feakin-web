@@ -1,4 +1,4 @@
-import { executeLayouting, dagreLayout, layoutFromGraph } from './dagre-layout';
+import { runLayout, dagreLayout, layoutFromGraph } from './dagre-layout';
 import { DagreRelation } from "./dagre-relation";
 import { graphlib } from "dagre";
 
@@ -66,7 +66,7 @@ describe('feakinExporter', () => {
     g.setEdge('e', 'f');
     g.setEdge('e', 'g');
 
-    const graph = executeLayouting(g);
+    const graph = runLayout(g);
     expect(graph.nodes.length).toBe(9);
   })
 

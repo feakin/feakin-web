@@ -3,8 +3,8 @@ import { Node as DagreNode, GraphEdge, graphlib } from "dagre";
 
 import { DagreRelation } from "./dagre-relation";
 import { Node, Edge, Graph } from "../../model/graph";
-import { defaultLayoutOptions, LayoutOptions } from "../../model/layout/layout";
 import { nanoid } from "nanoid";
+import { defaultLayoutOptions, LayoutOptions } from "../../model/layout/layout-options";
 
 function initGraphOptions(options: LayoutOptions) {
   const graph = new graphlib.Graph({
@@ -56,7 +56,7 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
     }
   })
 
-  return executeLayouting(rootGraph);
+  return runLayout(rootGraph);
 }
 
 export function dagreLayout(relations: DagreRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
@@ -81,14 +81,14 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
     dagreGraph.setNode(name, label);
   });
 
-  return executeLayouting(dagreGraph);
+  return runLayout(dagreGraph);
 }
 
 /**
  * Calculate the position of nodes and edges in the graph.
  * @param graph
  */
-export function executeLayouting(graph: graphlib.Graph<any>): Graph {
+export function runLayout(graph: graphlib.Graph<any>): Graph {
   dagre.layout(graph);
 
   const labelIdMap: Map<string, string> = new Map();

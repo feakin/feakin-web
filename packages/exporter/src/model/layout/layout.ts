@@ -1,26 +1,23 @@
-import { LayoutLifecycle } from "./layout-lifecycle";
+import { defaultLayoutOptions, LayoutOptions } from "./layout-options";
+import { Graph } from "../graph";
 
 export type Direction = "LR" | "RL" | "TB" | "BT";
 
-export interface Layout extends LayoutLifecycle {
-  run: () => Layout;
-}
+export class LayoutBase {
+  private options: LayoutOptions;
 
-export const defaultLayoutOptions: LayoutOptions = {
-  rankdir: 'TB',
-  node: {
-    width: 100,
-    height: 40,
+  constructor(options: LayoutOptions = defaultLayoutOptions) {
+    this.options = options;
   }
 }
 
-export interface LayoutOptions {
-  rankdir?: Direction;
-  container?: HTMLElement;
-  node: {
-    // each node width
-    width: number;
-    // each node height
-    height: number;
-  }
+export interface LayoutConverter<I> {
+  initCustomOptions(options: any): void;
+
+  preLayout(intermedia: I): Graph;
+
+  doLayout(intermedia: I): Graph;
+
+  postLayout(graph: Graph): Graph;
 }
+
