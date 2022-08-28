@@ -7,8 +7,9 @@ import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
 import { CodeProp } from "../type";
+import { RenderOptions } from "./render-options";
 
-function Render(props: { code: CodeProp, history: ChangeHistory }) {
+function Render(props: { code: CodeProp, history: ChangeHistory, options: RenderOptions }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_selectedId, selectShape] = React.useState<number | null>(null);
   const stageRef = React.useRef<Konva.Stage | null>(null);
@@ -224,7 +225,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
     } catch (e) {
       console.error(e);
     }
-  }, [props.code]);
+  }, [props.code, props.options]);
 
   return (
     <Stage
@@ -239,8 +240,8 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
       onTouchStart={ checkDeselect }
     >
       <Layer ref={ layerRef }>
-        { graph.nodes && graph.nodes.map((node: Node) => NodeRender(node)) }
-        { graph.edges && graph.edges.map((edge: Edge) => EdgeShape(edge)) }
+        { graph.nodes && graph.nodes.map((node: Node) => NodeRender(node, undefined, props.options)) }
+        { graph.edges && graph.edges.map((edge: Edge) => EdgeShape(edge, props.options)) }
 
         <Transformer
           ref={ trRef }

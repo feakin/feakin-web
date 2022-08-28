@@ -50,8 +50,7 @@ export class HandDrawing {
   }
 
   line(start: Point, end: Point) {
-    const options = generateRoughOptions(new Shape());
-    return this.generator.line(start.x, start.y, end.x, end.y, options);
+    return this.generator.line(start.x, start.y, end.x, end.y);
   }
 
   path(points: Point[]) {
@@ -66,7 +65,7 @@ export class HandDrawing {
 
   polygon(points: Point[]) {
     const rPoints: [number, number][] = points.map(p => [p.x, p.y]);
-    return this.generator.polygon(rPoints, generateRoughOptions(new Shape()));
+    return this.generator.polygon(rPoints);
   }
 
   /**

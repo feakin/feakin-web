@@ -2,8 +2,9 @@ import React from 'react';
 import { Node, ElementProperty, RectangleShape, PolygonShape, TriangleShape, DiamondShape } from "@feakin/exporter";
 import FkRect from "./shapes/FkRect";
 import FkPolygonShape from "./shapes/FkPolygonShape";
+import { RenderOptions } from "./render-options";
 
-function NodeRender(node: Node, prop?: ElementProperty) {
+function NodeRender(node: Node, prop?: ElementProperty, options: RenderOptions = {}) {
   function Rectangle(node: Node) {
     const rectangle = new RectangleShape(node.x, node.y, node.width, node.height);
 

@@ -1,9 +1,13 @@
 import React, { useRef } from 'react';
-import { AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, IconButton, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Converter, SupportedFileType } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
+
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import Render from "./components/Render";
 import { addDotLang } from "./components/editor/dot-lang";
@@ -13,12 +17,17 @@ import { extToCodeType, getExtension } from "./helper/file-ext";
 import { templates } from "./templates/templates";
 import { FkTemplate } from "./templates/fk-template";
 import { CodeProp, SupportedCodeLang } from "./type";
+import { RenderOptions } from "./components/render-options";
 
 const DOT_LANG = "dot";
 
 const App = () => {
   const history = new ChangeHistory();
   const inputFile = useRef<HTMLInputElement | null>(null);
+  const [formats, setFormats] = React.useState(() => []);
+  const [renderOptions, setRenderOptions] = React.useState<RenderOptions>({
+    paintStyle: false,
+  });
   const [code, setCode] = React.useState({
     language: SupportedCodeLang.dot,
     sourceType: SupportedFileType.GRAPHVIZ,
@@ -117,6 +126,12 @@ const App = () => {
     addDotLang(monaco);
     editor.focus();
   }
+
+  const updateRenderFormats = (event: React.MouseEvent<HTMLElement>, newFormats: string[],) => {
+    const newOptions: RenderOptions = {};
+    newOptions.paintStyle = newFormats.includes("paintStyle");
+    setRenderOptions(newOptions)
+  };
 
   let exportMenus = <Menu
     id="export-menu"
@@ -218,9 +233,13 @@ const App = () => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Grid2 container spacing={ 3 }>
+      <Grid2 container spacing={ 1 }>
         <input type='file' id='file' ref={ inputFile } style={ { display: 'none' } } onChange={ onChangeFile }/>
         <Grid2 xs={ 6 }>
+          <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>
+            <TextField id="lang-name" disabled size="small" label="Language" value={ code.language }/>
+            <TextField id="type" disabled size="small" label="Source Type" value={ code.sourceType }/>
+          </Box>
           <MonacoEditor
             width="100%"
             height={ window.innerHeight - 200 }
@@ -232,7 +251,14 @@ const App = () => {
           />
         </Grid2>
         <Grid2 xs={ 6 }>
-          <Render code={ code } history={ history }/>
+          <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>
+            <ToggleButtonGroup value={ formats } onChange={ updateRenderFormats }>
+              <ToggleButton value="paintStyle" aria-label="Paint Style" size={ "small" }>
+                <DriveFileRenameOutlineIcon/>
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+          <Render code={ code } history={ history } options={ renderOptions }/>
         </Grid2>
       </Grid2>
     </div>
