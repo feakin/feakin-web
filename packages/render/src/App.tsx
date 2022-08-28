@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
-import { AppBar, Box, Button, IconButton, Menu, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
+import React from 'react';
+import { Box, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
-import GitHubIcon from '@mui/icons-material/GitHub';
-import { Converter, SupportedFileType } from "@feakin/exporter";
+import { SupportedFileType } from "@feakin/exporter";
 import MonacoEditor from "react-monaco-editor";
 
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -12,24 +11,21 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Render from "./components/Render";
 import { addDotLang } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
-import { fileExport } from "./actions/file-export";
-import { extToCodeType, getExtension } from "./helper/file-ext";
-import { templates } from "./templates/templates";
-import { FkTemplate } from "./templates/fk-template";
 import { CodeProp, SupportedCodeLang } from "./type";
 import { RenderOptions } from "./components/render-options";
 import { HandDrawing } from "./graph/drawn-style/hand-drawing";
+import { NavBar } from "./layout/nav-bar";
 
-const DOT_LANG = "dot";
 
 const App = () => {
   const history = new ChangeHistory();
-  const inputFile = useRef<HTMLInputElement | null>(null);
   const [formats, setFormats] = React.useState<string[]>(() => []);
   const [renderOptions, setRenderOptions] = React.useState<RenderOptions>({
     paintStyle: false,
     paintInstance: new HandDrawing()
   });
+
+  // todo: add AppState to store the code and history
   const [code, setCode] = React.useState({
     language: SupportedCodeLang.dot,
     sourceType: SupportedFileType.GRAPHVIZ,
@@ -47,75 +43,6 @@ const App = () => {
   }
 }`
   } as CodeProp);
-  const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
-  const [exportEl, setExportEl] = React.useState<null | HTMLElement>(null);
-  const [templateEl, setTemplateEl] = React.useState<null | HTMLElement>(null);
-
-  const isOpenFileMenu = Boolean(fileEl);
-  const isOpenExportMenu = Boolean(exportEl);
-  const isOpenTemplateMenu = Boolean(templateEl);
-
-  const handleFieMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setFileEl(event.currentTarget);
-  };
-
-  const handleFileMenuClose = () => {
-    setFileEl(null);
-  };
-
-  const handleTemplateMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setTemplateEl(event.currentTarget);
-  };
-
-  const handleTemplateMenuClose = () => {
-    setTemplateEl(null);
-  };
-
-  const handleExportMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setExportEl(event.currentTarget);
-  };
-
-  const handleExportMenuClose = () => {
-    setExportEl(null);
-  };
-
-  const exportFile = (outputType: string) => {
-    const outputCode = Converter.fromContent(code.content, code.sourceType).target(outputType);
-    fileExport(outputCode, outputType);
-    setExportEl(null);
-  }
-
-  const importFile = () => {
-    if (inputFile.current != null) {
-      inputFile.current.click();
-    }
-
-    setFileEl(null);
-  }
-
-  const onChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      let ext = getExtension(file.name);
-      if (ext == null) {
-        alert("not support type, for example: .dot, .mermaid, .excalidraw");
-        return;
-      }
-
-      let codeType = extToCodeType(ext!);
-      if (codeType != null) {
-        file.text().then(text => {
-          setCode({
-            language: codeType!.lang,
-            sourceType: codeType!.sourceType,
-            content: text
-          });
-        });
-      } else {
-        alert("not support type, for example: .dot, .mermaid, .excalidraw");
-      }
-    }
-  }
 
   const handleTextChange = (newValue: string) => {
     setCode({
@@ -139,108 +66,10 @@ const App = () => {
     })
   };
 
-  let exportMenus = <Menu
-    id="export-menu"
-    anchorEl={ exportEl }
-    open={ isOpenExportMenu }
-    onClose={ handleExportMenuClose }
-    MenuListProps={ {
-      'aria-labelledby': 'basic-button',
-    } }
-  >
-    <MenuItem onClick={ () => exportFile(DOT_LANG) }>Dot</MenuItem>
-    <MenuItem onClick={ () => exportFile('drawio') }>Draw.io</MenuItem>
-    <MenuItem onClick={ () => exportFile('excalidraw') }>Excalidraw</MenuItem>
-  </Menu>;
-
-  let fileMenus = <Menu
-    id="file-menu"
-    anchorEl={ fileEl }
-    open={ isOpenFileMenu }
-    anchorOrigin={ {
-      vertical: 'bottom',
-      horizontal: 'left',
-    } }
-    keepMounted
-    transformOrigin={ {
-      vertical: 'top',
-      horizontal: 'left',
-    } }
-    onClose={ handleFileMenuClose }
-    MenuListProps={ {
-      'aria-labelledby': 'basic-button',
-    } }
-  >
-    <MenuItem onClick={ importFile }>
-      <Typography textAlign="center">Import</Typography>
-    </MenuItem>
-  </Menu>;
-
-  function selectTemplate(template: FkTemplate) {
-    setCode(template.template);
-    setTemplateEl(null);
-  }
-
-  let templateMenus = <><Button
-    sx={ { my: 2, color: 'white', display: 'block' } }
-    aria-controls={ isOpenTemplateMenu ? 'template-menu' : undefined }
-    aria-haspopup="true"
-    aria-expanded={ isOpenTemplateMenu ? 'true' : undefined }
-    onClick={ handleTemplateMenuClick }
-  >
-    Templates
-  </Button>
-    <Menu
-      id="template-menu"
-      anchorEl={ templateEl }
-      open={ isOpenTemplateMenu }
-      onClose={ handleTemplateMenuClose }
-    >
-      { templates.map((template: FkTemplate, index: number) =>
-        <MenuItem key={ `key-` + index } onClick={ () => selectTemplate(template) }>
-          <Typography textAlign="center">{ template.label }</Typography>
-        </MenuItem>
-      ) }
-    </Menu></>;
-
   return (
     <div>
-      <AppBar position="static">
-        <Toolbar>
-          <Box sx={ { display: { xs: 'none', md: 'flex', flexGrow: 1 } } }>
-            <Button
-              id="basic-button"
-              sx={ { my: 2, color: 'white', display: 'block' } }
-              aria-controls={ isOpenFileMenu ? 'file-menu' : undefined }
-              aria-haspopup="true"
-              aria-expanded={ isOpenFileMenu ? 'true' : undefined }
-              onClick={ handleFieMenuClick }
-            >
-              File
-            </Button>
-            { fileMenus }
-            { templateMenus }
-            <Button
-              sx={ { my: 2, color: 'white', display: 'block' } }
-              aria-controls={ isOpenFileMenu ? 'export-menu' : undefined }
-              aria-haspopup="true"
-              aria-expanded={ isOpenFileMenu ? 'true' : undefined }
-              onClick={ handleExportMenuClick }
-            >
-              Export
-            </Button>
-            { exportMenus }
-          </Box>
-          <Box sx={ { display: { xs: 'none', md: 'flex' } } }>
-            <IconButton onClick={ () => window.open("https://github.com/feakin/feakin") } size="large"
-                        aria-label="GitHub" color="inherit">
-              <GitHubIcon/>
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <NavBar code={ code } setCode={ setCode }/>
       <Grid2 container spacing={ 1 }>
-        <input type='file' id='file' ref={ inputFile } style={ { display: 'none' } } onChange={ onChangeFile }/>
         <Grid2 xs={ 6 }>
           <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>
             <TextField id="lang-name" disabled size="small" label="Language" value={ code.language }/>

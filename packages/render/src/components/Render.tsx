@@ -16,6 +16,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
   const layerRef = React.useRef<Konva.Layer | null>(null);
   const trRef = React.useRef<Konva.Transformer | null>(null);
   const selectionRectRef = React.useRef<Konva.Rect | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [scale, setScale] = useState({
     x: 1,
     y: 1,
@@ -241,7 +242,9 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
     >
       <Layer ref={ layerRef }>
         { graph.nodes && graph.nodes.map((node: Node) => NodeRender(node, undefined, props.options)) }
-        { graph.edges && graph.edges.map((edge: Edge) => <EdgeShape edge={edge} options={props.options} />) }
+        { graph.edges && graph.edges.map((edge: Edge) =>
+          <EdgeShape key={ edge.id } edge={ edge } options={ props.options }/>)
+        }
 
         <Transformer
           ref={ trRef }
