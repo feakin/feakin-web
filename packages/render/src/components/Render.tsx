@@ -229,7 +229,8 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
           setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
           break;
         case SupportedFileType.DRAWIO:
-          setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          let isBrowser = true;
+          setGraph(Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).graph);
           break;
         case SupportedFileType.EXCALIDRAW:
           setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);

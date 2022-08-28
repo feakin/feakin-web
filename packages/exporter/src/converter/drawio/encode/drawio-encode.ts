@@ -2,7 +2,6 @@ import * as cheerio from 'cheerio';
 import * as pako from 'pako';
 import { xml2js } from './xml-converter';
 import { text } from "cheerio";
-import { ElementType } from 'domelementtype';
 
 export const DrawioEncode = {
   xml2obj: xml2js,

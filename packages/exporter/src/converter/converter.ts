@@ -43,10 +43,11 @@ export class Converter {
    * Create an importer from a file extension.
    * @param content
    * @param fileExt
+   * @param isBrowser
    * @returns {Graph}
    */
-  static fromContent(content: string, fileExt: string): Converter {
-    const parser = this.createFrom(fileExt, content);
+  static fromContent(content: string, fileExt: string, isBrowser = false): Converter {
+    const parser = this.createFrom(fileExt, content, isBrowser);
     const graph = parser.parse();
     return this.fromGraph(graph);
   }
@@ -59,16 +60,17 @@ export class Converter {
    * Create an exporter from a file extension.
    * @param fileExt
    * @param content
+   * @param isBrowser
    * @returns {Importer}
    */
-  static createFrom(fileExt: string, content: string): Importer {
+  static createFrom(fileExt: string, content: string, isBrowser = false): Importer {
     let parser: Importer;
     switch (fileExt) {
       case SupportedFileType.EXCALIDRAW:
         parser = new ExcalidrawImporter(content);
         break;
       case SupportedFileType.DRAWIO:
-        parser = new DrawioImporter(content);
+        parser = new DrawioImporter(content, isBrowser);
         break;
       case SupportedFileType.MERMAID:
         parser = new MermaidImporter(content);

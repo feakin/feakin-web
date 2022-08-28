@@ -1,12 +1,13 @@
 import React, { useRef } from "react";
 import { AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { Converter } from "@feakin/exporter";
+import { Converter, formatXml } from "@feakin/exporter";
 import { fileExport } from "../actions/file-export";
 import { extToCodeType, getExtension } from "../helper/file-ext";
 import { FkTemplate } from "../templates/fk-template";
 import { templates } from "../templates/templates";
 import { CodeProp } from "../type";
+import DrawioEncode from "@feakin/exporter/src/converter/drawio/encode/drawio-encode";
 
 const DOT_LANG = "dot";
 
@@ -45,7 +46,8 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
   };
 
   const exportFile = (outputType: string) => {
-    const outputCode = Converter.fromContent(props.code.content, props.code.sourceType).target(outputType);
+    const isBrowser = true;
+    const outputCode = Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).target(outputType);
     fileExport(outputCode, outputType);
     setExportEl(null);
   }
@@ -70,12 +72,22 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
       let codeType = extToCodeType(ext!);
       if (codeType != null) {
         file.text().then(text => {
+          let newText = text;
+          if(codeType!.sourceType === "drawio") {
+            let decodeXml = DrawioEncode.decodeXml(text);
+            if(decodeXml) {
+              newText = formatXml(decodeXml);
+            } else {
+              newText = text;
+            }
+          }
+
           props.setCode({
             language: codeType!.lang,
             sourceType: codeType!.sourceType,
-            content: text
+            content: newText
           });
-        });
+        })
       } else {
         alert("not support type, for example: .dot, .mermaid, .excalidraw");
       }

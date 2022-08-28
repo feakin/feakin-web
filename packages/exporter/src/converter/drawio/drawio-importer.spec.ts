@@ -97,4 +97,11 @@ describe('DrawioEncoder', () => {
     expect(nodes[0].x!.toFixed(0)).toEqual("270");
     expect(nodes[0].y).toEqual(603);
   });
+
+  it('for browser', () => {
+    const drawioConverter = new DrawioImporter(`<mxGraphModel dx="541" dy="372" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="ARSg04o7xmWB_3SNBJeL-1" value="<pre><span class=&quot;s&quot;>Hello, world!</span></pre>" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1"><mxGeometry x="360" y="430" width="120" height="60" as="geometry"/></mxCell></root></mxGraphModel>`, true);
+    const graph: Graph = drawioConverter.parse();
+
+    expect(graph.nodes.length).toBe(1);
+  });
 });

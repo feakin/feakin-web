@@ -7,12 +7,19 @@ import { ShapeType } from "../../model/node/base/shape-type";
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
   private graph: MxGraph;
+  private withoutHead: boolean;
 
-  constructor(data: string) {
+  constructor(data: string, withoutHead = false) {
     super(data);
+    this.withoutHead = withoutHead;
 
-    const encoded: Mxfile | any = DrawioEncode.decodeXml(data);
-    this.graph = DrawioEncode.xml2obj(encoded) as MxGraph;
+    if (!withoutHead) {
+      const decoded: Mxfile | any = DrawioEncode.decodeXml(data);
+      this.graph = DrawioEncode.xml2obj(decoded) as MxGraph;
+    } else {
+      this.graph = DrawioEncode.xml2obj(data) as MxGraph;
+    }
+
     this.mxCells = this.graph.mxGraphModel.root.mxCell;
   }
 
