@@ -1,6 +1,4 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font
-import { ALIGN } from "./style-constants";
-
 export interface FontProps {
   fontSize?: number;
   fontFamily?: string;
@@ -8,7 +6,6 @@ export interface FontProps {
   fontStyle?: string;
   fontColor?: string;
   direction?: string;
-  textAlign?: ALIGN;
 }
 
 export class FontImpl implements FontProps {
