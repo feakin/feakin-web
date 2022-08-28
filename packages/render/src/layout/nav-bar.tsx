@@ -82,7 +82,6 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
     }
   }
 
-
   let exportMenus = <Menu
     id="export-menu"
     anchorEl={ exportEl }

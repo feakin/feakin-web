@@ -2,6 +2,7 @@ import * as cheerio from 'cheerio';
 import * as pako from 'pako';
 import { xml2js } from './xml-converter';
 import { text } from "cheerio";
+import { ElementType } from 'domelementtype';
 
 export const DrawioEncode = {
   xml2obj: xml2js,
@@ -13,10 +14,20 @@ export const DrawioEncode = {
     const $ = DrawioEncode.parseXml(source);
     const mxfile = $('mxfile');
     if (mxfile) {
-      const diagrams = text($('mxfile diagram'));
+      const $diagrams = $('mxfile diagram');
+      const diagrams = text($diagrams);
+      if ($diagrams.length == 0) {
+        return undefined;
+      }
 
-      if (diagrams.length > 0) {
+      const diagram = $diagrams[0];
+      let isDrawioEncodedText = diagram.children.length == 1 && diagram.children[0].type === 'text';
+      if (isDrawioEncodedText) {
         return DrawioEncode.decode(diagrams);
+      }
+
+      if(diagram.children.length > 1) {
+        return $diagrams.toString();
       }
     }
 
