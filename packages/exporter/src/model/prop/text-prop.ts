@@ -1,4 +1,4 @@
-import { ALIGN } from "@feakin/exporter";
+import { ALIGN } from "./style-constants";
 
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline
 export enum TextBaseline {
