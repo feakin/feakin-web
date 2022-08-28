@@ -1,5 +1,6 @@
 import { SupportedFileType } from "@feakin/exporter";
 import { HandDrawing } from "./graph/drawn-style/hand-drawing";
+import { SupportedLayout } from "@feakin/exporter/src/layout/layout-engine";
 
 export enum SupportedCodeLang {
   dot = "dot",
@@ -14,6 +15,7 @@ export interface CodeProp {
 }
 
 export interface RenderOptions {
+  layout?: SupportedLayout,
   paintStyle?: boolean;
   paintInstance?: HandDrawing;
 }

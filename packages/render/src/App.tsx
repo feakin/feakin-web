@@ -14,11 +14,13 @@ import { ChangeHistory } from "./repository/change-history";
 import { CodeProp, RenderOptions, SupportedCodeLang } from "./type";
 import { HandDrawing } from "./graph/drawn-style/hand-drawing";
 import { NavBar } from "./layout/nav-bar";
+import { SupportedLayout } from "@feakin/exporter/src/layout/layout-engine";
 
 export const App = () => {
   const history = new ChangeHistory();
   const [formats, setFormats] = React.useState<string[]>(() => []);
   const [renderOptions, setRenderOptions] = React.useState<RenderOptions>({
+    layout: SupportedLayout.Dagre,
     paintStyle: false,
     paintInstance: new HandDrawing()
   });
@@ -71,7 +73,7 @@ export const App = () => {
         <Grid2 xs={ 6 }>
           <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>
             <TextField id="lang-name" disabled size="small" label="Language" value={ code.language }/>
-            <TextField id="type" disabled size="small" label="Source Type" value={ code.sourceType }/>
+            <TextField id="source-type" disabled size="small" label="Source Type" value={ code.sourceType }/>
           </Box>
           <MonacoEditor
             width="100%"
@@ -94,6 +96,7 @@ export const App = () => {
                 <DriveFileRenameOutlineIcon/>
               </ToggleButton>
             </ToggleButtonGroup>
+            <TextField id="layout-style" disabled size="small" label="Layout Style" value={ renderOptions.layout }/>
           </Box>
           <Render code={ code } history={ history } options={ renderOptions }/>
         </Grid2>

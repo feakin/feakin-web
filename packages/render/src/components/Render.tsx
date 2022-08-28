@@ -139,6 +139,8 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
     updateSelectionRect();
   };
 
+  // todo: add connections for edges
+  // https://javascript.plainenglish.io/creating-connections-between-objects-with-konva-react-34eebb7c50a
   const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
     // if(process.env.NODE_ENV === 'development') {
     //   const state = stageRef.current?.getStage().getPointerPosition();
