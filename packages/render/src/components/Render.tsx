@@ -28,10 +28,15 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
 
   useEffect(() => {
     if (graph.props?.width && graph.props?.height && stageRef.current) {
-      setScale({
-        x: graph.props.width / stageRef.current?.width(),
-        y: graph.props.height / stageRef.current?.height(),
-      });
+      let xScale = stageRef.current?.width() / graph.props.width;
+      let yScale = stageRef.current?.height() / graph.props.height;
+
+      let minScale = Math.min(xScale, yScale);
+      if (minScale > 1) {
+        setScale({ x: 1, y: 1 });
+      } else {
+        setScale({ x: minScale, y: minScale });
+      }
     }
   }, [graph]);
 
@@ -239,8 +244,8 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
     <Stage
       ref={ stageRef }
       scale={ scale }
-      width={ graph.props?.width || window.innerWidth }
-      height={ graph.props?.height || window.innerHeight }
+      width={ stageRef.current?.content?.clientWidth || graph.props?.width || window.innerWidth }
+      height={ stageRef.current?.content?.clientHeight || graph.props?.height || window.innerHeight }
       onMouseDown={ checkDeselect }
       onMouseUp={ onMouseUp }
       onMouseMove={ onMouseMove }
