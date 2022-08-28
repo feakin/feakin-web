@@ -1,7 +1,7 @@
 /**
- * PaddingState a padding like in CSS.
+ * PaddingProp a padding like in CSS.
  */
-export interface PaddingState {
+export interface PaddingProp {
   padding?: number | undefined;
   paddingX?: number | undefined;
   paddingY?: number | undefined;

@@ -1,8 +1,8 @@
 import { Point } from "./geometry/point";
-import { FillState } from "./state-style/fill-state";
-import { StrokeState } from "./state-style/stroke-state";
+import { FillProp } from "./prop/fill-prop";
+import { StrokeProp } from "./prop/stroke-prop";
 import { EdgeType } from "./edge/edge-type";
-import { FontState } from "./state-style/font-state";
+import { FontProps } from "./prop/font-props";
 import { ShapeType } from "./node/base/shape-type";
 
 /**
@@ -30,9 +30,9 @@ export interface ElementProperty {
 
   color?: string;
   position?: Position | undefined;
-  fill?: FillState;
-  stroke?: StrokeState;
-  font?: FontState;
+  fill?: FillProp;
+  stroke?: StrokeProp;
+  font?: FontProps;
 }
 
 /**

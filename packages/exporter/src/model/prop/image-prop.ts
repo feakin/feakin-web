@@ -1,9 +1,9 @@
 import { ALIGN } from "./style-constants";
 
 /**
- * ImageState is a style for Image.
+ * ImageProp is a style for Image.
  */
-export interface ImageState {
+export interface ImageProp {
   // imageUrl
   image?: string;
   backgroundColor: string;
