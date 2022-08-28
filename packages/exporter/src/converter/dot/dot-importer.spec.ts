@@ -14,9 +14,16 @@ describe('DotImporter', () => {
     expect(graph.nodes[0].label).toBe("a");
     expect(graph.nodes[1].label).toBe("b");
     expect(graph.edges.length).toBe(3);
-    expect(graph.edges[0]).toEqual({ data: { source: "a", target: "b" }, id: "a_b", points: [] });
-    expect(graph.edges[1]).toEqual({ data: { source: "a", target: "b" }, id: "a_b_1", points: [] });
-    expect(graph.edges[2]).toEqual({ data: { source: "b", target: "a", color: "blue" }, id: "b_a", points: [] });
+    expect(graph.edges[0]).toEqual({ data: { source: "a", target: "b" }, id: "a_b", points: [], prop: {} });
+    expect(graph.edges[1]).toEqual({ data: { source: "a", target: "b" }, id: "a_b_1", points: [], prop: {} });
+    expect(graph.edges[2]).toEqual({
+      data: { source: "b", target: "a", color: "blue" },
+      id: "b_a",
+      points: [],
+      prop: {
+        color: "blue"
+      }
+    });
   });
 
   it('label name', () => {
@@ -32,6 +39,7 @@ describe('DotImporter', () => {
     expect(graph.edges[0]).toEqual({
       data: { source: "0", target: "1", label: "(1, 0)", len: 2 },
       id: "0_1",
+      prop: {},
       points: []
     });
   });
