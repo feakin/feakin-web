@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { flattenPoints, PolygonShape } from "@feakin/exporter";
+import { flattenPoints, Node, Point, PolygonShape } from "@feakin/exporter";
 import { Line, Text } from "react-konva";
 
 interface FkPolygonShapeProps {
   draggable?: boolean;
-  node: any,
+  node: Node,
   shape: PolygonShape;
 }
 
@@ -15,8 +15,6 @@ function FkPolygonShape(props: FkPolygonShapeProps) {
     x: props.shape.x,
     y: props.shape.y
   });
-
-  console.log(props.node.prop);
 
   // draw the triangle as a line, it is easier to keep polygon shape in same rules.
   return (
@@ -32,6 +30,7 @@ function FkPolygonShape(props: FkPolygonShapeProps) {
         onDragStart={ () => {
           setIsDragging(true);
         } }
+        closed
         onDragEnd={ (e) => {
           setIsDragging(false);
           setPosition({
