@@ -40,6 +40,8 @@ export interface Node extends ElementProperty {
   label: string;
   x?: number;
   y?: number;
+  width?: number;
+  height?: number;
   subgraph?: boolean;
 
   data?: NodeData;
@@ -63,6 +65,9 @@ export interface Edge {
   id: string;
   label?: string;
   points: Point[];
+
+  width?: number;
+  height?: number;
 
   // like beziere curve need a cp
   controlPoints?: Point[];
