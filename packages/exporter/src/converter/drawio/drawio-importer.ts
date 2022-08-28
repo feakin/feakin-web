@@ -7,7 +7,6 @@ import { ShapeType } from "../../model/node/base/shape-type";
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
   private graph: MxGraph;
-  private oldCellMap: Map<string, MXCell> = new Map<string, MXCell>();
 
   constructor(data: string) {
     super(data);

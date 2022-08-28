@@ -81,6 +81,10 @@ export const App = () => {
             value={ code.content }
             onChange={ handleTextChange }
             editorDidMount={ editorDidMount }
+            options={ {
+              wrappingIndent: "indent",
+              wordWrap: "on",
+            } }
           />
         </Grid2>
         <Grid2 xs={ 6 }>

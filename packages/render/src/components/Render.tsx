@@ -32,7 +32,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
       let yScale = stageRef.current?.height() / graph.props.height;
 
       let minScale = Math.min(xScale, yScale);
-      if (minScale > 1) {
+      if (minScale >= 1) {
         setScale({ x: 1, y: 1 });
       } else {
         setScale({ x: minScale, y: minScale });
