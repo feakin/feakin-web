@@ -56,7 +56,7 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
     }
   })
 
-  return calculatePosition(rootGraph);
+  return executeLayouting(rootGraph);
 }
 
 export function dagreLayout(relations: DagreRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
@@ -81,14 +81,14 @@ export function dagreLayout(relations: DagreRelation[], options: LayoutOptions =
     dagreGraph.setNode(name, label);
   });
 
-  return calculatePosition(dagreGraph);
+  return executeLayouting(dagreGraph);
 }
 
 /**
  * Calculate the position of nodes and edges in the graph.
  * @param graph
  */
-export function calculatePosition(graph: graphlib.Graph<any>): Graph {
+export function executeLayouting(graph: graphlib.Graph<any>): Graph {
   dagre.layout(graph);
 
   const labelIdMap: Map<string, string> = new Map();
@@ -137,6 +137,11 @@ export function calculatePosition(graph: graphlib.Graph<any>): Graph {
   });
 
   return {
-    nodes, edges
+    nodes,
+    edges,
+    props: {
+      width: graph.graph().width,
+      height: graph.graph().height
+    }
   }
 }

@@ -15,7 +15,6 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
   const layerRef = React.useRef<Konva.Layer | null>(null);
   const trRef = React.useRef<Konva.Transformer | null>(null);
   const selectionRectRef = React.useRef<Konva.Rect | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [scale, setScale] = useState({
     x: 1,
     y: 1,
@@ -26,6 +25,15 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
       nodes: [],
       edges: []
     });
+
+  useEffect(() => {
+    if (graph.props?.width && graph.props?.height && stageRef.current) {
+      setScale({
+        x: graph.props.width / stageRef.current?.width(),
+        y: graph.props.height / stageRef.current?.height(),
+      });
+    }
+  }, [graph]);
 
   useEffect(() => {
     if (stageRef.current?.content.parentElement) {
@@ -230,8 +238,9 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
   return (
     <Stage
       ref={ stageRef }
-      width={ window.innerWidth }
-      height={ window.innerHeight }
+      scale={ scale }
+      width={ graph.props?.width || window.innerWidth }
+      height={ graph.props?.height || window.innerHeight }
       onMouseDown={ checkDeselect }
       onMouseUp={ onMouseUp }
       onMouseMove={ onMouseMove }

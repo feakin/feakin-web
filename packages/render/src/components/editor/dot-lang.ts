@@ -8,7 +8,7 @@ const State: languages.IState = {
 
 export const LANG_ID = "dot";
 
-export function addDotLang(monaco: any) {
+export function addDotLangSupport(monaco: any) {
   monaco.languages.register({ id: LANG_ID });
 
   monaco.languages.setLanguageConfiguration(LANG_ID, {

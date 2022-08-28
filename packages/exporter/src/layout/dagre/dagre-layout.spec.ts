@@ -1,4 +1,4 @@
-import { calculatePosition, dagreLayout, layoutFromGraph } from './dagre-layout';
+import { executeLayouting, dagreLayout, layoutFromGraph } from './dagre-layout';
 import { DagreRelation } from "./dagre-relation";
 import { graphlib } from "dagre";
 
@@ -29,6 +29,9 @@ describe('feakinExporter', () => {
 
     expect(layout.nodes[2].width).toBe(100);
     expect(layout.nodes[2].height).toBe(40);
+
+    expect(layout.props?.width).toBe(250);
+    expect(layout.props?.height).toBe(130);
   });
 
   it('test data', () => {
@@ -42,13 +45,13 @@ describe('feakinExporter', () => {
     g.setNode('cluster0', { label: 'cluster0' });
     g.setNode('cluster1', { label: 'cluster1' });
 
-    g.setNode('a', { });
-    g.setNode('b', { });
-    g.setNode('c', { });
-    g.setNode('d', { });
-    g.setNode('e', { });
-    g.setNode('f', { });
-    g.setNode('g', { });
+    g.setNode('a', {});
+    g.setNode('b', {});
+    g.setNode('c', {});
+    g.setNode('d', {});
+    g.setNode('e', {});
+    g.setNode('f', {});
+    g.setNode('g', {});
 
     g.setParent('a', 'cluster0');
     g.setParent('b', 'cluster0');
@@ -63,7 +66,7 @@ describe('feakinExporter', () => {
     g.setEdge('e', 'f');
     g.setEdge('e', 'g');
 
-    const graph = calculatePosition(g);
+    const graph = executeLayouting(g);
     expect(graph.nodes.length).toBe(9);
   })
 
@@ -73,7 +76,7 @@ describe('feakinExporter', () => {
         id: "cluster0",
         label: "cluster0",
         subgraph: true,
-      },{
+      }, {
         label: "cluster1",
         id: "cluster1",
         subgraph: true,

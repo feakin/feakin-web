@@ -9,7 +9,7 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import Render from "./components/Render";
-import { addDotLang } from "./components/editor/dot-lang";
+import { addDotLangSupport } from "./components/editor/dot-lang";
 import { ChangeHistory } from "./repository/change-history";
 import { CodeProp, RenderOptions, SupportedCodeLang } from "./type";
 import { HandDrawing } from "./graph/drawn-style/hand-drawing";
@@ -50,7 +50,7 @@ export const App = () => {
   }
 
   const editorDidMount = (editor: any, monaco: any) => {
-    addDotLang(monaco);
+    addDotLangSupport(monaco);
     editor.focus();
   }
 
