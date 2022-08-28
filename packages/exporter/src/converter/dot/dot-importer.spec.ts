@@ -145,6 +145,18 @@ describe('DotImporter', () => {
     expect(first.height! > 0).toBeTruthy();
   });
 
+  it('color prop ', function () {
+    const importer = new DotImporter(`digraph G {
+  a [shape="triangle", fillcolor=red, style=filled];
+}`);
+
+    const graph: Graph = importer.parse();
+    console.log(JSON.stringify(graph, null, 2));
+    expect(graph.nodes.length).toBe(1);
+    expect(graph.nodes[0].prop?.fill?.color).toBe("red");
+  });
+
+
   xit('one to many', () => {
     const importer = new DotImporter(`graph happiness {
   Happiness -- {

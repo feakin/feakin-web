@@ -1,8 +1,17 @@
-import parse, { Attr as DotAttr, AttrStmt, EdgeStmt, Graph as DotGraph, NodeId, NodeStmt, Subgraph } from "dotparser";
+import parse, {
+  Attr as DotAttr,
+  AttrStmt,
+  EdgeStmt,
+  Graph as DotGraph,
+  HTMLString,
+  NodeId,
+  NodeStmt,
+  Subgraph
+} from "dotparser";
 import { nanoid } from "nanoid";
 
 import { Importer } from "../importer";
-import { Edge, Graph, Node } from "../../model/graph";
+import { Edge, ElementProperty, Graph, Node } from "../../model/graph";
 import { layoutFromGraph } from "../../layout/dagre/dagre-layout";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph);
@@ -92,7 +101,7 @@ export class DotImporter extends Importer {
         case "attr_stmt":
           // todo: add support for attrs
           if (child.attr_list && parent.type === "subgraph") {
-            const attrs = this.parseAttrs(child.attr_list);
+            const attrs: any = this.parseAttrs(child.attr_list);
             if (attrs['label']) {
               const parentId = this.tryGetSubgraphNodeId();
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -149,6 +158,7 @@ export class DotImporter extends Importer {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
         label: child.id.toString(),
+        prop: this.mappingProperty(attrs),
         data: {
           ...attrs,
         }
@@ -170,6 +180,7 @@ export class DotImporter extends Importer {
         this.edges.set(edgeId, {
           id: edgeId,
           points: [],
+          prop: this.mappingProperty(attrs),
           data: {
             ...attrs,
             source: lastNode.id.toString(),
@@ -187,20 +198,52 @@ export class DotImporter extends Importer {
     }, {} as any);
   }
 
+  private mappingProperty(attrsMap: object): ElementProperty {
+    if (!attrsMap) {
+      return {};
+    }
+
+    const props: ElementProperty = {};
+
+    for (const key in attrsMap) {
+      const value: string | HTMLString = (attrsMap as any)[key];
+
+      switch (key) {
+        case "color":
+          props.color = value.toString();
+          break;
+        case "fillcolor":
+          if (props.fill) {
+            props.fill.color = value.toString();
+          } else {
+            props.fill = {
+              color: value.toString(),
+            };
+          }
+          break;
+        default:
+        // do nothing;
+      }
+    }
+
+    return props;
+  }
+
   private createNode(child: NodeStmt, graphId: string | number | undefined) {
     const nodeId = child.node_id.id;
-    const attrs = this.parseAttrs(child.attr_list);
+    const data: any = this.parseAttrs(child.attr_list);
 
     if (graphId) {
-      attrs.parentId = graphId;
+      data.parentId = graphId;
     }
 
     if (!this.nodes.has(nodeId)) {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
-        label: attrs.label ? attrs.label : nodeId.toString(),
+        label: data.label ? data.label : nodeId.toString(),
+        prop: this.mappingProperty(data),
         data: {
-          ...attrs
+          ...data
         },
       });
     }

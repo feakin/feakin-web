@@ -54,7 +54,7 @@ function FkRect(props: FkRectProps) {
         onTap={ () => props.onSelect && props.onSelect(shapeRef) }
         ref={ shapeRef }
         draggable={ props.draggable || true }
-        fill={ isDragging ? 'green' : '' }
+        fill={ props.node.prop?.fill?.color || '#fff' }
         stroke={ isDragging ? 'green' : 'black' }
         strokeWidth={ props.node.data?.shape === ShapeType.Text ? 0 : 1 }
         onDragStart={ () => {

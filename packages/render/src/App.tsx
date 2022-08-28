@@ -25,7 +25,7 @@ const App = () => {
     content: `digraph G {
   compound=true;
   subgraph cluster0 {
-    a [shape="triangle", fillcolor=red, style=filled]];
+    a [shape="triangle", fillcolor=red, style=filled];
     b [shape="diamond"];
     a -> b;
     c -> d;

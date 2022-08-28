@@ -35,7 +35,7 @@ export interface ElementProperty {
 /**
  * Node (Vertex) is a class that represents a node in a graph.
  */
-export interface Node extends ElementProperty {
+export interface Node {
   id: string;
   label: string;
   x?: number;

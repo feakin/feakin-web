@@ -16,6 +16,8 @@ function FkPolygonShape(props: FkPolygonShapeProps) {
     y: props.shape.y
   });
 
+  console.log(props.node.prop);
+
   // draw the triangle as a line, it is easier to keep polygon shape in same rules.
   return (
     <React.Fragment>
@@ -24,7 +26,7 @@ function FkPolygonShape(props: FkPolygonShapeProps) {
         y={ props.shape.y }
         points={ flattenPoints(props.shape.points()) }
         draggable={ props.draggable || true }
-        fill={ isDragging ? 'green' : '' }
+        fill={ props.node.prop?.fill?.color || '#fff' }
         stroke={ isDragging ? 'green' : 'black' }
         strokeWidth={ 1 }
         onDragStart={ () => {
