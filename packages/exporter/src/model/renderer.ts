@@ -16,6 +16,4 @@ export interface Renderer {
   drawingShapes: () => void;
   drawingImages: () => void;
   drawingLabelText: () => void;
-
-  exportImage: () => void;
 }
