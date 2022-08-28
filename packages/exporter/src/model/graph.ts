@@ -19,15 +19,13 @@ export interface Graph {
 export type Position = Point;
 
 interface GraphProperty extends ElementProperty {
-  data?: NodeData | EdgeData;
-  position?: Position | undefined;
+  width?: number;
+  height?: number;
+  position?: Point;
   css?: any | undefined;
 }
 
 export interface ElementProperty {
-  width?: number;
-  height?: number;
-
   color?: string;
   fill?: FillStyleProp;
   stroke?: StrokeStyleProp;
@@ -43,13 +41,13 @@ export interface Node extends ElementProperty {
   x?: number;
   y?: number;
   subgraph?: boolean;
+
   data?: NodeData;
+  prop?: ElementProperty;
 }
 
 export interface NodeData {
-  /**
-   * In excalidraw, drawio, the graph hierarchy is a tree, but when stored data, it's flat, so we keep in some rules.
-   */
+  // In excalidraw, drawio, the graph hierarchy is a tree, but when stored data, it's flat, so we keep in some rules.
   parentId?: string | undefined;
   children?: string[];
   curved?: boolean;
@@ -61,12 +59,16 @@ export interface NodeData {
 /**
  * Edge (also called links or lines) is a class that represents an edge in a graph.
  */
-export interface Edge extends ElementProperty {
+export interface Edge {
   id: string;
   label?: string;
   points: Point[];
+
+  // like beziere curve need a cp
   controlPoints?: Point[];
+
   data?: EdgeData;
+  prop?: ElementProperty;
 }
 
 export interface EdgeData {
