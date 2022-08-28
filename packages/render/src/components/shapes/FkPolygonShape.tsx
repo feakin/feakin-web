@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { flattenPoints, Node, Point, PolygonShape } from "@feakin/exporter";
+import { flattenPoints, Node, PolygonShape } from "@feakin/exporter";
 import { Line, Text } from "react-konva";
 
 interface FkPolygonShapeProps {
