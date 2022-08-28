@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layer, Rect, Stage, Transformer, } from 'react-konva';
 import Konva from 'konva';
 import { FK_RECT_NAME } from './shapes/FkRect';
@@ -15,12 +15,24 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
   const layerRef = React.useRef<Konva.Layer | null>(null);
   const trRef = React.useRef<Konva.Transformer | null>(null);
   const selectionRectRef = React.useRef<Konva.Rect | null>(null);
+  const [scale, setScale] = useState({
+    x: 1,
+    y: 1,
+  });
 
-  const [layout, setLayout] = React.useState<Graph>(
+  const [graph, setGraph] = React.useState<Graph>(
     {
       nodes: [],
       edges: []
     });
+
+  useEffect(() => {
+    if (stageRef.current?.content.parentElement) {
+      const { width, height } = stageRef.current.content.parentElement.getBoundingClientRect();
+      stageRef.current?.width(width)
+      stageRef.current?.height(height)
+    }
+  }, [stageRef]);
 
   const [lines, setLines] = React.useState([] as any);
   const isDrawing = React.useRef(false);
@@ -198,13 +210,13 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
       switch (props.code.sourceType) {
         case SupportedFileType.GRAPHVIZ:
         case SupportedFileType.MERMAID:
-          setLayout(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
           break;
         case SupportedFileType.DRAWIO:
-          setLayout(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
           break;
         case SupportedFileType.EXCALIDRAW:
-          setLayout(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
           throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
         default:
           throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
@@ -217,8 +229,8 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
   return (
     <Stage
       ref={ stageRef }
-      width={ window.innerWidth / 2 - 200 }
-      height={ window.innerHeight - 200 }
+      width={ window.innerWidth }
+      height={ window.innerHeight }
       onMouseDown={ checkDeselect }
       onMouseUp={ onMouseUp }
       onMouseMove={ onMouseMove }
@@ -227,8 +239,8 @@ function Render(props: { code: CodeProp, history: ChangeHistory }) {
       onTouchStart={ checkDeselect }
     >
       <Layer ref={ layerRef }>
-        { layout.nodes && layout.nodes.map((node: Node) => NodeRender(node)) }
-        { layout.edges && layout.edges.map((edge: Edge) => EdgeShape(edge)) }
+        { graph.nodes && graph.nodes.map((node: Node) => NodeRender(node)) }
+        { graph.edges && graph.edges.map((edge: Edge) => EdgeShape(edge)) }
 
         <Transformer
           ref={ trRef }
