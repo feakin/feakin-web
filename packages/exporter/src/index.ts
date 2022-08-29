@@ -34,6 +34,7 @@ export * from "./layout/elk/elk-layout";
 export * from './model/edge/arrow-shape';
 export * from './model/edge/edge-shape';
 export * from "./model/edge/decorator/arrow-type";
+export * from "./model/edge/decorator/line-style";
 export * from './model/edge/decorator/line-type';
 export * from './model/edge/line-shape';
 export * from './model/edge/polyline-shape';
