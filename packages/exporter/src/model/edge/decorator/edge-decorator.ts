@@ -1,6 +1,6 @@
-import { ArrowType } from "./decorator/arrow-type";
-import { LineType } from "./decorator/line-type";
-import { LineStyle } from "./decorator/line-style";
+import { ArrowType } from "./arrow-type";
+import { LineType } from "./line-type";
+import { LineStyle } from "./line-style";
 
 export const defaultEdgeDecorator: EdgeDecorator = {
   lineType: LineType.LINE,

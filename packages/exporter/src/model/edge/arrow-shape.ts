@@ -1,7 +1,7 @@
 import { Shape } from "../node";
 import { Point } from "../geometry/point";
 import { ShapeType } from "../node/base/shape-type";
-import { defaultEdgeDecorator, EdgeDecorator } from "./edge-decorator";
+import { defaultEdgeDecorator, EdgeDecorator } from "./decorator/edge-decorator";
 import { ArrowType } from "./decorator/arrow-type";
 
 export class ArrowShape extends Shape {
