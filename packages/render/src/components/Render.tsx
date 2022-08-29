@@ -176,7 +176,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
   const onMouseOut = (_e: Konva.KonvaEventObject<MouseEvent>) => {
   };
 
-  // based on: https://codesandbox.io/s/react-konva-multiple-selection-tgggi?file=/src/index.js:312-320
+  // decorator on: https://codesandbox.io/s/react-konva-multiple-selection-tgggi?file=/src/index.js:312-320
   const onClickTap = (e: Konva.KonvaEventObject<MouseEvent>) => {
     // if we are selecting with rect, do nothing
     // if (selectionRectangle.visible()) {

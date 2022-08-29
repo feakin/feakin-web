@@ -1,4 +1,4 @@
-import { ALIGN } from "./style-constants";
+import { ALIGN } from "./props-constants";
 
 /**
  * ImageProp is a style for Image.

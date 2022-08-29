@@ -1,5 +1,5 @@
 /* eslint-disable */
-// based on: [https://github.com/nikeee/edotor.net](https://github.com/nikeee/edotor.net)
+// decorator on: [https://github.com/nikeee/edotor.net](https://github.com/nikeee/edotor.net)
 // Taken from the samples of: https://microsoft.github.io/monaco-editor/monarch.html
 export const dotTokenConfig = {
   // Set defaultToken to invalid to see what you do not tokenize yet

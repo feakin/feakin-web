@@ -1,5 +1,5 @@
 /**
- * based on Mermaid.js
+ * decorator on Mermaid.js
  * The MIT License (MIT)
  * Copyright (c) 2014 - 2021 Knut Sveidqvist
  */

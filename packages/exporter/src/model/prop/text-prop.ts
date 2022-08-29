@@ -1,4 +1,4 @@
-import { ALIGN } from "./style-constants";
+import { ALIGN } from "./props-constants";
 
 // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline
 export enum TextBaseline {

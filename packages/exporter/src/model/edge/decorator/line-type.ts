@@ -1,14 +1,9 @@
-export enum EdgeType {
+export enum LineType {
   LINE = 'line',
   ARROW = 'arrow',
   POLYLINE = 'polyline',
   CURVE = 'curve',
   SCRIBBLE = 'scribble',
-}
-
-export enum EdgeConnectorType {
-  ELBOW = 'elbow',
-  CURVE = 'curve',
 }
 
 export enum LineStyle {
@@ -37,44 +32,19 @@ export function LineStyleExt(style: LineStyle, strokeWidth: number): string {
   }
 }
 
-export enum ArrowType {
-  NONE = 'none',
-  NOTCHED = 'notched',
-  HOLLOW = 'hollow',
-  HOLLOW_CIRCLE = 'hollow-circle',
-  HOLLOW_SQUARE = 'hollow-square',
-  HOLLOW_DIAMOND = 'hollow-diamond',
-  FILLED = 'filled',
-  FILLED_CIRCLE = 'filled-circle',
-  FILLED_SQUARE = 'filled-square',
-  FILLED_DIAMOND = 'filled-diamond',
-}
-
-export interface ArrowStyle {
-  startType: ArrowType;
-  endType: ArrowType;
-  lineStyle: LineStyle;
-}
-
-export const defaultArrowStyle: ArrowStyle = {
-  endType: ArrowType.NONE,
-  startType: ArrowType.NONE,
-  lineStyle: LineStyle.SOLID
-}
-
 export class EdgeTypeUtils {
-  static fromString(type: string): EdgeType | undefined {
+  static fromString(type: string): LineType | undefined {
     switch (type) {
       case 'line':
-        return EdgeType.LINE;
+        return LineType.LINE;
       case 'arrow':
-        return EdgeType.ARROW;
+        return LineType.ARROW;
       case 'polyline':
-        return EdgeType.POLYLINE;
+        return LineType.POLYLINE;
       case 'curve':
-        return EdgeType.CURVE;
+        return LineType.CURVE;
       case 'scribble':
-        return EdgeType.SCRIBBLE;
+        return LineType.SCRIBBLE;
       default:
         return undefined;
     }

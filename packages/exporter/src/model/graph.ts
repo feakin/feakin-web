@@ -1,7 +1,7 @@
 import { Point } from "./geometry/point";
-import { FillStyleProp } from "./prop/fill-style-prop";
-import { StrokeStyleProp } from "./prop/stroke-style-prop";
-import { EdgeType } from "./edge/edge-type";
+import { FillProp } from "./prop/fill-prop";
+import { StrokeProp } from "./prop/stroke-prop";
+import { LineType } from "./edge/decorator/line-type";
 import { FontProps } from "./prop/font-props";
 import { ShapeType } from "./node/base/shape-type";
 
@@ -27,8 +27,8 @@ interface GraphProperty extends ElementProperty {
 
 export interface ElementProperty {
   color?: string;
-  fill?: FillStyleProp;
-  stroke?: StrokeStyleProp;
+  fill?: FillProp;
+  stroke?: StrokeProp;
   font?: FontProps;
 }
 
@@ -83,7 +83,7 @@ export interface EdgeData {
   sourceId?: string;
   target: string;
   targetId?: string;
-  type?: EdgeType;
+  type?: LineType;
 
   [key: string]: any;
 }

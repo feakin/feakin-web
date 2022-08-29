@@ -42,7 +42,7 @@ type MarkNonNullable<T, K extends keyof T> = {
   [P in K]-?: P extends K ? NonNullable<T[P]> : T[P];
 } & { [P in keyof T]: T[P] };
 
-// 1-based in case we ever do `if(element.fontFamily)`
+// 1-decorator in case we ever do `if(element.fontFamily)`
 export const FONT_FAMILY = {
   Virgil: 1,
   Helvetica: 2,
