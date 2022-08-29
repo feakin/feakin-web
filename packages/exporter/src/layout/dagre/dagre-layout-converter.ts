@@ -39,4 +39,8 @@ export class DagreLayoutConverter extends LayoutBase implements LayoutConverter<
   postLayout(graph: Graph): Graph {
     return this.graph;
   }
+
+  layout(data: any[]): Graph {
+    return this.doLayout();
+  }
 }

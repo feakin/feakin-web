@@ -27,7 +27,7 @@ export * from './converter/mermaid/mermaid-importer';
 export * from './env';
 
 export * from './layout/dagre/dagre-layout';
-export * from './layout/dagre/dagre-relation';
+export * from './layout/simple-relation';
 
 export * from './model/edge/arrow-shape';
 export * from './model/edge/edge-shape';

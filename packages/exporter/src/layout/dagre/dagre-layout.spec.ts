@@ -1,10 +1,10 @@
 import { runLayout, dagreLayout, layoutFromGraph } from './dagre-layout';
-import { DagreRelation } from "./dagre-relation";
+import { SimpleRelation } from "../simple-relation";
 import { graphlib } from "dagre";
 
 describe('feakinExporter', () => {
   it('layout', () => {
-    const relations: DagreRelation[] = [
+    const relations: SimpleRelation[] = [
       { source: { name: 'A' } },
       { source: { name: 'B' } },
       { source: { name: 'B' }, target: { name: 'C' } },
@@ -19,7 +19,7 @@ describe('feakinExporter', () => {
   });
 
   it('target should have width and height', () => {
-    const relations: DagreRelation[] = [
+    const relations: SimpleRelation[] = [
       { source: { name: 'A' } },
       { source: { name: 'B' } },
       { source: { name: 'B' }, target: { name: 'C' } },

@@ -1,5 +1,5 @@
 import { dagreLayout } from "../../layout/dagre/dagre-layout";
-import { DagreRelation } from "../../layout/dagre/dagre-relation";
+import { SimpleRelation } from "../../layout/simple-relation";
 import { Graph } from "../../model/graph";
 import { FlowEdge, FlowNode } from "./parse/flow";
 import { flowTranspiler } from "./parse/flow-transpiler";
@@ -16,8 +16,8 @@ export class MermaidImporter extends Importer {
     return dagreLayout(relations);
   }
 
-  flowToDagre(nodes: { [p: string]: FlowNode }, edges: FlowEdge[]): DagreRelation[] {
-    const relations: DagreRelation[] = [];
+  flowToDagre(nodes: { [p: string]: FlowNode }, edges: FlowEdge[]): SimpleRelation[] {
+    const relations: SimpleRelation[] = [];
     edges.forEach(edge => {
       relations.push({
         source: { name: edge.start },

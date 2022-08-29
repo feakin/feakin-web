@@ -1,6 +1,5 @@
 import { defaultLayoutOptions, LayoutOptions } from "./layout-options";
 import { Graph } from "../graph";
-import { graphlib } from "dagre";
 
 export type Direction = "LR" | "RL" | "TB" | "BT";
 
@@ -14,6 +13,9 @@ export class LayoutBase {
 
 export interface LayoutConverter<I, T> {
   instance: I;
+
+  // todo: thinking in Promise<Graph>
+  layout(data: T): Graph;
 
   initInstance(options: any): void;
 
