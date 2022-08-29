@@ -1,5 +1,6 @@
 import { defaultLayoutOptions, LayoutOptions } from "./layout-options";
 import { Graph } from "../graph";
+import { graphlib } from "dagre";
 
 export type Direction = "LR" | "RL" | "TB" | "BT";
 
@@ -11,12 +12,14 @@ export class LayoutBase {
   }
 }
 
-export interface LayoutConverter<I> {
-  initCustomOptions(options: any): void;
+export interface LayoutConverter<I, T> {
+  instance: I;
 
-  preLayout(intermedia: I): Graph;
+  initInstance(options: any): void;
 
-  doLayout(intermedia: I): Graph;
+  preLayout(intermedia?: T): Graph;
+
+  doLayout(intermedia?: T): Graph;
 
   postLayout(graph: Graph): Graph;
 }
