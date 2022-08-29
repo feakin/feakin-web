@@ -67,3 +67,5 @@ export * from './renderer/canvas-shape-drawing';
 export * from './renderer/helper/data-url';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
+
+export * from './usecases/uml/class-relationship';

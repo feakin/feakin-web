@@ -1,7 +1,7 @@
 import { ClassRelationship, ClassRelationshipsImpl } from "./class-relationship";
-import { EdgeDecorator } from "./edge-decorator";
-import { ArrowType } from "./arrow-type";
-import { LineStyle } from "./line-style";
+import { EdgeDecorator } from "../../model/edge/decorator/edge-decorator";
+import { ArrowType } from "../../model/edge/decorator/arrow-type";
+import { LineStyle } from "../../model/edge/decorator/line-style";
 
 function testRenderClassRelationship(ClassRelationship: ClassRelationship): string {
   switch (ClassRelationship) {

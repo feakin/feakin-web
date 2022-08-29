@@ -1,11 +1,11 @@
-import { EdgeDecorator } from "./edge-decorator";
-import { ArrowType } from "./arrow-type";
-import { LineType } from "./line-type";
-import { LineStyle } from "./line-style";
+import { EdgeDecorator } from "../../model/edge/decorator/edge-decorator";
+import { ArrowType } from "../../model/edge/decorator/arrow-type";
+import { LineType } from "../../model/edge/decorator/line-type";
+import { LineStyle } from "../../model/edge/decorator/line-style";
 
 /**
- * @enum { import("./arrow-type").ArrowType }
- * @enum { import("./line-style").LineStyle }
+ * @enum { import("../../model/edge/decorator/arrow-type").ArrowType }
+ * @enum { import("../../model/edge/decorator/line-style").LineStyle }
  */
 export enum ClassRelationship {
   NONE = 'none',
