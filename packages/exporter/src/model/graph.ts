@@ -4,6 +4,7 @@ import { StrokeProp } from "./prop/stroke-prop";
 import { LineType } from "./edge/decorator/line-type";
 import { FontProps } from "./prop/font-props";
 import { ShapeType } from "./node/base/shape-type";
+import { EdgeDecorator } from "./edge/decorator/edge-decorator";
 
 /**
  * Graph is a class that represents a graph.
@@ -30,6 +31,7 @@ export interface ElementProperty {
   fill?: FillProp;
   stroke?: StrokeProp;
   font?: FontProps;
+  decorator?: EdgeDecorator;
 }
 
 /**
@@ -45,7 +47,7 @@ export interface Node {
   subgraph?: boolean;
 
   data?: NodeData;
-  prop?: ElementProperty;
+  props?: ElementProperty;
 }
 
 export interface NodeData {
@@ -73,7 +75,8 @@ export interface Edge {
   controlPoints?: Point[];
 
   data?: EdgeData;
-  prop?: ElementProperty;
+
+  props?: ElementProperty;
 }
 
 export interface EdgeData {

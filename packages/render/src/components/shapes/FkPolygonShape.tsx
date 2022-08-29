@@ -24,7 +24,7 @@ function FkPolygonShape(props: FkPolygonShapeProps) {
         y={ props.shape.y }
         points={ flattenPoints(props.shape.points()) }
         draggable={ props.draggable || true }
-        fill={ props.node.prop?.fill?.color || '#fff' }
+        fill={ props.node.props?.fill?.color || '#fff' }
         stroke={ isDragging ? 'green' : 'black' }
         strokeWidth={ 1 }
         onDragStart={ () => {

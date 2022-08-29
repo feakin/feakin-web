@@ -104,4 +104,42 @@ describe('DrawioEncoder', () => {
 
     expect(graph.nodes.length).toBe(1);
   });
+
+  it('styled arrow', () => {
+    const drawioConverter = new DrawioImporter(`<mxGraphModel dx="962" dy="970" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="VSaEne3B5YX8t8c1DR0t-1" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="360" y="330" as="sourcePoint"/>
+        <mxPoint x="480" y="330" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="VSaEne3B5YX8t8c1DR0t-2" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="360" y="380" as="sourcePoint"/>
+        <mxPoint x="480" y="380" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="VSaEne3B5YX8t8c1DR0t-3" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="360" y="430" as="sourcePoint"/>
+        <mxPoint x="480" y="430" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="VSaEne3B5YX8t8c1DR0t-4" value="Label" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="VSaEne3B5YX8t8c1DR0t-3">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>`, true);
+    const graph: Graph = drawioConverter.parse();
+
+    expect(graph.edges[0].props?.decorator).toEqual({
+      "endType": "none",
+      "lineStyle": "solid",
+      "lineType": "line",
+      "startType": "none"
+    });
+  });
 });

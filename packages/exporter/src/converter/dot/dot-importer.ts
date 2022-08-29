@@ -158,7 +158,7 @@ export class DotImporter extends Importer {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
         label: child.id.toString(),
-        prop: this.mappingProperty(attrs),
+        props: this.mappingProperty(attrs),
         data: {
           ...attrs,
         }
@@ -180,7 +180,7 @@ export class DotImporter extends Importer {
         this.edges.set(edgeId, {
           id: edgeId,
           points: [],
-          prop: this.mappingProperty(attrs),
+          props: this.mappingProperty(attrs),
           data: {
             ...attrs,
             source: lastNode.id.toString(),
@@ -241,7 +241,7 @@ export class DotImporter extends Importer {
       this.nodes.set(nodeId, {
         id: nodeId.toString(),
         label: data.label ? data.label : nodeId.toString(),
-        prop: this.mappingProperty(data),
+        props: this.mappingProperty(data),
         data: {
           ...data
         },

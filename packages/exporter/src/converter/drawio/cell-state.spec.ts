@@ -12,4 +12,34 @@ describe("CellStateParser", () => {
     });
     expect(string).toBe("shape=triangle;");
   });
+
+  it('dash arrow', function () {
+    const prop = CellState.toEdgeStyle(CellState.fromString("endArrow=openAsync;startArrow=diamondThin;html=1;rounded=0;startFill=1;endFill=0;"));
+    expect(prop.decorator).toEqual({
+      endType: "notched",
+      lineStyle: "solid",
+      lineType: "line",
+      startType: "filled-diamond"
+    });
+  });
+
+  it('diamond thin arrow', function () {
+    const prop = CellState.toEdgeStyle(CellState.fromString("endArrow=openAsync;startArrow=diamondThin;html=1;rounded=0;startFill=1;endFill=0;"));
+    expect(prop.decorator).toEqual({
+      endType: "notched",
+      lineStyle: "solid",
+      lineType: "line",
+      startType: "filled-diamond"
+    });
+  });
+
+  it('block arrow', function () {
+    const prop =  CellState.toEdgeStyle(CellState.fromString("endArrow=block;startArrow=diamond;html=1;rounded=0;startFill=0;endFill=0;"));
+    expect(prop.decorator).toEqual({
+      endType: "hollow-diamond",
+      lineStyle: "solid",
+      lineType: "line",
+      startType: "filled-diamond"
+    });
+  });
 });

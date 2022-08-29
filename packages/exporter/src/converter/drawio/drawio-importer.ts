@@ -1,8 +1,9 @@
 import { MXCell, Mxfile, MxGraph, MxPoint } from "./mxgraph";
-import { Edge, Graph, Node, NodeData } from "../../model/graph";
+import { Edge, ElementProperty, Graph, Node, NodeData } from "../../model/graph";
 import { Importer } from "../importer";
 import DrawioEncode from "./encode/drawio-encode";
 import { ShapeType } from "../../model/node/base/shape-type";
+import { CellState } from "./cell-state";
 
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
@@ -102,6 +103,10 @@ export class DrawioImporter extends Importer {
 
   private convertEdge(cell: MXCell): Edge {
     const attrs = cell.attributes!;
+    let props: ElementProperty = {}
+    if(cell.attributes?.style) {
+      props = CellState.toEdgeStyle(CellState.fromString(cell.attributes?.style));
+    }
 
     return {
       id: attrs.id,
@@ -110,6 +115,7 @@ export class DrawioImporter extends Importer {
       controlPoints: this.controlPointsForEdge(cell),
       width: parseFloat(String(cell?.mxGeometry?.attributes?.width || 0)),
       height: parseFloat(String(cell?.mxGeometry?.attributes?.height || 0)),
+      props: props,
       data: {
         source: attrs.source!,
         target: attrs.target!
