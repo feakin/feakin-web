@@ -63,3 +63,4 @@ export * from './renderer/helper/data-url';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 export * from "./model/node/base/shape-type";
+export { DagreLayoutConverter } from "./layout/dagre/dagre-layout-converter";
