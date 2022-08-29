@@ -1,6 +1,6 @@
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline
 import { ALIGN } from "./props-constants";
 
-// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/textBaseline
 export enum TextBaseline {
   TOP = 'top',
   HANGING = 'hanging',

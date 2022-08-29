@@ -1,4 +1,4 @@
-import { Shape } from "../../node";
+import { Shape } from "../node";
 
 /**
  * Line is a simple 2D line with start and end points.

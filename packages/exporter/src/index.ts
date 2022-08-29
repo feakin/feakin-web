@@ -35,7 +35,7 @@ export * from './model/edge/arrow-shape';
 export * from './model/edge/edge-shape';
 export * from "./model/edge/decorator/arrow-type";
 export * from './model/edge/decorator/line-type';
-export * from './model/edge/decorator/line-shape';
+export * from './model/edge/line-shape';
 export * from './model/edge/polyline-shape';
 export * from './model/geometry/geometry';
 export * from './model/geometry/point';

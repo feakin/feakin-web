@@ -1,8 +1,8 @@
-import { ALIGN } from "./props-constants";
-
 /**
  * ImageProp is a style for Image.
  */
+import { ALIGN } from "./props-constants";
+
 export interface ImageProp {
   // imageUrl
   image?: string;
