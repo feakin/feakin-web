@@ -1,11 +1,9 @@
 remote_theme: pmarsceill/just-the-docs
 
-title: Feakin —— Modernize graph assets management, based on Diagram-as-code
+title: Feakin
 description: Modernize graph assets management, based on Diagram-as-code, so you can create, share and edit diagram. Support for import Mermaid, PlantUML, Excalidraw, Dot and more.
 
 heading_anchors: true
-
-footer_content: "This code is distributed under the MPL 2.0 License."
 
 # Footer last edited timestamp
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
@@ -16,8 +14,10 @@ gh_edit_link: true # show or hide edit this page link
 gh_edit_link_text: "Edit this page on GitHub."
 gh_edit_repository: "https://github.com/feakin/feakin" # the github URL for your repo
 gh_edit_branch: "master" # the branch that your docs is served from
-# gh_edit_source: docs # the source that your files originate from
+gh_edit_source: docs # the source that your files originate from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
+
+footer_content: "This code is distributed under the MPL 2.0 License."
 
 # Enable or disable the site search
 # Supports true (default) or false

@@ -27,7 +27,7 @@ Try Online demo: [https://online.feakin.com/](https://online.feakin.com/) Or ins
 ```shell
 npm install -g @feakin/cli
 
-feakin --input software-development.drawio --output sd.excalidraw
+feakin --input software-development.md.drawio --output sd.excalidraw
 ```
 
 ## Todos

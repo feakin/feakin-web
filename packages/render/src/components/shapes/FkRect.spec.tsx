@@ -9,7 +9,7 @@ import FkRect from "./FkRect";
 
 test('render FkRect', () => {
   render(<FkRect shape={ {
-    labelPosition: () => {
+    center: () => {
       return { x: 0, y: 0 }
     },
   } as any } node={ {} as any }/>);
