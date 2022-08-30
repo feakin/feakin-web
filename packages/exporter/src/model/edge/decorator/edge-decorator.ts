@@ -1,52 +1,58 @@
-import { ArrowType } from "./arrow-type";
+import { Arrowhead } from "./arrowhead";
 import { LineType } from "./line-type";
 import { LineStyle } from "./line-style";
 
 export const defaultEdgeDecorator: EdgeDecorator = {
   lineType: LineType.LINE,
-  endType: ArrowType.NONE,
-  startType: ArrowType.NONE,
-  lineStyle: LineStyle.SOLID
+  lineStyle: LineStyle.SOLID,
+  endArrowhead: Arrowhead.NONE,
+  startArrowhead: Arrowhead.NONE,
 }
 
+/**
+ * The edge decorator is used to specify the style of the line and arrowheads
+ */
 export interface EdgeDecorator {
   lineStyle: LineStyle;
   lineType: LineType;
-  startType: ArrowType;
-  endType: ArrowType;
+  startArrowhead: Arrowhead;
+  endArrowhead: Arrowhead;
 }
 
+/**
+ * this function is to make clearly about each type arrow and line for understand, especially for the test.
+ */
 export function edgeDecoratorForTest(edgeDecorator: EdgeDecorator): string {
   let result = "";
-  switch (edgeDecorator.startType) {
-    case ArrowType.NONE:
+  switch (edgeDecorator.startArrowhead) {
+    case Arrowhead.NONE:
       result += "";
       break;
-    case ArrowType.NOTCHED:
+    case Arrowhead.NOTCHED:
       result += "<";
       break;
-    case ArrowType.HOLLOW:
+    case Arrowhead.HOLLOW:
       result += "◁";
       break;
-    case ArrowType.HOLLOW_CIRCLE:
+    case Arrowhead.HOLLOW_CIRCLE:
       result += "○";
       break;
-    case ArrowType.HOLLOW_SQUARE:
+    case Arrowhead.HOLLOW_SQUARE:
       result += "□";
       break;
-    case ArrowType.HOLLOW_DIAMOND:
+    case Arrowhead.HOLLOW_DIAMOND:
       result += "◇";
       break;
-    case ArrowType.FILLED:
+    case Arrowhead.FILLED:
       result += "◀";
       break;
-    case ArrowType.FILLED_CIRCLE:
+    case Arrowhead.FILLED_CIRCLE:
       result += "●";
       break;
-    case ArrowType.FILLED_SQUARE:
+    case Arrowhead.FILLED_SQUARE:
       result += "■";
       break;
-    case ArrowType.FILLED_DIAMOND:
+    case Arrowhead.FILLED_DIAMOND:
       result += "◆";
       break;
   }
@@ -59,39 +65,42 @@ export function edgeDecoratorForTest(edgeDecorator: EdgeDecorator): string {
     case LineStyle.DASH:
       result += "-".repeat(lineRepeat);
       break;
+    case LineStyle.DOT:
+      result += ".".repeat(lineRepeat);
+      break;
     default:
       result += " ".repeat(lineRepeat);
   }
 
-  switch (edgeDecorator.endType) {
-    case ArrowType.NONE:
+  switch (edgeDecorator.endArrowhead) {
+    case Arrowhead.NONE:
       result += "";
       break;
-    case ArrowType.NOTCHED:
+    case Arrowhead.NOTCHED:
       result += ">";
       break;
-    case ArrowType.HOLLOW:
+    case Arrowhead.HOLLOW:
       result += "▷";
       break;
-    case ArrowType.HOLLOW_CIRCLE:
+    case Arrowhead.HOLLOW_CIRCLE:
       result += "○";
       break;
-    case ArrowType.HOLLOW_SQUARE:
+    case Arrowhead.HOLLOW_SQUARE:
       result += "□";
       break;
-    case ArrowType.HOLLOW_DIAMOND:
+    case Arrowhead.HOLLOW_DIAMOND:
       result += "◇";
       break;
-    case ArrowType.FILLED:
+    case Arrowhead.FILLED:
       result += "▶";
       break;
-    case ArrowType.FILLED_CIRCLE:
+    case Arrowhead.FILLED_CIRCLE:
       result += "●";
       break;
-    case ArrowType.FILLED_SQUARE:
+    case Arrowhead.FILLED_SQUARE:
       result += "■";
       break;
-    case ArrowType.FILLED_DIAMOND:
+    case Arrowhead.FILLED_DIAMOND:
       result += "◆";
       break;
   }

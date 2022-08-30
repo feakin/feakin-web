@@ -20,9 +20,9 @@ export class SvgShapeDrawing implements ShapeDrawing {
       transparent: true,
     },
     stroke: {
-      strokeColor: '#000000',
-      strokeWidth: 1,
-      strokeOpacity: 1
+      color: '#000000',
+      width: 1,
+      opacity: 1
     }
   };
 
@@ -56,9 +56,9 @@ export class SvgShapeDrawing implements ShapeDrawing {
     const fill = this.property.fill;
 
     if (stroke != null) {
-      pathEl.setAttribute('stroke', stroke.strokeColor);
-      pathEl.setAttribute('stroke-width', String(stroke.strokeWidth));
-      pathEl.setAttribute('stroke-opacity', String(stroke.strokeOpacity));
+      pathEl.setAttribute('stroke', stroke.color ?? '#000000');
+      pathEl.setAttribute('stroke-width', String(stroke.width));
+      pathEl.setAttribute('stroke-opacity', String(stroke.opacity));
     }
 
     if (fill != null) {

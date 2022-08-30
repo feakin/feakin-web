@@ -1,4 +1,4 @@
-export enum ArrowType {
+export enum Arrowhead {
   // ---
   NONE = 'none',
   // --> | <--

@@ -14,32 +14,32 @@ describe("CellStateParser", () => {
   });
 
   it('dash arrow', function () {
-    const prop = CellState.toEdgeStyle(CellState.fromString("endArrow=openAsync;startArrow=diamondThin;html=1;rounded=0;startFill=1;endFill=0;"));
+    const prop = CellState.toEdgeStyle(CellState.fromString("endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;"));
     expect(prop.decorator).toEqual({
-      endType: "notched",
-      lineStyle: "solid",
+      endArrowhead: "none",
+      startArrowhead: "none",
+      lineStyle: "dot",
       lineType: "line",
-      startType: "filled-diamond"
     });
   });
 
   it('diamond thin arrow', function () {
     const prop = CellState.toEdgeStyle(CellState.fromString("endArrow=openAsync;startArrow=diamondThin;html=1;rounded=0;startFill=1;endFill=0;"));
     expect(prop.decorator).toEqual({
-      endType: "notched",
+      startArrowhead: "filled-diamond",
+      endArrowhead: "notched",
       lineStyle: "solid",
-      lineType: "line",
-      startType: "filled-diamond"
+      lineType: "line"
     });
   });
 
   it('block arrow', function () {
     const prop =  CellState.toEdgeStyle(CellState.fromString("endArrow=block;startArrow=diamond;html=1;rounded=0;startFill=0;endFill=0;"));
     expect(prop.decorator).toEqual({
-      endType: "hollow-diamond",
       lineStyle: "solid",
       lineType: "line",
-      startType: "filled-diamond"
+      startArrowhead: "filled-diamond",
+      endArrowhead: "hollow-diamond"
     });
   });
 });

@@ -1,53 +1,53 @@
 import { EdgeDecorator } from "../edge-decorator";
-import { ArrowType } from "../arrow-type";
+import { Arrowhead } from "../arrowhead";
 import { LineType } from "../line-type";
 import { LineStyle } from "../line-style";
 
 /**
- * @enum { import("../arrow-type").ArrowType }
+ * @enum { import("../arrowhead.ts").Arrowhead }
  * @enum { import("../line-style").LineStyle }
  */
 export enum ClassRelationship {
   NONE = 'none',
   /**
    *  @type {LineStyle.SOLID}
-   *  @type {ArrowType.NOTCHED}
+   *  @type {Arrowhead.NOTCHED}
    *  ─────>
    */
   ASSOCIATION = 'association',
   /**
    * @type {LineStyle.SOLID}
-   * @type {ArrowType.HOLLOW}
+   * @type {Arrowhead.HOLLOW}
    * ─────▷
    */
   INHERITANCE = 'inheritance',
   /**
    * @type {LineStyle.DASH}
-   * @type {ArrowType.HOLLOW}
+   * @type {Arrowhead.HOLLOW}
    * -----▷
    */
   REALIZATION = 'realization',
   /**
    * @type {LineStyle.DASH}
-   * @type {ArrowType.HOLLOW}
+   * @type {Arrowhead.HOLLOW}
    * -----▷
    */
   IMPLEMENTATION = 'implementation',
   /**
    * @type {LineStyle.DASH}
-   * @type {ArrowType.NOTCHED}
+   * @typedef {Arrowhead.NOTCHED}
    * ----->
    */
   DEPENDENCY = 'dependency',
   /**
    * @type {LineStyle.DASH}
-   * @type {ArrowType.HOLLOW_DIAMOND}
+   * @type {Arrowhead.HOLLOW_DIAMOND}
    * ─────◇
    */
   AGGREGATION = 'aggregation',
   /**
    * @type {LineStyle.DASH}
-   * @type {ArrowType.FILLED_DIAMOND}
+   * @type {Arrowhead.FILLED_DIAMOND}
    * ─────◆
    */
   COMPOSITION = 'composition',
@@ -60,57 +60,57 @@ export class ClassRelationshipsImpl {
         return {
           lineStyle: LineStyle.SOLID,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.NOTCHED,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.NOTCHED,
         };
       case ClassRelationship.INHERITANCE:
         return {
           lineStyle: LineStyle.SOLID,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.HOLLOW,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.HOLLOW,
         };
       case ClassRelationship.REALIZATION:
         return {
           lineStyle: LineStyle.DASH,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.HOLLOW,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.HOLLOW,
         };
       case ClassRelationship.IMPLEMENTATION:
         return {
           lineStyle: LineStyle.DASH,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.HOLLOW,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.HOLLOW,
         };
       case ClassRelationship.DEPENDENCY:
         return {
           lineStyle: LineStyle.DASH,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.NOTCHED,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.NOTCHED,
         };
       case ClassRelationship.AGGREGATION:
         return {
           lineStyle: LineStyle.SOLID,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.HOLLOW_DIAMOND,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.HOLLOW_DIAMOND,
         };
       case ClassRelationship.COMPOSITION:
         return {
           lineStyle: LineStyle.SOLID,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.FILLED_DIAMOND,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.FILLED_DIAMOND,
         };
       default:
         return {
           lineStyle: LineStyle.SOLID,
           lineType: LineType.LINE,
-          startType: ArrowType.NONE,
-          endType: ArrowType.NONE,
+          startArrowhead: Arrowhead.NONE,
+          endArrowhead: Arrowhead.NONE,
         }
     }
   }

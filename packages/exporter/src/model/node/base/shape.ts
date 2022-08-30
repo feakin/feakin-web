@@ -32,6 +32,7 @@ export class Shape {
   get isRounded(): boolean {
     return this._isRounded;
   }
+
   set isRounded(value: boolean) {
     this._isRounded = value;
   }
@@ -59,10 +60,13 @@ export class Shape {
   }
 
   /**
-   * label to put in center
+   * the center potint of the shape
    */
-  labelPosition() {
-    //
+  center(): Point {
+    return {
+      x: this.x,
+      y: this.y
+    };
   }
 
   /**
@@ -75,7 +79,7 @@ export class Shape {
   /**
    * shape resource
    */
-  resource() : ShapeResource {
+  resource(): ShapeResource {
     return {
       type: ShapeResourceType.None,
       src: ""

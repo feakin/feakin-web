@@ -117,27 +117,25 @@ describe('DrawioEncoder', () => {
         <mxPoint x="480" y="330" as="targetPoint"/>
       </mxGeometry>
     </mxCell>
-    <mxCell id="VSaEne3B5YX8t8c1DR0t-2" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+    <mxCell id="VSaEne3B5YX8t8c1DR0t-2" value="" style="endArrow=openAsync;startArrow=diamondThin;html=1;rounded=0;startFill=1;endFill=0;" edge="1" parent="1">
       <mxGeometry width="50" height="50" relative="1" as="geometry">
         <mxPoint x="360" y="380" as="sourcePoint"/>
         <mxPoint x="480" y="380" as="targetPoint"/>
       </mxGeometry>
     </mxCell>
-    <mxCell id="VSaEne3B5YX8t8c1DR0t-3" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-      <mxGeometry relative="1" as="geometry">
+    <mxCell id="VSaEne3B5YX8t8c1DR0t-5" value="" style="endArrow=block;startArrow=diamond;html=1;rounded=0;startFill=0;endFill=0;" edge="1" parent="1">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
         <mxPoint x="360" y="430" as="sourcePoint"/>
         <mxPoint x="480" y="430" as="targetPoint"/>
       </mxGeometry>
     </mxCell>
-    <mxCell id="VSaEne3B5YX8t8c1DR0t-4" value="Label" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="VSaEne3B5YX8t8c1DR0t-3">
-      <mxGeometry relative="1" as="geometry"/>
-    </mxCell>
   </root>
-</mxGraphModel>`, true);
+</mxGraphModel>
+`, true);
     const graph: Graph = drawioConverter.parse();
 
-    expect(edgeDecoratorForTest(graph.edges[0].props!.decorator!)).toEqual("─────");
-    expect(edgeDecoratorForTest(graph.edges[1].props!.decorator!)).toEqual("<─────>");
-    expect(edgeDecoratorForTest(graph.edges[2].props!.decorator!)).toEqual("─────>");
+    expect(edgeDecoratorForTest(graph.edges[0].props!.decorator!)).toEqual(".....");
+    expect(edgeDecoratorForTest(graph.edges[1].props!.decorator!)).toEqual("◆─────>");
+    expect(edgeDecoratorForTest(graph.edges[2].props!.decorator!)).toEqual("◆─────◇");
   });
 });

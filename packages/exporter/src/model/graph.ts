@@ -26,11 +26,19 @@ interface GraphProperty extends ElementProperty {
   css?: any | undefined;
 }
 
+// ElementProperty are used to define the graphical representation of edges and edges.
 export interface ElementProperty {
   color?: string;
   fill?: FillProp;
   stroke?: StrokeProp;
   font?: FontProps;
+}
+
+/**
+ * @type {EdgeProperty} (akk. EdgeStyle) are used to define the graphical representation of edges.
+ * @type {EdgeDecorator} is used to specify the style of the line and arrowheads.
+ */
+export interface EdgeProperty extends ElementProperty {
   decorator?: EdgeDecorator;
 }
 
@@ -76,7 +84,7 @@ export interface Edge {
 
   data?: EdgeData;
 
-  props?: ElementProperty;
+  props?: EdgeProperty;
 }
 
 export interface EdgeData {

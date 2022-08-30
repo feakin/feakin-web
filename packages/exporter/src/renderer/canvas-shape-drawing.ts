@@ -16,9 +16,9 @@ export class CanvasShapeDrawing implements ShapeDrawing {
       transparent: true,
     },
     stroke: {
-      strokeColor: '#000000',
-      strokeWidth: 1,
-      strokeOpacity: 1
+      color: '#000000',
+      width: 1,
+      opacity: 1
     }
   };
 
@@ -33,7 +33,7 @@ export class CanvasShapeDrawing implements ShapeDrawing {
     }
 
     if (this.property.stroke != null) {
-      this._ctx.strokeStyle = this.property.stroke?.strokeColor || '#000000';
+      this._ctx.strokeStyle = this.property.stroke?.color || '#000000';
     }
   }
 

@@ -21,7 +21,7 @@ function FkRect(props: FkRectProps) {
   const shapeRef = React.useRef<Konva.Rect | null>(null);
   const trRef: any = React.useRef<Konva.Transformer | null>(null);
 
-  const [labelPosition] = useState(props.shape.labelPosition());
+  const [labelPosition] = useState(props.shape.center());
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({
     x: props.shape.x,

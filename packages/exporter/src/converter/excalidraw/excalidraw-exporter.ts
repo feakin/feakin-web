@@ -9,9 +9,9 @@ import {
 import { FontString, measureText } from "./helper/text-utils";
 import { isBrowser } from "../../env";
 import { Exporter, Transpiler } from "../exporter";
-import { TriangleShape } from "../../model/node";
 import { groupPoints } from "../../model/geometry/point";
 import { nanoid } from "nanoid";
+import { TriangleShape } from "../../model/node/triangle-shape";
 
 export interface ExportedDataState {
   type: string;

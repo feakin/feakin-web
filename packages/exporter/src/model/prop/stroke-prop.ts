@@ -2,7 +2,7 @@
  * Stroke style to be used for painting the outline of the shape.
  */
 export interface StrokeProp {
-  strokeColor: string;
-  strokeWidth: number;
-  strokeOpacity: number;
+  color?: string;
+  width?: number;
+  opacity?: number;
 }

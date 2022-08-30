@@ -11,7 +11,7 @@ export class RectangleShape extends PolygonShape {
   /**
    * calculate label position in center of rectangle.
    */
-  override labelPosition() {
+  override center() {
     return {
       x: this.x + this.width / 2,
       y: this.y + this.height / 2 - this.fontSize / 2

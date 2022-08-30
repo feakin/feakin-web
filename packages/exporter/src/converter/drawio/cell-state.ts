@@ -1,7 +1,7 @@
 import { CellStateStyle, MxArrowType } from "./cell-state-style";
-import { ElementProperty, NodeData } from "../../model/graph";
+import { EdgeProperty, ElementProperty, NodeData } from "../../model/graph";
 import { LineType } from "../../model/edge/decorator/line-type";
-import { ArrowType } from "../../model/edge/decorator/arrow-type";
+import { Arrowhead } from "../../model/edge/decorator/arrowhead";
 import { LineStyle } from "../../model/edge/decorator/line-style";
 
 export class CellState implements CellStateStyle {
@@ -28,8 +28,8 @@ export class CellState implements CellStateStyle {
     return styles.join("");
   }
 
-  static toEdgeStyle(stateStyle: CellStateStyle): ElementProperty {
-    let props: ElementProperty = {
+  static toEdgeStyle(stateStyle: CellStateStyle): EdgeProperty {
+    const props: EdgeProperty = {
       fill: {
         color: stateStyle.fillColor,
         gradient: stateStyle.gradientColor,
@@ -38,36 +38,55 @@ export class CellState implements CellStateStyle {
       },
       decorator: {
         lineType: LineType.LINE,
-        lineStyle: LineStyle.SOLID,
-        startType: this.mxArrowToArrowType(stateStyle.startArrow ?? 'none', stateStyle.startFill),
-        endType: this.mxArrowToArrowType(stateStyle.endArrow ?? 'none', stateStyle.startFill),
+        lineStyle: this.mxToLineStyle(stateStyle),
+        startArrowhead: this.mxArrowToArrowhead(stateStyle.startArrow ?? 'none', stateStyle.startFill),
+        endArrowhead: this.mxArrowToArrowhead(stateStyle.endArrow ?? 'none', stateStyle.startFill),
+      },
+      stroke: {
+        color: stateStyle.strokeColor,
+        width: stateStyle.strokeWidth,
+        opacity: stateStyle.strokeOpacity
       }
     };
 
     return props;
   }
 
-  static mxArrowToArrowType(mxArrow: MxArrowType, filled = false): ArrowType {
+  static mxToLineStyle(stateStyle: CellStateStyle): LineStyle {
+    if (stateStyle.dashed) {
+      switch (stateStyle.dashPattern) {
+        // dashPattern: "1 3", is default draw.io magic numbers
+        case "1 3":
+          return LineStyle.DOT;
+      }
+
+      return LineStyle.DASH;
+    }
+
+    return LineStyle.SOLID
+  }
+
+  static mxArrowToArrowhead(mxArrow: MxArrowType, filled = false): Arrowhead {
     switch (mxArrow) {
       case "none":
-        return ArrowType.NONE;
+        return Arrowhead.NONE;
       case "block":
-        return ArrowType.HOLLOW_DIAMOND;
+        return Arrowhead.HOLLOW_DIAMOND;
       case "diamondThin":
       case "diamond":
         if (filled) {
-          return ArrowType.FILLED_DIAMOND;
+          return Arrowhead.FILLED_DIAMOND;
         } else {
-          return ArrowType.HOLLOW_DIAMOND;
+          return Arrowhead.HOLLOW_DIAMOND;
         }
       case "oval":
         if (filled) {
-          return ArrowType.FILLED_CIRCLE;
+          return Arrowhead.FILLED_CIRCLE;
         } else {
-          return ArrowType.HOLLOW_CIRCLE;
+          return Arrowhead.HOLLOW_CIRCLE;
         }
       default:
-        return ArrowType.NOTCHED;
+        return Arrowhead.NOTCHED;
     }
   }
 }

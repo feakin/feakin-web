@@ -1,8 +1,8 @@
-import { Shape } from "../node";
 import { Point } from "../geometry/point";
 import { ShapeType } from "../node/base/shape-type";
 import { defaultEdgeDecorator, EdgeDecorator } from "./decorator/edge-decorator";
-import { ArrowType } from "./decorator/arrow-type";
+import { Arrowhead } from "./decorator/arrowhead";
+import { Shape } from "../node/base/shape";
 
 export class ArrowShape extends Shape {
   private points_: Point[];
@@ -17,13 +17,13 @@ export class ArrowShape extends Shape {
   }
 
   // for build arrow;
-  lineStart = ArrowType.NONE;
-  lineEnd = ArrowType.NONE;
+  lineStart = Arrowhead.NONE;
+  lineEnd = Arrowhead.NONE;
 
   // add relationships for start and end;
   lineType(): string {
     switch (this.lineStart) {
-      case ArrowType.NONE:
+      case Arrowhead.NONE:
         break;
     }
     return ""

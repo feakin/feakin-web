@@ -33,7 +33,7 @@ export * from "./layout/elk/elk-layout";
 
 export * from './model/edge/arrow-shape';
 export * from './model/edge/edge-shape';
-export * from "./model/edge/decorator/arrow-type";
+export * from "./model/edge/decorator/arrowhead";
 export * from "./model/edge/decorator/line-style";
 export * from './model/edge/decorator/line-type';
 export * from './model/edge/decorator/edge-decorator';
@@ -49,7 +49,6 @@ export * from './model/node/circle-shape';
 export * from './model/node/diamond-shape';
 export * from './model/node/hexagon-shape';
 export * from './model/node/image-shape';
-export * from './model/node/index';
 export * from './model/node/polygon-shape';
 export * from './model/node/rectangle-shape';
 export * from './model/node/base/shape';

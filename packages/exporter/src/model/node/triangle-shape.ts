@@ -22,7 +22,7 @@ export class TriangleShape extends PolygonShape {
     return [...points, points[0]];
   }
 
-  override labelPosition() {
+  override center() {
     const width = this.width;
     const height = this.height;
 

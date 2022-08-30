@@ -1,5 +1,6 @@
 import { Shape } from "./base/shape";
 import { ShapeType } from "./base/shape-type";
+import { Point } from "../geometry/point";
 
 export class PolygonShape extends Shape {
   override type = ShapeType.Polygon;
@@ -12,7 +13,7 @@ export class PolygonShape extends Shape {
     this.height = height;
   }
 
-  override labelPosition() {
+  override center(): Point {
     return {
       x: this.x + this.width / 2,
       y: this.y + this.height / 2 - this.fontSize / 2

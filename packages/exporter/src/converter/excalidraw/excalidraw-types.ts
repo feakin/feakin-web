@@ -211,7 +211,7 @@ export type PointBinding = {
   gap: number;
 };
 
-export type Arrowhead = "arrow" | "bar" | "dot" | "triangle";
+export type ExArrowhead = "arrow" | "bar" | "dot" | "triangle";
 
 export type ExcalidrawLinearElement = _ExcalidrawElementBase &
   Readonly<{
@@ -220,8 +220,8 @@ export type ExcalidrawLinearElement = _ExcalidrawElementBase &
     lastCommittedPoint: ExPoint | null;
     startBinding: PointBinding | null;
     endBinding: PointBinding | null;
-    startArrowhead: Arrowhead | null;
-    endArrowhead: Arrowhead | null;
+    startArrowhead: ExArrowhead | null;
+    endArrowhead: ExArrowhead | null;
   }>;
 
 export type ExcalidrawFreeDrawElement = _ExcalidrawElementBase &
