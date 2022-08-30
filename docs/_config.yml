@@ -5,7 +5,7 @@ description: Modernize graph assets management, based on Diagram-as-code, so you
 
 heading_anchors: true
 
-footer_content: "This code is distributed under the MPL 2.0 License.
+footer_content: "This code is distributed under the MPL 2.0 License."
 
 # Footer last edited timestamp
 last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
