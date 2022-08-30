@@ -10,7 +10,7 @@ function dashFromDecorator(lineStyle: LineStyle): number[] {
 
 function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
   const { points, label } = props.edge
-
+  // todo: add default decorator
   let flatPoints = flattenPoints(props.edge.points);
 
   function getLineShape() {
@@ -19,8 +19,9 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
       let drawable: Drawable = drawing.polygon(props.edge.points);
 
       return <Line
-        fill="black"
-        stroke="black"
+        fill={ props.edge.props?.fill?.color || 'black' }
+        stroke={ props.edge.props?.stroke?.color || 'black' }
+        strokeWidth={ props.edge.props?.stroke?.width || 1 }
         sceneFunc={
           (ctx) => {
             drawing.drawLine(ctx._context, drawable);
@@ -38,6 +39,10 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
       stroke={ props.edge.props?.stroke?.color || 'black' }
       strokeWidth={ props.edge.props?.stroke?.width || 1 }
       tension={ 0.5 }
+      // sceneFunc={
+      //   (ctx) => {
+      //     drawArrowhead(ctx._context, { x: flatPoints[0], y: flatPoints[1] } as Point, decorator?.startArrowhead);
+      //   } }
     />
   }
 
