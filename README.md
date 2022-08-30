@@ -81,13 +81,6 @@ Note: nx.js use Craco, which will need `--legacy-peer-deps`.
 
 2. development exporter, can just run by tests
 
-## Known Issues
-
-**Triangle**
-
-- Triangle in drawio is not rendered correctly. In Draw.io the triangle will replace to `mxgraph.basic.acute_triangle`;
-- Excalidraw don't have triangle.
-
 ## License
 
 - Flow parser based on [mermaid.js](https://github.com/mermaid-js/)

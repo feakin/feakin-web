@@ -1,18 +1,22 @@
-# Concepts
+# Feakin Development
 
 
-- Location is a fixed place.
-- Position is a variable place.
+## Known Issues
 
-# Refs
+### Triangle
 
-## GoJS
+Source:
 
-use `path` data with Geometry
+- Triangle in drawio is not rendered correctly. In Draw.io the triangle will replace to `mxgraph.basic.acute_triangle`;
+- Excalidraw don't have triangle. We use line shape to replace triangle.
 
-```typescript
-go.Shape.defineArrowheadGeometry('Standard', 'F1 m 0,0 l 8,4 -8,4 2,-4 z');
-go.Shape.defineArrowheadGeometry('Backward', 'F1 m 8,0 l -2,4 2,4 -8,-4 z');
-go.Shape.defineArrowheadGeometry('Triangle', 'F1 m 0,0 l 8,4.62 -8,4.62 z');
+Render:
+
+In Konva.js, the triangle Polygon, as follows:
+
+```jsx
+<Line
+  points={ points }
+  closed
+/>
 ```
-
