@@ -30,6 +30,8 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
     }
 
     let dash = props.edge.props?.decorator?.lineStyle ? dashFromDecorator(props.edge.props!.decorator.lineStyle) : [];
+    // let startArrow = props.edge.props?.decorator?.startArrowhead || Arrowhead.NONE;
+    // let endArrow = props.edge.props?.decorator?.endArrowhead || Arrowhead.FILLED;
 
     return <Arrow
       dash={ dash }
@@ -41,7 +43,18 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
       tension={ 0.5 }
       // sceneFunc={
       //   (ctx) => {
-      //     drawArrowhead(ctx._context, { x: flatPoints[0], y: flatPoints[1] } as Point, decorator?.startArrowhead);
+      //     // drawLine
+      //     ctx.beginPath();
+      //     ctx.moveTo(points[0].x, points[0].y);
+      //     for (let i = 1; i < points.length; i++) {
+      //       ctx.lineTo(points[i].x, points[i].y);
+      //     }
+      //     ctx.stroke();
+      //
+      //     ArrowHeadDrawing.canvas(ctx._context, startArrow, points[0], props.edge.props?.stroke?.width || 8);
+      //     ArrowHeadDrawing.canvas(ctx._context, endArrow, points[points.length - 1], props.edge.props?.stroke?.width || 8);
+      //
+      //     ctx.closePath();
       //   } }
     />
   }
