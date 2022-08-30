@@ -14,13 +14,13 @@ describe('DotImporter', () => {
     expect(graph.nodes[0].label).toBe("a");
     expect(graph.nodes[1].label).toBe("b");
     expect(graph.edges.length).toBe(3);
-    expect(graph.edges[0]).toEqual({ data: { source: "a", target: "b" }, id: "a_b", points: [], prop: {} });
-    expect(graph.edges[1]).toEqual({ data: { source: "a", target: "b" }, id: "a_b_1", points: [], prop: {} });
+    expect(graph.edges[0]).toEqual({ data: { source: "a", target: "b" }, id: "a_b", points: [], props: {} });
+    expect(graph.edges[1]).toEqual({ data: { source: "a", target: "b" }, id: "a_b_1", points: [], props: {} });
     expect(graph.edges[2]).toEqual({
       data: { source: "b", target: "a", color: "blue" },
       id: "b_a",
       points: [],
-      prop: {
+      props: {
         color: "blue"
       }
     });
@@ -39,7 +39,7 @@ describe('DotImporter', () => {
     expect(graph.edges[0]).toEqual({
       data: { source: "0", target: "1", label: "(1, 0)", len: 2 },
       id: "0_1",
-      prop: {},
+      props: {},
       points: []
     });
   });
@@ -164,7 +164,6 @@ describe('DotImporter', () => {
     expect(graph.nodes[0].props?.fill?.color).toBe("red");
   });
 
-
   xit('one to many', () => {
     const importer = new DotImporter(`graph happiness {
   Happiness -- {
@@ -178,6 +177,5 @@ describe('DotImporter', () => {
 }`);
 
     const graph: Graph = importer.parse();
-    console.log(graph);
   });
 });

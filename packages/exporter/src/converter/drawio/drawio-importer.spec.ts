@@ -136,10 +136,10 @@ describe('DrawioEncoder', () => {
     const graph: Graph = drawioConverter.parse();
 
     expect(graph.edges[0].props?.decorator).toEqual({
-      "endType": "none",
-      "lineStyle": "solid",
-      "lineType": "line",
-      "startType": "none"
+      endType: "none",
+      lineStyle: "solid",
+      lineType: "line",
+      startType: "none"
     });
   });
 });
