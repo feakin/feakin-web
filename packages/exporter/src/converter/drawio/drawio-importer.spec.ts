@@ -4,6 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { DrawioImporter } from "./drawio-importer";
 import { Edge, Graph } from "../../model/graph";
+import { edgeDecoratorForTest } from "../../model/edge/decorator/edge-decorator";
 
 const pwd = process.env["PWD"] || process.cwd();
 
@@ -135,11 +136,8 @@ describe('DrawioEncoder', () => {
 </mxGraphModel>`, true);
     const graph: Graph = drawioConverter.parse();
 
-    expect(graph.edges[0].props?.decorator).toEqual({
-      endType: "none",
-      lineStyle: "solid",
-      lineType: "line",
-      startType: "none"
-    });
+    expect(edgeDecoratorForTest(graph.edges[0].props!.decorator!)).toEqual("─────");
+    expect(edgeDecoratorForTest(graph.edges[1].props!.decorator!)).toEqual("<─────>");
+    expect(edgeDecoratorForTest(graph.edges[2].props!.decorator!)).toEqual("─────>");
   });
 });

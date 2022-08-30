@@ -36,6 +36,7 @@ export * from './model/edge/edge-shape';
 export * from "./model/edge/decorator/arrow-type";
 export * from "./model/edge/decorator/line-style";
 export * from './model/edge/decorator/line-type';
+export * from './model/edge/decorator/edge-decorator';
 export * from './model/edge/line-shape';
 export * from './model/edge/polyline-shape';
 export * from './model/geometry/geometry';
@@ -68,4 +69,4 @@ export * from './renderer/helper/data-url';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
 
-export * from './usecases/uml/class-relationship';
+export * from './model/edge/decorator/usecases/class-relationship';
