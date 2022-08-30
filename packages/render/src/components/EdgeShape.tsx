@@ -36,6 +36,7 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
       points={ flatPoints }
       fill={ props.edge.props?.fill?.color || 'black' }
       stroke={ props.edge.props?.stroke?.color || 'black' }
+      strokeWidth={ props.edge.props?.stroke?.width || 1 }
       tension={ 0.5 }
     />
   }

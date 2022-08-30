@@ -123,7 +123,7 @@ describe('DrawioEncoder', () => {
         <mxPoint x="480" y="380" as="targetPoint"/>
       </mxGeometry>
     </mxCell>
-    <mxCell id="VSaEne3B5YX8t8c1DR0t-5" value="" style="endArrow=block;startArrow=diamond;html=1;rounded=0;startFill=0;endFill=0;" edge="1" parent="1">
+    <mxCell id="VSaEne3B5YX8t8c1DR0t-5" value="" style="endArrow=block;startArrow=diamond;html=1;rounded=0;strokeWidth=2;startFill=0;endFill=0;" edge="1" parent="1">
       <mxGeometry width="50" height="50" relative="1" as="geometry">
         <mxPoint x="360" y="430" as="sourcePoint"/>
         <mxPoint x="480" y="430" as="targetPoint"/>

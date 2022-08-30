@@ -42,4 +42,9 @@ describe("CellStateParser", () => {
       endArrowhead: "hollow-diamond"
     });
   });
+
+  it('stroke width', function () {
+    const prop =  CellState.toEdgeStyle(CellState.fromString("strokeWidth=2;html=1;rounded=0;startFill=0;endFill=0;"));
+    expect(prop.stroke?.width).toEqual(2);
+  });
 });

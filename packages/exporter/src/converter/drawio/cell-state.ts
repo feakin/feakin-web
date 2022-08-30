@@ -44,8 +44,8 @@ export class CellState implements CellStateStyle {
       },
       stroke: {
         color: stateStyle.strokeColor,
-        width: stateStyle.strokeWidth,
-        opacity: stateStyle.strokeOpacity
+        width: parseFloat(<string>stateStyle.strokeWidth ?? "1"),
+        opacity: parseFloat(<string>stateStyle.strokeOpacity ?? "1"),
       }
     };
 

@@ -162,8 +162,8 @@ export interface CellStateStyle extends CellConnectorStyle {
   startFill?: boolean;
   startSize?: number;
   strokeColor?: ColorValue;
-  strokeOpacity?: number;
-  strokeWidth?: number;
+  strokeOpacity?: number | string;
+  strokeWidth?: number | string;
   swimlaneFillColor?: ColorValue;
   swimlaneLine?: boolean;
   targetJettySize?: number | 'auto';
