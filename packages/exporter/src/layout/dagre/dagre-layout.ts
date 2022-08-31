@@ -128,6 +128,7 @@ export function runLayout(graph: graphlib.Graph<any>): Graph {
     edges.push({
       id: graphEdge['id'] ? graphEdge['id'] : nanoid(),
       points: graphEdge.points,
+      props: graphEdge['props'],
       data: {
         ...graphEdge['data'],
         source: labelIdMap.get(e.v) || e.v,

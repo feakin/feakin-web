@@ -14,14 +14,54 @@ describe('DotImporter', () => {
     expect(graph.nodes[0].label).toBe("a");
     expect(graph.nodes[1].label).toBe("b");
     expect(graph.edges.length).toBe(3);
-    expect(graph.edges[0]).toEqual({ data: { source: "a", target: "b" }, id: "a_b", points: [], props: {} });
-    expect(graph.edges[1]).toEqual({ data: { source: "a", target: "b" }, id: "a_b_1", points: [], props: {} });
+    expect(graph.edges[0]).toEqual({
+      "data": {
+        "source": "a",
+        "target": "b"
+      },
+      "id": "a_b",
+      "points": [],
+      "props": {
+        "decorator": {
+          "endArrowhead": "filled",
+          "lineDashStyle": "solid",
+          "lineType": "line",
+          "startArrowhead": "none"
+        }
+      }
+    });
+    expect(graph.edges[1]).toEqual({
+      "data": {
+        "source": "a",
+        "target": "b"
+      },
+      "id": "a_b_1",
+      "points": [],
+      "props": {
+        "decorator": {
+          "endArrowhead": "filled",
+          "lineDashStyle": "solid",
+          "lineType": "line",
+          "startArrowhead": "none"
+        }
+      }
+    });
     expect(graph.edges[2]).toEqual({
-      data: { source: "b", target: "a", color: "blue" },
-      id: "b_a",
-      points: [],
-      props: {
-        color: "blue"
+      "data": {
+        "color": "blue",
+        "source": "b",
+        "target": "a"
+      },
+      "id": "b_a",
+      "points": [],
+      "props": {
+        "color": "blue",
+        "decorator": {
+          "endArrowhead": "filled",
+          "lineDashStyle": "solid",
+          "lineType": "line",
+          "startArrowhead": "none"
+        }
       }
     });
   });
@@ -37,10 +77,22 @@ describe('DotImporter', () => {
     expect(graph.nodes.length).toBe(2);
     expect(graph.edges.length).toBe(3);
     expect(graph.edges[0]).toEqual({
-      data: { source: "0", target: "1", label: "(1, 0)", len: 2 },
-      id: "0_1",
-      props: {},
-      points: []
+      "data": {
+        "label": "(1, 0)",
+        "len": 2,
+        "source": "0",
+        "target": "1"
+      },
+      "id": "0_1",
+      "points": [],
+      "props": {
+        "decorator": {
+          "endArrowhead": "filled",
+          "lineDashStyle": "solid",
+          "lineType": "line",
+          "startArrowhead": "none"
+        }
+      }
     });
   });
 

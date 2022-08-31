@@ -29,7 +29,7 @@ export class CellState implements CellStateStyle {
   }
 
   static toEdgeStyle(stateStyle: CellStateStyle): EdgeProperty {
-    const props: EdgeProperty = Object.assign({}, defaultEdgeProperty, {
+    const props: EdgeProperty = Object.assign( {
       fill: {
         color: stateStyle.fillColor,
         gradient: stateStyle.gradientColor,

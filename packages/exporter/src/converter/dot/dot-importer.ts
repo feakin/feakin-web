@@ -13,6 +13,9 @@ import { nanoid } from "nanoid";
 import { Importer } from "../importer";
 import { Edge, ElementProperty, Graph, Node } from "../../model/graph";
 import { layoutFromGraph } from "../../layout/dagre/dagre-layout";
+import { Arrowhead } from "../../model/edge/decorator/arrowhead";
+import { LineType } from "../../model/edge/decorator/line-type";
+import { LineDashStyle } from "../../model/edge/decorator/line-dash-style";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph);
 
@@ -140,7 +143,7 @@ export class DotImporter extends Importer {
     const isAlreadyContainLabel = !this.subgraphNode.has(child.id!);
     if (isAlreadyContainLabel) {
       const parentId = this.tryGetSubgraphNodeId();
-      this.subgraphNode.set(child.id!,  {
+      this.subgraphNode.set(child.id!, {
         ...parentId,
         label: child.id!.toString(),
       });
@@ -180,7 +183,14 @@ export class DotImporter extends Importer {
         this.edges.set(edgeId, {
           id: edgeId,
           points: [],
-          props: this.mappingProperty(attrs),
+          props: Object.assign({
+            decorator: {
+              lineType: LineType.LINE,
+              lineDashStyle: LineDashStyle.SOLID,
+              endArrowhead: Arrowhead.FILLED,
+              startArrowhead: Arrowhead.NONE
+            },
+          }, this.mappingProperty(attrs)),
           data: {
             ...attrs,
             source: lastNode.id.toString(),

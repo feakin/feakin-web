@@ -1,18 +1,20 @@
 import React from 'react';
-import { defaultEdgeProperty, Edge, EdgeProperty, flattenPoints } from "@feakin/exporter";
+import { defaultEdgeProperty, Edge, flattenPoints } from "@feakin/exporter";
 import { Group, Line, Text } from "react-konva";
 import { Drawable } from "roughjs/bin/core";
 import { RenderOptions } from "../type";
 import { ConnectorDrawing } from "@feakin/exporter/src/renderer/edge/connector-drawing";
-
-function mergeProp(edgeProperty: EdgeProperty): EdgeProperty {
-  return Object.assign({}, defaultEdgeProperty, edgeProperty);
-}
+import { Context } from "konva/lib/Context";
 
 function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
   const { points, label } = props.edge
   // todo: add default decorator
   let flatPoints = flattenPoints(props.edge.points);
+
+  const sceneFunc = (ctx: Context) => {
+    const edgeProperty = Object.assign(defaultEdgeProperty, props.edge.props!);
+    ConnectorDrawing.render(ctx._context, edgeProperty, points);
+  }
 
   function getLineShape() {
     if (props.options.paintStyle) {
@@ -33,10 +35,7 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
     return <Line
       points={ flatPoints }
       strokeWidth={ props.edge.props?.stroke?.width || 1 }
-      sceneFunc={
-        (ctx) => {
-          ConnectorDrawing.render(ctx._context, mergeProp(props.edge.props!), points);
-        } }
+      sceneFunc={ sceneFunc }
     />
   }
 

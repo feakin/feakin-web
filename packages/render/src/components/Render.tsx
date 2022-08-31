@@ -258,8 +258,9 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
     >
       <Layer ref={ layerRef }>
         { graph.nodes && graph.nodes.map((node: Node) => NodeRender(node, undefined, props.options)) }
-        { graph.edges && graph.edges.map((edge: Edge) =>
-          <EdgeShape key={ edge.id } edge={ edge } options={ props.options }/>)
+        { graph.edges && graph.edges.map((edge: Edge) => {
+          return <EdgeShape key={ edge.id } edge={ edge } options={ props.options }/>;
+        })
         }
 
         <Transformer

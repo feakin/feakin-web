@@ -18,26 +18,36 @@ export class ConnectorDrawing {
   }
 
   static createStartMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    ConnectorDrawing.createArrowMarker(ctx, points, decorator, true);
+    ConnectorDrawing.createByType(decorator.decorator!.startArrowhead, ctx, points, true);
   }
 
   static createEndMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    ConnectorDrawing.createArrowMarker(ctx, points, decorator, false);
-  }
-
-  static createArrowMarker(ctx: CanvasRenderingContext2D, points: Point[], prop: EdgeProperty, source: boolean) {
-    ConnectorDrawing.createByType(prop.decorator!.startArrowhead, ctx, points, source);
+    ConnectorDrawing.createByType(decorator.decorator!.endArrowhead, ctx, points, false);
   }
 
   private static createByType(arrowhead: Arrowhead, ctx: CanvasRenderingContext2D, points: Point[], source: boolean) {
+    // todo: refactor to endArrowhead
+    const scale = 1;
+    const pts: Point[] = [];
+
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i];
+
+      pts.push({
+        x: p.x / scale,
+        y: p.y / scale
+      })
+    }
+
     switch (arrowhead) {
       case Arrowhead.NONE:
         break;
       case Arrowhead.NOTCHED:
-        drawingFacingArrow(ctx, points, source);
+      case Arrowhead.FILLED:
+        drawingFacingArrow(ctx, pts, source);
         break;
       default:
-        drawingFacingArrow(ctx, points, source);
+        drawingFacingArrow(ctx, pts, source);
     }
   }
 
