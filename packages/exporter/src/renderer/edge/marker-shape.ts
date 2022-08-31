@@ -19,7 +19,9 @@ export interface MarkerShapeOption {
 // 26.565 degrees, 1/sin(26.565) = 2.236 / 2 = 1.118 ( / 2 allows for
 // only half the strokewidth is processed ).
 function createTriangleArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
-  const { unitX, unitY, strokeWidth, widthFactor, pointEnd, size } = options
+  let { unitX, unitY } = options
+  const {  strokeWidth, widthFactor, pointEnd, size } = options;
+
   const endOffsetX = unitX * strokeWidth * 1.118;
   const endOffsetY = unitY * strokeWidth * 1.118;
 
