@@ -37,6 +37,7 @@ export * from "./model/edge/decorator/arrowhead";
 export * from "./model/edge/decorator/line-dash-style";
 export * from './model/edge/decorator/line-type';
 export * from './model/edge/decorator/edge-decorator';
+export * from './model/edge/decorator/usecases/class-relationship';
 export * from './model/edge/line-shape';
 export * from './model/edge/polyline-shape';
 export * from './model/geometry/geometry';
@@ -59,13 +60,15 @@ export * from './model/prop/fill-prop';
 export * from './model/prop/font-props';
 export * from './model/prop/image-prop';
 export * from './model/prop/padding-prop';
-export * from './model/prop/stroke-prop';
 export * from './model/prop/props-constants';
+export * from './model/prop/shadow-prop';
+export * from './model/prop/stroke-prop';
+export * from './model/prop/text-prop';
 
+export * from './renderer/edge/connector-drawing';
+export * from './renderer/edge/marker-shape';
 export * from './renderer/abstract-svg-render';
 export * from './renderer/canvas-shape-drawing';
 export * from './renderer/helper/data-url';
 export * from './renderer/shape-drawing';
 export * from './renderer/svg-shape-drawing';
-
-export * from './model/edge/decorator/usecases/class-relationship';

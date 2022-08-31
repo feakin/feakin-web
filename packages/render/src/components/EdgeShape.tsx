@@ -1,10 +1,10 @@
 import React from 'react';
-import { defaultEdgeProperty, Edge, flattenPoints } from "@feakin/exporter";
+import { ConnectorDrawing, defaultEdgeProperty, Edge, flattenPoints } from "@feakin/exporter";
 import { Group, Line, Text } from "react-konva";
 import { Drawable } from "roughjs/bin/core";
-import { RenderOptions } from "../type";
-import { ConnectorDrawing } from "@feakin/exporter/src/renderer/edge/connector-drawing";
 import { Context } from "konva/lib/Context";
+
+import { RenderOptions } from "../type";
 
 function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
   const { points, label } = props.edge
