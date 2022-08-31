@@ -6,10 +6,20 @@
  */
 import { Point } from "../../model/geometry/point";
 
-function createTriangleArrow(unitX: number, strokeWidth: number, unitY: number, size: number, pe: Point, canvas: CanvasRenderingContext2D, widthFactor: number) {
-  // The angle of the forward facing arrow sides against the x axis is
-  // 26.565 degrees, 1/sin(26.565) = 2.236 / 2 = 1.118 ( / 2 allows for
-  // only half the strokewidth is processed ).
+export interface MarkerShapeOption {
+  unitX: number;
+  unitY: number;
+  widthFactor: number;
+  pointEnd: Point;
+  strokeWidth: number;
+  size: number;
+}
+
+// The angle of the forward facing arrow sides against the x axis is
+// 26.565 degrees, 1/sin(26.565) = 2.236 / 2 = 1.118 ( / 2 allows for
+// only half the strokewidth is processed ).
+function createTriangleArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+  const { unitX, unitY, strokeWidth, widthFactor, pointEnd, size } = options
   const endOffsetX = unitX * strokeWidth * 1.118;
   const endOffsetY = unitY * strokeWidth * 1.118;
 
@@ -17,14 +27,14 @@ function createTriangleArrow(unitX: number, strokeWidth: number, unitY: number, 
   unitY *= size + strokeWidth;
 
   const pt = {
-    x: pe.x - endOffsetX,
-    y: pe.y - endOffsetY
+    x: pointEnd.x - endOffsetX,
+    y: pointEnd.y - endOffsetY
   };
 
   // const f = type !== ARROW.CLASSIC && type !== ARROW.CLASSIC_THIN ? 1 : 3 / 4;
   const f = 1;
-  pe.x += -unitX * f - endOffsetX;
-  pe.y += -unitY * f - endOffsetY;
+  pointEnd.x += -unitX * f - endOffsetX;
+  pointEnd.y += -unitY * f - endOffsetY;
 
   canvas.beginPath();
   canvas.moveTo(pt.x, pt.y);
@@ -51,28 +61,26 @@ export function drawingFacingArrow(canvas: CanvasRenderingContext2D, points: Poi
 
   const length = points.length;
   let p0 = source ? points[1] : points[length - 2];
-  const pe = source ? points[0] : points[length - 1];
+  const pointEnd = source ? points[0] : points[length - 1];
 
   let count = 1;
 
   // Uses next non-overlapping point
-  while (
-    count < length - 1 &&
-    Math.round(p0.x - pe.x) === 0 &&
-    Math.round(p0.y - pe.y) === 0
-    ) {
+  while (count < length - 1 && Math.round(p0.x - pointEnd.x) === 0 && Math.round(p0.y - pointEnd.y) === 0) {
     p0 = source ? points[1 + count] : points[length - 2 - count];
     count++;
   }
 
   // Computes the norm and the inverse norm
-  const dx = pe.x - p0.x;
-  const dy = pe.y - p0.y;
+  const dx = pointEnd.x - p0.x;
+  const dy = pointEnd.y - p0.y;
 
   const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
 
   const unitX = dx / dist;
   const unitY = dy / dist;
 
-  createTriangleArrow(unitX, strokeWidth, unitY, size, pe, canvas, widthFactor);
+  createTriangleArrow(canvas, {
+    unitX, strokeWidth, unitY, size, pointEnd, widthFactor
+  });
 }
