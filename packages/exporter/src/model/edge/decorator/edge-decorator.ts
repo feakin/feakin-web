@@ -1,10 +1,10 @@
 import { Arrowhead } from "./arrowhead";
 import { LineType } from "./line-type";
-import { LineStyle } from "./line-style";
+import { LineDashStyle } from "./line-dash-style";
 
 export const defaultEdgeDecorator: EdgeDecorator = {
   lineType: LineType.LINE,
-  lineStyle: LineStyle.SOLID,
+  lineDashStyle: LineDashStyle.SOLID,
   endArrowhead: Arrowhead.NONE,
   startArrowhead: Arrowhead.NONE,
 }
@@ -13,7 +13,7 @@ export const defaultEdgeDecorator: EdgeDecorator = {
  * The edge decorator is used to specify the style of the line and arrowheads
  */
 export interface EdgeDecorator {
-  lineStyle: LineStyle;
+  lineDashStyle: LineDashStyle;
   lineType: LineType;
   startArrowhead: Arrowhead;
   endArrowhead: Arrowhead;
@@ -58,14 +58,14 @@ export function edgeDecoratorForTest(edgeDecorator: EdgeDecorator): string {
   }
 
   const lineRepeat = 5;
-  switch (edgeDecorator.lineStyle) {
-    case LineStyle.SOLID:
+  switch (edgeDecorator.lineDashStyle) {
+    case LineDashStyle.SOLID:
       result += "─".repeat(lineRepeat);
       break;
-    case LineStyle.DASH:
+    case LineDashStyle.DASH:
       result += "-".repeat(lineRepeat);
       break;
-    case LineStyle.DOT:
+    case LineDashStyle.DOT:
       result += ".".repeat(lineRepeat);
       break;
     default:

@@ -1,6 +1,6 @@
 export interface FillProp {
   transparent?: boolean;
   gradient?: string;
-  color?: string;
+  color: string;
   opacity?: number;
 }

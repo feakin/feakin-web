@@ -1,11 +1,12 @@
 import React from 'react';
-import { Edge, flattenPoints, LineStyle, LineStyleImpl } from "@feakin/exporter";
-import { Arrow, Group, Line, Text } from "react-konva";
+import { defaultEdgeProperty, Edge, EdgeProperty, flattenPoints } from "@feakin/exporter";
+import { Group, Line, Text } from "react-konva";
 import { Drawable } from "roughjs/bin/core";
 import { RenderOptions } from "../type";
+import { ConnectorDrawing } from "@feakin/exporter/src/renderer/edge/connector-drawing";
 
-function dashFromDecorator(lineStyle: LineStyle): number[] {
-  return LineStyleImpl.toDashPattern(lineStyle, 5);
+function mergeProp(edgeProperty: EdgeProperty): EdgeProperty {
+  return Object.assign({}, defaultEdgeProperty, edgeProperty);
 }
 
 function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
@@ -29,33 +30,13 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
       />
     }
 
-    let dash = props.edge.props?.decorator?.lineStyle ? dashFromDecorator(props.edge.props!.decorator.lineStyle) : [];
-    // let startArrow = props.edge.props?.decorator?.startArrowhead || Arrowhead.NONE;
-    // let endArrow = props.edge.props?.decorator?.endArrowhead || Arrowhead.FILLED;
-
-    return <Arrow
-      dash={ dash }
-      lineCap={ "round" }
+    return <Line
       points={ flatPoints }
-      fill={ props.edge.props?.fill?.color || 'black' }
-      stroke={ props.edge.props?.stroke?.color || 'black' }
       strokeWidth={ props.edge.props?.stroke?.width || 1 }
-      tension={ 0.5 }
-      // sceneFunc={
-      //   (ctx) => {
-      //     // drawLine
-      //     ctx.beginPath();
-      //     ctx.moveTo(points[0].x, points[0].y);
-      //     for (let i = 1; i < points.length; i++) {
-      //       ctx.lineTo(points[i].x, points[i].y);
-      //     }
-      //     ctx.stroke();
-      //
-      //     ArrowHeadDrawing.canvas(ctx._context, startArrow, points[0], props.edge.props?.stroke?.width || 8);
-      //     ArrowHeadDrawing.canvas(ctx._context, endArrow, points[points.length - 1], props.edge.props?.stroke?.width || 8);
-      //
-      //     ctx.closePath();
-      //   } }
+      sceneFunc={
+        (ctx) => {
+          ConnectorDrawing.render(ctx._context, mergeProp(props.edge.props!), points);
+        } }
     />
   }
 

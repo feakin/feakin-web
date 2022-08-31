@@ -103,6 +103,7 @@ export class DrawioImporter extends Importer {
 
   private convertEdge(cell: MXCell): Edge {
     const attrs = cell.attributes!;
+
     let props: ElementProperty = {}
     if(cell.attributes?.style) {
       props = CellState.toEdgeStyle(CellState.fromString(cell.attributes?.style));

@@ -1,5 +1,5 @@
 import { Point } from "../model/geometry/point";
-import { ElementProperty } from "../model/graph";
+import { defaultEdgeProperty, ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
 import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
 
@@ -11,16 +11,7 @@ export class CanvasShapeDrawing implements ShapeDrawing {
 
   property: ElementProperty;
 
-  defaultProperty: ElementProperty = {
-    fill: {
-      transparent: true,
-    },
-    stroke: {
-      color: '#000000',
-      width: 1,
-      opacity: 1
-    }
-  };
+  defaultProperty: ElementProperty = defaultEdgeProperty;
 
   constructor(context: CanvasRenderingContext2D, property?: ElementProperty) {
     this._ctx = context;

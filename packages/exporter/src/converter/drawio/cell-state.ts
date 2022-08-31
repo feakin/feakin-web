@@ -1,8 +1,8 @@
 import { CellStateStyle, MxArrowType } from "./cell-state-style";
-import { EdgeProperty, ElementProperty, NodeData } from "../../model/graph";
+import { defaultEdgeProperty, EdgeProperty, ElementProperty, NodeData } from "../../model/graph";
 import { LineType } from "../../model/edge/decorator/line-type";
 import { Arrowhead } from "../../model/edge/decorator/arrowhead";
-import { LineStyle } from "../../model/edge/decorator/line-style";
+import { LineDashStyle } from "../../model/edge/decorator/line-dash-style";
 
 export class CellState implements CellStateStyle {
   static fromString(style: string): CellStateStyle {
@@ -29,7 +29,7 @@ export class CellState implements CellStateStyle {
   }
 
   static toEdgeStyle(stateStyle: CellStateStyle): EdgeProperty {
-    const props: EdgeProperty = {
+    const props: EdgeProperty = Object.assign({}, defaultEdgeProperty, {
       fill: {
         color: stateStyle.fillColor,
         gradient: stateStyle.gradientColor,
@@ -38,7 +38,7 @@ export class CellState implements CellStateStyle {
       },
       decorator: {
         lineType: LineType.LINE,
-        lineStyle: this.mxToLineStyle(stateStyle),
+        lineDashStyle: this.mxToLineStyle(stateStyle),
         startArrowhead: this.mxArrowToArrowhead(stateStyle.startArrow ?? 'none', stateStyle.startFill),
         endArrowhead: this.mxArrowToArrowhead(stateStyle.endArrow ?? 'none', stateStyle.startFill),
       },
@@ -47,23 +47,23 @@ export class CellState implements CellStateStyle {
         width: parseFloat(<string>stateStyle.strokeWidth ?? "1"),
         opacity: parseFloat(<string>stateStyle.strokeOpacity ?? "1"),
       }
-    };
+    });
 
     return props;
   }
 
-  static mxToLineStyle(stateStyle: CellStateStyle): LineStyle {
+  static mxToLineStyle(stateStyle: CellStateStyle): LineDashStyle {
     if (stateStyle.dashed) {
       switch (stateStyle.dashPattern) {
         // dashPattern: "1 3", is default draw.io magic numbers
         case "1 3":
-          return LineStyle.DOT;
+          return LineDashStyle.DOT;
       }
 
-      return LineStyle.DASH;
+      return LineDashStyle.DASH;
     }
 
-    return LineStyle.SOLID
+    return LineDashStyle.SOLID
   }
 
   static mxArrowToArrowhead(mxArrow: MxArrowType, filled = false): Arrowhead {

@@ -1,5 +1,5 @@
 import { Point } from "../model/geometry/point";
-import { ElementProperty } from "../model/graph";
+import { defaultEdgeProperty, ElementProperty } from "../model/graph";
 import { ShapeDrawing } from "./shape-drawing";
 import { CircleShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
 import { DiamondShape } from "../model/node/diamond-shape";
@@ -15,16 +15,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   property: ElementProperty;
-  defaultProperty: ElementProperty = {
-    fill: {
-      transparent: true,
-    },
-    stroke: {
-      color: '#000000',
-      width: 1,
-      opacity: 1
-    }
-  };
+  defaultProperty: ElementProperty = defaultEdgeProperty;
 
   constructor(context: SVGElement, property?: ElementProperty) {
     this.ctx = context;
@@ -128,7 +119,7 @@ export class SvgShapeDrawing implements ShapeDrawing {
   }
 
   drawHexagon(hexagon: HexagonShape): this {
-    this.drawByPoints(hexagon.points(), { x: hexagon.x, y: hexagon.y});
+    this.drawByPoints(hexagon.points(), { x: hexagon.x, y: hexagon.y });
     return this;
   }
 

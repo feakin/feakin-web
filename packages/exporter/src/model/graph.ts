@@ -4,7 +4,7 @@ import { StrokeProp } from "./prop/stroke-prop";
 import { LineType } from "./edge/decorator/line-type";
 import { FontProps } from "./prop/font-props";
 import { ShapeType } from "./node/base/shape-type";
-import { EdgeDecorator } from "./edge/decorator/edge-decorator";
+import { defaultEdgeDecorator, EdgeDecorator } from "./edge/decorator/edge-decorator";
 
 /**
  * Graph is a class that represents a graph.
@@ -40,6 +40,19 @@ export interface ElementProperty {
  */
 export interface EdgeProperty extends ElementProperty {
   decorator?: EdgeDecorator;
+}
+
+export const defaultEdgeProperty: EdgeProperty = {
+  color: "black",
+  fill: {
+    color: "#000000"
+  },
+  stroke: {
+    color: "#000000",
+    width: 1,
+    opacity: 1
+  },
+  decorator: defaultEdgeDecorator
 }
 
 /**
