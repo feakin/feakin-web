@@ -8,8 +8,6 @@ export enum ShapeType {
   Rectangle = "rectangle",
   Hexagon = "hexagon",
   Triangle = "triangle",
-  Cloud = "cloud",
-  Cylinder = "cylinder",
   Text = "text",
   Polygon = "polygon",
   Diamond = "diamond",

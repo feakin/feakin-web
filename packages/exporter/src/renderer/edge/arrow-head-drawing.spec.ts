@@ -1,7 +1,8 @@
 import * as fs from "fs";
-import { ArrowHeadDrawing } from "./arrow-head-drawing";
+import { ConnectorDrawing } from "./connector-drawing";
 import { Arrowhead } from "../../model/edge/decorator/arrowhead";
 import { dataURLtoFileData } from "../helper/data-url";
+import { EdgeDecorator, LineStyle, LineType } from "@feakin/exporter";
 
 describe('ArrowHeadDrawing', () => {
   let canvas: any, ctx: any;
@@ -15,29 +16,18 @@ describe('ArrowHeadDrawing', () => {
   });
 
   it('should draw arrowhead notched', () => {
-    ArrowHeadDrawing.canvas(ctx, Arrowhead.NOTCHED, { x: 0, y: 0 }, 10);
+    let decorator: EdgeDecorator = {
+      lineStyle: LineStyle.SOLID,
+      lineType: LineType.LINE,
+      startArrowhead: Arrowhead.NOTCHED,
+      endArrowhead: Arrowhead.NOTCHED,
+    }
+
+    ConnectorDrawing.render(ctx, decorator, [{ x: 10, y: 10 }, { x: 50, y: 50 }], 10);
 
     const image = canvas.toDataURL();
     const fileData = dataURLtoFileData(image);
 
     fs.writeFileSync('./test/arrow-notched.png', fileData.data);
-  });
-
-  it('should draw arrowhead hollow', () => {
-    ArrowHeadDrawing.canvas(ctx, Arrowhead.HOLLOW, { x: 0, y: 0 }, 10);
-
-    const image = canvas.toDataURL();
-    const fileData = dataURLtoFileData(image);
-
-    fs.writeFileSync('./test/arrow-hollow.png', fileData.data);
-  });
-
-  it('should draw arrowhead filled', () => {
-    ArrowHeadDrawing.canvas(ctx, Arrowhead.FILLED, { x: 0, y: 0 }, 10);
-
-    const image = canvas.toDataURL();
-    const fileData = dataURLtoFileData(image);
-
-    fs.writeFileSync('./test/arrow-filled.png', fileData.data);
   });
 });
