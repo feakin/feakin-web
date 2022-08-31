@@ -32,7 +32,8 @@ export class ConnectorDrawing {
       case Arrowhead.NONE:
         break;
       case Arrowhead.NOTCHED:
-
+        // create arrow with direction by start points
+        ConnectorDrawing.createTriangleMarkerWithDirection(ctx, points, source);
     }
   }
 
@@ -71,7 +72,11 @@ export class ConnectorDrawing {
     ctx.stroke();
   }
 
-  private static createTriangle(ctx: CanvasRenderingContext2D, points: Point[], source: boolean) {
 
+  // The angle of the forward facing arrow sides against the x axis is
+  // 26.565 degrees, 1/sin(26.565) = 2.236 / 2 = 1.118 ( / 2 allows for
+  // only half the strokewidth is processed ).
+  private static createTriangleMarkerWithDirection(ctx: CanvasRenderingContext2D, points: Point[], source: boolean) {
+    // todo: do some calculation to get the direction of the arrow
   }
 }
