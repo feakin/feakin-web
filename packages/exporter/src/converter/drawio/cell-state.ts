@@ -71,7 +71,7 @@ export class CellState implements CellStateStyle {
       case "none":
         return Arrowhead.NONE;
       case "block":
-        return Arrowhead.HOLLOW_DIAMOND;
+        return Arrowhead.HOLLOW;
       case "diamondThin":
       case "diamond":
         if (filled) {

@@ -2,30 +2,10 @@ import { Point } from "../../model/geometry/point";
 import { EdgeProperty } from "../../model/graph";
 import { LineDashStyleImpl } from "../../model/edge/decorator/line-dash-style";
 import { LineType } from "../../model/edge/decorator/line-type";
-import { Arrowhead } from "../../model/edge/decorator/arrowhead";
 import { drawingFacingArrow } from "./marker-shape";
 
 export class ConnectorDrawing {
   static render(ctx: CanvasRenderingContext2D, props: EdgeProperty, points: Point[]): void {
-    ctx.strokeStyle = props.stroke?.color || '#000000';
-    ctx.lineWidth = props.stroke?.width || 1;
-
-    ConnectorDrawing.createStartMarker(ctx, points, props);
-    ConnectorDrawing.createEndMarker(ctx, points, props);
-
-    // todo: remove offset of arrow size;
-    ConnectorDrawing.paintLine(ctx, points, props);
-  }
-
-  static createStartMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    ConnectorDrawing.createByType(decorator, ctx, points, true);
-  }
-
-  static createEndMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    ConnectorDrawing.createByType(decorator, ctx, points, false);
-  }
-
-  private static createByType(props: EdgeProperty, ctx: CanvasRenderingContext2D, points: Point[], source: boolean) {
     // todo: refactor to endArrowhead
     const scale = 1;
     const pts: Point[] = [];
@@ -39,17 +19,28 @@ export class ConnectorDrawing {
       })
     }
 
+    ctx.strokeStyle = props.stroke?.color || '#000000';
+    ctx.lineWidth = props.stroke?.width || 1;
+    ctx.fillStyle = props.fill?.color || '#ffffff';
+
+    ConnectorDrawing.createStartMarker(ctx, pts, props);
+    ConnectorDrawing.createEndMarker(ctx, pts, props);
+
+    // todo: remove offset of arrow size;
+    ConnectorDrawing.paintLine(ctx, pts, props);
+  }
+
+  static createStartMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
+    ConnectorDrawing.createByType(decorator, ctx, points, true);
+  }
+
+  static createEndMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
+    ConnectorDrawing.createByType(decorator, ctx, points, false);
+  }
+
+  private static createByType(props: EdgeProperty, ctx: CanvasRenderingContext2D, points: Point[], source: boolean) {
     const arrowhead = source ? props.decorator!.startArrowhead : props.decorator!.endArrowhead;
-    switch (arrowhead) {
-      case Arrowhead.NONE:
-        break;
-      case Arrowhead.NOTCHED:
-      case Arrowhead.FILLED:
-        drawingFacingArrow(ctx, arrowhead, pts, source, props);
-        break;
-      default:
-        drawingFacingArrow(ctx, arrowhead, pts, source, props);
-    }
+    drawingFacingArrow(ctx, arrowhead, points, source, props);
   }
 
   private static paintLine(ctx: CanvasRenderingContext2D, points: Point[], prop: EdgeProperty) {

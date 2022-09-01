@@ -3,16 +3,20 @@ import { LineType } from "./line-type";
 import { LineDashStyle } from "./line-dash-style";
 
 export const defaultEdgeDecorator: EdgeDecorator = {
+  arrowSize: 4,
   lineType: LineType.LINE,
   lineDashStyle: LineDashStyle.SOLID,
   endArrowhead: Arrowhead.NONE,
   startArrowhead: Arrowhead.NONE,
 }
 
+export const defaultArrowSize = 4;
+
 /**
  * The edge decorator is used to specify the style of the line and arrowheads
  */
 export interface EdgeDecorator {
+  arrowSize: number;
   lineDashStyle: LineDashStyle;
   lineType: LineType;
   startArrowhead: Arrowhead;

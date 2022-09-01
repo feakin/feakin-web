@@ -32,7 +32,7 @@ export enum Arrowhead {
    */
   FILLED_CIRCLE = 'filled-circle',
   /**
-   * --■ | ●--
+   * --■ | ■--
    */
   FILLED_SQUARE = 'filled-square',
   /**

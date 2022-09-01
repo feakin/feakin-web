@@ -7,6 +7,7 @@
 import { Point } from "../../model/geometry/point";
 import { Arrowhead } from "../../model/edge/decorator/arrowhead";
 import { EdgeProperty } from "../../model/graph";
+import { defaultArrowSize } from "../../model/edge/decorator/edge-decorator";
 
 export interface MarkerShapeOption {
   unitX: number;
@@ -21,9 +22,9 @@ export interface MarkerShapeOption {
 // The angle of the forward facing arrow sides against the x axis is
 // 26.565 degrees, 1/sin(26.565) = 2.236 / 2 = 1.118 ( / 2 allows for
 // only half the strokewidth is processed ).
-function createTriangleArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+function createTriangleMarker(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
   let { unitX, unitY } = options
-  const { strokeWidth, widthFactor, pointEnd, size } = options;
+  const { strokeWidth, widthFactor, pointEnd, size, filled } = options;
 
   const endOffsetX = unitX * strokeWidth * 1.118;
   const endOffsetY = unitY * strokeWidth * 1.118;
@@ -54,15 +55,116 @@ function createTriangleArrow(canvas: CanvasRenderingContext2D, options: MarkerSh
   );
 
   canvas.closePath();
-  canvas.fill();
+
+  if (filled) {
+    canvas.fill();
+  }
+
   canvas.stroke();
 }
 
+function createEllipseMarker(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+  const { unitX, unitY, pointEnd, size, filled } = options;
+  const radius = size;
+
+  const pt: Point = { x: pointEnd.x, y: pointEnd.y };
+  pointEnd.x -= unitX * radius;
+  pointEnd.y -= unitY * radius;
+
+  canvas.beginPath();
+  canvas.ellipse(pt.x, pt.y, radius, radius, 0, 0, 2 * Math.PI);
+  canvas.closePath();
+
+  if (filled) {
+    canvas.fill();
+  }
+
+  canvas.stroke();
+}
+
+function createDiamondMarker(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+  let { unitX, unitY } = options
+  const { pointEnd, size, filled, strokeWidth } = options;
+  const sw = strokeWidth;
+
+  // The angle of the forward facing arrow sides against the x axis is
+  // 45 degrees, 1/sin(45) = 1.4142 / 2 = 0.7071 ( / 2 allows for
+  // only half the strokewidth is processed ). Or 0.9862 for thin diamond.
+  // Note these values and the tk variable below are dependent, update
+  // both together (saves trig hard coding it).
+  const swFactor = 0.7071;
+  const endOffsetX = unitX * sw * swFactor;
+  const endOffsetY = unitY * sw * swFactor;
+
+  unitX *= size * 2 + sw;
+  unitY *= size * 2+ sw;
+
+  const pt: Point = { x: pointEnd.x, y: pointEnd.y };
+  pt.x -= endOffsetX;
+  pt.y -= endOffsetY;
+
+  pointEnd.x += -unitX - endOffsetX;
+  pointEnd.y += -unitY - endOffsetY;
+
+  // thickness factor for diamond
+  const tk = 2;
+
+  canvas.beginPath();
+  canvas.moveTo(pt.x, pt.y);
+  canvas.lineTo(pt.x - unitX / 2 - unitY / tk, pt.y + unitX / tk - unitY / 2);
+  canvas.lineTo(pt.x - unitX, pt.y - unitY);
+  canvas.lineTo(pt.x - unitX / 2 + unitY / tk, pt.y - unitY / 2 - unitX / tk);
+  canvas.closePath();
+
+  if (filled) {
+    canvas.fill();
+  } else {
+    canvas.stroke();
+  }
+}
+
+function createSquareMarker(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+  const { unitX, unitY, pointEnd, size, filled } = options;
+  const radius = size;
+
+  const pt: Point = { x: pointEnd.x, y: pointEnd.y };
+  pointEnd.x -= unitX * radius;
+  pointEnd.y -= unitY * radius;
+
+  canvas.beginPath();
+  canvas.rect(pt.x - radius, pt.y - radius, radius * 2, radius * 2);
+
+  if (filled) {
+    canvas.fill();
+  }
+
+  canvas.stroke();
+  canvas.closePath();
+}
+
+function createNotchedArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+  const { unitX, unitY, pointEnd, filled } = options;
+
+  const pt: Point = { x: pointEnd.x, y: pointEnd.y };
+
+  canvas.beginPath();
+  canvas.moveTo(pt.x, pt.y);
+  canvas.lineTo(pt.x - unitX - unitY / 2, pt.y - unitY + unitX / 2);
+  canvas.lineTo(pt.x - unitX, pt.y - unitY);
+  canvas.lineTo(pt.x - unitX - unitY / 2, pt.y - unitY - unitX / 2);
+  canvas.closePath();
+
+  if (filled) {
+    canvas.fill();
+  }
+
+  canvas.stroke();
+}
 
 export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: Arrowhead, points: Point[], source: boolean, props: EdgeProperty) {
   const widthFactor = 2;
-  const strokeWidth = 2;
-  const size = 4;
+  const strokeWidth = props.stroke?.width || 2;
+  const size = props.decorator?.arrowSize || defaultArrowSize;
 
   const length = points.length;
   let p0 = source ? points[1] : points[length - 2];
@@ -85,7 +187,35 @@ export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: 
   const unitX = dx / dist;
   const unitY = dy / dist;
 
-  createTriangleArrow(canvas, {
-    unitX, strokeWidth, unitY, size, pointEnd, widthFactor, filled: true
-  });
+
+  const options: MarkerShapeOption = {
+    unitX, strokeWidth, unitY, size, pointEnd, widthFactor, filled: arrowhead.includes("filled"),
+  };
+
+  switch (arrowhead) {
+    case Arrowhead.NONE:
+      break;
+    case Arrowhead.NOTCHED:
+      createNotchedArrow(canvas, options);
+      break;
+    case Arrowhead.FILLED:
+    case Arrowhead.HOLLOW:
+      createTriangleMarker(canvas, options);
+      break;
+    case Arrowhead.FILLED_CIRCLE:
+    case Arrowhead.HOLLOW_CIRCLE:
+      createEllipseMarker(canvas, options);
+      break;
+    case Arrowhead.HOLLOW_DIAMOND:
+    case Arrowhead.FILLED_DIAMOND:
+      createDiamondMarker(canvas, options);
+      break;
+    case Arrowhead.HOLLOW_SQUARE:
+    case Arrowhead.FILLED_SQUARE:
+      createSquareMarker(canvas, options);
+      break;
+    default:
+      createTriangleMarker(canvas, options);
+  }
+
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ConnectorDrawing, defaultEdgeProperty, Edge, flattenPoints } from "@feakin/exporter";
 import { Group, Line, Text } from "react-konva";
 import { Drawable } from "roughjs/bin/core";
@@ -8,7 +8,6 @@ import { RenderOptions } from "../type";
 
 function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
   const { points, label } = props.edge
-  // todo: add default decorator
   let flatPoints = flattenPoints(props.edge.points);
 
   const sceneFunc = (ctx: Context) => {
