@@ -39,7 +39,7 @@ describe("CellStateParser", () => {
       lineDashStyle: "solid",
       lineType: "line",
       startArrowhead: "filled-diamond",
-      endArrowhead: "hollow-diamond"
+      endArrowhead: "hollow"
     });
   });
 

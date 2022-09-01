@@ -136,6 +136,6 @@ describe('DrawioEncoder', () => {
 
     expect(edgeDecoratorForTest(graph.edges[0].props!.decorator!)).toEqual(".....");
     expect(edgeDecoratorForTest(graph.edges[1].props!.decorator!)).toEqual("◆─────>");
-    expect(edgeDecoratorForTest(graph.edges[2].props!.decorator!)).toEqual("◆─────◇");
+    expect(edgeDecoratorForTest(graph.edges[2].props!.decorator!)).toEqual("◆─────▷");
   });
 });
