@@ -4,7 +4,7 @@ import { LineDashStyleImpl } from "../../model/edge/decorator/line-dash-style";
 import { LineStyle } from "../../model/edge/decorator/line-style";
 import { drawingFacingArrow } from "./marker-shape";
 
-function insertControlPointsInCenter(points: Point[], controlPoints: Point[]) {
+export function insertControlPointsInCenter(points: Point[], controlPoints: Point[]) {
   let mergedPoints: Point[] = [...points];
   if (controlPoints.length > 0) {
     mergedPoints.shift();

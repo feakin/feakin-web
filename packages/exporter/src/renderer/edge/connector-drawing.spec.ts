@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { ConnectorDrawing } from "./connector-drawing";
+import { ConnectorDrawing, insertControlPointsInCenter } from "./connector-drawing";
 import { Arrowhead } from "../../model/edge/decorator/arrowhead";
 import { dataURLtoFileData } from "../helper/data-url";
 import { LineStyle } from "../../model/edge/decorator/line-style";
@@ -42,5 +42,10 @@ describe('ConnectorDrawing', () => {
     const fileData = dataURLtoFileData(image);
 
     fs.writeFileSync('./test/arrow-notched.png', fileData.data);
+  });
+
+  it('should merge points', function () {
+    const mergedPoints =  insertControlPointsInCenter([{ x: 10, y: 10 }, { x: 20, y: 40 }], [{ x: 50, y: 50 }]);
+    expect(mergedPoints).toEqual([[{ x: 10, y: 10 }, { x: 50, y: 50 }, { x: 20, y: 40 }]]);
   });
 });
