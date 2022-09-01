@@ -46,6 +46,6 @@ describe('ConnectorDrawing', () => {
 
   it('should merge points', function () {
     const mergedPoints =  insertControlPointsInCenter([{ x: 10, y: 10 }, { x: 20, y: 40 }], [{ x: 50, y: 50 }]);
-    expect(mergedPoints).toEqual([[{ x: 10, y: 10 }, { x: 50, y: 50 }, { x: 20, y: 40 }]]);
+    expect(mergedPoints).toEqual([{ x: 10, y: 10 }, { x: 50, y: 50 }, { x: 20, y: 40 }]);
   });
 });

@@ -216,7 +216,7 @@ describe('DotImporter', () => {
 }`);
 
     const graph: Graph = importer.parse();
-    console.log(JSON.stringify(graph, null, 2));
+
     expect(graph.nodes.length).toBe(1);
     expect(graph.nodes[0].props?.fill?.color).toBe("red");
   });
