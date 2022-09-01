@@ -118,9 +118,9 @@ function createDiamondMarker(canvas: CanvasRenderingContext2D, options: MarkerSh
 
   if (filled) {
     canvas.fill();
-  } else {
-    canvas.stroke();
   }
+
+  canvas.stroke();
 }
 
 function createSquareMarker(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
