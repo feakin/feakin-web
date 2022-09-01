@@ -12,11 +12,11 @@ import { defaultArrowSize } from "../../model/edge/decorator/edge-decorator";
 export interface MarkerShapeOption {
   unitX: number;
   unitY: number;
-  widthFactor: number;
   pointEnd: Point;
-  strokeWidth: number;
-  size: number;
   filled: boolean
+  size: number;
+  widthFactor: number;
+  strokeWidth: number;
 }
 
 // The angle of the forward facing arrow sides against the x axis is

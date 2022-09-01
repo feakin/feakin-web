@@ -2,15 +2,15 @@ import { Arrowhead } from "./arrowhead";
 import { LineStyle } from "./line-style";
 import { LineDashStyle } from "./line-dash-style";
 
+export const defaultArrowSize = 6;
+
 export const defaultEdgeDecorator: EdgeDecorator = {
-  arrowSize: 6,
+  arrowSize: defaultArrowSize,
   lineType: LineStyle.STRAIGHT,
   lineDashStyle: LineDashStyle.SOLID,
   endArrowhead: Arrowhead.NONE,
   startArrowhead: Arrowhead.NONE,
 }
-
-export const defaultArrowSize = 6;
 
 /**
  * The edge decorator is used to specify the style of the line and arrowheads
