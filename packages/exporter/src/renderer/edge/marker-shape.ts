@@ -179,7 +179,7 @@ function createOpenArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeO
   canvas.stroke();
 }
 
-export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: Arrowhead, points: Point[], source: boolean, props: EdgeProperty) {
+export function prepareOptions(props: EdgeProperty, points: Point[], source: boolean, arrowhead: Arrowhead): MarkerShapeOption {
   const widthFactor = 2;
   const strokeWidth = props.stroke?.width || 2;
   const size = props.decorator?.arrowSize || defaultArrowSize;
@@ -205,10 +205,15 @@ export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: 
   const unitX = dx / dist;
   const unitY = dy / dist;
 
-
   const options: MarkerShapeOption = {
     unitX, strokeWidth, unitY, size, pointEnd, widthFactor, filled: arrowhead.includes("filled"),
   };
+
+  return options;
+}
+
+export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: Arrowhead, points: Point[], source: boolean, props: EdgeProperty) {
+  const options = prepareOptions(props, points, source, arrowhead);
 
   switch (arrowhead) {
     case Arrowhead.NONE:
