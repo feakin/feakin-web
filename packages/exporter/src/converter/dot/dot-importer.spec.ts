@@ -27,7 +27,7 @@ describe('DotImporter', () => {
           arrowSize: 6,
           endArrowhead: "notched",
           lineDashStyle: "solid",
-          lineType: "line",
+          lineType: "straight",
           startArrowhead: "none"
         }
       }
@@ -44,7 +44,7 @@ describe('DotImporter', () => {
           arrowSize: 6,
           endArrowhead: "notched",
           lineDashStyle: "solid",
-          lineType: "line",
+          lineType: "straight",
           startArrowhead: "none"
         }
       }
@@ -63,7 +63,7 @@ describe('DotImporter', () => {
           arrowSize: 6,
           endArrowhead: "notched",
           lineDashStyle: "solid",
-          lineType: "line",
+          lineType: "straight",
           startArrowhead: "none"
         }
       }
@@ -94,7 +94,7 @@ describe('DotImporter', () => {
           arrowSize: 6,
           endArrowhead: "notched",
           lineDashStyle: "solid",
-          lineType: "line",
+          lineType: "straight",
           startArrowhead: "none"
         }
       }

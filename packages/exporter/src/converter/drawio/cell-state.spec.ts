@@ -19,7 +19,7 @@ describe("CellStateParser", () => {
       endArrowhead: "none",
       startArrowhead: "none",
       lineDashStyle: "dot",
-      lineType: "line",
+      lineType: "straight",
     });
   });
 
@@ -29,7 +29,7 @@ describe("CellStateParser", () => {
       startArrowhead: "filled-diamond",
       endArrowhead: "notched",
       lineDashStyle: "solid",
-      lineType: "line"
+      lineType: "straight"
     });
   });
 
@@ -37,7 +37,7 @@ describe("CellStateParser", () => {
     const prop =  CellState.toEdgeStyle(CellState.fromString("endArrow=block;startArrow=diamond;html=1;rounded=0;startFill=0;endFill=0;"));
     expect(prop.decorator).toEqual({
       lineDashStyle: "solid",
-      lineType: "line",
+      lineType: "straight",
       startArrowhead: "filled-diamond",
       endArrowhead: "hollow"
     });

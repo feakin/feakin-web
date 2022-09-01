@@ -9,8 +9,8 @@ describe('MarkerShape', () => {
     expect(options).toEqual({
       filled: true,
       pointEnd: {
-        x: 0,
-        y: 0
+        x: 50,
+        y: 50,
       },
       size: 6,
       strokeWidth: 1,

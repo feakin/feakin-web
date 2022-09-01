@@ -114,7 +114,7 @@ describe('ExcalidrawExporter', () => {
     const edges = graph.edges;
     expect(edges.length).toEqual(1);
 
-    expect(edges[0].props!.decorator!.lineType).toEqual("line");
+    expect(edges[0].props!.decorator!.lineType).toEqual("straight");
     expect(edges[0].props!.decorator!.startArrowhead).toEqual("hollow");
   });
 });
