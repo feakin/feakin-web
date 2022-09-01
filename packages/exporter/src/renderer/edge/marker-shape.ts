@@ -208,7 +208,7 @@ export function prepareOptions(props: EdgeProperty, points: Point[], source: boo
   return options;
 }
 
-export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: Arrowhead, points: Point[], source: boolean, props: EdgeProperty) {
+export function renderMarker(canvas: CanvasRenderingContext2D, arrowhead: Arrowhead, points: Point[], source: boolean, props: EdgeProperty) {
   const options = prepareOptions(props, points, source, arrowhead);
 
   switch (arrowhead) {

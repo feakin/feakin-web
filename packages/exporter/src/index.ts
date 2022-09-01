@@ -64,6 +64,7 @@ export * from './model/prop/stroke-prop';
 export * from './model/prop/text-prop';
 
 export * from './renderer/edge/connector-drawing';
+export * from './renderer/edge/line-drawing';
 export * from './renderer/edge/marker-shape';
 export * from './renderer/abstract-svg-render';
 export * from './renderer/canvas-shape-drawing';
