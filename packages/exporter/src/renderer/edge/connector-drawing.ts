@@ -1,17 +1,27 @@
 import { Point } from "../../model/geometry/point";
 import { EdgeProperty } from "../../model/graph";
 import { LineDashStyleImpl } from "../../model/edge/decorator/line-dash-style";
-import { LineType } from "../../model/edge/decorator/line-type";
+import { LineStyle } from "../../model/edge/decorator/line-style";
 import { drawingFacingArrow } from "./marker-shape";
 
+function insertControlPointsInCenter(points: Point[], controlPoints: Point[]) {
+  let mergedPoints: Point[] = [...points];
+  if (controlPoints.length > 0) {
+    mergedPoints.shift();
+    mergedPoints = [points[0], ...controlPoints, ...mergedPoints];
+  }
+  return mergedPoints;
+}
+
 export class ConnectorDrawing {
-  static render(ctx: CanvasRenderingContext2D, props: EdgeProperty, points: Point[]): void {
+  static render(ctx: CanvasRenderingContext2D, props: EdgeProperty, points: Point[] = [], controlPoints: Point[] = []): void {
     // todo: refactor to endArrowhead
     const scale = 1;
-    const pts: Point[] = [];
 
-    for (let i = 0; i < points.length; i++) {
-      const p = points[i];
+    const mergedPoints = insertControlPointsInCenter(points, controlPoints);
+    const pts: Point[] = [];
+    for (let i = 0; i < mergedPoints.length; i++) {
+      const p = mergedPoints[i];
 
       pts.push({
         x: p.x / scale,
@@ -26,8 +36,7 @@ export class ConnectorDrawing {
     ConnectorDrawing.createStartMarker(ctx, pts, props);
     ConnectorDrawing.createEndMarker(ctx, pts, props);
 
-    // todo: remove offset of arrow size;
-    ConnectorDrawing.paintLine(ctx, pts, props);
+    ConnectorDrawing.paintLine(ctx, props, pts);
   }
 
   static createStartMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
@@ -43,12 +52,8 @@ export class ConnectorDrawing {
     drawingFacingArrow(ctx, arrowhead, points, source, props);
   }
 
-  private static paintLine(ctx: CanvasRenderingContext2D, points: Point[], prop: EdgeProperty) {
-    const length = points.length;
-
+  private static paintLine(ctx: CanvasRenderingContext2D, prop: EdgeProperty, points: Point[]) {
     const startPoint = points[0];
-    const endPoint = points[length - 1];
-    const controlPoints: Point[] = [];
 
     ctx.beginPath();
 
@@ -58,23 +63,38 @@ export class ConnectorDrawing {
     ctx.setLineDash(dashPattern);
 
     switch (prop.decorator?.lineType) {
-      case LineType.SCRIBBLE:
-      case LineType.LINE:
-      case LineType.POLYLINE:
+      case LineStyle.SCRIBBLE:
+      case LineStyle.LINE:
         for (let i = 1; i < points.length; i++) {
           ctx.lineTo(points[i].x, points[i].y);
         }
         break;
-      case LineType.CURVE:
-        for (let i = 1; i < length - 1; i += 1) {
-          const point = points[i];
-          controlPoints.push(point);
+      case LineStyle.POLYLINE:
+        for (let i = 1; i < points.length; i++) {
+          ctx.lineTo(points[i].x, points[i].y);
         }
-
-        ctx.bezierCurveTo(controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, endPoint.x, endPoint.y);
+        break;
+      case LineStyle.CURVED:
+        this.drawCurvedLine(ctx, points);
         break;
     }
 
     ctx.stroke();
+  }
+
+  private static drawCurvedLine(ctx: CanvasRenderingContext2D, newPoints: Point[]) {
+    const length = newPoints.length;
+
+    for (let i = 1; i < length - 2; i += 1) {
+      const p0 = newPoints[i];
+      const p1 = newPoints[i + 1];
+      const ix = (p0.x + p1.x) / 2;
+      const iy = (p0.y + p1.y) / 2;
+      ctx.quadraticCurveTo(p0.x, p0.y, ix, iy);
+    }
+
+    const p0 = newPoints[length - 2];
+    const p1 = newPoints[length - 1];
+    ctx.quadraticCurveTo(p0.x, p0.y, p1.x, p1.y);
   }
 }

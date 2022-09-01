@@ -14,7 +14,7 @@ import { Importer } from "../importer";
 import { Edge, ElementProperty, Graph, Node } from "../../model/graph";
 import { layoutFromGraph } from "../../layout/dagre/dagre-layout";
 import { Arrowhead } from "../../model/edge/decorator/arrowhead";
-import { LineType } from "../../model/edge/decorator/line-type";
+import { LineStyle } from "../../model/edge/decorator/line-style";
 import { LineDashStyle } from "../../model/edge/decorator/line-dash-style";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph);
@@ -186,7 +186,7 @@ export class DotImporter extends Importer {
           props: Object.assign({
             decorator: {
               arrowSize: 6,
-              lineType: LineType.LINE,
+              lineType: LineStyle.LINE,
               lineDashStyle: LineDashStyle.SOLID,
               endArrowhead: Arrowhead.NOTCHED,
               startArrowhead: Arrowhead.NONE

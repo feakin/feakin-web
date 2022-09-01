@@ -1,6 +1,6 @@
 import { CellStateStyle, MxArrowType } from "./cell-state-style";
 import { defaultEdgeProperty, EdgeProperty, ElementProperty, NodeData } from "../../model/graph";
-import { LineType } from "../../model/edge/decorator/line-type";
+import { LineStyle } from "../../model/edge/decorator/line-style";
 import { Arrowhead } from "../../model/edge/decorator/arrowhead";
 import { LineDashStyle } from "../../model/edge/decorator/line-dash-style";
 
@@ -37,7 +37,7 @@ export class CellState implements CellStateStyle {
         opacity: stateStyle.fillOpacity
       },
       decorator: {
-        lineType: LineType.LINE,
+        lineType: this.mxToLineType(stateStyle),
         lineDashStyle: this.mxToLineStyle(stateStyle),
         startArrowhead: this.mxArrowToArrowhead(stateStyle.startArrow ?? 'none', stateStyle.startFill),
         endArrowhead: this.mxArrowToArrowhead(stateStyle.endArrow ?? 'none', stateStyle.startFill),
@@ -88,6 +88,14 @@ export class CellState implements CellStateStyle {
       default:
         return Arrowhead.NOTCHED;
     }
+  }
+
+  private static mxToLineType(stateStyle: CellStateStyle) : LineStyle {
+    if (stateStyle.curved) {
+      return LineStyle.CURVED;
+    }
+
+    return LineStyle.LINE;
   }
 }
 

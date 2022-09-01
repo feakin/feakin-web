@@ -1,10 +1,10 @@
 import { Arrowhead } from "./arrowhead";
-import { LineType } from "./line-type";
+import { LineStyle } from "./line-style";
 import { LineDashStyle } from "./line-dash-style";
 
 export const defaultEdgeDecorator: EdgeDecorator = {
   arrowSize: 6,
-  lineType: LineType.LINE,
+  lineType: LineStyle.LINE,
   lineDashStyle: LineDashStyle.SOLID,
   endArrowhead: Arrowhead.NONE,
   startArrowhead: Arrowhead.NONE,
@@ -18,7 +18,7 @@ export const defaultArrowSize = 6;
 export interface EdgeDecorator {
   arrowSize: number;
   lineDashStyle: LineDashStyle;
-  lineType: LineType;
+  lineType: LineStyle;
   startArrowhead: Arrowhead;
   endArrowhead: Arrowhead;
 }

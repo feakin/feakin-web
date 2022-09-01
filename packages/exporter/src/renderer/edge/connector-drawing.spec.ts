@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { ConnectorDrawing } from "./connector-drawing";
 import { Arrowhead } from "../../model/edge/decorator/arrowhead";
 import { dataURLtoFileData } from "../helper/data-url";
-import { LineType } from "../../model/edge/decorator/line-type";
+import { LineStyle } from "../../model/edge/decorator/line-style";
 import { LineDashStyle } from "../../model/edge/decorator/line-dash-style";
 import { Edge } from "../../model/graph";
 
@@ -27,15 +27,16 @@ describe('ConnectorDrawing', () => {
           width: 2,
         },
         decorator: {
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.LONG_DASH,
-          lineType: LineType.CURVE,
+          lineType: LineStyle.CURVED,
           startArrowhead: Arrowhead.NOTCHED,
           endArrowhead: Arrowhead.NOTCHED,
         }
       }
     }
 
-    ConnectorDrawing.render(ctx, edge.props!, edge.points);
+    ConnectorDrawing.render(ctx, edge.props!, edge.points, controlPoints);
 
     const image = canvas.toDataURL();
     const fileData = dataURLtoFileData(image);

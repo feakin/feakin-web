@@ -1,6 +1,6 @@
 import { EdgeDecorator } from "../edge-decorator";
 import { Arrowhead } from "../arrowhead";
-import { LineType } from "../line-type";
+import { LineStyle } from "../line-style";
 import { LineDashStyle } from "../line-dash-style";
 
 /**
@@ -60,7 +60,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.NOTCHED,
         };
@@ -68,7 +68,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW,
         };
@@ -76,7 +76,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.DASH,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW,
         };
@@ -84,7 +84,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.DASH,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW,
         };
@@ -92,7 +92,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.DASH,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.NOTCHED,
         };
@@ -100,7 +100,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW_DIAMOND,
         };
@@ -108,7 +108,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.FILLED_DIAMOND,
         };
@@ -116,7 +116,7 @@ export class ClassRelationshipsImpl {
         return {
           arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineType.LINE,
+          lineType: LineStyle.LINE,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.NONE,
         }

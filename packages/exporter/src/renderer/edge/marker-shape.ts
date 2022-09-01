@@ -92,7 +92,7 @@ function createDiamondMarker(canvas: CanvasRenderingContext2D, options: MarkerSh
   // only half the strokewidth is processed ). Or 0.9862 for thin diamond.
   // Note these values and the tk variable below are dependent, update
   // both together (saves trig hard coding it).
-  const swFactor = 0.7071;
+  const swFactor = 0.9862;
   const endOffsetX = unitX * sw * swFactor;
   const endOffsetY = unitY * sw * swFactor;
 
@@ -107,7 +107,12 @@ function createDiamondMarker(canvas: CanvasRenderingContext2D, options: MarkerSh
   pointEnd.y += -unitY - endOffsetY;
 
   // thickness factor for diamond
-  const tk = 2;
+  // const tk = type === ARROW.DIAMOND ? 2 : 3.4;
+  const tk = 3.4;
+
+  if (!filled) {
+    canvas.strokeStyle = '#ffffff';
+  }
 
   canvas.beginPath();
   canvas.moveTo(pt.x, pt.y);
@@ -143,7 +148,7 @@ function createSquareMarker(canvas: CanvasRenderingContext2D, options: MarkerSha
 }
 
 function createOpenArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
-  const { pointEnd, size, filled, strokeWidth, widthFactor } = options;
+  const { pointEnd, size, strokeWidth, widthFactor } = options;
   let { unitX, unitY } = options
   const sw = strokeWidth;
   const pe = pointEnd;
@@ -230,5 +235,4 @@ export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: 
     default:
       createTriangleMarker(canvas, options);
   }
-
 }

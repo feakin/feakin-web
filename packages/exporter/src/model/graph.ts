@@ -1,7 +1,7 @@
 import { Point } from "./geometry/point";
 import { FillProp } from "./prop/fill-prop";
 import { StrokeProp } from "./prop/stroke-prop";
-import { LineType } from "./edge/decorator/line-type";
+import { LineStyle } from "./edge/decorator/line-style";
 import { FontProps } from "./prop/font-props";
 import { ShapeType } from "./node/base/shape-type";
 import { defaultEdgeDecorator, EdgeDecorator } from "./edge/decorator/edge-decorator";
@@ -107,7 +107,7 @@ export interface EdgeData {
   sourceId?: string;
   target: string;
   targetId?: string;
-  type?: LineType;
+  type?: LineStyle;
 
   [key: string]: any;
 }
