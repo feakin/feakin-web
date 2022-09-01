@@ -90,7 +90,7 @@ export class ExcalidrawImporter extends Importer {
         opacity: element.opacity
       },
       decorator: {
-        lineType: LineStyle.LINE,
+        lineType: LineStyle.STRAIGHT,
         lineDashStyle: this.exToLineStyle(element.strokeStyle),
         startArrowhead: this.exArrowToArrowhead(element.startArrowhead),
         endArrowhead: this.exArrowToArrowhead(element.endArrowhead),

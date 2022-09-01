@@ -64,7 +64,7 @@ export class ConnectorDrawing {
 
     switch (prop.decorator?.lineType) {
       case LineStyle.SCRIBBLE:
-      case LineStyle.LINE:
+      case LineStyle.STRAIGHT:
         for (let i = 1; i < points.length; i++) {
           ctx.lineTo(points[i].x, points[i].y);
         }

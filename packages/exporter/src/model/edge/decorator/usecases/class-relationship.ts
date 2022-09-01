@@ -1,4 +1,4 @@
-import { EdgeDecorator } from "../edge-decorator";
+import { defaultArrowSize, EdgeDecorator } from "../edge-decorator";
 import { Arrowhead } from "../arrowhead";
 import { LineStyle } from "../line-style";
 import { LineDashStyle } from "../line-dash-style";
@@ -58,65 +58,65 @@ export class ClassRelationshipsImpl {
     switch (type) {
       case ClassRelationship.ASSOCIATION:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.NOTCHED,
         };
       case ClassRelationship.INHERITANCE:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW,
         };
       case ClassRelationship.REALIZATION:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.DASH,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW,
         };
       case ClassRelationship.IMPLEMENTATION:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.DASH,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW,
         };
       case ClassRelationship.DEPENDENCY:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.DASH,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.NOTCHED,
         };
       case ClassRelationship.AGGREGATION:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.HOLLOW_DIAMOND,
         };
       case ClassRelationship.COMPOSITION:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.FILLED_DIAMOND,
         };
       default:
         return {
-          arrowSize: 6,
+          arrowSize: defaultArrowSize,
           lineDashStyle: LineDashStyle.SOLID,
-          lineType: LineStyle.LINE,
+          lineType: LineStyle.STRAIGHT,
           startArrowhead: Arrowhead.NONE,
           endArrowhead: Arrowhead.NONE,
         }

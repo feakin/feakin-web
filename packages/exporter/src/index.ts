@@ -31,8 +31,6 @@ export * from './layout/simple-relation';
 export * from "./layout/dagre/dagre-layout-converter";
 export * from "./layout/elk/elk-layout";
 
-export * from './model/edge/arrow-shape';
-export * from './model/edge/edge-shape';
 export * from "./model/edge/decorator/arrowhead";
 export * from "./model/edge/decorator/line-dash-style";
 export * from './model/edge/decorator/line-style';

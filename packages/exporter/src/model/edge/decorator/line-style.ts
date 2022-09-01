@@ -1,6 +1,6 @@
 export enum LineStyle {
   // normal
-  LINE = 'line',
+  STRAIGHT = 'straight',
   POLYLINE = 'polyline',
   CURVED = 'curve',
   SCRIBBLE = 'scribble',

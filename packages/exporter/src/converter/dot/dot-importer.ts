@@ -186,7 +186,7 @@ export class DotImporter extends Importer {
           props: Object.assign({
             decorator: {
               arrowSize: 6,
-              lineType: LineStyle.LINE,
+              lineType: LineStyle.STRAIGHT,
               lineDashStyle: LineDashStyle.SOLID,
               endArrowhead: Arrowhead.NOTCHED,
               startArrowhead: Arrowhead.NONE

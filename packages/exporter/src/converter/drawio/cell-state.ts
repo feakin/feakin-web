@@ -95,7 +95,7 @@ export class CellState implements CellStateStyle {
       return LineStyle.CURVED;
     }
 
-    return LineStyle.LINE;
+    return LineStyle.STRAIGHT;
   }
 }
 

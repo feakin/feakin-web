@@ -4,7 +4,7 @@ import { LineDashStyle } from "./line-dash-style";
 
 export const defaultEdgeDecorator: EdgeDecorator = {
   arrowSize: 6,
-  lineType: LineStyle.LINE,
+  lineType: LineStyle.STRAIGHT,
   lineDashStyle: LineDashStyle.SOLID,
   endArrowhead: Arrowhead.NONE,
   startArrowhead: Arrowhead.NONE,
