@@ -5,6 +5,8 @@
  * Type definitions from the typed-mxgraph project
  */
 import { Point } from "../../model/geometry/point";
+import { Arrowhead } from "../../model/edge/decorator/arrowhead";
+import { EdgeProperty } from "../../model/graph";
 
 export interface MarkerShapeOption {
   unitX: number;
@@ -13,6 +15,7 @@ export interface MarkerShapeOption {
   pointEnd: Point;
   strokeWidth: number;
   size: number;
+  filled: boolean
 }
 
 // The angle of the forward facing arrow sides against the x axis is
@@ -20,7 +23,7 @@ export interface MarkerShapeOption {
 // only half the strokewidth is processed ).
 function createTriangleArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
   let { unitX, unitY } = options
-  const {  strokeWidth, widthFactor, pointEnd, size } = options;
+  const { strokeWidth, widthFactor, pointEnd, size } = options;
 
   const endOffsetX = unitX * strokeWidth * 1.118;
   const endOffsetY = unitY * strokeWidth * 1.118;
@@ -56,7 +59,7 @@ function createTriangleArrow(canvas: CanvasRenderingContext2D, options: MarkerSh
 }
 
 
-export function drawingFacingArrow(canvas: CanvasRenderingContext2D, points: Point[], source: boolean) {
+export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: Arrowhead, points: Point[], source: boolean, props: EdgeProperty) {
   const widthFactor = 2;
   const strokeWidth = 2;
   const size = 4;
@@ -83,6 +86,6 @@ export function drawingFacingArrow(canvas: CanvasRenderingContext2D, points: Poi
   const unitY = dy / dist;
 
   createTriangleArrow(canvas, {
-    unitX, strokeWidth, unitY, size, pointEnd, widthFactor
+    unitX, strokeWidth, unitY, size, pointEnd, widthFactor, filled: true
   });
 }
