@@ -36,7 +36,7 @@ describe('ConnectorDrawing', () => {
       }
     }
 
-    ConnectorDrawing.render(ctx, edge.props!, edge.points, controlPoints);
+    ConnectorDrawing.render(ctx, edge.props!, edge.points);
 
     const image = canvas.toDataURL();
     const fileData = dataURLtoFileData(image);
