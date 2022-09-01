@@ -58,7 +58,7 @@ export class ClassRelationshipsImpl {
     switch (type) {
       case ClassRelationship.ASSOCIATION:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,
@@ -66,7 +66,7 @@ export class ClassRelationshipsImpl {
         };
       case ClassRelationship.INHERITANCE:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,
@@ -74,7 +74,7 @@ export class ClassRelationshipsImpl {
         };
       case ClassRelationship.REALIZATION:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.DASH,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,
@@ -82,7 +82,7 @@ export class ClassRelationshipsImpl {
         };
       case ClassRelationship.IMPLEMENTATION:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.DASH,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,
@@ -90,7 +90,7 @@ export class ClassRelationshipsImpl {
         };
       case ClassRelationship.DEPENDENCY:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.DASH,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,
@@ -98,7 +98,7 @@ export class ClassRelationshipsImpl {
         };
       case ClassRelationship.AGGREGATION:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,
@@ -106,7 +106,7 @@ export class ClassRelationshipsImpl {
         };
       case ClassRelationship.COMPOSITION:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,
@@ -114,7 +114,7 @@ export class ClassRelationshipsImpl {
         };
       default:
         return {
-          arrowSize: 4,
+          arrowSize: 6,
           lineDashStyle: LineDashStyle.SOLID,
           lineType: LineType.LINE,
           startArrowhead: Arrowhead.NONE,

@@ -2,6 +2,7 @@ import { DotImporter } from "./dot-importer";
 import { Graph } from "../../model/graph";
 
 describe('DotImporter', () => {
+
   it('edge with', () => {
     const importer = new DotImporter(`strict graph {
   a -- b
@@ -15,52 +16,55 @@ describe('DotImporter', () => {
     expect(graph.nodes[1].label).toBe("b");
     expect(graph.edges.length).toBe(3);
     expect(graph.edges[0]).toEqual({
-      "data": {
-        "source": "a",
-        "target": "b"
+      data: {
+        source: "a",
+        target: "b"
       },
-      "id": "a_b",
-      "points": [],
-      "props": {
-        "decorator": {
-          "endArrowhead": "filled",
-          "lineDashStyle": "solid",
-          "lineType": "line",
-          "startArrowhead": "none"
+      id: "a_b",
+      points: [],
+      props: {
+        decorator: {
+          arrowSize: 6,
+          endArrowhead: "notched",
+          lineDashStyle: "solid",
+          lineType: "line",
+          startArrowhead: "none"
         }
       }
     });
     expect(graph.edges[1]).toEqual({
-      "data": {
-        "source": "a",
-        "target": "b"
+      data: {
+        source: "a",
+        target: "b"
       },
-      "id": "a_b_1",
-      "points": [],
-      "props": {
-        "decorator": {
-          "endArrowhead": "filled",
-          "lineDashStyle": "solid",
-          "lineType": "line",
-          "startArrowhead": "none"
+      id: "a_b_1",
+      points: [],
+      props: {
+        decorator: {
+          arrowSize: 6,
+          endArrowhead: "notched",
+          lineDashStyle: "solid",
+          lineType: "line",
+          startArrowhead: "none"
         }
       }
     });
     expect(graph.edges[2]).toEqual({
-      "data": {
-        "color": "blue",
-        "source": "b",
-        "target": "a"
+      data: {
+        color: "blue",
+        source: "b",
+        target: "a"
       },
-      "id": "b_a",
-      "points": [],
-      "props": {
-        "color": "blue",
-        "decorator": {
-          "endArrowhead": "filled",
-          "lineDashStyle": "solid",
-          "lineType": "line",
-          "startArrowhead": "none"
+      id: "b_a",
+      points: [],
+      props: {
+        color: "blue",
+        decorator: {
+          arrowSize: 6,
+          endArrowhead: "notched",
+          lineDashStyle: "solid",
+          lineType: "line",
+          startArrowhead: "none"
         }
       }
     });
@@ -77,20 +81,21 @@ describe('DotImporter', () => {
     expect(graph.nodes.length).toBe(2);
     expect(graph.edges.length).toBe(3);
     expect(graph.edges[0]).toEqual({
-      "data": {
-        "label": "(1, 0)",
-        "len": 2,
-        "source": "0",
-        "target": "1"
+      data: {
+        label: "(1, 0)",
+        len: 2,
+        source: "0",
+        target: "1"
       },
-      "id": "0_1",
-      "points": [],
-      "props": {
-        "decorator": {
-          "endArrowhead": "filled",
-          "lineDashStyle": "solid",
-          "lineType": "line",
-          "startArrowhead": "none"
+      id: "0_1",
+      points: [],
+      props: {
+        decorator: {
+          arrowSize: 6,
+          endArrowhead: "notched",
+          lineDashStyle: "solid",
+          lineType: "line",
+          startArrowhead: "none"
         }
       }
     });

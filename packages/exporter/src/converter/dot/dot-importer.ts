@@ -185,10 +185,10 @@ export class DotImporter extends Importer {
           points: [],
           props: Object.assign({
             decorator: {
-              arrowSize: 4,
+              arrowSize: 6,
               lineType: LineType.LINE,
               lineDashStyle: LineDashStyle.SOLID,
-              endArrowhead: Arrowhead.FILLED,
+              endArrowhead: Arrowhead.NOTCHED,
               startArrowhead: Arrowhead.NONE
             },
           }, this.mappingProperty(attrs)),

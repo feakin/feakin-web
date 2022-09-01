@@ -3,14 +3,14 @@ import { LineType } from "./line-type";
 import { LineDashStyle } from "./line-dash-style";
 
 export const defaultEdgeDecorator: EdgeDecorator = {
-  arrowSize: 4,
+  arrowSize: 6,
   lineType: LineType.LINE,
   lineDashStyle: LineDashStyle.SOLID,
   endArrowhead: Arrowhead.NONE,
   startArrowhead: Arrowhead.NONE,
 }
 
-export const defaultArrowSize = 4;
+export const defaultArrowSize = 6;
 
 /**
  * The edge decorator is used to specify the style of the line and arrowheads

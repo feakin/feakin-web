@@ -97,7 +97,7 @@ function createDiamondMarker(canvas: CanvasRenderingContext2D, options: MarkerSh
   const endOffsetY = unitY * sw * swFactor;
 
   unitX *= size * 2 + sw;
-  unitY *= size * 2+ sw;
+  unitY *= size * 2 + sw;
 
   const pt: Point = { x: pointEnd.x, y: pointEnd.y };
   pt.x -= endOffsetX;
@@ -142,22 +142,35 @@ function createSquareMarker(canvas: CanvasRenderingContext2D, options: MarkerSha
   canvas.closePath();
 }
 
-function createNotchedArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
-  const { unitX, unitY, pointEnd, filled } = options;
+function createOpenArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+  const { pointEnd, size, filled, strokeWidth, widthFactor } = options;
+  let { unitX, unitY } = options
+  const sw = strokeWidth;
+  const pe = pointEnd;
+
+  const endOffsetX = unitX * sw * 1.118;
+  const endOffsetY = unitY * sw * 1.118;
+
+  unitX *= size + sw;
+  unitY *= size + sw;
 
   const pt: Point = { x: pointEnd.x, y: pointEnd.y };
+  pt.x -= endOffsetX;
+  pt.y -= endOffsetY;
+
+  pe.x += -endOffsetX * 2;
+  pe.y += -endOffsetY * 2;
 
   canvas.beginPath();
-  canvas.moveTo(pt.x, pt.y);
-  canvas.lineTo(pt.x - unitX - unitY / 2, pt.y - unitY + unitX / 2);
-  canvas.lineTo(pt.x - unitX, pt.y - unitY);
-  canvas.lineTo(pt.x - unitX - unitY / 2, pt.y - unitY - unitX / 2);
-  canvas.closePath();
-
-  if (filled) {
-    canvas.fill();
-  }
-
+  canvas.moveTo(
+    pt.x - unitX - unitY / widthFactor,
+    pt.y - unitY + unitX / widthFactor
+  );
+  canvas.lineTo(pt.x, pt.y);
+  canvas.lineTo(
+    pt.x + unitY / widthFactor - unitX,
+    pt.y - unitY - unitX / widthFactor
+  );
   canvas.stroke();
 }
 
@@ -196,7 +209,7 @@ export function drawingFacingArrow(canvas: CanvasRenderingContext2D, arrowhead: 
     case Arrowhead.NONE:
       break;
     case Arrowhead.NOTCHED:
-      createNotchedArrow(canvas, options);
+      createOpenArrow(canvas, options);
       break;
     case Arrowhead.FILLED:
     case Arrowhead.HOLLOW:
