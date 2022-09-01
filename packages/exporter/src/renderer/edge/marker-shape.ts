@@ -110,10 +110,6 @@ function createDiamondMarker(canvas: CanvasRenderingContext2D, options: MarkerSh
   // const tk = type === ARROW.DIAMOND ? 2 : 3.4;
   const tk = 3.4;
 
-  if (!filled) {
-    canvas.strokeStyle = '#ffffff';
-  }
-
   canvas.beginPath();
   canvas.moveTo(pt.x, pt.y);
   canvas.lineTo(pt.x - unitX / 2 - unitY / tk, pt.y + unitX / tk - unitY / 2);
