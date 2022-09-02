@@ -43,13 +43,16 @@ export class DrawioImporter extends Importer {
         const hasSourceAndTarget = cell.attributes?.source && cell.attributes?.target;
         if (hasSourceAndTarget || cell.attributes?.edge === "1") {
           const edge = this.convertEdge(cell);
-          edgeMap.set(edge.id, edge);
 
           if (cell.attributes?.source && cell.attributes?.target) {
-            if (!cell.mxGeometry?.mxPoint?.length) {
-              needUpdatedEdges.push(edge);
-            }
+            // In drawio, if has source and target the points will be ignore.
+            edge.points = [];
+            needUpdatedEdges.push(edge);
+            // if (!cell.mxGeometry?.mxPoint?.length) {
+            // }
           }
+
+          edgeMap.set(edge.id, edge);
         } else if (cell.attributes?.value) {
           const node = this.convertNode(cell);
           nodeMap.set(node.id, node);
