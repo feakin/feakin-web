@@ -1,7 +1,7 @@
 import { Direction } from "./layout";
 
 export const defaultLayoutOptions: LayoutOptions = {
-  rankdir: 'TB',
+  direction: 'TB',
   node: {
     width: 100,
     height: 40,
@@ -9,8 +9,7 @@ export const defaultLayoutOptions: LayoutOptions = {
 }
 
 export interface LayoutOptions {
-  rankdir?: Direction;
-  container?: HTMLElement;
+  direction?: Direction;
   node: {
     // each node width
     width: number;

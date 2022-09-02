@@ -41,7 +41,6 @@ export * from './model/edge/polyline-shape';
 export * from './model/geometry/geometry';
 export * from './model/geometry/point';
 export * from './model/graph';
-export * from './model/layout/algorithm';
 export * from './model/layout/layout-lifecycle';
 export * from "./model/node/base/shape-type";
 export * from './model/node/circle-shape';

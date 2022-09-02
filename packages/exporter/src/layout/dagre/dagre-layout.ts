@@ -10,11 +10,11 @@ function initGraphOptions(options: LayoutOptions) {
   const graph = new graphlib.Graph({
     multigraph: true,
     compound: true,
-  }).setGraph({
-    rankdir: options.rankdir
   });
 
+  graph.setGraph({ rankdir: options.direction });
   graph.setDefaultEdgeLabel(() => ({}));
+
   return graph;
 }
 
@@ -98,7 +98,7 @@ export function runLayout(graph: graphlib.Graph<any>): Graph {
     const nodeId = node['id'] ? node['id'] : nanoid();
     labelIdMap.set(v, nodeId);
 
-    if(node.subgraph) {
+    if (node.subgraph) {
       nodes.push({
         ...node,
         id: nodeId,
