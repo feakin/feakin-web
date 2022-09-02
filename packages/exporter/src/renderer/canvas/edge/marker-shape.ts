@@ -176,14 +176,9 @@ function createOpenArrow(canvas: CanvasRenderingContext2D, options: MarkerShapeO
   canvas.stroke();
 }
 
-export function prepareOptions(props: EdgeProperty, points: Point[], source: boolean, arrowhead: Arrowhead): MarkerShapeOption {
-  const widthFactor = 2;
-  const strokeWidth = props.stroke?.width || 2;
-  const size = props.decorator?.arrowSize || defaultArrowSize;
-
+export function computePointStart(points: Point[], pointEnd: Point, source: boolean) {
   const length = points.length;
   let p0 = source ? points[1] : points[length - 2];
-  const pointEnd = source ? points[0] : points[length - 1];
 
   let count = 1;
 
@@ -193,10 +188,21 @@ export function prepareOptions(props: EdgeProperty, points: Point[], source: boo
     count++;
   }
 
-  const { unitX, unitY } = computeNorm(pointEnd, p0);
+  return p0;
+}
+
+export function prepareOptions(props: EdgeProperty, points: Point[], source: boolean, arrowhead: Arrowhead) {
+  const widthFactor = 2;
+  const strokeWidth = props.stroke?.width || 2;
+  const size = props.decorator?.arrowSize || defaultArrowSize;
+
+  const length = points.length;
+  const pointEnd = source ? points[0] : points[length - 1];
+  const pointStart = computePointStart(points, pointEnd, source);
+  const { unitX, unitY } = computeNorm(pointEnd, pointStart);
 
   return {
-    unitX, unitY, strokeWidth, size, pointEnd, widthFactor, filled: arrowhead.includes("filled"),
+    unitX, strokeWidth, unitY, size, pointEnd, widthFactor, filled: arrowhead.includes("filled"),
   };
 }
 
