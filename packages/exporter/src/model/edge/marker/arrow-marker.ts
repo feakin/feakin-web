@@ -1,3 +1,3 @@
 export interface Marker<T> {
-  draw(): void;
+  draw(): T;
 }

@@ -6,20 +6,16 @@
  */
 import { MarkerShapeOption } from "../marker-shape-option";
 import { Point } from "../../../../model/geometry/point";
-import { Marker } from "../../../../model/edge/marker/marker";
+import { CanvasMarker } from "./canvas-marker";
 
-export class DiamondMarker implements Marker<any> {
-  canvas: CanvasRenderingContext2D;
-  option: MarkerShapeOption
-
-  constructor(canvas: CanvasRenderingContext2D, option: MarkerShapeOption) {
-    this.canvas = canvas;
-    this.option = option;
+export class DiamondMarker extends CanvasMarker {
+  constructor(canvas: CanvasRenderingContext2D, options: MarkerShapeOption) {
+    super(canvas, options);
   }
 
-  draw(): void {
-    let { unitX, unitY } = this.option
-    const { pointEnd, size, filled, strokeWidth } = this.option;
+  override draw(): void {
+    let { unitX, unitY } = this.options
+    const { pointEnd, size, filled, strokeWidth } = this.options;
     const sw = strokeWidth;
 
     // The angle of the forward facing arrow sides against the x axis is
