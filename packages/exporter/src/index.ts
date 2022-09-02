@@ -70,3 +70,4 @@ export * from './renderer/canvas/canvas-shape-drawing';
 export * from './renderer/canvas/helper/data-url';
 export * from './renderer/base/node-drawing';
 export * from './renderer/svg-shape-drawing';
+export { computeNorm } from "./renderer/canvas/edge/geometry/norm";

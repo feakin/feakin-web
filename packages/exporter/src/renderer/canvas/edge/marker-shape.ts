@@ -8,6 +8,7 @@ import { Point } from "../../../model/geometry/point";
 import { Arrowhead } from "../../../model/edge/decorator/arrowhead";
 import { EdgeProperty } from "../../../model/graph";
 import { defaultArrowSize } from "../../../model/edge/decorator/edge-decorator";
+import { computeNorm } from "./geometry/norm";
 
 export interface MarkerShapeOption {
   unitX: number;
@@ -192,20 +193,11 @@ export function prepareOptions(props: EdgeProperty, points: Point[], source: boo
     count++;
   }
 
-  // Computes the norm and the inverse norm
-  const dx = pointEnd.x - p0.x;
-  const dy = pointEnd.y - p0.y;
+  const { unitX, unitY } = computeNorm(pointEnd, p0);
 
-  const dist = Math.max(1, Math.sqrt(dx * dx + dy * dy));
-
-  const unitX = dx / dist;
-  const unitY = dy / dist;
-
-  const options: MarkerShapeOption = {
-    unitX, strokeWidth, unitY, size, pointEnd, widthFactor, filled: arrowhead.includes("filled"),
+  return {
+    unitX, unitY, strokeWidth, size, pointEnd, widthFactor, filled: arrowhead.includes("filled"),
   };
-
-  return options;
 }
 
 export function renderMarker(canvas: CanvasRenderingContext2D, arrowhead: Arrowhead, points: Point[], source: boolean, props: EdgeProperty) {
