@@ -35,7 +35,8 @@ export class CanvasConnectorDrawing {
     CanvasConnectorDrawing.createStartMarker(ctx, pts, props);
     CanvasConnectorDrawing.createEndMarker(ctx, pts, props);
 
-    CanvasLineDrawing.paintLineByType(ctx, props, pts);
+    const lineDrawing = new CanvasLineDrawing(ctx, props, pts);
+    lineDrawing.paint();
   }
 
   static createStartMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
