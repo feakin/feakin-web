@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConnectorDrawing, defaultEdgeProperty, Edge, flattenPoints } from "@feakin/exporter";
+import { CanvasConnectorDrawing, defaultEdgeProperty, Edge, flattenPoints } from "@feakin/exporter";
 import { Group, Line, Text } from "react-konva";
 import { Drawable } from "roughjs/bin/core";
 import { Context } from "konva/lib/Context";
@@ -12,7 +12,7 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
 
   const sceneFunc = (ctx: Context) => {
     const edgeProperty = Object.assign(defaultEdgeProperty, props.edge.props!);
-    ConnectorDrawing.render(ctx._context, edgeProperty, points, controlPoints);
+    CanvasConnectorDrawing.render(ctx._context, edgeProperty, points, controlPoints);
   }
 
   function getLineShape() {

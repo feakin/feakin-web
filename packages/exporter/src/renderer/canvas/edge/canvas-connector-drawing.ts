@@ -1,7 +1,7 @@
 import { Point } from "../../../model/geometry/point";
 import { EdgeProperty } from "../../../model/graph";
 import { renderMarker } from "./marker-shape";
-import { LineDrawing } from "./line-drawing";
+import { CanvasLineDrawing } from "./canvas-line-drawing";
 
 export function insertControlPointsInCenter(points: Point[], controlPoints: Point[]) {
   let mergedPoints: Point[] = [...points];
@@ -12,7 +12,7 @@ export function insertControlPointsInCenter(points: Point[], controlPoints: Poin
   return mergedPoints;
 }
 
-export class ConnectorDrawing {
+export class CanvasConnectorDrawing {
   static render(ctx: CanvasRenderingContext2D, props: EdgeProperty, points: Point[] = [], controlPoints: Point[] = []): void {
     // todo: refactor to endArrowhead
     const scale = 1;
@@ -32,18 +32,18 @@ export class ConnectorDrawing {
     ctx.lineWidth = props.stroke?.width || 1;
     ctx.fillStyle = props.fill?.color || '#ffffff';
 
-    ConnectorDrawing.createStartMarker(ctx, pts, props);
-    ConnectorDrawing.createEndMarker(ctx, pts, props);
+    CanvasConnectorDrawing.createStartMarker(ctx, pts, props);
+    CanvasConnectorDrawing.createEndMarker(ctx, pts, props);
 
-    LineDrawing.paintLine(ctx, props, pts);
+    CanvasLineDrawing.paintLineByType(ctx, props, pts);
   }
 
   static createStartMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    ConnectorDrawing.createByType(decorator, ctx, points, true);
+    CanvasConnectorDrawing.createByType(decorator, ctx, points, true);
   }
 
   static createEndMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    ConnectorDrawing.createByType(decorator, ctx, points, false);
+    CanvasConnectorDrawing.createByType(decorator, ctx, points, false);
   }
 
   private static createByType(props: EdgeProperty, ctx: CanvasRenderingContext2D, points: Point[], source: boolean) {

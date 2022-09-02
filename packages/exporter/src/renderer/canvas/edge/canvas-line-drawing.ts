@@ -3,8 +3,8 @@ import { LineStyle } from "../../../model/edge/decorator/line-style";
 import { EdgeProperty } from "../../../model/graph";
 import { Point } from "../../../model/geometry/point";
 
-export class LineDrawing {
-  static paintLine(ctx: CanvasRenderingContext2D, prop: EdgeProperty, points: Point[]) {
+export class CanvasLineDrawing {
+  static paintLineByType(ctx: CanvasRenderingContext2D, prop: EdgeProperty, points: Point[]) {
     const startPoint = points[0];
 
     ctx.beginPath();

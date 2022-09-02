@@ -1,12 +1,12 @@
 import * as fs from "fs";
-import { ConnectorDrawing, insertControlPointsInCenter } from "./connector-drawing";
+import { CanvasConnectorDrawing, insertControlPointsInCenter } from "./canvas-connector-drawing";
 import { Arrowhead } from "../../../model/edge/decorator/arrowhead";
 import { dataURLtoFileData } from "../helper/data-url";
 import { LineStyle } from "../../../model/edge/decorator/line-style";
 import { LineDashStyle } from "../../../model/edge/decorator/line-dash-style";
 import { Edge } from "../../../model/graph";
 
-describe('ConnectorDrawing', () => {
+describe('CanvasConnectorDrawing', () => {
   let canvas: any, ctx: any;
   beforeEach(function () {
     canvas = document.createElement('canvas');
@@ -36,7 +36,7 @@ describe('ConnectorDrawing', () => {
       }
     }
 
-    ConnectorDrawing.render(ctx, edge.props!, edge.points);
+    CanvasConnectorDrawing.render(ctx, edge.props!, edge.points);
 
     const image = canvas.toDataURL();
     const fileData = dataURLtoFileData(image);
