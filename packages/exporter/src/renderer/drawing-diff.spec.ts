@@ -1,4 +1,4 @@
-import { SvgShapeDrawing } from "./svg-shape-drawing";
+import { SvgShapeDrawing } from "./svg/svg-shape-drawing";
 
 describe('DrawingDiff', () => {
   let svg: SVGElement;
