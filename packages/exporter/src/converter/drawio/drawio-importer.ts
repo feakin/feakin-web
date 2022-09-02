@@ -185,6 +185,7 @@ export class DrawioImporter extends Importer {
       y: point.y,
       width: parseFloat(String(geoAttrs?.width || 0)),
       height: parseFloat(String(geoAttrs?.height || 0)),
+      props: CellState.toEdgeStyle(CellState.fromString(cell.attributes?.style || "")),
       data: ext
     };
   }

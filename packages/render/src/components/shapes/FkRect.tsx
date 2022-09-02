@@ -55,7 +55,7 @@ function FkRect(props: FkRectProps) {
         ref={ shapeRef }
         draggable={ props.draggable || true }
         fill={ props.node.props?.fill?.color || '#fff' }
-        stroke={ isDragging ? 'green' : 'black' }
+        stroke={ props.node.props?.stroke?.color || '#000' }
         strokeWidth={ props.node.data?.shape === ShapeType.Text ? 0 : 1 }
         onDragStart={ () => {
           setIsDragging(true);

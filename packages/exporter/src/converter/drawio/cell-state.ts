@@ -31,7 +31,7 @@ export class CellState implements CellStateStyle {
   static toEdgeStyle(stateStyle: CellStateStyle): EdgeProperty {
     const props: EdgeProperty = Object.assign( {
       fill: {
-        color: stateStyle.fillColor,
+        color: stateStyle.fillColor == "none" ? "#fff" : stateStyle.fillColor,
         gradient: stateStyle.gradientColor,
         transparent: stateStyle.fillOpacity === 0,
         opacity: stateStyle.fillOpacity
@@ -44,7 +44,7 @@ export class CellState implements CellStateStyle {
       },
       stroke: {
         color: stateStyle.strokeColor,
-        width: parseFloat(<string>stateStyle.strokeWidth ?? "1"),
+        width: stateStyle.strokeColor == "none" ? 0 : parseFloat(<string>stateStyle.strokeWidth ?? "1"),
         opacity: parseFloat(<string>stateStyle.strokeOpacity ?? "1"),
       }
     });

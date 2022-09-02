@@ -47,4 +47,9 @@ describe("CellStateParser", () => {
     const prop =  CellState.toEdgeStyle(CellState.fromString("strokeWidth=2;html=1;rounded=0;startFill=0;endFill=0;"));
     expect(prop.stroke?.width).toEqual(2);
   });
+
+  it('stroke color', function () {
+    const prop =  CellState.toEdgeStyle(CellState.fromString("text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;"));
+    expect(prop.stroke?.color).toEqual("none");
+  });
 });
