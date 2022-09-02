@@ -4,6 +4,8 @@ import { Importer } from "../importer";
 import DrawioEncode from "./encode/drawio-encode";
 import { ShapeType } from "../../model/node/base/shape-type";
 import { CellState } from "./cell-state";
+import { Point } from "../../model/geometry/point";
+import { CellStateStyle } from "./cell-state-style";
 
 export class DrawioImporter extends Importer {
   private mxCells: MXCell[];
@@ -39,20 +41,23 @@ export class DrawioImporter extends Importer {
     const edgeMap: Map<string, Edge> = new Map<string, Edge>();
     const nodeMap: Map<string, Node> = new Map<string, Node>();
 
+    const cellMap: Map<string, MXCell> = new Map<string, MXCell>();
+
     this.mxCells.forEach((cell: MXCell) => {
         const hasSourceAndTarget = cell.attributes?.source && cell.attributes?.target;
         if (hasSourceAndTarget || cell.attributes?.edge === "1") {
           const edge = this.convertEdge(cell);
 
+
           if (cell.attributes?.source && cell.attributes?.target) {
             // In drawio, if has source and target the points will be ignore.
             edge.points = [];
             needUpdatedEdges.push(edge);
-            // if (!cell.mxGeometry?.mxPoint?.length) {
-            // }
           }
 
           edgeMap.set(edge.id, edge);
+          cellMap.set(edge.id, cell);
+
         } else if (cell.attributes?.value) {
           const node = this.convertNode(cell);
           nodeMap.set(node.id, node);
@@ -62,14 +67,32 @@ export class DrawioImporter extends Importer {
     );
 
     needUpdatedEdges.forEach((edge: Edge) => {
+      const sourceNode = nodeMap.get(edge.data!.source);
+      const targetNode = nodeMap.get(edge.data!.target);
+
       const source = {
-        x: nodeMap.get(edge.data!.source)?.x || 0,
-        y: nodeMap.get(edge.data!.source)?.y || 0,
+        x: sourceNode?.x || 0,
+        y: sourceNode?.y || 0,
       };
       const target = {
-        x: nodeMap.get(edge.data!.target)?.x || 0,
-        y: nodeMap.get(edge.data!.target)?.y || 0,
+        x: targetNode?.x || 0,
+        y: targetNode?.y || 0,
       };
+
+      // const style: string = cellMap.get(edge.id)!.attributes!.style!;
+      // this.connectionConstraint(style, {
+      //   x: sourceNode?.x || 0,
+      //   y: sourceNode?.y || 0,
+      //   width: edge.width,
+      //   height: edge.height,
+      // });
+      //
+      // this.connectionConstraint(style, {
+      //   x: targetNode?.x || 0,
+      //   y: targetNode?.y || 0,
+      //   width: edge.width,
+      //   height: edge.height,
+      // });
 
       edge.points.push(source);
       edge.points.push(target);
@@ -108,7 +131,7 @@ export class DrawioImporter extends Importer {
     const attrs = cell.attributes!;
 
     let props: ElementProperty = {}
-    if(cell.attributes?.style) {
+    if (cell.attributes?.style) {
       props = CellState.toEdgeStyle(CellState.fromString(cell.attributes?.style));
     }
 
@@ -191,5 +214,44 @@ export class DrawioImporter extends Importer {
       props: CellState.toEdgeStyle(CellState.fromString(cell.attributes?.style || "")),
       data: ext
     };
+  }
+
+  private connectionConstraint(style: string, bounds: any, source = false): Point {
+    const edge: CellStateStyle = CellState.fromString(style);
+    let point: Point | null = null;
+    const x = edge[source ? 'exitX' : 'entryX'];
+
+    if (x !== undefined) {
+      const y = edge[source ? 'exitY' : 'entryY'];
+
+      if (y !== undefined) {
+        point = { x, y };
+      }
+    }
+
+    let perimeter = false;
+    let dx = 0;
+    let dy = 0;
+
+    if (point) {
+      perimeter = edge[source ? 'exitPerimeter' : 'entryPerimeter'] || false;
+
+      // Add entry/exit offset
+      dx = <number>edge[source ? 'exitDx' : 'entryDx'];
+      dy = <number>edge[source ? 'exitDy' : 'entryDy'];
+
+      dx = Number.isFinite(dx) ? dx : 0;
+      dy = Number.isFinite(dy) ? dy : 0;
+    }
+
+    const constraint = { point, dx, perimeter, dy };
+
+    point = {
+      x: bounds.x + constraint.point!.x * bounds.width + <number>constraint.dx,
+      y: bounds.y + constraint.point!.y * bounds.height + <number>constraint.dy
+    }
+
+    console.log(point);
+    return point;
   }
 }
