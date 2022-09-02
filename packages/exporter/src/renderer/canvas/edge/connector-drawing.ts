@@ -1,5 +1,5 @@
-import { Point } from "../../model/geometry/point";
-import { EdgeProperty } from "../../model/graph";
+import { Point } from "../../../model/geometry/point";
+import { EdgeProperty } from "../../../model/graph";
 import { renderMarker } from "./marker-shape";
 import { LineDrawing } from "./line-drawing";
 

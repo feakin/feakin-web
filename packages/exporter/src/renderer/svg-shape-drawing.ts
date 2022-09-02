@@ -1,11 +1,11 @@
 import { Point } from "../model/geometry/point";
 import { defaultEdgeProperty, ElementProperty } from "../model/graph";
-import { ShapeDrawing } from "./shape-drawing";
+import { NodeDrawing } from "./base/node-drawing";
 import { CircleShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
 import { DiamondShape } from "../model/node/diamond-shape";
 import { AbstractSvgRender } from "./abstract-svg-render";
 
-export class SvgShapeDrawing implements ShapeDrawing {
+export class SvgShapeDrawing implements NodeDrawing {
   private ctx: SVGElement;
   private readonly _svg: Element;
   private render: AbstractSvgRender;

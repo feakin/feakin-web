@@ -4,10 +4,10 @@
  * Updated to ES9 syntax by David Morrissey 2021
  * Type definitions from the typed-mxgraph project
  */
-import { Point } from "../../model/geometry/point";
-import { Arrowhead } from "../../model/edge/decorator/arrowhead";
-import { EdgeProperty } from "../../model/graph";
-import { defaultArrowSize } from "../../model/edge/decorator/edge-decorator";
+import { Point } from "../../../model/geometry/point";
+import { Arrowhead } from "../../../model/edge/decorator/arrowhead";
+import { EdgeProperty } from "../../../model/graph";
+import { defaultArrowSize } from "../../../model/edge/decorator/edge-decorator";
 
 export interface MarkerShapeOption {
   unitX: number;

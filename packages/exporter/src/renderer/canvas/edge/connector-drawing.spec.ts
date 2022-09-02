@@ -1,10 +1,10 @@
 import * as fs from "fs";
 import { ConnectorDrawing, insertControlPointsInCenter } from "./connector-drawing";
-import { Arrowhead } from "../../model/edge/decorator/arrowhead";
+import { Arrowhead } from "../../../model/edge/decorator/arrowhead";
 import { dataURLtoFileData } from "../helper/data-url";
-import { LineStyle } from "../../model/edge/decorator/line-style";
-import { LineDashStyle } from "../../model/edge/decorator/line-dash-style";
-import { Edge } from "../../model/graph";
+import { LineStyle } from "../../../model/edge/decorator/line-style";
+import { LineDashStyle } from "../../../model/edge/decorator/line-dash-style";
+import { Edge } from "../../../model/graph";
 
 describe('ConnectorDrawing', () => {
   let canvas: any, ctx: any;

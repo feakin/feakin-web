@@ -1,9 +1,9 @@
-import { Point } from "../model/geometry/point";
-import { defaultEdgeProperty, ElementProperty } from "../model/graph";
-import { ShapeDrawing } from "./shape-drawing";
-import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../model/node";
+import { Point } from "../../model/geometry/point";
+import { defaultEdgeProperty, ElementProperty } from "../../model/graph";
+import { NodeDrawing } from "../base/node-drawing";
+import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../../model/node";
 
-export class CanvasShapeDrawing implements ShapeDrawing {
+export class CanvasShapeDrawing implements NodeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
   get ctx(): CanvasRenderingContext2D {
     return this._ctx;

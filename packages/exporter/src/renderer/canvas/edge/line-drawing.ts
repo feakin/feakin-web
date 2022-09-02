@@ -1,7 +1,7 @@
-import { LineDashStyleImpl } from "../../model/edge/decorator/line-dash-style";
-import { LineStyle } from "../../model/edge/decorator/line-style";
-import { EdgeProperty } from "../../model/graph";
-import { Point } from "../../model/geometry/point";
+import { LineDashStyleImpl } from "../../../model/edge/decorator/line-dash-style";
+import { LineStyle } from "../../../model/edge/decorator/line-style";
+import { EdgeProperty } from "../../../model/graph";
+import { Point } from "../../../model/geometry/point";
 
 export class LineDrawing {
   static paintLine(ctx: CanvasRenderingContext2D, prop: EdgeProperty, points: Point[]) {

@@ -62,11 +62,11 @@ export * from './model/prop/shadow-prop';
 export * from './model/prop/stroke-prop';
 export * from './model/prop/text-prop';
 
-export * from './renderer/edge/connector-drawing';
-export * from './renderer/edge/line-drawing';
-export * from './renderer/edge/marker-shape';
+export * from './renderer/canvas/edge/connector-drawing';
+export * from './renderer/canvas/edge/line-drawing';
+export * from './renderer/canvas/edge/marker-shape';
 export * from './renderer/abstract-svg-render';
-export * from './renderer/canvas-shape-drawing';
-export * from './renderer/helper/data-url';
-export * from './renderer/shape-drawing';
+export * from './renderer/canvas/canvas-shape-drawing';
+export * from './renderer/canvas/helper/data-url';
+export * from './renderer/base/node-drawing';
 export * from './renderer/svg-shape-drawing';

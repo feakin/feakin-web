@@ -1,8 +1,8 @@
 import { prepareOptions } from "./marker-shape";
 
-import { Arrowhead } from "../../model/edge/decorator/arrowhead";
-import { defaultArrowSize } from "../../model/edge/decorator/edge-decorator";
-import { defaultEdgeProperty } from "../../model/graph";
+import { Arrowhead } from "../../../model/edge/decorator/arrowhead";
+import { defaultArrowSize } from "../../../model/edge/decorator/edge-decorator";
+import { defaultEdgeProperty } from "../../../model/graph";
 
 describe('MarkerShape', () => {
 
