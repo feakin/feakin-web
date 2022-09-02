@@ -70,29 +70,35 @@ export class DrawioImporter extends Importer {
       const sourceNode = nodeMap.get(edge.data!.source);
       const targetNode = nodeMap.get(edge.data!.target);
 
-      const source = {
+      const style: string = cellMap.get(edge.id)!.attributes!.style!;
+      let source = this.connectionConstraint(style, {
         x: sourceNode?.x || 0,
         y: sourceNode?.y || 0,
-      };
-      const target = {
+        width: sourceNode?.width || 0,
+        height: sourceNode?.height || 0,
+      }, true);
+
+      let target = this.connectionConstraint(style, {
         x: targetNode?.x || 0,
         y: targetNode?.y || 0,
-      };
+        width: targetNode?.width || 0,
+        height: targetNode?.height || 0,
+      }, false);
 
-      // const style: string = cellMap.get(edge.id)!.attributes!.style!;
-      // this.connectionConstraint(style, {
-      //   x: sourceNode?.x || 0,
-      //   y: sourceNode?.y || 0,
-      //   width: edge.width,
-      //   height: edge.height,
-      // });
-      //
-      // this.connectionConstraint(style, {
-      //   x: targetNode?.x || 0,
-      //   y: targetNode?.y || 0,
-      //   width: edge.width,
-      //   height: edge.height,
-      // });
+
+      if (!source) {
+        source = {
+          x: sourceNode?.x || 0,
+          y: sourceNode?.y || 0,
+        };
+      }
+
+      if (!target) {
+        target = {
+          x: targetNode?.x || 0,
+          y: targetNode?.y || 0,
+        };
+      }
 
       edge.points.push(source);
       edge.points.push(target);
@@ -216,7 +222,7 @@ export class DrawioImporter extends Importer {
     };
   }
 
-  private connectionConstraint(style: string, bounds: any, source = false): Point {
+  private connectionConstraint(style: string, bounds: any, source = false): Point | null {
     const edge: CellStateStyle = CellState.fromString(style);
     let point: Point | null = null;
     const x = edge[source ? 'exitX' : 'entryX'];
@@ -242,6 +248,8 @@ export class DrawioImporter extends Importer {
 
       dx = Number.isFinite(dx) ? dx : 0;
       dy = Number.isFinite(dy) ? dy : 0;
+    } else {
+      return null
     }
 
     const constraint = { point, dx, perimeter, dy };
@@ -251,7 +259,6 @@ export class DrawioImporter extends Importer {
       y: bounds.y + constraint.point!.y * bounds.height + <number>constraint.dy
     }
 
-    console.log(point);
     return point;
   }
 }
