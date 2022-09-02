@@ -138,4 +138,32 @@ describe('DrawioEncoder', () => {
     expect(edgeDecoratorForTest(graph.edges[1].props!.decorator!)).toEqual("◆─────>");
     expect(edgeDecoratorForTest(graph.edges[2].props!.decorator!)).toEqual("◆─────▷");
   });
+
+  it('keep mxcell for origin', () => {
+    const drawioConverter = new DrawioImporter(`<mxGraphModel dx="962" dy="970" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="c829ialIT6bnUCAQVo3g-42" value="Android 依赖分析" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="340" y="190" width="120" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="c829ialIT6bnUCAQVo3g-37" value="生命周期" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+      <mxGeometry x="200" y="340" width="120" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="c829ialIT6bnUCAQVo3g-43" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="c829ialIT6bnUCAQVo3g-42" target="c829ialIT6bnUCAQVo3g-37">
+      <mxGeometry width="50" height="50" relative="1" as="geometry">
+        <mxPoint x="480" y="470" as="sourcePoint"/>
+        <mxPoint x="530" y="420" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+  </root>
+</mxGraphModel>
+`, true);
+    const graph: Graph = drawioConverter.parse();
+
+    // actual: [{ x: 370, y: 250 }, { 260, 340 }]
+    // p1: { x: 340 + 120 * 0.25, y: 190 + 60 * 1 }
+    // p2: { x: 200 + 120 * 0.5, y: 340 + 60 * 0 }
+    expect(graph.edges[0].points).toEqual([{ "x": 480, "y": 470 }, { "x": 530, "y": 420 }]);
+  });
 });
