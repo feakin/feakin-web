@@ -12,7 +12,7 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
 
   const sceneFunc = (ctx: Context) => {
     const edgeProperty = Object.assign(defaultEdgeProperty, props.edge.props!);
-    CanvasConnectorDrawing.render(ctx._context, edgeProperty, points, controlPoints);
+    CanvasConnectorDrawing.paint(ctx._context, edgeProperty, points, controlPoints);
   }
 
   function getLineShape() {

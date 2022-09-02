@@ -2,6 +2,7 @@ import { Point } from "../../../model/geometry/point";
 import { EdgeProperty } from "../../../model/graph";
 import { renderMarker } from "./marker-shape";
 import { CanvasLineDrawing } from "./canvas-line-drawing";
+import { ConnectorDrawing } from "../../base/connector-drawing";
 
 export function insertControlPointsInCenter(points: Point[], controlPoints: Point[]) {
   let mergedPoints: Point[] = [...points];
@@ -12,43 +13,58 @@ export function insertControlPointsInCenter(points: Point[], controlPoints: Poin
   return mergedPoints;
 }
 
-export class CanvasConnectorDrawing {
-  static render(ctx: CanvasRenderingContext2D, props: EdgeProperty, points: Point[] = [], controlPoints: Point[] = []): void {
-    // todo: refactor to endArrowhead
-    const scale = 1;
+export function preparePoints(points: Point[], controlPoints: Point[]) {
+  // todo: refactor to endArrowhead
+  const scale = 1;
 
-    const mergedPoints = insertControlPointsInCenter(points, controlPoints);
-    const pts: Point[] = [];
-    for (let i = 0; i < mergedPoints.length; i++) {
-      const p = mergedPoints[i];
+  const mergedPoints = insertControlPointsInCenter(points, controlPoints);
+  const pts: Point[] = [];
+  for (let i = 0; i < mergedPoints.length; i++) {
+    const p = mergedPoints[i];
 
-      pts.push({
-        x: p.x / scale,
-        y: p.y / scale
-      })
-    }
+    pts.push({
+      x: p.x / scale,
+      y: p.y / scale
+    })
+  }
 
-    ctx.strokeStyle = props.stroke?.color || '#000000';
-    ctx.lineWidth = props.stroke?.width || 1;
-    ctx.fillStyle = props.fill?.color || '#ffffff';
+  return pts;
+}
 
-    CanvasConnectorDrawing.createStartMarker(ctx, pts, props);
-    CanvasConnectorDrawing.createEndMarker(ctx, pts, props);
+export class CanvasConnectorDrawing extends ConnectorDrawing<CanvasRenderingContext2D, void> {
+  constructor(ctx: CanvasRenderingContext2D, props: EdgeProperty, points: Point[] = []) {
+    super(ctx, props, points);
+  }
+
+  override render() {
+    this.ctx.strokeStyle = this.props.stroke?.color || '#000000';
+    this.ctx.lineWidth = this.props.stroke?.width || 1;
+    this.ctx.fillStyle = this.props.fill?.color || '#ffffff';
+
+    this.paintStartMarker();
+    this.paintEndMarker();
+  }
+
+  override paintStartMarker(): void {
+    this.paintMarker(true);
+  }
+
+  override paintEndMarker(): void {
+    this.paintMarker(false);
+  }
+
+  protected override paintMarker(source: boolean): void {
+    const arrowhead = source ? this.props.decorator!.startArrowhead : this.props.decorator!.endArrowhead;
+    renderMarker(this.ctx, arrowhead, this.points, source, this.props);
+  }
+
+  static paint(ctx: CanvasRenderingContext2D, props: EdgeProperty, points: Point[] = [], controlPoints: Point[] = []): void {
+    const pts = preparePoints(points, controlPoints);
+
+    const connectorDrawing = new CanvasConnectorDrawing(ctx, props, pts);
+    connectorDrawing.render();
 
     const lineDrawing = new CanvasLineDrawing(ctx, props, pts);
     lineDrawing.paint();
-  }
-
-  static createStartMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    CanvasConnectorDrawing.createByType(decorator, ctx, points, true);
-  }
-
-  static createEndMarker(ctx: CanvasRenderingContext2D, points: Point[], decorator: EdgeProperty) {
-    CanvasConnectorDrawing.createByType(decorator, ctx, points, false);
-  }
-
-  private static createByType(props: EdgeProperty, ctx: CanvasRenderingContext2D, points: Point[], source: boolean) {
-    const arrowhead = source ? props.decorator!.startArrowhead : props.decorator!.endArrowhead;
-    renderMarker(ctx, arrowhead, points, source, props);
   }
 }

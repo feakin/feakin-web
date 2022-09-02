@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { CanvasConnectorDrawing, insertControlPointsInCenter } from "./canvas-connector-drawing";
+import { CanvasConnectorDrawing, insertControlPointsInCenter, preparePoints } from "./canvas-connector-drawing";
 import { Arrowhead } from "../../../model/edge/decorator/arrowhead";
 import { dataURLtoFileData } from "../helper/data-url";
 import { LineStyle } from "../../../model/edge/decorator/line-style";
@@ -36,7 +36,7 @@ describe('CanvasConnectorDrawing', () => {
       }
     }
 
-    CanvasConnectorDrawing.render(ctx, edge.props!, edge.points);
+    CanvasConnectorDrawing.paint(ctx, edge.props!, edge.points);
 
     const image = canvas.toDataURL();
     const fileData = dataURLtoFileData(image);
@@ -45,7 +45,12 @@ describe('CanvasConnectorDrawing', () => {
   });
 
   it('should merge points', function () {
-    const mergedPoints =  insertControlPointsInCenter([{ x: 10, y: 10 }, { x: 20, y: 40 }], [{ x: 50, y: 50 }]);
+    const mergedPoints = insertControlPointsInCenter([{ x: 10, y: 10 }, { x: 20, y: 40 }], [{ x: 50, y: 50 }]);
+    expect(mergedPoints).toEqual([{ x: 10, y: 10 }, { x: 50, y: 50 }, { x: 20, y: 40 }]);
+  });
+
+  it('prepare points', function () {
+    const mergedPoints = preparePoints([{ x: 10, y: 10 }, { x: 20, y: 40 }], [{ x: 50, y: 50 }]);
     expect(mergedPoints).toEqual([{ x: 10, y: 10 }, { x: 50, y: 50 }, { x: 20, y: 40 }]);
   });
 });
