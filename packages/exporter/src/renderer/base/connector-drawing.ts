@@ -1,4 +1,5 @@
-import { EdgeProperty, Point } from "@feakin/exporter";
+import { EdgeProperty } from "../../model/graph";
+import { Point } from "../../model/geometry/point";
 
 export class ConnectorDrawing<CV, O> {
   private points: Point[];
