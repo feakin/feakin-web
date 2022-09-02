@@ -11,7 +11,7 @@ import { defaultArrowSize } from "../../../model/edge/decorator/edge-decorator";
 import { computeNorm } from "./geometry/norm";
 import { triangleMarker } from "./marker/triangle-marker";
 import { ellipseMarker } from "./marker/ellipse-marker";
-import { diamondMarker } from "./marker/diamond-marker";
+import { DiamondMarker } from "./marker/diamond-marker";
 import { squareMarker } from "./marker/square-marker";
 import { openArrowMarker } from "./marker/open-arrow-marker";
 
@@ -64,7 +64,7 @@ export function renderMarker(canvas: CanvasRenderingContext2D, arrowhead: Arrowh
       break;
     case Arrowhead.HOLLOW_DIAMOND:
     case Arrowhead.FILLED_DIAMOND:
-      diamondMarker(canvas, options);
+      new DiamondMarker(canvas, options).draw();
       break;
     case Arrowhead.HOLLOW_SQUARE:
     case Arrowhead.FILLED_SQUARE:
