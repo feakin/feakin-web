@@ -7,7 +7,7 @@ import {
   intersectElementWithLine,
 } from "./helper/collision";
 import { FontString, measureText } from "./helper/text-utils";
-import { isBrowser } from "../../env";
+import { isBrowser } from "../../enviroment/env";
 import { Exporter, Transpiler } from "../exporter";
 import { groupPoints } from "../../model/geometry/point";
 import { nanoid } from "nanoid";

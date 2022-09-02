@@ -1,7 +1,7 @@
 import * as dagre from 'dagre'
 import { GraphEdge, graphlib, Node as DagreNode } from 'dagre'
 
-import { SimpleRelation } from "../simple-relation";
+import { SimpleNetwork } from "../simple-network";
 import { Edge, Graph, Node } from "../../model/graph";
 import { nanoid } from "nanoid";
 import { defaultLayoutOptions, LayoutOptions } from "../../model/layout/layout-options";
@@ -59,7 +59,7 @@ export function layoutFromGraph(graph: Graph, options: LayoutOptions = defaultLa
   return runLayout(rootGraph);
 }
 
-export function dagreLayout(relations: SimpleRelation[], options: LayoutOptions = defaultLayoutOptions): Graph {
+export function dagreLayout(relations: SimpleNetwork[], options: LayoutOptions = defaultLayoutOptions): Graph {
   const dagreGraph = initGraphOptions(options);
 
   const labelCache: Map<string, boolean> = new Map();

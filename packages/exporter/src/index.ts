@@ -24,12 +24,12 @@ export * from './converter/mermaid/parse/flow.d';
 export * from './converter/mermaid/parse/mermaid-flowdb';
 export * from './converter/mermaid/mermaid-importer';
 
-export * from './env';
+export * from './enviroment/env';
 
 export * from './layout/dagre/dagre-layout';
-export * from './layout/simple-relation';
 export * from "./layout/dagre/dagre-layout-converter";
 export * from "./layout/elk/elk-layout";
+export * from './layout/simple-network';
 
 export * from "./model/edge/decorator/arrowhead";
 export * from "./model/edge/decorator/line-dash-style";
