@@ -88,7 +88,14 @@ function FkRect(props: FkRectProps) {
           });
         } }
       />
-      { props.node.label && <Text text={ props.node.label } x={ labelPosition.x } y={ labelPosition.y }/> }
+      { props.node.label && <Text
+        text={ props.node.label }
+        fillAfterStrokeEnabled={ true }
+        // todo: add font color support
+        // fill={ props.node.props?.stroke?.color || '#000' }
+        x={ labelPosition.x }
+        y={ labelPosition.y }/>
+      }
       { props.isSelected && (
         <Transformer
           ref={ trRef }
