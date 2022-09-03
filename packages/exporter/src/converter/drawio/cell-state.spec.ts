@@ -1,4 +1,5 @@
 import { CellState } from "./cell-state";
+import { CellStateStyle } from "./cell-state-style";
 
 describe("CellStateParser", () => {
   it('from string ', function () {
@@ -51,5 +52,22 @@ describe("CellStateParser", () => {
   it('stroke color', function () {
     const prop =  CellState.toEdgeStyle(CellState.fromString("text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;dashed=1;"));
     expect(prop.stroke?.color).toEqual("none");
+  });
+
+  it('to cell state', function () {
+    const state: CellStateStyle = CellState.toCellStateStyle({});
+    expect(state).toEqual({
+      "curved": false,
+      "dashPattern": "3 3",
+      "dashed": false,
+      "endArrow": "none",
+      "endFill": false,
+      "fillColor": "#000000",
+      "startArrow": "none",
+      "startFill": false,
+      "strokeColor": "#000000",
+      "strokeOpacity": 1,
+      "strokeWidth": "1"
+    });
   });
 });

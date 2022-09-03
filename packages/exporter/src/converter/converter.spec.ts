@@ -77,4 +77,25 @@ digraph {
 
     fs.writeFileSync("./test/from-drawio.dot", output);
   });
+
+  it('from dot to drawio', () => {
+    const executor = new DotImporter(`digraph G {
+  compound=true;
+  subgraph cluster0 {
+    a [shape="triangle", fillcolor=red, style=filled];
+    b [shape="diamond"];
+    a -> b;
+    c -> d;
+  }
+  subgraph cluster1 {
+    e -> g;
+    e -> f;
+  }
+}`);
+    const graph: Graph = executor.parse();
+
+    const output = new DrawioExporter(graph).export();
+
+    fs.writeFileSync("./test/from-dot.drawio", output);
+  });
 });

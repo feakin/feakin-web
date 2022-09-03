@@ -28,6 +28,28 @@ export class CellState implements CellStateStyle {
     return styles.join("");
   }
 
+  static toCellStateStyle(origin: EdgeProperty) : CellStateStyle {
+    const prop = Object.assign({}, defaultEdgeProperty, origin);
+
+    const state: CellStateStyle = {
+      fillColor: prop.fill!.color,
+      gradientColor: prop.fill!.gradient,
+      fillOpacity: prop.fill!.opacity,
+      strokeColor: prop.stroke!.color,
+      strokeWidth: prop.stroke!.width.toString(),
+      strokeOpacity: "false",
+      dashed: prop.decorator!.lineDashStyle !== LineDashStyle.SOLID,
+      dashPattern: prop.decorator!.lineDashStyle === LineDashStyle.DOT ? "1 3" : "3 3",
+      curved: prop.decorator!.lineType === LineStyle.CURVED,
+      startArrow: this.arrowheadToMxArrow(prop.decorator!.startArrowhead),
+      endArrow: this.arrowheadToMxArrow(prop.decorator!.endArrowhead),
+      startFill: prop.decorator!.startArrowhead !== Arrowhead.NONE,
+      endFill: prop.decorator!.endArrowhead !== Arrowhead.NONE,
+    };
+
+    return state;
+  }
+
   static toEdgeStyle(stateStyle: CellStateStyle): EdgeProperty {
     const props: EdgeProperty = Object.assign( {
       fill: {
@@ -99,6 +121,25 @@ export class CellState implements CellStateStyle {
     }
 
     return LineStyle.STRAIGHT;
+  }
+
+  private static arrowheadToMxArrow(startArrowhead: Arrowhead) {
+    switch (startArrowhead) {
+      case Arrowhead.NONE:
+        return "none";
+      case Arrowhead.NOTCHED:
+        return "classic";
+      case Arrowhead.HOLLOW:
+        return "block";
+      case Arrowhead.FILLED_DIAMOND:
+      case Arrowhead.HOLLOW_DIAMOND:
+        return "diamond";
+      case Arrowhead.FILLED_CIRCLE:
+      case Arrowhead.HOLLOW_CIRCLE:
+        return "oval";
+      default:
+        return "none";
+    }
   }
 }
 

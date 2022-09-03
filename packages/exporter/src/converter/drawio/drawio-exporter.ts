@@ -36,13 +36,13 @@ export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
     return this.toXml(this.toRoot());
   }
 
-  private toRoot() : MxFileRoot {
+  private toRoot(): MxFileRoot {
     const cells = this.intermediate();
     const mxGraph = this.wrapperGraph(cells);
     return this.wrapperRoot(mxGraph);
   }
 
-  override intermediate() : MXCell[] {
+  override intermediate(): MXCell[] {
     let cells = [
       {
         attributes: {
@@ -72,15 +72,16 @@ export class DrawioExporter extends Exporter<MXCell[]> implements Transpiler {
       }
     });
 
+    const style = edge.props ? CellState.toString(CellState.toCellStateStyle(edge.props)) : "html=1";
     if (points.length >= 2) {
       points[0].attributes.as = 'sourcePoint';
-      points[1].attributes.as = 'sourcePoint';
+      points[points.length - 1].attributes.as = 'targetPoint';
     }
 
     return {
       attributes: {
         id: edge.id ? edge.id : this.id(),
-        style: "edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;",
+        style: style,
         edge: "1",
         parent: "1",
         source: edge.data?.source,
