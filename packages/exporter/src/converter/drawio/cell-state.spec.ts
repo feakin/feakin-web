@@ -66,7 +66,7 @@ describe("CellStateParser", () => {
       "startArrow": "none",
       "startFill": false,
       "strokeColor": "#000000",
-      "strokeOpacity": 1,
+      "strokeOpacity": "false",
       "strokeWidth": "1"
     });
   });
