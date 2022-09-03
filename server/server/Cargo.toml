@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4"
+
+# CRDT
+diamond-types = "1.0.0"
