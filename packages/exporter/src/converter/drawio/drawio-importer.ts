@@ -249,7 +249,7 @@ export class DrawioImporter extends Importer {
       dx = Number.isFinite(dx) ? dx : 0;
       dy = Number.isFinite(dy) ? dy : 0;
     } else {
-      return null
+      point = { x: 0, y: 0 };
     }
 
     const constraint = { point, dx, perimeter, dy };

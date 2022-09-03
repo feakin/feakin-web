@@ -63,8 +63,16 @@ describe('DrawioEncoder', () => {
     const edges = graph.edges;
     expect(edges.length).toBe(21);
     expect(edges[edges.length - 1].points).toEqual(
-      [{ "x": 200, "y": 900 },
-        { "x": 10, "y": 900 }]
+      [
+        {
+          "x": 200,
+          "y": 930
+        },
+        {
+          "x": 130,
+          "y": 930
+        }
+      ]
     );
 
     expect(edges[edges.length - 1].width).toEqual(0);
@@ -85,8 +93,8 @@ describe('DrawioEncoder', () => {
     const nodes = graph.nodes.filter(node => node.label == "取决于");
     expect(nodes.length).toBe(1);
 
-    expect(nodes[0].x!.toFixed(0)).toEqual("580");
-    expect(nodes[0].y).toEqual(450);
+    expect(nodes[0].x!.toFixed(0)).toEqual("640");
+    expect(nodes[0].y).toEqual(510);
   });
 
   it('relative edge', () => {
@@ -96,8 +104,8 @@ describe('DrawioEncoder', () => {
     const nodes = graph.nodes.filter(node => node.label == "影响到");
     expect(nodes.length).toBe(1);
 
-    expect(nodes[0].x!.toFixed(0)).toEqual("270");
-    expect(nodes[0].y).toEqual(603);
+    expect(nodes[0].x!.toFixed(0)).toEqual("390");
+    expect(nodes[0].y).toEqual(633);
   });
 
   it('for browser', () => {
@@ -167,11 +175,11 @@ describe('DrawioEncoder', () => {
     // p2: { x: 200 + 120 * 0.5, y: 340 + 60 * 0 }
     expect(graph.edges[0].points).toEqual([
       {
-        "x": 340,
-        "y": 190
+        "x": 370,
+        "y": 250
       },
       {
-        "x": 200,
+        "x": 260,
         "y": 340
       }
     ]);
