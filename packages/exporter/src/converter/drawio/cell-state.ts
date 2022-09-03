@@ -70,6 +70,9 @@ export class CellState implements CellStateStyle {
     switch (mxArrow) {
       case "none":
         return Arrowhead.NONE;
+      case "classic":
+      case "classicThin":
+        return Arrowhead.NOTCHED;
       case "block":
         return Arrowhead.HOLLOW;
       case "diamondThin":

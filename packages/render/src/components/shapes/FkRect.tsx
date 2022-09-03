@@ -90,8 +90,8 @@ function FkRect(props: FkRectProps) {
       />
       { props.node.label && <Text
         text={ props.node.label }
-        fillAfterStrokeEnabled={ true }
-        // todo: add font color support
+        // fillAfterStrokeEnabled={ true }
+        // todo: add font color supporth
         // fill={ props.node.props?.stroke?.color || '#000' }
         x={ labelPosition.x }
         y={ labelPosition.y }/>

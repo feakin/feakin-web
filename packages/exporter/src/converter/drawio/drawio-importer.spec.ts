@@ -148,7 +148,7 @@ describe('DrawioEncoder', () => {
     expect(edgeDecoratorForTest(graph.edges[2].props!.decorator!)).toEqual("◆─────▷");
   });
 
-  it('keep mxcell for origin', () => {
+  it('location from exit entry', () => {
     const drawioConverter = new DrawioImporter(`<mxGraphModel dx="962" dy="970" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
   <root>
     <mxCell id="0"/>
@@ -170,9 +170,7 @@ describe('DrawioEncoder', () => {
 `, true);
     const graph: Graph = drawioConverter.parse();
 
-    // actual: [{ x: 370, y: 250 }, { 260, 340 }]
-    // p1: { x: 340 + 120 * 0.25, y: 190 + 60 * 1 }
-    // p2: { x: 200 + 120 * 0.5, y: 340 + 60 * 0 }
+
     expect(graph.edges[0].points).toEqual([
       {
         "x": 370,
@@ -181,6 +179,41 @@ describe('DrawioEncoder', () => {
       {
         "x": 260,
         "y": 340
+      }
+    ]);
+  });
+
+  it('direct position', () => {
+    const drawioConverter = new DrawioImporter(`<mxGraphModel dx="962" dy="970" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    <mxCell id="c829ialIT6bnUCAQVo3g-4" value="编译中" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" parent="1" vertex="1">
+      <mxGeometry x="200" y="800" width="120" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="c829ialIT6bnUCAQVo3g-24" value="Gradle" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+      <mxGeometry x="10" y="800" width="120" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="c829ialIT6bnUCAQVo3g-63" style="edgeStyle=orthogonalEdgeStyle;curved=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=1;" parent="1" source="c829ialIT6bnUCAQVo3g-4" target="c829ialIT6bnUCAQVo3g-24" edge="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="209.99999999999977" y="740" as="sourcePoint"/>
+        <mxPoint x="140" y="740" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+  </root>
+</mxGraphModel>
+`, true);
+    const graph: Graph = drawioConverter.parse();
+
+    // actual: [{ x: 200, y: 830 }, { 130, 830 }]
+    expect(graph.edges[0].points).toEqual([
+      {
+        "x": 200,
+        "y": 830
+      },
+      {
+        "x": 10,
+        "y": 800
       }
     ]);
   });
