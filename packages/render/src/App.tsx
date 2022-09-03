@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Box, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { SupportedFileType } from "@feakin/exporter";
@@ -53,6 +53,7 @@ export const App = () => {
 
   const editorDidMount = (editor: any, monaco: any) => {
     addDotLangSupport(monaco);
+    editor.layout();
     editor.focus();
   }
 
@@ -77,7 +78,7 @@ export const App = () => {
           </Box>
           <MonacoEditor
             width="100%"
-            height={ window.innerHeight - 200 }
+            height="100vh"
             language={ code.language }
             theme="vs-dark"
             value={ code.content }
