@@ -1,4 +1,5 @@
-mod livegraph;
+mod live_graph;
+mod live_coding;
 
 use actix_web::{get, web, App, HttpServer, Responder};
 

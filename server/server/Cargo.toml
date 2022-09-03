@@ -10,3 +10,6 @@ actix-web = "4"
 
 # CRDT
 diamond-types = "1.0.0"
+
+
+similar = "2.1.0"
