@@ -1,15 +1,19 @@
+use std::borrow::BorrowMut;
 use std::collections::{HashMap, HashSet};
 use std::io;
 use std::ops::Range;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 use actix::{Actor, StreamHandler};
 use actix_web::{App, Error, HttpRequest, HttpResponse, HttpServer, web};
 use actix_web_actors::ws;
 use diamond_types::AgentId;
+use diamond_types::list::OpLog;
+use log::log;
 use rand::{Rng, thread_rng};
 use tokio::sync::{mpsc, oneshot};
+use crate::living::random_agent_name;
 
 /// Connection ID.
 pub type ConnId = usize;
@@ -26,6 +30,8 @@ pub struct LivingEditServer {
   visitor_count: Arc<AtomicUsize>,
 
   rooms: HashMap<RoomId, HashSet<ConnId>>,
+
+  oplogs: HashMap<RoomId, Arc<Mutex<OpLog>>>,
 
   /// Command receiver.
   cmd_rx: mpsc::UnboundedReceiver<Command>,
@@ -154,6 +160,15 @@ impl LivingEditServer {
 
     // create default room
     rooms.insert("main".to_owned(), HashSet::new());
+
+    let mut oplogs = HashMap::with_capacity(100);
+    let mut oplog = OpLog::new();
+
+    let agent_name = &random_agent_name();
+    let agent = oplog.get_or_create_agent_id(agent_name);
+    oplog.add_insert(agent, 0, "hello, world!");
+    oplogs.insert("main".to_owned(), Arc::new(Mutex::new(oplog)));
+
     let (cmd_tx, cmd_rx) = mpsc::unbounded_channel();
 
     (
@@ -161,6 +176,7 @@ impl LivingEditServer {
         sessions: HashMap::new(),
         visitor_count: Arc::new(AtomicUsize::new(0)),
         rooms,
+        oplogs,
         cmd_rx,
       },
       LiveEditServerHandle {
@@ -258,7 +274,7 @@ impl LivingEditServer {
       .insert(id);
 
     self.send_system_message(&room_name, conn, format!("create room {} with content {}", room_name, content))
-    .await;
+      .await;
   }
 
   async fn insert(&self, conn: ConnId, content: String) {
@@ -267,7 +283,20 @@ impl LivingEditServer {
       .iter()
       .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
     {
-      self.send_system_message(room, conn, content).await;
+      let mut version = String::new();
+      match self.oplogs.get(room) {
+        None => {
+          println!("room {:?} not found", room);
+        }
+        Some(mut oplog) => {
+          let mut mutex_log = oplog.lock().unwrap();
+          mutex_log.add_insert(0, 0, &content);
+
+          version = serde_json::to_string(&mutex_log.remote_version()).unwrap();
+        }
+      }
+
+      self.send_system_message(room, conn, version).await;
     };
   }
 

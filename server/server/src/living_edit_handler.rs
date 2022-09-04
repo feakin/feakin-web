@@ -122,7 +122,6 @@ pub async fn live_edit_ws(
   let _ = session.close(close_reason).await;
 }
 
-
 async fn process_text_msg(
   edit_server: &LiveEditServerHandle,
   session: &mut actix_ws::Session,
