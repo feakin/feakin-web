@@ -39,9 +39,18 @@ enum Command {
     conn_tx: mpsc::UnboundedSender<Msg>,
     res_tx: oneshot::Sender<ConnId>,
   },
+
   Disconnect {
     conn: ConnId,
   },
+
+  Create {
+    conn: ConnId,
+    room_name: String,
+    content: String,
+    res_tx: oneshot::Sender<()>,
+  },
+
   Insert {
     conn: ConnId,
     content: String,
@@ -101,6 +110,22 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap();
   }
 
+  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, content: impl Into<String>) {
+    let (res_tx, res_rx) = oneshot::channel();
+
+    // unwrap: chat server should not have been dropped
+    self.cmd_tx
+      .send(Command::Create {
+        conn,
+        room_name: room_name.into(),
+        content: content.into(),
+        res_tx,
+      })
+      .unwrap();
+
+    // unwrap: chat server does not drop our response channel
+    res_rx.await.unwrap();
+  }
 
   pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>) {
     let (res_tx, res_rx) = oneshot::channel();
@@ -162,6 +187,10 @@ impl LivingEditServer {
           self.insert(conn, content).await;
           let _ = res_tx.send(());
         }
+        Command::Create { conn, room_name, content, res_tx } => {
+          self.create(conn, room_name, content).await;
+          let _ = res_tx.send(());
+        }
       }
     }
 
@@ -210,8 +239,38 @@ impl LivingEditServer {
     id
   }
 
+  async fn send_message(&self, conn: ConnId, msg: impl Into<String>) {
+    if let Some(room) = self
+      .rooms
+      .iter()
+      .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
+    {
+      self.send_system_message(room, conn, msg).await;
+    };
+  }
 
-  /// Unregister connection from room map and broadcast disconnection message.
+  async fn create(&mut self, conn: ConnId, room_name: String, content: String) {
+    let id = thread_rng().gen::<usize>();
+
+    self.rooms
+      .entry(room_name.to_owned())
+      .or_insert_with(HashSet::new)
+      .insert(id);
+
+    self.send_system_message(&room_name, conn, format!("create room {} with content {}", room_name, content))
+    .await;
+  }
+
+  async fn insert(&self, conn: ConnId, content: String) {
+    if let Some(room) = self
+      .rooms
+      .iter()
+      .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
+    {
+      self.send_system_message(room, conn, content).await;
+    };
+  }
+
   async fn disconnect(&mut self, conn_id: ConnId) {
     println!("Someone disconnected");
 
@@ -232,31 +291,6 @@ impl LivingEditServer {
       self.send_system_message(&room, 0, "Someone disconnected")
         .await;
     }
-  }
-
-
-  /// Send message to all other users in current room.
-  ///
-  /// `conn` is used to find current room and prevent messages sent by a connection also being
-  /// received by it.
-  async fn send_message(&self, conn: ConnId, msg: impl Into<String>) {
-    if let Some(room) = self
-      .rooms
-      .iter()
-      .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
-    {
-      self.send_system_message(room, conn, msg).await;
-    };
-  }
-
-  async fn insert(&self, conn: ConnId,  content: String) {
-    if let Some(room) = self
-      .rooms
-      .iter()
-      .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
-    {
-      self.send_system_message(room, conn, content).await;
-    };
   }
 }
 

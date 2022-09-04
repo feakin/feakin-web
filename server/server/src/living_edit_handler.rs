@@ -68,6 +68,7 @@ pub async fn live_edit_ws(
               .await;
           }
 
+          // todo: change to binary
           Message::Binary(_bin) => {
             log::warn!("unexpected binary message");
           }
@@ -165,6 +166,18 @@ async fn process_text_msg(
         }
         None => {
           session.text("!!! name is required").await.unwrap();
+        }
+      },
+
+      "/create" => match cmd_args.next() {
+        Some(content) => {
+          log::info!("conn {conn}: create {content}");
+          // generate room name
+          edit_server.create(conn, "phodal", content).await;
+          session.text(format!("create success!")).await.unwrap();
+        }
+        None => {
+          session.text("!!! room name is required").await.unwrap();
         }
       },
 
