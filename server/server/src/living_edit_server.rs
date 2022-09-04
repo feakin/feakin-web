@@ -1,10 +1,13 @@
 use std::collections::{HashMap, HashSet};
 use std::io;
+use std::ops::Range;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicUsize, Ordering};
+
 use actix::{Actor, StreamHandler};
 use actix_web::{App, Error, HttpRequest, HttpResponse, HttpServer, web};
 use actix_web_actors::ws;
+use diamond_types::AgentId;
 use rand::{Rng, thread_rng};
 use tokio::sync::{mpsc, oneshot};
 
@@ -23,6 +26,7 @@ pub struct LivingEditServer {
   visitor_count: Arc<AtomicUsize>,
 
   rooms: HashMap<RoomId, HashSet<ConnId>>,
+
   /// Command receiver.
   cmd_rx: mpsc::UnboundedReceiver<Command>,
 }
@@ -38,6 +42,16 @@ enum Command {
   Disconnect {
     conn: ConnId,
   },
+  Insert {
+    conn: ConnId,
+    content: String,
+    res_tx: oneshot::Sender<()>,
+  },
+  // Delete {
+  //   conn: ConnId,
+  //   agent_id: AgentId,
+  //   range: Range,
+  // },
   Message {
     msg: Msg,
     conn: ConnId,
@@ -64,7 +78,6 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-
   /// Unregister message sender and broadcast disconnection message to current room.
   pub fn disconnect(&self, conn: ConnId) {
     // unwrap: chat server should not have been dropped
@@ -80,6 +93,23 @@ impl LiveEditServerHandle {
       .send(Command::Message {
         msg: msg.into(),
         conn,
+        res_tx,
+      })
+      .unwrap();
+
+    // unwrap: chat server does not drop our response channel
+    res_rx.await.unwrap();
+  }
+
+
+  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>) {
+    let (res_tx, res_rx) = oneshot::channel();
+
+    // unwrap: chat server should not have been dropped
+    self.cmd_tx
+      .send(Command::Insert {
+        conn,
+        content: content.into(),
         res_tx,
       })
       .unwrap();
@@ -126,6 +156,10 @@ impl LivingEditServer {
         }
         Command::Message { conn, msg, res_tx } => {
           self.send_message(conn, msg).await;
+          let _ = res_tx.send(());
+        }
+        Command::Insert { conn, content, res_tx } => {
+          self.insert(conn, content).await;
           let _ = res_tx.send(());
         }
       }
@@ -212,6 +246,16 @@ impl LivingEditServer {
       .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
     {
       self.send_system_message(room, conn, msg).await;
+    };
+  }
+
+  async fn insert(&self, conn: ConnId,  content: String) {
+    if let Some(room) = self
+      .rooms
+      .iter()
+      .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
+    {
+      self.send_system_message(room, conn, content).await;
     };
   }
 }

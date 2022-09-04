@@ -168,6 +168,17 @@ async fn process_text_msg(
         }
       },
 
+      "/insert" => match cmd_args.next() {
+        Some(content) => {
+          log::info!("conn {conn}: insert {content}");
+          edit_server.insert(conn, content).await;
+          session.text(format!("insert {content}")).await.unwrap();
+        }
+
+        None => {
+          session.text("!!! room name is required").await.unwrap();
+        }
+      },
       _ => {
         session
           .text(format!("!!! unknown command: {msg}"))

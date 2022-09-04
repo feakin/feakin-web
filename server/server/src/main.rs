@@ -11,7 +11,7 @@ use crate::living_edit_server::LiveEditServerHandle;
 
 mod living;
 mod living_edit_server;
-mod handler;
+mod living_edit_handler;
 
 #[get("/api/{name}")]
 async fn greet(name: web::Path<String>) -> impl Responder {
@@ -31,7 +31,7 @@ async fn living_edit(
   let (res, session, msg_stream) = actix_ws::handle(&req, stream)?;
 
   // spawn websocket handler (and don't await it) so that the response is returned immediately
-  spawn_local(handler::live_edit_ws((**edit_server).clone(), session, msg_stream));
+  spawn_local(living_edit_handler::live_edit_ws((**edit_server).clone(), session, msg_stream));
 
   Ok(res)
 }
