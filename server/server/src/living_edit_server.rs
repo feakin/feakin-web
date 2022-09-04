@@ -64,7 +64,7 @@ enum Command {
   Insert {
     conn: ConnId,
     content: String,
-    res_tx: oneshot::Sender<()>,
+    res_tx: oneshot::Sender<String>,
   },
   // Delete {
   //   conn: ConnId,
@@ -137,7 +137,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap();
   }
 
-  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>) {
+  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>) -> String {
     let (res_tx, res_rx) = oneshot::channel();
 
     // unwrap: chat server should not have been dropped
@@ -150,7 +150,7 @@ impl LiveEditServerHandle {
       .unwrap();
 
     // unwrap: chat server does not drop our response channel
-    res_rx.await.unwrap();
+    res_rx.await.unwrap()
   }
 
 
@@ -212,8 +212,10 @@ impl LivingEditServer {
           let _ = res_tx.send(());
         }
         Command::Insert { conn, content, res_tx } => {
-          self.insert(conn, content).await;
-          let _ = res_tx.send(());
+          let opt_version = self.insert(conn, content).await;
+          let str: String = opt_version.unwrap_or("".to_string());
+          // todo: change to Version
+          let _ = res_tx.send(str);
         }
         Command::Create { conn, room_name, content, res_tx } => {
           self.create(conn, room_name, content).await;
@@ -302,13 +304,12 @@ impl LivingEditServer {
       .await;
   }
 
-  async fn insert(&self, conn: ConnId, content: String) {
+  async fn insert(&self, conn: ConnId, content: String) -> Option<String> {
     if let Some(room) = self
       .rooms
       .iter()
       .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
     {
-      let mut version = String::new();
       match self.oplogs.get(room) {
         None => {
           println!("room {:?} not found", room);
@@ -317,12 +318,17 @@ impl LivingEditServer {
           let mut mutex_log = oplog.lock().unwrap();
           mutex_log.add_insert(0, 0, &content);
 
-          version = serde_json::to_string(&mutex_log.remote_version()).unwrap();
+          let version = mutex_log.local_version();
+          let branch = mutex_log.checkout(&version);
+
+          return Some(branch.content().to_string());
         }
       }
 
-      self.send_system_message(room, conn, version).await;
+      return None;
     };
+
+    return None;
   }
 
   async fn disconnect(&mut self, conn_id: ConnId) {
