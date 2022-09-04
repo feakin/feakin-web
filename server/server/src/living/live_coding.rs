@@ -36,7 +36,7 @@ impl LiveCoding {
 
 #[cfg(test)]
 mod tests {
-  use crate::live_coding::LiveCoding;
+  use crate::living::live_coding::LiveCoding;
 
   #[test]
   fn simulate_insert() {
