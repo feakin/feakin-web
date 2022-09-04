@@ -1,10 +1,11 @@
 use std::ops::Range;
 
 use diamond_types::list::OpLog;
-use diamond_types::LocalVersion;
+use diamond_types::{AgentId, LocalVersion};
 
 pub struct LiveCoding {
-  oplog: OpLog,
+  inner: OpLog,
+  agent_id: Option<AgentId>,
 }
 
 impl LiveCoding {
@@ -13,23 +14,23 @@ impl LiveCoding {
     let agent = oplog.get_or_create_agent_id(&agent_name.ok_or("root").unwrap());
     oplog.add_insert(agent, 0, &content);
 
-    let live_coding = Self { oplog };
+    let live_coding = Self { inner: oplog, agent_id: Some(agent) };
     Ok(live_coding)
   }
 
   fn add_client(&mut self, agent_name: &str) -> LocalVersion {
-    self.oplog.get_or_create_agent_id(agent_name);
-    self.oplog.local_version()
+    self.inner.get_or_create_agent_id(agent_name);
+    self.inner.local_version()
   }
 
   fn insert(&mut self, agent_name: &str, pos: usize, content: &str) {
-    let agent = self.oplog.get_or_create_agent_id(agent_name);
-    self.oplog.add_insert(agent, pos, content);
+    let agent = self.inner.get_or_create_agent_id(agent_name);
+    self.inner.add_insert(agent, pos, content);
   }
 
   fn delete(&mut self, agent_name: &str, range: Range<usize>) {
-    let agent = self.oplog.get_or_create_agent_id(agent_name);
-    self.oplog.add_delete_without_content(agent, range);
+    let agent = self.inner.get_or_create_agent_id(agent_name);
+    self.inner.add_delete_without_content(agent, range);
   }
 }
 
@@ -50,7 +51,7 @@ mod tests {
     let version = coding.add_client(agent2);
 
     assert_eq!(version.len(), 1);
-    let branch = coding.oplog.checkout(&version);
+    let branch = coding.inner.checkout(&version);
     assert_eq!(branch.content().to_string(), "abzerzeroocdef");
   }
 
@@ -66,8 +67,8 @@ mod tests {
     live.add_client(agent2);
     live.delete(agent2, 2..8);
 
-    let local = live.oplog.local_version();
-    let branch = live.oplog.checkout(&local);
+    let local = live.inner.local_version();
+    let branch = live.inner.checkout(&local);
 
     assert_eq!(branch.content().to_string(), "abef");
   }
