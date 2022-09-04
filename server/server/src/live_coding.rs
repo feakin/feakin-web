@@ -1,12 +1,12 @@
-use diamond_types::list::{OpLog};
+use diamond_types::list::OpLog;
 use diamond_types::list::encoding::ENCODE_FULL;
 use diamond_types::LocalVersion;
 
-struct LiveCoding {
+pub struct LiveCoding {
   oplog: OpLog,
 }
 
-impl LiveCoding {
+impl  LiveCoding {
   fn new(content: &str, agent_name: Option<&str>) -> Result<Self, String> {
     let mut oplog = OpLog::new();
     let agent = oplog.get_or_create_agent_id(&agent_name.ok_or("root").unwrap());
@@ -16,7 +16,7 @@ impl LiveCoding {
     Ok(live_coding)
   }
 
-  fn add_agent(&mut self, agent_name: &str) -> LocalVersion {
+  fn add_client(&mut self, agent_name: &str) -> LocalVersion {
     self.oplog.get_or_create_agent_id(agent_name);
     self.oplog.local_version()
   }
@@ -42,7 +42,7 @@ mod tests {
     coding.insert(agent1, 2, "zero");
     coding.insert(agent1, 5, "zero");
 
-    let version = coding.add_agent(agent2);
+    let version = coding.add_client(agent2);
 
     assert_eq!(version.len(), 1);
     let branch = coding.oplog.checkout(&version);

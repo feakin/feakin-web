@@ -1,5 +1,6 @@
 mod live_graph;
 mod live_coding;
+mod pairing;
 
 use actix_web::{get, web, App, HttpServer, Responder};
 
