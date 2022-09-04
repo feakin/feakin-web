@@ -7,7 +7,7 @@ use tokio::{
 
 pub use living_edit_server::LivingEditServer;
 
-use crate::living_edit_server::EditServerHandle;
+use crate::living_edit_server::LiveEditServerHandle;
 
 mod living;
 mod living_edit_server;
@@ -26,12 +26,12 @@ async fn index() -> impl Responder {
 async fn living_edit(
   req: HttpRequest,
   stream: web::Payload,
-  edit_server: web::Data<EditServerHandle>,
+  edit_server: web::Data<LiveEditServerHandle>,
 ) -> Result<HttpResponse, Error> {
   let (res, session, msg_stream) = actix_ws::handle(&req, stream)?;
 
   // spawn websocket handler (and don't await it) so that the response is returned immediately
-  spawn_local(handler::edit_ws((**edit_server).clone(), session, msg_stream));
+  spawn_local(handler::live_edit_ws((**edit_server).clone(), session, msg_stream));
 
   Ok(res)
 }
