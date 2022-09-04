@@ -1,3 +1,4 @@
+use actix_files::NamedFile;
 use actix_web::{App, get, Error, HttpRequest, HttpResponse, HttpServer, Responder, web};
 use tokio::{
   task::{spawn, spawn_local},
@@ -17,12 +18,9 @@ async fn greet(name: web::Path<String>) -> impl Responder {
   format!("Hello {name}!")
 }
 
-//
-// async fn living_edit(req: HttpRequest, stream: web::Payload) -> Result<HttpResponse, actix_web::Error> {
-//   let resp = ws::start(LivingEditServer {}, &req, stream);
-//   println!("{:?}", resp);
-//   resp
-// }
+async fn index() -> impl Responder {
+  NamedFile::open_async("./static/index.html").await.unwrap()
+}
 
 /// Handshake and start WebSocket handler with heartbeats.
 async fn living_edit(
@@ -33,11 +31,7 @@ async fn living_edit(
   let (res, session, msg_stream) = actix_ws::handle(&req, stream)?;
 
   // spawn websocket handler (and don't await it) so that the response is returned immediately
-  spawn_local(handler::edit_ws(
-    (**edit_server).clone(),
-    session,
-    msg_stream,
-  ));
+  spawn_local(handler::edit_ws((**edit_server).clone(), session, msg_stream));
 
   Ok(res)
 }
@@ -53,10 +47,12 @@ async fn main() -> std::io::Result<()> {
   let server_handle = spawn(edit_server.run());
 
 
-  let http_server = HttpServer::new(|| {
+  let http_server = HttpServer::new(move || {
     App::new()
+      .app_data(web::Data::new(server_tx.clone()))
+      .service(web::resource("/").to(index))
       .service(greet)
-      .route("/living/edit", web::get().to(living_edit))
+      .service(web::resource("/living/edit").route(web::get().to(living_edit)))
   })
     .workers(2)
     .bind(("127.0.0.1", 8804))?
