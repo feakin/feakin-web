@@ -140,10 +140,10 @@ async fn process_text_msg(
     match cmd_args.next().unwrap() {
       "/list" => {
         log::info!("conn {conn}: listing rooms");
-        // let rooms = edit_server.list_rooms().await;
-        // for room in rooms {
-        //   session.text(room).await.unwrap();
-        // }
+        let rooms = edit_server.list_rooms().await;
+        for room in rooms {
+          session.text(room).await.unwrap();
+        }
       }
 
       "/join" => match cmd_args.next() {
@@ -186,7 +186,6 @@ async fn process_text_msg(
           edit_server.insert(conn, content).await;
           session.text(format!("insert {content}")).await.unwrap();
         }
-
         None => {
           session.text("!!! room name is required").await.unwrap();
         }

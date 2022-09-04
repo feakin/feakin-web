@@ -57,6 +57,10 @@ enum Command {
     res_tx: oneshot::Sender<()>,
   },
 
+  List {
+    res_tx: oneshot::Sender<Vec<RoomId>>,
+  },
+
   Insert {
     conn: ConnId,
     content: String,
@@ -148,6 +152,17 @@ impl LiveEditServerHandle {
     // unwrap: chat server does not drop our response channel
     res_rx.await.unwrap();
   }
+
+
+  pub async fn list_rooms(&self) -> Vec<String> {
+    let (res_tx, res_rx) = oneshot::channel();
+
+    // unwrap: chat server should not have been dropped
+    self.cmd_tx.send(Command::List { res_tx }).unwrap();
+
+    // unwrap: chat server does not drop our response channel
+    res_rx.await.unwrap()
+  }
 }
 
 impl Actor for LivingEditServer {
@@ -157,17 +172,10 @@ impl Actor for LivingEditServer {
 impl LivingEditServer {
   pub fn new() -> (Self, LiveEditServerHandle) {
     let mut rooms = HashMap::with_capacity(4);
+    let mut oplogs = HashMap::with_capacity(100);
 
     // create default room
     rooms.insert("main".to_owned(), HashSet::new());
-
-    let mut oplogs = HashMap::with_capacity(100);
-    let mut oplog = OpLog::new();
-
-    let agent_name = &random_agent_name();
-    let agent = oplog.get_or_create_agent_id(agent_name);
-    oplog.add_insert(agent, 0, "hello, world!");
-    oplogs.insert("main".to_owned(), Arc::new(Mutex::new(oplog)));
 
     let (cmd_tx, cmd_rx) = mpsc::unbounded_channel();
 
@@ -195,6 +203,10 @@ impl LivingEditServer {
         Command::Disconnect { conn } => {
           self.disconnect(conn).await;
         }
+        Command::List { res_tx } => {
+          let _ = res_tx.send(self.list_rooms());
+        }
+
         Command::Message { conn, msg, res_tx } => {
           self.send_message(conn, msg).await;
           let _ = res_tx.send(());
@@ -231,6 +243,12 @@ impl LivingEditServer {
     }
   }
 
+  /// Returns list of created room names.
+  fn list_rooms(&mut self) -> Vec<String> {
+    self.rooms.keys().cloned().collect()
+  }
+
+  // todo: add run or others ?
   async fn connect(&mut self, tx: mpsc::UnboundedSender<Msg>) -> ConnId {
     log::info!("Someone joined");
 
@@ -246,6 +264,13 @@ impl LivingEditServer {
       .entry("main".to_owned())
       .or_insert_with(HashSet::new)
       .insert(id);
+
+    let mut oplog = OpLog::new();
+
+    let agent_name = &random_agent_name();
+    let agent = oplog.get_or_create_agent_id(agent_name);
+    oplog.add_insert(agent, 0, "hello, world!");
+    self.oplogs.insert("main".to_owned(), Arc::new(Mutex::new(oplog)));
 
     let count = self.visitor_count.fetch_add(1, Ordering::SeqCst);
     self.send_system_message("main", 0, format!("Total visitors {count}"))
