@@ -8,6 +8,8 @@ to spike
 - [ ] Collaborative 
   - [ ] server
   - [ ] Monaco Editor Plugins: [Monaco Collaborative Extensions](https://github.com/convergencelabs/monaco-collab-ext)
+- [ ] Wasm for Frontend
+  - [ ] Oplog
 
 Refs:
 
