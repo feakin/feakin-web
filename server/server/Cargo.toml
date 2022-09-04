@@ -9,9 +9,19 @@ edition = "2021"
 actix = "0.13"
 actix-web = "4"
 actix-web-actors = "4.1.0"
+actix-ws = "0.2.5"
+awc = "3"
 
 # CRDT
 diamond-types = "1.0.0"
 
-
+#
 similar = "2.1.0"
+
+derive_more = "0.99.15"
+env_logger = "0.9.0"
+futures-util = { version = "0.3.24", default-features = false, features = ["std"] }
+log = "0.4"
+rand = "0.8"
+
+tokio = { version = "1.21.0", features = ["rt", "macros", "sync", "time"] }
