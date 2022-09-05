@@ -13,6 +13,7 @@ use diamond_types::list::OpLog;
 use log::log;
 use rand::{Rng, thread_rng};
 use tokio::sync::{mpsc, oneshot};
+
 use crate::living::random_agent_name;
 
 /// Connection ID.
@@ -350,18 +351,6 @@ impl LivingEditServer {
     for room in rooms {
       self.send_system_message(&room, 0, "Someone disconnected")
         .await;
-    }
-  }
-}
-
-/// Handler for ws::Message message
-impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for LivingEditServer {
-  fn handle(&mut self, msg: Result<ws::Message, ws::ProtocolError>, ctx: &mut Self::Context) {
-    match msg {
-      Ok(ws::Message::Ping(msg)) => ctx.pong(&msg),
-      Ok(ws::Message::Text(text)) => ctx.text(text),
-      Ok(ws::Message::Binary(bin)) => ctx.binary(bin),
-      _ => (),
     }
   }
 }

@@ -129,14 +129,11 @@ async fn process_text_msg(
   conn: ConnId,
   name: &mut Option<String>,
 ) {
-  // strip leading and trailing whitespace (spaces, newlines, etc.)
   let msg = text.trim();
 
-  // we check for /<cmd> type of messages
   if msg.starts_with('/') {
     let mut cmd_args = msg.splitn(2, ' ');
 
-    // unwrap: we have guaranteed non-zero string length already
     match cmd_args.next().unwrap() {
       "/list" => {
         log::info!("conn {conn}: listing rooms");
@@ -170,8 +167,8 @@ async fn process_text_msg(
 
       "/create" => match cmd_args.next() {
         Some(content) => {
+          // todo: create by ids ?
           log::info!("conn {conn}: create {content}");
-          // generate room name
           edit_server.create(conn, "phodal", content).await;
           session.text(format!("create success!")).await.unwrap();
         }
@@ -198,7 +195,6 @@ async fn process_text_msg(
       }
     }
   } else {
-    // prefix message with our name, if assigned
     let msg = match name {
       Some(ref name) => format!("{name}: {msg}"),
       None => msg.to_owned(),
