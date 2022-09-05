@@ -8,7 +8,7 @@ use futures_util::{
 use tokio::{pin, sync::mpsc, time::interval};
 
 use crate::LiveEditServerHandle;
-use crate::living_edit_server::ConnId;
+use crate::living_action::ConnId;
 
 /// How often heartbeat pings are sent
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
@@ -29,14 +29,11 @@ pub async fn live_edit_ws(
 
   let (conn_tx, mut conn_rx) = mpsc::unbounded_channel();
 
-
   // unwrap: chat server is not dropped before the HTTP server
   let conn_id = edit_server.connect(conn_tx).await;
 
-
   let close_reason = loop {
     // most of the futures we process need to be stack-pinned to work with select()
-
     let tick = interval.tick();
     pin!(tick);
 

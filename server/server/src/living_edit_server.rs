@@ -1,26 +1,16 @@
-use std::borrow::BorrowMut;
 use std::collections::{HashMap, HashSet};
 use std::io;
-use std::ops::Range;
 use std::sync::{Arc, Mutex};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-use actix::{Actor, StreamHandler};
-use actix_web::{App, Error, HttpRequest, HttpResponse, HttpServer, web};
+use actix::Actor;
 use actix_web_actors::ws;
-use diamond_types::AgentId;
 use diamond_types::list::OpLog;
-use log::log;
 use rand::{Rng, thread_rng};
 use tokio::sync::{mpsc, oneshot};
 
 use crate::living::random_agent_name;
-
-/// Connection ID.
-pub type ConnId = usize;
-
-/// Room ID.
-pub type RoomId = String;
+use crate::living_action::{ConnId, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {

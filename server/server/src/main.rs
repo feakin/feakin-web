@@ -12,7 +12,9 @@ use crate::living_edit_server::LiveEditServerHandle;
 mod living;
 mod living_edit_server;
 mod living_edit_handler;
+mod living_action;
 
+// keep some api for testing
 #[get("/api/{name}")]
 async fn greet(name: web::Path<String>) -> impl Responder {
   format!("Hello {name}!")
@@ -39,13 +41,12 @@ async fn living_edit(
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> std::io::Result<()> {
   env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+  let port = 8804;
 
-  log::info!("starting HTTP server at http://localhost:8804");
+  log::info!("starting HTTP server at http://localhost:{port}");
 
   let (edit_server, server_tx) = LivingEditServer::new();
-
   let server_handle = spawn(edit_server.run());
-
 
   let http_server = HttpServer::new(move || {
     App::new()
@@ -55,7 +56,7 @@ async fn main() -> std::io::Result<()> {
       .service(web::resource("/living/edit").route(web::get().to(living_edit)))
   })
     .workers(2)
-    .bind(("127.0.0.1", 8804))?
+    .bind(("127.0.0.1", port))?
     .run();
 
 
