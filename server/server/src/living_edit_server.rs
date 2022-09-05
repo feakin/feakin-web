@@ -6,19 +6,16 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use actix::Actor;
 use actix_web_actors::ws;
 use diamond_types::list::OpLog;
-use rand::{Rng, thread_rng};
 use tokio::sync::{mpsc, oneshot};
+use tokio::sync::mpsc::UnboundedSender;
 
-use crate::living::random_agent_name;
-use crate::living_action::{ConnId, RoomId};
+use crate::living::random_name;
+use crate::living_action::{ConnId, id_generator, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
   /// Map of connection IDs to their message receivers.
   sessions: HashMap<ConnId, mpsc::UnboundedSender<Msg>>,
-
-  /// Tracks total number of historical connections established.
-  visitor_count: Arc<AtomicUsize>,
 
   rooms: HashMap<RoomId, HashSet<ConnId>>,
 
@@ -33,7 +30,6 @@ pub type Msg = String;
 #[derive(Debug)]
 enum Command {
   Connect {
-    conn_tx: mpsc::UnboundedSender<Msg>,
     res_tx: oneshot::Sender<ConnId>,
   },
 
@@ -43,8 +39,9 @@ enum Command {
 
   Create {
     conn: ConnId,
-    room_name: String,
+    room_id: RoomId,
     content: String,
+    conn_tx: mpsc::UnboundedSender<Msg>,
     res_tx: oneshot::Sender<()>,
   },
 
@@ -76,12 +73,12 @@ pub struct LiveEditServerHandle {
 
 impl LiveEditServerHandle {
   /// Register client message sender and obtain connection ID.
-  pub async fn connect(&self, conn_tx: mpsc::UnboundedSender<String>) -> ConnId {
+  pub async fn connect(&self) -> ConnId {
     let (res_tx, res_rx) = oneshot::channel();
 
     // unwrap: chat server should not have been dropped
     self.cmd_tx
-      .send(Command::Connect { conn_tx, res_tx })
+      .send(Command::Connect { res_tx })
       .unwrap();
 
     // unwrap: chat server does not drop out response channel
@@ -111,15 +108,16 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap();
   }
 
-  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, content: impl Into<String>) {
+  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<Msg>) {
     let (res_tx, res_rx) = oneshot::channel();
 
     // unwrap: chat server should not have been dropped
     self.cmd_tx
       .send(Command::Create {
         conn,
-        room_name: room_name.into(),
+        room_id: room_name.into(),
         content: content.into(),
+        conn_tx: conn_tx.clone(),
         res_tx,
       })
       .unwrap();
@@ -165,15 +163,11 @@ impl LivingEditServer {
     let mut rooms = HashMap::with_capacity(4);
     let mut oplogs = HashMap::with_capacity(100);
 
-    // create default room
-    rooms.insert("main".to_owned(), HashSet::new());
-
     let (cmd_tx, cmd_rx) = mpsc::unbounded_channel();
 
     (
       Self {
         sessions: HashMap::new(),
-        visitor_count: Arc::new(AtomicUsize::new(0)),
         rooms,
         oplogs,
         cmd_rx,
@@ -187,17 +181,20 @@ impl LivingEditServer {
   pub async fn run(mut self) -> io::Result<()> {
     while let Some(cmd) = self.cmd_rx.recv().await {
       match cmd {
-        Command::Connect { conn_tx, res_tx } => {
-          let conn_id = self.connect(conn_tx).await;
+        Command::Connect { res_tx } => {
+          let conn_id = self.connect().await;
           let _ = res_tx.send(conn_id);
         }
         Command::Disconnect { conn } => {
           self.disconnect(conn).await;
         }
+        Command::Create { conn, room_id, content, conn_tx, res_tx } => {
+          self.create(room_id, conn, content, conn_tx).await;
+          let _ = res_tx.send(());
+        }
         Command::List { res_tx } => {
           let _ = res_tx.send(self.list_rooms());
         }
-
         Command::Message { conn, msg, res_tx } => {
           self.send_message(conn, msg).await;
           let _ = res_tx.send(());
@@ -208,19 +205,12 @@ impl LivingEditServer {
           // todo: change to Version
           let _ = res_tx.send(str);
         }
-        Command::Create { conn, room_name, content, res_tx } => {
-          self.create(conn, room_name, content).await;
-          let _ = res_tx.send(());
-        }
       }
     }
 
     Ok(())
   }
 
-  /// Send message to users in a room.
-  ///
-  /// `skip` is used to prevent messages triggered by a connection also being received by it.
   async fn send_system_message(&self, room: &str, skip: ConnId, msg: impl Into<String>) {
     if let Some(sessions) = self.rooms.get(room) {
       let msg = msg.into();
@@ -236,41 +226,12 @@ impl LivingEditServer {
     }
   }
 
-  /// Returns list of created room names.
   fn list_rooms(&mut self) -> Vec<String> {
     self.rooms.keys().cloned().collect()
   }
 
-  // todo: add run or others ?
-  async fn connect(&mut self, tx: mpsc::UnboundedSender<Msg>) -> ConnId {
-    log::info!("Someone joined");
-
-    // notify all users in same room
-    self.send_system_message("main", 0, "Someone joined").await;
-
-    // register session with random connection ID
-    let id = thread_rng().gen::<usize>();
-    self.sessions.insert(id, tx);
-
-    // auto join session to main room
-    self.rooms
-      .entry("main".to_owned())
-      .or_insert_with(HashSet::new)
-      .insert(id);
-
-    let mut oplog = OpLog::new();
-
-    let agent_name = &random_agent_name();
-    let agent = oplog.get_or_create_agent_id(agent_name);
-    oplog.add_insert(agent, 0, "hello, world!");
-    self.oplogs.insert("main".to_owned(), Arc::new(Mutex::new(oplog)));
-
-    let count = self.visitor_count.fetch_add(1, Ordering::SeqCst);
-    self.send_system_message("main", 0, format!("Total visitors {count}"))
-      .await;
-
-    // send id back
-    id
+  async fn connect(&mut self) -> ConnId {
+    id_generator()
   }
 
   async fn send_message(&self, conn: ConnId, msg: impl Into<String>) {
@@ -283,28 +244,35 @@ impl LivingEditServer {
     };
   }
 
-  async fn create(&mut self, conn: ConnId, room_name: String, content: String) {
-    let id = thread_rng().gen::<usize>();
+  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: mpsc::UnboundedSender<String>) {
+    let id = id_generator();
+    self.sessions.insert(id, conn_tx);
 
     self.rooms
-      .entry(room_name.to_owned())
+      .entry(room_id.clone())
       .or_insert_with(HashSet::new)
       .insert(id);
 
-    self.send_system_message(&room_name, conn, format!("create room {} with content {}", room_name, content))
+    let mut oplog = OpLog::new();
+
+    let agent_name = &random_name();
+    let agent = oplog.get_or_create_agent_id(agent_name);
+    oplog.add_insert(agent, 0, "hello, world!");
+
+    self.oplogs.insert(room_id.clone(), Arc::new(Mutex::new(oplog)));
+
+    self.send_system_message(&room_id, conn, format!("create room {} with content {}", room_id, content))
       .await;
   }
 
   async fn insert(&self, conn: ConnId, content: String) -> Option<String> {
-    if let Some(room) = self
+    let room_opt = self
       .rooms
       .iter()
-      .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
-    {
+      .find_map(|(room, participants)| participants.contains(&conn).then_some(room));
+
+    if let Some(room) = room_opt {
       match self.oplogs.get(room) {
-        None => {
-          println!("room {:?} not found", room);
-        }
         Some(mut oplog) => {
           let mut mutex_log = oplog.lock().unwrap();
           mutex_log.add_insert(0, 0, &content);
@@ -313,6 +281,9 @@ impl LivingEditServer {
           let branch = mutex_log.checkout(&version);
 
           return Some(branch.content().to_string());
+        }
+        None => {
+          println!("room {:?} not found", room);
         }
       }
 
@@ -323,8 +294,6 @@ impl LivingEditServer {
   }
 
   async fn disconnect(&mut self, conn_id: ConnId) {
-    println!("Someone disconnected");
-
     let mut rooms: Vec<String> = Vec::new();
 
     // remove sender

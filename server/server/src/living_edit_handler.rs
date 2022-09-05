@@ -1,14 +1,17 @@
 use std::time::{Duration, Instant};
 
-use actix_ws::Message;
+use actix_ws::{Message, Session};
 use futures_util::{
   future::{select, Either},
   StreamExt as _,
 };
 use tokio::{pin, sync::mpsc, time::interval};
+use tokio::sync::mpsc::UnboundedSender;
 
 use crate::LiveEditServerHandle;
+use crate::living::random_name;
 use crate::living_action::ConnId;
+use crate::living_edit_server::Msg;
 
 /// How often heartbeat pings are sent
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
@@ -30,7 +33,7 @@ pub async fn live_edit_ws(
   let (conn_tx, mut conn_rx) = mpsc::unbounded_channel();
 
   // unwrap: chat server is not dropped before the HTTP server
-  let conn_id = edit_server.connect(conn_tx).await;
+  let conn_id = edit_server.connect().await;
 
   let close_reason = loop {
     // most of the futures we process need to be stack-pinned to work with select()
@@ -61,7 +64,7 @@ pub async fn live_edit_ws(
           }
 
           Message::Text(text) => {
-            process_text_msg(&edit_server, &mut session, &text, conn_id, &mut name)
+            process_text_msg(&edit_server, &mut session, &text, conn_id, &mut name, &conn_tx)
               .await;
           }
 
@@ -121,10 +124,11 @@ pub async fn live_edit_ws(
 
 async fn process_text_msg(
   edit_server: &LiveEditServerHandle,
-  session: &mut actix_ws::Session,
+  session: &mut Session,
   text: &str,
   conn: ConnId,
   name: &mut Option<String>,
+  conn_tx: &UnboundedSender<Msg>,
 ) {
   let msg = text.trim();
 
@@ -166,8 +170,9 @@ async fn process_text_msg(
         Some(content) => {
           // todo: create by ids ?
           log::info!("conn {conn}: create {content}");
-          edit_server.create(conn, "phodal", content).await;
-          session.text(format!("create success!")).await.unwrap();
+          let room_name = random_name();
+          edit_server.create(conn, room_name.clone(), content, conn_tx).await;
+          session.text(format!("create room {room_name} success!")).await.unwrap();
         }
         None => {
           session.text("!!! room name is required").await.unwrap();
