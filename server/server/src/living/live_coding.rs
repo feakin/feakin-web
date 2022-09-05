@@ -1,7 +1,8 @@
 use std::ops::Range;
 
 use diamond_types::list::OpLog;
-use diamond_types::{AgentId, LocalVersion};
+use diamond_types::{AgentId, LocalVersion, Time};
+use diamond_types::list::encoding::ENCODE_PATCH;
 
 pub struct LiveCoding {
   inner: OpLog,
@@ -31,6 +32,11 @@ impl LiveCoding {
   fn delete(&mut self, agent_name: &str, range: Range<usize>) {
     let agent = self.inner.get_or_create_agent_id(agent_name);
     self.inner.add_delete_without_content(agent, range);
+  }
+
+  fn encode_from_version(&self, version: &[Time]) -> Vec<u8> {
+    let bytes = self.inner.encode_from(ENCODE_PATCH, version);
+    bytes
   }
 }
 
@@ -71,5 +77,26 @@ mod tests {
     let branch = live.inner.checkout(&local);
 
     assert_eq!(branch.content().to_string(), "abef");
+  }
+
+  #[test]
+  fn patch_history() {
+    let agent1 = "phodal";
+    let agent2 = "hello";
+
+    let mut live = LiveCoding::new("abcdef", Some("root")).unwrap();
+
+    live.insert(agent1, 2, "zero");
+
+    let history_version = live.add_client(agent2);
+
+    live.delete(agent2, 2..8);
+
+    let local = live.inner.local_version();
+    let branch = live.inner.checkout(&local);
+
+    let bytes = live.encode_from_version(&history_version);
+    // assert_eq!(String::from_utf8_lossy(&bytes), "abef".to_string());
+    assert!(bytes.len() > 0);
   }
 }
