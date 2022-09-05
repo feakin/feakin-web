@@ -13,6 +13,7 @@ mod living;
 mod living_edit_server;
 mod living_edit_handler;
 mod living_action;
+mod command;
 
 // keep some api for testing
 #[get("/api/{name}")]
