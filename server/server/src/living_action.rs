@@ -13,7 +13,7 @@ pub fn id_generator() -> u32 {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-struct InsertAction {
+pub struct InsertAction {
   agent_id: AgentId,
   content: String,
   range: Range<usize>,
@@ -21,7 +21,7 @@ struct InsertAction {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-struct CreateRoom {
+pub struct CreateRoom {
   agent_id: AgentId,
   agent_name: String,
   input: Option<String>,
@@ -29,20 +29,20 @@ struct CreateRoom {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-struct JoinRoom {
+pub struct JoinRoom {
   agent_name: String,
   id: Range<usize>,
   input: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-struct DeleteAction {
+pub struct DeleteAction {
   range: Range<usize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "value")]
-enum ActionType {
+pub enum ActionType {
   CreateRoom(CreateRoom),
   JoinRoom(JoinRoom),
   Delete(DeleteAction),

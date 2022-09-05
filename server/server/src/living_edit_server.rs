@@ -4,11 +4,11 @@ use std::sync::{Arc, Mutex};
 
 use actix::Actor;
 use actix_web_actors::ws;
-use diamond_types::list::OpLog;
 use tokio::sync::{mpsc, oneshot};
 use tokio::sync::mpsc::UnboundedSender;
-use crate::command::{Command, Msg};
 
+use crate::command::{Command, Msg};
+use crate::living::live_coding::LiveCoding;
 use crate::living::random_name;
 use crate::living_action::{ConnId, id_generator, RoomId};
 
@@ -19,7 +19,7 @@ pub struct LivingEditServer {
 
   rooms: HashMap<RoomId, HashSet<ConnId>>,
 
-  oplogs: HashMap<RoomId, Arc<Mutex<OpLog>>>,
+  codings: HashMap<RoomId, Arc<Mutex<LiveCoding>>>,
 
   /// Command receiver.
   cmd_rx: mpsc::UnboundedReceiver<Command>,
@@ -120,7 +120,7 @@ impl Actor for LivingEditServer {
 impl LivingEditServer {
   pub fn new() -> (Self, LiveEditServerHandle) {
     let rooms = HashMap::with_capacity(4);
-    let oplogs = HashMap::with_capacity(100);
+    let codings = HashMap::with_capacity(100);
 
     let (cmd_tx, cmd_rx) = mpsc::unbounded_channel();
 
@@ -128,7 +128,7 @@ impl LivingEditServer {
       Self {
         sessions: HashMap::new(),
         rooms,
-        oplogs,
+        codings,
         cmd_rx,
       },
       LiveEditServerHandle {
@@ -212,13 +212,11 @@ impl LivingEditServer {
       .or_insert_with(HashSet::new)
       .insert(id);
 
-    let mut oplog = OpLog::new();
 
     let agent_name = &random_name();
-    let agent = oplog.get_or_create_agent_id(agent_name);
-    oplog.add_insert(agent, 0, "hello, world!");
+    let coding = LiveCoding::new(agent_name);
 
-    self.oplogs.insert(room_id.clone(), Arc::new(Mutex::new(oplog)));
+    self.codings.insert(room_id.clone(), Arc::new(Mutex::new(coding)));
 
     self.send_system_message(&room_id, conn, format!("create room {} with content {}", room_id, content))
       .await;
@@ -231,15 +229,12 @@ impl LivingEditServer {
       .find_map(|(room, participants)| participants.contains(&conn).then_some(room));
 
     if let Some(room) = room_opt {
-      match self.oplogs.get(room) {
-        Some(oplog) => {
-          let mut mutex_log = oplog.lock().unwrap();
-          mutex_log.add_insert(0, 0, &content);
-
-          let version = mutex_log.local_version();
-          let branch = mutex_log.checkout(&version);
-
-          return Some(branch.content().to_string());
+      match self.codings.get(room) {
+        Some(coding) => {
+          let mut mutex_coding = coding.lock().unwrap();
+          let agent = conn.to_string();
+          // let agent = mutex_coding.inner.get_or_create_agent_id(&agent);
+          mutex_coding.insert(&*agent, 0, &content);
         }
         None => {
           println!("room {:?} not found", room);

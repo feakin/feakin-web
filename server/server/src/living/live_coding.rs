@@ -6,35 +6,34 @@ use diamond_types::list::encoding::ENCODE_PATCH;
 use diamond_types::list::remote_ids::RemoteId;
 use smallvec::SmallVec;
 
+#[derive(Debug)]
 pub struct LiveCoding {
-  inner: OpLog,
+  pub(crate) inner: OpLog,
 }
 
 impl LiveCoding {
-  fn new(agent_name: Option<&str>, content: &str) -> Result<Self, String> {
+  pub fn new(agent_name: &str) -> Self {
     let mut oplog = OpLog::new();
-    let agent = oplog.get_or_create_agent_id(&agent_name.ok_or("root").unwrap());
-    oplog.add_insert(agent, 0, &content);
+    oplog.get_or_create_agent_id(&agent_name);
 
-    let live_coding = Self { inner: oplog };
-    Ok(live_coding)
+    Self { inner: oplog }
   }
 
-  fn add_client(&mut self, agent_name: &str) -> AgentId {
+  pub fn add_client(&mut self, agent_name: &str) -> AgentId {
     let id = self.inner.get_or_create_agent_id(agent_name);
     id
   }
 
-  fn version(&self) -> LocalVersion {
+  pub fn version(&self) -> LocalVersion {
     self.inner.local_version()
   }
 
-  fn insert(&mut self, agent_name: &str, pos: usize, content: &str) -> Time {
+  pub fn insert(&mut self, agent_name: &str, pos: usize, content: &str) -> Time {
     let agent = self.inner.get_or_create_agent_id(agent_name);
     self.inner.add_insert(agent, pos, content)
   }
 
-  fn delete(&mut self, agent_name: &str, range: Range<usize>) -> Time {
+  pub fn delete(&mut self, agent_name: &str, range: Range<usize>) -> Time {
     let agent = self.inner.get_or_create_agent_id(agent_name);
     self.inner.add_delete_without_content(agent, range)
   }
@@ -63,7 +62,7 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut coding = LiveCoding::new(Some("root"), "abcdef").unwrap();
+    let mut coding = LiveCoding::new("root").unwrap();
 
     coding.insert(agent1, 2, "zero");
     coding.insert(agent1, 5, "zero");
@@ -81,7 +80,7 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new(Some("root"), "abcdef").unwrap();
+    let mut live = LiveCoding::new("root").unwrap();
 
     live.insert(agent1, 2, "zero");
 
@@ -99,7 +98,7 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new(Some("root"), "abcdef").unwrap();
+    let mut live = LiveCoding::new("root").unwrap();
 
     live.insert(agent1, 2, "zero");
 
@@ -121,7 +120,7 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new(Some("root"), "abcdef").unwrap();
+    let mut live = LiveCoding::new("root").unwrap();
 
     live.insert(agent1, 2, "zero");
 

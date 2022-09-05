@@ -10,7 +10,7 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::LiveEditServerHandle;
 use crate::living::random_name;
-use crate::living_action::ConnId;
+use crate::living_action::{ActionType, ConnId};
 use crate::command::Msg;
 
 /// How often heartbeat pings are sent
@@ -21,7 +21,7 @@ const CLIENT_TIMEOUT: Duration = Duration::from_secs(10);
 
 pub async fn live_edit_ws(
   edit_server: LiveEditServerHandle,
-  mut session: actix_ws::Session,
+  mut session: Session,
   mut msg_stream: actix_ws::MessageStream,
 ) {
   log::info!("connected");
@@ -130,6 +130,25 @@ async fn process_text_msg(
   name: &mut Option<String>,
   conn_tx: &UnboundedSender<Msg>,
 ) {
+  let action: ActionType = match serde_json::from_str(text) {
+    Ok(action) => action,
+    Err(err) => {
+      pure_text(edit_server, session, text, conn, name, conn_tx).await;
+      log::error!("invalid message: {}", err);
+      edit_server.send_message(conn, format!("invalid message: {}", err)).await;
+      return;
+    }
+  };
+
+  match action {
+    ActionType::CreateRoom(_) => {}
+    ActionType::JoinRoom(_) => {}
+    ActionType::Delete(_) => {}
+    ActionType::Insert(_) => {}
+  }
+}
+
+async fn pure_text(edit_server: &LiveEditServerHandle, session: &mut Session, text: &str, conn: ConnId, name: &mut Option<String>, conn_tx: &UnboundedSender<Msg>) {
   let msg = text.trim();
 
   if msg.starts_with('/') {
