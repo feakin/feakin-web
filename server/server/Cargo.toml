@@ -18,6 +18,7 @@ serde_json = "1"
 
 # CRDT
 diamond-types = { version = "1.0.0", features = ["serde"] }
+smallvec = { version = "1.8.0", features = ["union"] }
 
 #
 similar = "2.1.0"

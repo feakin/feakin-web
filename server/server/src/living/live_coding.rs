@@ -1,8 +1,10 @@
 use std::ops::Range;
 
-use diamond_types::list::OpLog;
+use diamond_types::list::{Branch, OpLog};
 use diamond_types::{AgentId, LocalVersion, Time};
 use diamond_types::list::encoding::ENCODE_PATCH;
+use diamond_types::list::remote_ids::RemoteId;
+use smallvec::SmallVec;
 
 pub struct LiveCoding {
   inner: OpLog,
@@ -27,14 +29,23 @@ impl LiveCoding {
     self.inner.local_version()
   }
 
-  fn insert(&mut self, agent_name: &str, pos: usize, content: &str) {
+  fn insert(&mut self, agent_name: &str, pos: usize, content: &str) -> Time {
     let agent = self.inner.get_or_create_agent_id(agent_name);
-    self.inner.add_insert(agent, pos, content);
+    self.inner.add_insert(agent, pos, content)
   }
 
-  fn delete(&mut self, agent_name: &str, range: Range<usize>) {
+  fn delete(&mut self, agent_name: &str, range: Range<usize>) -> Time {
     let agent = self.inner.get_or_create_agent_id(agent_name);
-    self.inner.add_delete_without_content(agent, range);
+    self.inner.add_delete_without_content(agent, range)
+  }
+
+  fn checkout(&self, time: Time) -> Branch {
+    self.inner.checkout(&[time])
+  }
+
+  fn to_local(&self, time: Time) -> SmallVec<[RemoteId; 4]> {
+    let version = self.inner.local_to_remote_version(&[time]);
+    version
   }
 
   fn encode_from_version(&self, version: &[Time]) -> Vec<u8> {
@@ -103,5 +114,24 @@ mod tests {
     let bytes = live.encode_from_version(&history_version);
     // assert_eq!(String::from_utf8_lossy(&bytes), "abef".to_string());
     assert!(bytes.len() > 0);
+  }
+
+  #[test]
+  fn version() {
+    let agent1 = "phodal";
+    let agent2 = "hello";
+
+    let mut live = LiveCoding::new(Some("root"), "abcdef").unwrap();
+
+    live.insert(agent1, 2, "zero");
+
+    live.add_client(agent2);
+    let history_version = live.version();
+
+    let time = live.delete(agent2, 2..8);
+
+    let vec = live.to_local(time);
+
+    assert_eq!(vec.len(), 1);
   }
 }
