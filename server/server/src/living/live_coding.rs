@@ -6,21 +6,24 @@ use diamond_types::list::encoding::ENCODE_PATCH;
 
 pub struct LiveCoding {
   inner: OpLog,
-  agent_id: Option<AgentId>,
 }
 
 impl LiveCoding {
-  fn new(content: &str, agent_name: Option<&str>) -> Result<Self, String> {
+  fn new(agent_name: Option<&str>, content: &str) -> Result<Self, String> {
     let mut oplog = OpLog::new();
     let agent = oplog.get_or_create_agent_id(&agent_name.ok_or("root").unwrap());
     oplog.add_insert(agent, 0, &content);
 
-    let live_coding = Self { inner: oplog, agent_id: Some(agent) };
+    let live_coding = Self { inner: oplog };
     Ok(live_coding)
   }
 
-  fn add_client(&mut self, agent_name: &str) -> LocalVersion {
-    self.inner.get_or_create_agent_id(agent_name);
+  fn add_client(&mut self, agent_name: &str) -> AgentId {
+    let id = self.inner.get_or_create_agent_id(agent_name);
+    id
+  }
+
+  fn version(&self) -> LocalVersion {
     self.inner.local_version()
   }
 
@@ -49,12 +52,13 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut coding = LiveCoding::new("abcdef", Some("root")).unwrap();
+    let mut coding = LiveCoding::new(Some("root"), "abcdef").unwrap();
 
     coding.insert(agent1, 2, "zero");
     coding.insert(agent1, 5, "zero");
 
-    let version = coding.add_client(agent2);
+    let _agent = coding.add_client(agent2);
+    let version = coding.version();
 
     assert_eq!(version.len(), 1);
     let branch = coding.inner.checkout(&version);
@@ -66,7 +70,7 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new("abcdef", Some("root")).unwrap();
+    let mut live = LiveCoding::new(Some("root"), "abcdef").unwrap();
 
     live.insert(agent1, 2, "zero");
 
@@ -84,16 +88,17 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new("abcdef", Some("root")).unwrap();
+    let mut live = LiveCoding::new(Some("root"), "abcdef").unwrap();
 
     live.insert(agent1, 2, "zero");
 
-    let history_version = live.add_client(agent2);
+    live.add_client(agent2);
+    let history_version = live.version();
 
     live.delete(agent2, 2..8);
 
     let local = live.inner.local_version();
-    let branch = live.inner.checkout(&local);
+    live.inner.checkout(&local);
 
     let bytes = live.encode_from_version(&history_version);
     // assert_eq!(String::from_utf8_lossy(&bytes), "abef".to_string());

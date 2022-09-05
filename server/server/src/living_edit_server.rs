@@ -1,7 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use std::io;
 use std::sync::{Arc, Mutex};
-use std::sync::atomic::{AtomicUsize, Ordering};
 
 use actix::Actor;
 use actix_web_actors::ws;
@@ -120,8 +119,8 @@ impl Actor for LivingEditServer {
 
 impl LivingEditServer {
   pub fn new() -> (Self, LiveEditServerHandle) {
-    let mut rooms = HashMap::with_capacity(4);
-    let mut oplogs = HashMap::with_capacity(100);
+    let rooms = HashMap::with_capacity(4);
+    let oplogs = HashMap::with_capacity(100);
 
     let (cmd_tx, cmd_rx) = mpsc::unbounded_channel();
 
@@ -233,7 +232,7 @@ impl LivingEditServer {
 
     if let Some(room) = room_opt {
       match self.oplogs.get(room) {
-        Some(mut oplog) => {
+        Some(oplog) => {
           let mut mutex_log = oplog.lock().unwrap();
           mutex_log.add_insert(0, 0, &content);
 
