@@ -14,25 +14,20 @@ pub fn id_generator() -> u32 {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct InsertAction {
-  agent_id: AgentId,
-  content: String,
-  range: Range<usize>,
-  room_id: RoomId,
+  pub content: String,
+  pub pos: usize
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct CreateRoom {
-  agent_id: AgentId,
-  agent_name: String,
-  input: Option<String>,
-  room_id: RoomId,
+  pub agent_name: Option<String>,
+  pub input: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JoinRoom {
-  agent_name: String,
-  id: Range<usize>,
-  input: Option<String>,
+  agent_name: Option<String>,
+  pub room_id: RoomId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -51,28 +46,42 @@ pub enum ActionType {
 
 #[cfg(test)]
 mod tests {
-  use crate::living_action::{ActionType, InsertAction};
+  use crate::living_action::{ActionType, CreateRoom, InsertAction};
 
   #[test]
   fn serde_from_string_for_insert() {
     let insert = InsertAction {
-      agent_id: 0,
-      room_id: "main".to_string(),
       content: "hello".to_string(),
-      range: 0..5,
+      pos: 0,
     };
     let action = ActionType::Insert(insert);
     let json = serde_json::to_string(&action).unwrap();
 
-    assert_eq!(json, r#"{"type":"Insert","value":{"agent_id":0,"content":"hello","range":{"start":0,"end":5},"room_id":"main"}}"#);
+    assert_eq!(json, r#"{"type":"Insert","value":{"content":"hello","pos":0}}"#);
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
     assert_eq!(action, ActionType::Insert(InsertAction {
-      agent_id: 0,
-      room_id: "main".to_string(),
       content: "hello".to_string(),
-      range: 0..5,
+      pos: 0,
+    }));
+  }
+
+  #[test]
+  fn create_room() {
+    let action = ActionType::CreateRoom(CreateRoom {
+      agent_name: Some("agent".to_string()),
+      input: Some("hello".to_string()),
+    });
+    let json = serde_json::to_string(&action).unwrap();
+
+    assert_eq!(json, r#"{"type":"CreateRoom","value":{"agent_name":"agent","input":"hello"}}"#);
+
+    let action: ActionType = serde_json::from_str(&json).unwrap();
+
+    assert_eq!(action, ActionType::CreateRoom(CreateRoom {
+      agent_name: Some("agent".to_string()),
+      input: Some("hello".to_string()),
     }));
   }
 }

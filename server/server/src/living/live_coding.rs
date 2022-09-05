@@ -1,7 +1,7 @@
 use std::ops::Range;
 
-use diamond_types::list::{Branch, OpLog};
 use diamond_types::{AgentId, LocalVersion, Time};
+use diamond_types::list::{Branch, OpLog};
 use diamond_types::list::encoding::ENCODE_PATCH;
 use diamond_types::list::remote_ids::RemoteId;
 use smallvec::SmallVec;
@@ -19,7 +19,7 @@ impl LiveCoding {
     Self { inner: oplog }
   }
 
-  pub fn add_client(&mut self, agent_name: &str) -> AgentId {
+  pub fn join(&mut self, agent_name: &str) -> AgentId {
     let id = self.inner.get_or_create_agent_id(agent_name);
     id
   }
@@ -36,6 +36,10 @@ impl LiveCoding {
   pub fn delete(&mut self, agent_name: &str, range: Range<usize>) -> Time {
     let agent = self.inner.get_or_create_agent_id(agent_name);
     self.inner.add_delete_without_content(agent, range)
+  }
+
+  pub fn content(&self) -> String {
+    serde_json::to_string(&self.inner.remote_version()).unwrap()
   }
 
   fn checkout(&self, time: Time) -> Branch {
@@ -62,12 +66,12 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut coding = LiveCoding::new("root").unwrap();
+    let mut coding = LiveCoding::new("root");
 
     coding.insert(agent1, 2, "zero");
     coding.insert(agent1, 5, "zero");
 
-    let _agent = coding.add_client(agent2);
+    let _agent = coding.join(agent2);
     let version = coding.version();
 
     assert_eq!(version.len(), 1);
@@ -80,11 +84,11 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new("root").unwrap();
+    let mut live = LiveCoding::new("root");
 
     live.insert(agent1, 2, "zero");
 
-    live.add_client(agent2);
+    live.join(agent2);
     live.delete(agent2, 2..8);
 
     let local = live.inner.local_version();
@@ -98,11 +102,11 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new("root").unwrap();
+    let mut live = LiveCoding::new("root");
 
     live.insert(agent1, 2, "zero");
 
-    live.add_client(agent2);
+    live.join(agent2);
     let history_version = live.version();
 
     live.delete(agent2, 2..8);
@@ -120,11 +124,11 @@ mod tests {
     let agent1 = "phodal";
     let agent2 = "hello";
 
-    let mut live = LiveCoding::new("root").unwrap();
+    let mut live = LiveCoding::new("root");
 
     live.insert(agent1, 2, "zero");
 
-    live.add_client(agent2);
+    live.join(agent2);
     let history_version = live.version();
 
     let time = live.delete(agent2, 2..8);

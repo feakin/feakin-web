@@ -1,3 +1,5 @@
+use std::ops::Range;
+use diamond_types::AgentId;
 use tokio::sync::{mpsc, oneshot};
 use crate::living_action::{ConnId, RoomId};
 
@@ -11,6 +13,10 @@ pub enum Command {
     conn: ConnId,
   },
 
+  List {
+    res_tx: oneshot::Sender<Vec<RoomId>>,
+  },
+
   Create {
     conn: ConnId,
     room_id: RoomId,
@@ -19,20 +25,25 @@ pub enum Command {
     res_tx: oneshot::Sender<()>,
   },
 
-  List {
-    res_tx: oneshot::Sender<Vec<RoomId>>,
+  Join {
+    conn: ConnId,
+    room_id: RoomId,
+    res_tx: oneshot::Sender<()>,
   },
 
   Insert {
     conn: ConnId,
     content: String,
+    pos: usize,
     res_tx: oneshot::Sender<String>,
   },
-  // Delete {
-  //   conn: ConnId,
-  //   agent_id: AgentId,
-  //   range: Range,
-  // },
+
+  Delete {
+    conn: ConnId,
+    agent_id: AgentId,
+    range: Range<usize>,
+  },
+
   Message {
     msg: Msg,
     conn: ConnId,

@@ -70,7 +70,6 @@ impl LiveEditServerHandle {
   pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<Msg>) {
     let (res_tx, res_rx) = oneshot::channel();
 
-    // unwrap: chat server should not have been dropped
     self.cmd_tx
       .send(Command::Create {
         conn,
@@ -81,34 +80,41 @@ impl LiveEditServerHandle {
       })
       .unwrap();
 
-    // unwrap: chat server does not drop our response channel
     res_rx.await.unwrap();
   }
 
-  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>) -> String {
+  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize) -> String {
     let (res_tx, res_rx) = oneshot::channel();
 
-    // unwrap: chat server should not have been dropped
     self.cmd_tx
       .send(Command::Insert {
         conn,
         content: content.into(),
+        pos,
         res_tx,
       })
       .unwrap();
 
-    // unwrap: chat server does not drop our response channel
     res_rx.await.unwrap()
   }
 
+  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>) {
+    let (res_tx, res_rx) = oneshot::channel();
+
+    self.cmd_tx
+      .send(Command::Join {
+        conn,
+        room_id: room_id.into(),
+        res_tx,
+      })
+      .unwrap();
+
+    res_rx.await.unwrap()
+  }
 
   pub async fn list_rooms(&self) -> Vec<String> {
     let (res_tx, res_rx) = oneshot::channel();
-
-    // unwrap: chat server should not have been dropped
     self.cmd_tx.send(Command::List { res_tx }).unwrap();
-
-    // unwrap: chat server does not drop our response channel
     res_rx.await.unwrap()
   }
 }
@@ -158,12 +164,18 @@ impl LivingEditServer {
           self.send_message(conn, msg).await;
           let _ = res_tx.send(());
         }
-        Command::Insert { conn, content, res_tx } => {
-          let opt_version = self.insert(conn, content).await;
+        Command::Insert { conn, content, pos, res_tx } => {
+          let opt_version = self.insert(conn, content, pos).await;
           let str: String = opt_version.unwrap_or("".to_string());
           // todo: change to Version
           let _ = res_tx.send(str);
         }
+
+        Command::Join { conn, room_id, res_tx } => {
+          self.join(conn, room_id).await;
+          let _ = res_tx.send(());
+        }
+        Command::Delete { .. } => {}
       }
     }
 
@@ -210,19 +222,16 @@ impl LivingEditServer {
     self.rooms
       .entry(room_id.clone())
       .or_insert_with(HashSet::new)
-      .insert(id);
-
+      .insert(conn);
 
     let agent_name = &random_name();
-    let coding = LiveCoding::new(agent_name);
+    let mut coding = LiveCoding::new(&agent_name);
+    coding.insert(agent_name, 0, &content);
 
     self.codings.insert(room_id.clone(), Arc::new(Mutex::new(coding)));
-
-    self.send_system_message(&room_id, conn, format!("create room {} with content {}", room_id, content))
-      .await;
   }
 
-  async fn insert(&self, conn: ConnId, content: String) -> Option<String> {
+  async fn insert(&self, conn: ConnId, content: String, pos: usize) -> Option<String> {
     let room_opt = self
       .rooms
       .iter()
@@ -233,8 +242,10 @@ impl LivingEditServer {
         Some(coding) => {
           let mut mutex_coding = coding.lock().unwrap();
           let agent = conn.to_string();
-          // let agent = mutex_coding.inner.get_or_create_agent_id(&agent);
-          mutex_coding.insert(&*agent, 0, &content);
+          mutex_coding.insert(&*agent, pos, &content);
+
+          let content = mutex_coding.content().clone();
+          return Some(content);
         }
         None => {
           println!("room {:?} not found", room);
@@ -245,6 +256,22 @@ impl LivingEditServer {
     };
 
     return None;
+  }
+
+  async fn join(&mut self, conn: ConnId, room_id: RoomId) -> Option<String> {
+    self.rooms
+      .entry(room_id.clone())
+      .or_insert_with(HashSet::new)
+      .insert(conn);
+
+    let agent_name = &random_name();
+    return match self.codings.get_mut(&*room_id.clone()) {
+      Some(coding) => {
+        let agent_id = coding.lock().unwrap().join(agent_name);
+        Some(agent_id.to_string())
+      }
+      None => None,
+    }
   }
 
   async fn disconnect(&mut self, conn_id: ConnId) {

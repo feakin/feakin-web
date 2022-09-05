@@ -66,7 +66,7 @@
   </head>
 
   <body>
-    <h1>Chat!</h1>
+    <h1>Edit it!</h1>
 
     <div>
       <button id="connect">Connect</button>
@@ -77,53 +77,20 @@
     <div id="log"></div>
 
     <form id="chatform">
-      <div class="inputs">
-        <input type="text" id="content" />
-
-        <div style="margin-top: 10px;">
-          <label for="text">Command: </label>
-          <input type="text" id="text" />
-        </div>
-      </div>
+      <input type="text" id="text" />
       <input type="submit" id="send" />
     </form>
 
     <hr />
 
     <section>
-      <h2>Commands</h2>
-      <table style="border-spacing: 0.5em">
-        <tr>
-          <td>
-            <code>/create room</code>
-          </td>
-          <td>create new room</td>
-        </tr>
-        <tr>
-          <td>
-            <code>/list</code>
-          </td>
-          <td>list all sessions</td>
-        </tr>
-        <tr>
-          <td>
-            <code>/join room name</code>
-          </td>
-          <td>join room, if room does not exist, create new one</td>
-        </tr>
-        <tr>
-          <td>
-            <code>/name name</code>
-          </td>
-          <td>set session name</td>
-        </tr>
-        <tr>
-          <td>
-            <code>some message</code>
-          </td>
-          <td>just string, send message to all peers in same room</td>
-        </tr>
-      </table>
+      <h2>Json</h2>
+      <div>
+        <p>
+          <code>{"type":"Insert","value":{"content":"hello","pos":0}}</code>
+        </p>
+        <p><code>{"type":"CreateRoom","value":{"agent_name":"agent","input":"hello"}}</code></p>
+      </div>
     </section>
 
     <script>
@@ -132,7 +99,6 @@
       const $log = document.querySelector('#log')
       const $form = document.querySelector('#chatform')
       const $input = document.querySelector('#text')
-      const $content = document.querySelector('#content')
 
       /** @type {WebSocket | null} */
       var socket = null
@@ -208,11 +174,7 @@
       $form.addEventListener('submit', (ev) => {
         ev.preventDefault()
 
-        const text = $input.value
-        const content = $content.value
-
-        log('Sending: ' + text + ' ' + content)
-        socket.send(text + ' ' + content);
+        socket.send($input.value);
 
         $input.value = ''
         $input.focus()

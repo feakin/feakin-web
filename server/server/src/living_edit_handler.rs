@@ -141,10 +141,23 @@ async fn process_text_msg(
   };
 
   match action {
-    ActionType::CreateRoom(_) => {}
-    ActionType::JoinRoom(_) => {}
+    ActionType::CreateRoom(room) => {
+      let room_name = random_name();
+
+      let input = room.input.unwrap_or_default();
+      edit_server.create(conn, room_name.clone(), &input, conn_tx).await;
+
+      //todo: make output to object
+      session.text(format!("create room {room_name} success!")).await.unwrap();
+    }
+    ActionType::JoinRoom(room) => {
+      edit_server.join(conn, room.room_id).await;
+    }
     ActionType::Delete(_) => {}
-    ActionType::Insert(_) => {}
+    ActionType::Insert(insert) => {
+      let output = edit_server.insert(conn, insert.content, insert.pos).await;
+      session.text(format!("current: {output}")).await.unwrap();
+    }
   }
 }
 
@@ -175,39 +188,6 @@ async fn pure_text(edit_server: &LiveEditServerHandle, session: &mut Session, te
         }
       },
 
-      "/name" => match cmd_args.next() {
-        Some(new_name) => {
-          log::info!("conn {conn}: setting name to: {new_name}");
-          name.replace(new_name.to_owned());
-        }
-        None => {
-          session.text("!!! name is required").await.unwrap();
-        }
-      },
-
-      "/create" => match cmd_args.next() {
-        Some(content) => {
-          // todo: create by ids ?
-          log::info!("conn {conn}: create {content}");
-          let room_name = random_name();
-          edit_server.create(conn, room_name.clone(), content, conn_tx).await;
-          session.text(format!("create room {room_name} success!")).await.unwrap();
-        }
-        None => {
-          session.text("!!! room name is required").await.unwrap();
-        }
-      },
-
-      "/insert" => match cmd_args.next() {
-        Some(content) => {
-          log::info!("conn {conn}: insert {content}");
-          let version = edit_server.insert(conn, content).await;
-          session.text(format!("{version}")).await.unwrap();
-        }
-        None => {
-          session.text("!!! room name is required").await.unwrap();
-        }
-      },
       _ => {
         session
           .text(format!("!!! unknown command: {msg}"))
