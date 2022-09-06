@@ -18,3 +18,8 @@ Refs:
   - [State Management](https://blog.jetbrains.com/zh-hans/fleet/2022/06/fleet-below-deck-part-iii-state-management/)
 - [ ] Xi Editor: https://xi-editor.io/docs.html
 - [ ] ProseMirror: https://github.com/ProseMirror/prosemirror-collab
+
+Frontend:
+
+- [https://braid.org/](https://braid.org/)
+  - [Use the Braid Protocol](https://github.com/josephg/braid-protocol)
