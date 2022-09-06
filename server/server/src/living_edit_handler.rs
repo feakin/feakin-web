@@ -64,7 +64,7 @@ pub async fn live_edit_ws(
           }
 
           Message::Text(text) => {
-            process_text_msg(&edit_server, &mut session, &text, conn_id, &mut name, &conn_tx)
+            process(&edit_server, &mut session, &text, conn_id, &mut name, &conn_tx)
               .await;
           }
 
@@ -122,7 +122,7 @@ pub async fn live_edit_ws(
   let _ = session.close(close_reason).await;
 }
 
-async fn process_text_msg(
+async fn process(
   edit_server: &LiveEditServerHandle,
   session: &mut Session,
   text: &str,
@@ -130,12 +130,16 @@ async fn process_text_msg(
   name: &mut Option<String>,
   conn_tx: &UnboundedSender<Msg>,
 ) {
+  if text.starts_with('/') {
+    execute_debug_command(edit_server, session, text, conn, name, conn_tx).await;
+    return;
+  }
+
   let action: ActionType = match serde_json::from_str(text) {
     Ok(action) => action,
     Err(err) => {
-      pure_text(edit_server, session, text, conn, name, conn_tx).await;
       log::error!("invalid message: {}", err);
-      edit_server.send_message(conn, format!("invalid message: {}", err)).await;
+      session.text(format!("invalid message: {}", err)).await.unwrap();
       return;
     }
   };
@@ -143,69 +147,64 @@ async fn process_text_msg(
   match action {
     ActionType::CreateRoom(room) => {
       let room_name = random_name();
-
       let input = room.input.unwrap_or_default();
       edit_server.create(conn, room_name.clone(), &input, conn_tx).await;
-
       //todo: make output to object
       session.text(format!("create room {room_name} success!")).await.unwrap();
     }
     ActionType::JoinRoom(room) => {
-      edit_server.join(conn, room.room_id).await;
+      let opt_join = edit_server.join(conn, &room.room_id).await;
+      let room_id = room.room_id;
+      if let Some(join) = opt_join {
+        session.text(format!("join room {room_id} success!")).await.unwrap();
+      } else {
+        session.text(format!("join room {room_id} failed!")).await.unwrap();
+      }
     }
+
     ActionType::Delete(delete) => {
-      let output = edit_server.delete(conn, delete.room_id, delete.range).await;
-      // Todo: debug only, and remove in future
-      session.text(format!("current: {output}")).await.unwrap();
+      let opt_output = edit_server.delete(conn, delete.room_id, delete.range).await;
+      if let Some(output) = opt_output {
+        session.text(format!("delete success!")).await.unwrap();
+      } else {
+        session.text(format!("delete failed!")).await.unwrap();
+      }
     }
+
     ActionType::Insert(insert) => {
-      let output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
-      // Todo: debug only, and remove in future
-      session.text(format!("current: {output}")).await.unwrap();
+      let opt_output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
+      if let Some(output) = opt_output {
+        session.text(format!("current: {output}")).await.unwrap();
+      } else {
+        session.text(format!("insert failed!")).await.unwrap();
+      }
     }
   }
 }
 
-async fn pure_text(edit_server: &LiveEditServerHandle, session: &mut Session, text: &str, conn: ConnId, name: &mut Option<String>, conn_tx: &UnboundedSender<Msg>) {
+async fn execute_debug_command(edit_server: &LiveEditServerHandle, session: &mut Session, text: &str, conn: ConnId, name: &mut Option<String>, conn_tx: &UnboundedSender<Msg>) {
   let msg = text.trim();
+  let mut cmd_args = msg.splitn(2, ' ');
 
-  if msg.starts_with('/') {
-    let mut cmd_args = msg.splitn(2, ' ');
-
-    match cmd_args.next().unwrap() {
-      "/list" => {
-        log::info!("conn {conn}: listing rooms");
-        let rooms = edit_server.list_rooms().await;
-        for room in rooms {
-          session.text(room).await.unwrap();
-        }
-      }
-
-      "/join" => match cmd_args.next() {
-        Some(room) => {
-          log::info!("conn {conn}: joining room {room}");
-          // edit_server.join_room(conn, room).await;
-          session.text(format!("joined {room}")).await.unwrap();
-        }
-
-        None => {
-          session.text("!!! room name is required").await.unwrap();
-        }
-      },
-
-      _ => {
-        session
-          .text(format!("!!! unknown command: {msg}"))
-          .await
-          .unwrap();
+  match cmd_args.next().unwrap() {
+    "/list" => {
+      log::info!("conn {conn}: listing rooms");
+      let rooms = edit_server.list_rooms().await;
+      for room in rooms {
+        session.text(room).await.unwrap();
       }
     }
-  } else {
-    let msg = match name {
-      Some(ref name) => format!("{name}: {msg}"),
-      None => msg.to_owned(),
-    };
-
-    edit_server.send_message(conn, msg).await
+    "/content" => match cmd_args.next() {
+      Some(room_id) => {
+        let output = edit_server.content(room_id.to_string()).await;
+        session.text(output).await.unwrap();
+      }
+      None => {
+        session.text("!!! name is required").await.unwrap();
+      }
+    }
+    &_ => {
+      session.text("!!! room name is required").await.unwrap();
+    }
   }
 }

@@ -16,6 +16,12 @@ pub enum Command {
     res_tx: oneshot::Sender<Vec<RoomId>>,
   },
 
+  // for current;
+  Content {
+    room_id: RoomId,
+    res_tx: oneshot::Sender<String>,
+  },
+
   Create {
     conn: ConnId,
     room_id: RoomId,
@@ -27,7 +33,7 @@ pub enum Command {
   Join {
     conn: ConnId,
     room_id: RoomId,
-    res_tx: oneshot::Sender<()>,
+    res_tx: oneshot::Sender<Option<String>>,
   },
 
   Insert {
@@ -35,20 +41,14 @@ pub enum Command {
     content: String,
     pos: usize,
     room_id: RoomId,
-    res_tx: oneshot::Sender<String>,
+    res_tx: oneshot::Sender<Option<String>>,
   },
 
   Delete {
     conn: ConnId,
     room_id: RoomId,
     range: Range<usize>,
-    res_tx: oneshot::Sender<String>,
-  },
-
-  Message {
-    msg: Msg,
-    conn: ConnId,
-    res_tx: oneshot::Sender<()>,
+    res_tx: oneshot::Sender<Option<String>>,
   },
 }
 

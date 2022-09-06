@@ -106,4 +106,22 @@ mod tests {
       room_id: "room".to_string(),
     }));
   }
+
+  #[test]
+  fn join_room() {
+    let action = ActionType::JoinRoom(crate::living_action::JoinRoom {
+      agent_name: Some("agent".to_string()),
+      room_id: "room".to_string(),
+    });
+    let json = serde_json::to_string(&action).unwrap();
+
+    assert_eq!(json, r#"{"type":"JoinRoom","value":{"agent_name":"agent","room_id":"room"}}"#);
+
+    let action: ActionType = serde_json::from_str(&json).unwrap();
+
+    assert_eq!(action, ActionType::JoinRoom(crate::living_action::JoinRoom {
+      agent_name: Some("agent".to_string()),
+      room_id: "room".to_string(),
+    }));
+  }
 }

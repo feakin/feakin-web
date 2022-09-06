@@ -21,17 +21,17 @@ async fn greet(name: web::Path<String>) -> impl Responder {
   format!("Hello {name}!")
 }
 
-async fn index() -> impl Responder {
+async fn index() -> NamedFile {
   NamedFile::open_async("./static/index.html").await.unwrap()
 }
 
 /// Handshake and start WebSocket handler with heartbeats.
 async fn living_edit(
   req: HttpRequest,
-  stream: web::Payload,
+  payload: web::Payload,
   edit_server: web::Data<LiveEditServerHandle>,
 ) -> Result<HttpResponse, Error> {
-  let (res, session, msg_stream) = actix_ws::handle(&req, stream)?;
+  let (res, session, msg_stream) = actix_ws::handle(&req, payload)?;
 
   // spawn websocket handler (and don't await it) so that the response is returned immediately
   spawn_local(living_edit_handler::live_edit_ws((**edit_server).clone(), session, msg_stream));
@@ -65,3 +65,34 @@ async fn main() -> std::io::Result<()> {
 
   Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use actix_web::{
+    http::{self, header::ContentType},
+    test,
+  };
+
+  #[actix_web::test]
+  async fn test_index_ok() {
+    let req = test::TestRequest::default()
+      .insert_header(ContentType::plaintext())
+      .to_http_request();
+
+    let resp = index().await;
+    assert_eq!(resp.into_response(&req).status(), http::StatusCode::OK);
+  }
+
+  // #[actix_web::test]
+  // async fn test_websocket() {
+  //
+  //   web::Payload::from(&mut pl);
+  //
+  //   let payload = format!("data: {}\n\n", counter);
+  //   let resp = living_edit(req, web::Payload::from(payload), web::Data::new(LiveEditServerHandle::default())).await;
+  //   assert_eq!(resp.unwrap().status(), http::StatusCode::SWITCHING_PROTOCOLS);
+  //
+  // }
+}
+

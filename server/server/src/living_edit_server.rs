@@ -16,24 +16,21 @@ use crate::living_action::{ConnId, id_generator, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
-  /// Map of connection IDs to their message receivers.
-  sessions: HashMap<ConnId, mpsc::UnboundedSender<Msg>>,
+  sessions: HashMap<ConnId, UnboundedSender<Msg>>,
 
   rooms: HashMap<RoomId, HashSet<ConnId>>,
 
   codings: HashMap<RoomId, Arc<Mutex<LiveCoding>>>,
 
-  /// Command receiver.
   cmd_rx: mpsc::UnboundedReceiver<Command>,
 }
 
 #[derive(Debug, Clone)]
 pub struct LiveEditServerHandle {
-  cmd_tx: mpsc::UnboundedSender<Command>,
+  cmd_tx: UnboundedSender<Command>,
 }
 
 impl LiveEditServerHandle {
-  /// Register client message sender and obtain connection ID.
   pub async fn connect(&self) -> ConnId {
     let (res_tx, res_rx) = oneshot::channel();
 
@@ -46,27 +43,8 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  /// Unregister message sender and broadcast disconnection message to current room.
   pub fn disconnect(&self, conn: ConnId) {
-    // unwrap: chat server should not have been dropped
     self.cmd_tx.send(Command::Disconnect { conn }).unwrap();
-  }
-
-  /// Broadcast message to current room.
-  pub async fn send_message(&self, conn: ConnId, msg: impl Into<String>) {
-    let (res_tx, res_rx) = oneshot::channel();
-
-    // unwrap: chat server should not have been dropped
-    self.cmd_tx
-      .send(Command::Message {
-        msg: msg.into(),
-        conn,
-        res_tx,
-      })
-      .unwrap();
-
-    // unwrap: chat server does not drop our response channel
-    res_rx.await.unwrap();
   }
 
   pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<Msg>) {
@@ -85,7 +63,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap();
   }
 
-  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> String {
+  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> Option<String> {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -101,7 +79,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>) {
+  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>) -> Option<String> {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -115,7 +93,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> String {
+  pub(crate) async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> Option<String> {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -133,6 +111,12 @@ impl LiveEditServerHandle {
   pub async fn list_rooms(&self) -> Vec<String> {
     let (res_tx, res_rx) = oneshot::channel();
     self.cmd_tx.send(Command::List { res_tx }).unwrap();
+    res_rx.await.unwrap()
+  }
+
+  pub async fn content(&self, room_id: RoomId) -> String {
+    let (res_tx, res_rx) = oneshot::channel();
+    self.cmd_tx.send(Command::Content { room_id, res_tx }).unwrap();
     res_rx.await.unwrap()
   }
 }
@@ -178,23 +162,21 @@ impl LivingEditServer {
         Command::List { res_tx } => {
           let _ = res_tx.send(self.list_rooms());
         }
-        Command::Message { conn, msg, res_tx } => {
-          self.send_message(conn, msg).await;
-          let _ = res_tx.send(());
-        }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
           let opt_version = self.insert(conn, room_id, content, pos).await;
-          let _ = res_tx.send(opt_version.unwrap_or("".to_string()));
+          let _ = res_tx.send(opt_version);
         }
-
         Command::Join { conn, room_id, res_tx } => {
-          self.join(conn, room_id).await;
-          let _ = res_tx.send(());
+          let output = self.join(conn, room_id).await;
+          let _ = res_tx.send(output);
         }
-
         Command::Delete { conn, room_id, range, res_tx } => {
           let opt_version = self.delete(conn, room_id, range).await;
-          let _ = res_tx.send(opt_version.unwrap_or("".to_string()));
+          let _ = res_tx.send(opt_version);
+        }
+        Command::Content { room_id, res_tx } => {
+          let content = self.content(room_id).await;
+          let _ = res_tx.send(content.unwrap_or("".to_string()));
         }
       }
     }
@@ -236,8 +218,7 @@ impl LivingEditServer {
   }
 
   async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: mpsc::UnboundedSender<String>) {
-    let id = id_generator();
-    self.sessions.insert(id, conn_tx);
+    self.sessions.insert(conn, conn_tx);
 
     self.rooms
       .entry(room_id.clone())
@@ -285,6 +266,20 @@ impl LivingEditServer {
     }
   }
 
+  async fn content(&self, room_id: RoomId) -> Option<String> {
+    match self.codings.get(&*room_id) {
+      Some(coding) => {
+        let mutex_coding = coding.lock().unwrap();
+        let content = mutex_coding.content().clone();
+        Some(content)
+      }
+      None => {
+        error!("content {:?} not found", room_id);
+        None
+      }
+    }
+  }
+
   async fn join(&mut self, conn: ConnId, room_id: RoomId) -> Option<String> {
     self.rooms
       .entry(room_id.clone())
@@ -297,16 +292,17 @@ impl LivingEditServer {
         let agent_id = coding.lock().unwrap().join(agent_name);
         Some(agent_id.to_string())
       }
-      None => None,
+      None => {
+        error!("room {:?} not found", room_id);
+        None
+      },
     };
   }
 
   async fn disconnect(&mut self, conn_id: ConnId) {
     let mut rooms: Vec<String> = Vec::new();
 
-    // remove sender
     if self.sessions.remove(&conn_id).is_some() {
-      // remove session from all rooms
       for (name, sessions) in &mut self.rooms {
         if sessions.remove(&conn_id) {
           rooms.push(name.to_owned());
