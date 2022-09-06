@@ -76,6 +76,7 @@ mod tests {
     let agent2 = "hello";
 
     let mut coding = LiveCoding::new("root");
+    coding.insert("root", 0, "abcdef");
 
     coding.insert(agent1, 2, "zero");
     coding.insert(agent1, 5, "zero");
@@ -94,6 +95,7 @@ mod tests {
     let agent2 = "hello";
 
     let mut live = LiveCoding::new("root");
+    live.insert("root", 0, "abcdef");
 
     live.insert(agent1, 2, "zero");
 
@@ -112,6 +114,7 @@ mod tests {
     let agent2 = "hello";
 
     let mut live = LiveCoding::new("root");
+    live.insert("root", 0, "abcdef");
 
     live.insert(agent1, 2, "zero");
 
@@ -134,6 +137,7 @@ mod tests {
     let agent2 = "hello";
 
     let mut live = LiveCoding::new("root");
+    live.insert("root", 0, "abcdef");
 
     live.insert(agent1, 2, "zero");
 
