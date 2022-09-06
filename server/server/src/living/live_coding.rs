@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 use diamond_types::{AgentId, LocalVersion, Time};
-use diamond_types::list::{Branch, OpLog};
+use diamond_types::list::{OpLog};
 use diamond_types::list::encoding::ENCODE_PATCH;
 use diamond_types::list::remote_ids::RemoteId;
 use log::error;
@@ -53,10 +53,6 @@ impl LiveCoding {
   pub fn content(&self) -> String {
     let branch = self.inner.checkout_tip();
     branch.content().to_string()
-  }
-
-  fn checkout(&self, time: Time) -> Branch {
-    self.inner.checkout(&[time])
   }
 
   fn to_local(&self, time: Time) -> SmallVec<[RemoteId; 4]> {
@@ -142,7 +138,6 @@ mod tests {
     live.insert(agent1, 2, "zero");
 
     live.join(agent2);
-    let history_version = live.version();
 
     let time = live.delete(agent2, 2..8);
 

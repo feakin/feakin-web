@@ -28,7 +28,7 @@ async fn index() -> NamedFile {
 
 async fn living_socket(
   req: HttpRequest,
-  payload: web::Payload,
+  payload: Payload,
   edit_server: web::Data<LiveEditServerHandle>,
 ) -> Result<HttpResponse, Error> {
   let (res, session, msg_stream) = actix_ws::handle(&req, payload)?;
@@ -59,7 +59,6 @@ async fn main() -> std::io::Result<()> {
     .bind(("127.0.0.1", port))?
     .run();
 
-
   try_join!(http_server, async move { server_handle.await.unwrap() })?;
 
   Ok(())
@@ -67,11 +66,7 @@ async fn main() -> std::io::Result<()> {
 
 #[cfg(test)]
 mod tests {
-  use actix::dev;
-  use actix_web::{FromRequest, http::{self, header::ContentType}, test};
-  use actix_web::http::header::{CONTENT_LENGTH, CONTENT_TYPE};
-  use actix_web::test::TestRequest;
-  use actix_web::web::{Bytes, JsonConfig};
+  use actix_web::{http::{self, header::ContentType}, test};
 
   use super::*;
 

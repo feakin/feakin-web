@@ -26,24 +26,20 @@ pub async fn live_edit_ws(
 ) {
   log::info!("connected");
 
-  let mut name = None;
   let mut last_heartbeat = Instant::now();
   let mut interval = interval(HEARTBEAT_INTERVAL);
 
   let (conn_tx, mut conn_rx) = mpsc::unbounded_channel();
 
-  // unwrap: chat server is not dropped before the HTTP server
   let conn_id = edit_server.connect().await;
 
   let close_reason = loop {
-    // most of the futures we process need to be stack-pinned to work with select()
     let tick = interval.tick();
     pin!(tick);
 
     let msg_rx = conn_rx.recv();
     pin!(msg_rx);
 
-    // TODO: nested select is pretty gross for readability on the match
     let messages = select(msg_stream.next(), msg_rx);
     pin!(messages);
 
@@ -64,8 +60,7 @@ pub async fn live_edit_ws(
           }
 
           Message::Text(text) => {
-            process(&edit_server, &mut session, &text, conn_id, &mut name, &conn_tx)
-              .await;
+            process(&edit_server, &mut session, &text, conn_id, &conn_tx).await;
           }
 
           // todo: change to binary
@@ -118,7 +113,6 @@ pub async fn live_edit_ws(
 
   edit_server.disconnect(conn_id);
 
-  // attempt to close connection gracefully
   let _ = session.close(close_reason).await;
 }
 
@@ -127,11 +121,10 @@ async fn process(
   session: &mut Session,
   text: &str,
   conn: ConnId,
-  name: &mut Option<String>,
   conn_tx: &UnboundedSender<Msg>,
 ) {
   if text.starts_with('/') {
-    execute_debug_command(edit_server, session, text, conn, name, conn_tx).await;
+    execute_debug_command(edit_server, session, text, conn).await;
     return;
   }
 
@@ -155,7 +148,7 @@ async fn process(
     ActionType::JoinRoom(room) => {
       let opt_join = edit_server.join(conn, &room.room_id).await;
       let room_id = room.room_id;
-      if let Some(join) = opt_join {
+      if let Some(_join) = opt_join {
         session.text(format!("join room {room_id} success!")).await.unwrap();
       } else {
         session.text(format!("join room {room_id} failed!")).await.unwrap();
@@ -164,7 +157,7 @@ async fn process(
 
     ActionType::Delete(delete) => {
       let opt_output = edit_server.delete(conn, delete.room_id, delete.range).await;
-      if let Some(output) = opt_output {
+      if let Some(_output) = opt_output {
         session.text(format!("delete success!")).await.unwrap();
       } else {
         session.text(format!("delete failed!")).await.unwrap();
@@ -182,7 +175,7 @@ async fn process(
   }
 }
 
-async fn execute_debug_command(edit_server: &LiveEditServerHandle, session: &mut Session, text: &str, conn: ConnId, name: &mut Option<String>, conn_tx: &UnboundedSender<Msg>) {
+async fn execute_debug_command(edit_server: &LiveEditServerHandle, session: &mut Session, text: &str, conn: ConnId) {
   let msg = text.trim();
   let mut cmd_args = msg.splitn(2, ' ');
 

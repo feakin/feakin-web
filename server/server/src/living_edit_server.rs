@@ -207,16 +207,6 @@ impl LivingEditServer {
     id_generator()
   }
 
-  async fn send_message(&self, conn: ConnId, msg: impl Into<String>) {
-    if let Some(room) = self
-      .rooms
-      .iter()
-      .find_map(|(room, participants)| participants.contains(&conn).then_some(room))
-    {
-      self.send_system_message(room, conn, msg).await;
-    };
-  }
-
   async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: mpsc::UnboundedSender<String>) {
     self.sessions.insert(conn, conn_tx);
 
