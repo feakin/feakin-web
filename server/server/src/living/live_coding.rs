@@ -4,6 +4,7 @@ use diamond_types::{AgentId, LocalVersion, Time};
 use diamond_types::list::{Branch, OpLog};
 use diamond_types::list::encoding::ENCODE_PATCH;
 use diamond_types::list::remote_ids::RemoteId;
+use log::error;
 use smallvec::SmallVec;
 
 #[derive(Debug)]
@@ -29,6 +30,17 @@ impl LiveCoding {
   }
 
   pub fn insert(&mut self, agent_name: &str, pos: usize, content: &str) -> Time {
+    if pos > self.inner.len() {
+      // catch for error
+      error!("pos out of range");
+      return self.inner.len();
+    }
+
+    if content.is_empty() {
+      self.inner.get_or_create_agent_id(agent_name);
+      return self.inner.len();
+    }
+
     let agent = self.inner.get_or_create_agent_id(agent_name);
     self.inner.add_insert(agent, pos, content)
   }
@@ -39,7 +51,8 @@ impl LiveCoding {
   }
 
   pub fn content(&self) -> String {
-    serde_json::to_string(&self.inner.remote_version()).unwrap()
+    let branch = self.inner.checkout_tip();
+    branch.content().to_string()
   }
 
   fn checkout(&self, time: Time) -> Branch {
