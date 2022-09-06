@@ -42,7 +42,7 @@ pub enum Command {
     conn: ConnId,
     room_id: RoomId,
     range: Range<usize>,
-    res_tx: oneshot::Sender<()>,
+    res_tx: oneshot::Sender<String>,
   },
 
   Message {

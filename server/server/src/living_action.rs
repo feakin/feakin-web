@@ -33,7 +33,8 @@ pub struct JoinRoom {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct DeleteAction {
-  range: Range<usize>,
+  pub range: Range<usize>,
+  pub room_id: RoomId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -85,6 +86,24 @@ mod tests {
     assert_eq!(action, ActionType::CreateRoom(CreateRoom {
       agent_name: Some("agent".to_string()),
       input: Some("hello".to_string()),
+    }));
+  }
+
+  #[test]
+  fn delete_action() {
+    let action = ActionType::Delete(crate::living_action::DeleteAction {
+      range: 0..1,
+      room_id: "room".to_string(),
+    });
+    let json = serde_json::to_string(&action).unwrap();
+
+    assert_eq!(json, r#"{"type":"Delete","value":{"range":{"start":0,"end":1},"room_id":"room"}}"#);
+
+    let action: ActionType = serde_json::from_str(&json).unwrap();
+
+    assert_eq!(action, ActionType::Delete(crate::living_action::DeleteAction {
+      range: 0..1,
+      room_id: "room".to_string(),
     }));
   }
 }

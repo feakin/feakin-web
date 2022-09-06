@@ -1,9 +1,11 @@
 use std::collections::{HashMap, HashSet};
 use std::io;
+use std::ops::Range;
 use std::sync::{Arc, Mutex};
 
 use actix::Actor;
 use actix_web_actors::ws;
+use log::error;
 use tokio::sync::{mpsc, oneshot};
 use tokio::sync::mpsc::UnboundedSender;
 
@@ -113,6 +115,21 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
+  pub(crate) async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> String {
+    let (res_tx, res_rx) = oneshot::channel();
+
+    self.cmd_tx
+      .send(Command::Delete {
+        conn,
+        room_id: room_id.to_string(),
+        range,
+        res_tx,
+      })
+      .unwrap();
+
+    res_rx.await.unwrap()
+  }
+
   pub async fn list_rooms(&self) -> Vec<String> {
     let (res_tx, res_rx) = oneshot::channel();
     self.cmd_tx.send(Command::List { res_tx }).unwrap();
@@ -167,18 +184,17 @@ impl LivingEditServer {
         }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
           let opt_version = self.insert(conn, room_id, content, pos).await;
-          let str: String = opt_version.unwrap_or("".to_string());
-          // todo: change to Version
-          let _ = res_tx.send(str);
+          let _ = res_tx.send(opt_version.unwrap_or("".to_string()));
         }
 
         Command::Join { conn, room_id, res_tx } => {
           self.join(conn, room_id).await;
           let _ = res_tx.send(());
         }
+
         Command::Delete { conn, room_id, range, res_tx } => {
-          // self.delete(conn, room_id, range).await;
-          // let _ = res_tx.send(());
+          let opt_version = self.delete(conn, room_id, range).await;
+          let _ = res_tx.send(opt_version.unwrap_or("".to_string()));
         }
       }
     }
@@ -246,8 +262,24 @@ impl LivingEditServer {
         Some(content)
       }
       None => {
-        println!("room {:?} not found", room_id);
+        error!("room {:?} not found", room_id);
+        None
+      }
+    }
+  }
 
+  async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> Option<String> {
+    match self.codings.get(&*room_id) {
+      Some(coding) => {
+        let mut mutex_coding = coding.lock().unwrap();
+        let agent = conn.to_string();
+        mutex_coding.delete(&*agent, range);
+
+        let content = mutex_coding.content().clone();
+        Some(content)
+      }
+      None => {
+        error!("room {:?} not found", room_id);
         None
       }
     }
@@ -266,7 +298,7 @@ impl LivingEditServer {
         Some(agent_id.to_string())
       }
       None => None,
-    }
+    };
   }
 
   async fn disconnect(&mut self, conn_id: ConnId) {

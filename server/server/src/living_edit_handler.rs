@@ -153,9 +153,14 @@ async fn process_text_msg(
     ActionType::JoinRoom(room) => {
       edit_server.join(conn, room.room_id).await;
     }
-    ActionType::Delete(_) => {}
+    ActionType::Delete(delete) => {
+      let output = edit_server.delete(conn, delete.room_id, delete.range).await;
+      // Todo: debug only, and remove in future
+      session.text(format!("current: {output}")).await.unwrap();
+    }
     ActionType::Insert(insert) => {
       let output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
+      // Todo: debug only, and remove in future
       session.text(format!("current: {output}")).await.unwrap();
     }
   }
