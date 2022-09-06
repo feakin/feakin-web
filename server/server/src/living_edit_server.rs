@@ -83,7 +83,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap();
   }
 
-  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize) -> String {
+  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> String {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -91,6 +91,7 @@ impl LiveEditServerHandle {
         conn,
         content: content.into(),
         pos,
+        room_id: room_id.to_string(),
         res_tx,
       })
       .unwrap();
@@ -164,8 +165,8 @@ impl LivingEditServer {
           self.send_message(conn, msg).await;
           let _ = res_tx.send(());
         }
-        Command::Insert { conn, content, pos, res_tx } => {
-          let opt_version = self.insert(conn, content, pos).await;
+        Command::Insert { conn, content, pos, room_id, res_tx } => {
+          let opt_version = self.insert(conn, room_id, content, pos).await;
           let str: String = opt_version.unwrap_or("".to_string());
           // todo: change to Version
           let _ = res_tx.send(str);
@@ -175,7 +176,10 @@ impl LivingEditServer {
           self.join(conn, room_id).await;
           let _ = res_tx.send(());
         }
-        Command::Delete { .. } => {}
+        Command::Delete { conn, room_id, range, res_tx } => {
+          // self.delete(conn, room_id, range).await;
+          // let _ = res_tx.send(());
+        }
       }
     }
 
@@ -231,31 +235,22 @@ impl LivingEditServer {
     self.codings.insert(room_id.clone(), Arc::new(Mutex::new(coding)));
   }
 
-  async fn insert(&self, conn: ConnId, content: String, pos: usize) -> Option<String> {
-    let room_opt = self
-      .rooms
-      .iter()
-      .find_map(|(room, participants)| participants.contains(&conn).then_some(room));
+  async fn insert(&self, conn: ConnId, room_id: RoomId, content: String, pos: usize) -> Option<String> {
+    match self.codings.get(&*room_id) {
+      Some(coding) => {
+        let mut mutex_coding = coding.lock().unwrap();
+        let agent = conn.to_string();
+        mutex_coding.insert(&*agent, pos, &content);
 
-    if let Some(room) = room_opt {
-      match self.codings.get(room) {
-        Some(coding) => {
-          let mut mutex_coding = coding.lock().unwrap();
-          let agent = conn.to_string();
-          mutex_coding.insert(&*agent, pos, &content);
-
-          let content = mutex_coding.content().clone();
-          return Some(content);
-        }
-        None => {
-          println!("room {:?} not found", room);
-        }
+        let content = mutex_coding.content().clone();
+        Some(content)
       }
+      None => {
+        println!("room {:?} not found", room_id);
 
-      return None;
-    };
-
-    return None;
+        None
+      }
+    }
   }
 
   async fn join(&mut self, conn: ConnId, room_id: RoomId) -> Option<String> {

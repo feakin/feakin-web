@@ -155,7 +155,7 @@ async fn process_text_msg(
     }
     ActionType::Delete(_) => {}
     ActionType::Insert(insert) => {
-      let output = edit_server.insert(conn, insert.content, insert.pos).await;
+      let output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
       session.text(format!("current: {output}")).await.unwrap();
     }
   }

@@ -1,5 +1,4 @@
 use std::ops::Range;
-use diamond_types::AgentId;
 use tokio::sync::{mpsc, oneshot};
 use crate::living_action::{ConnId, RoomId};
 
@@ -35,13 +34,15 @@ pub enum Command {
     conn: ConnId,
     content: String,
     pos: usize,
+    room_id: RoomId,
     res_tx: oneshot::Sender<String>,
   },
 
   Delete {
     conn: ConnId,
-    agent_id: AgentId,
+    room_id: RoomId,
     range: Range<usize>,
+    res_tx: oneshot::Sender<()>,
   },
 
   Message {

@@ -14,6 +14,7 @@ pub fn id_generator() -> u32 {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct InsertAction {
+  pub room_id: RoomId,
   pub content: String,
   pub pos: usize
 }
@@ -51,17 +52,19 @@ mod tests {
   #[test]
   fn serde_from_string_for_insert() {
     let insert = InsertAction {
+      room_id: "".to_string(),
       content: "hello".to_string(),
       pos: 0,
     };
     let action = ActionType::Insert(insert);
     let json = serde_json::to_string(&action).unwrap();
 
-    assert_eq!(json, r#"{"type":"Insert","value":{"content":"hello","pos":0}}"#);
+    assert_eq!(json, r#"{"type":"Insert","value":{"room_id":"","content":"hello","pos":0}}"#);
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
     assert_eq!(action, ActionType::Insert(InsertAction {
+      room_id: "".to_string(),
       content: "hello".to_string(),
       pos: 0,
     }));
