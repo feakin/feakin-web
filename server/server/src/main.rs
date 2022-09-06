@@ -1,5 +1,6 @@
 use actix_files::NamedFile;
-use actix_web::{App, get, Error, HttpRequest, HttpResponse, HttpServer, Responder, web};
+use actix_web::{App, Error, get, HttpRequest, HttpResponse, HttpServer, Responder, web};
+use actix_web::web::Payload;
 use tokio::{
   task::{spawn, spawn_local},
   try_join,
@@ -25,15 +26,13 @@ async fn index() -> NamedFile {
   NamedFile::open_async("./static/index.html").await.unwrap()
 }
 
-/// Handshake and start WebSocket handler with heartbeats.
-async fn living_edit(
+async fn living_socket(
   req: HttpRequest,
   payload: web::Payload,
   edit_server: web::Data<LiveEditServerHandle>,
 ) -> Result<HttpResponse, Error> {
   let (res, session, msg_stream) = actix_ws::handle(&req, payload)?;
 
-  // spawn websocket handler (and don't await it) so that the response is returned immediately
   spawn_local(living_edit_handler::live_edit_ws((**edit_server).clone(), session, msg_stream));
 
   Ok(res)
@@ -54,7 +53,7 @@ async fn main() -> std::io::Result<()> {
       .app_data(web::Data::new(server_tx.clone()))
       .service(web::resource("/").to(index))
       .service(greet)
-      .service(web::resource("/living/edit").route(web::get().to(living_edit)))
+      .service(web::resource("/living/edit").route(web::get().to(living_socket)))
   })
     .workers(2)
     .bind(("127.0.0.1", port))?
@@ -68,11 +67,13 @@ async fn main() -> std::io::Result<()> {
 
 #[cfg(test)]
 mod tests {
+  use actix::dev;
+  use actix_web::{FromRequest, http::{self, header::ContentType}, test};
+  use actix_web::http::header::{CONTENT_LENGTH, CONTENT_TYPE};
+  use actix_web::test::TestRequest;
+  use actix_web::web::{Bytes, JsonConfig};
+
   use super::*;
-  use actix_web::{
-    http::{self, header::ContentType},
-    test,
-  };
 
   #[actix_web::test]
   async fn test_index_ok() {
@@ -86,13 +87,17 @@ mod tests {
 
   // #[actix_web::test]
   // async fn test_websocket() {
+  //   let (req, mut pl) = TestRequest::default()
+  //     .insert_header((CONTENT_TYPE, "application/json"))
+  //     .insert_header((CONTENT_LENGTH, 16))
+  //     .set_payload(Bytes::from_static(b"{\"name\": \"test\"}"))
+  //     .app_data(web::Data::new(JsonConfig::default().limit(10)))
+  //     .to_http_parts();
   //
-  //   web::Payload::from(&mut pl);
+  //   let (edit_server, server_tx) = LivingEditServer::new();
   //
-  //   let payload = format!("data: {}\n\n", counter);
-  //   let resp = living_edit(req, web::Payload::from(payload), web::Data::new(LiveEditServerHandle::default())).await;
+  //   let resp = living_socket(req, actix_web::web::Payload(pl), web::Data::new(server_tx)).await;
   //   assert_eq!(resp.unwrap().status(), http::StatusCode::SWITCHING_PROTOCOLS);
-  //
   // }
 }
 
