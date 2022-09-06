@@ -22,6 +22,8 @@ pub struct LivingEditServer {
 
   codings: HashMap<RoomId, Arc<Mutex<LiveCoding>>>,
 
+  agent_names: HashMap<ConnId, String>,
+
   cmd_rx: mpsc::UnboundedReceiver<Command>,
 }
 
@@ -47,7 +49,7 @@ impl LiveEditServerHandle {
     self.cmd_tx.send(Command::Disconnect { conn }).unwrap();
   }
 
-  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<Msg>) {
+  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, agent_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<Msg>) {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -55,6 +57,7 @@ impl LiveEditServerHandle {
         conn,
         room_id: room_name.into(),
         content: content.into(),
+        agent_name: agent_name.into(),
         conn_tx: conn_tx.clone(),
         res_tx,
       })
@@ -79,13 +82,14 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>) -> Option<String> {
+  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>, agent_name: impl Into<String>,) -> Option<String> {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
       .send(Command::Join {
         conn,
         room_id: room_id.into(),
+        agent_name: agent_name.into(),
         res_tx,
       })
       .unwrap();
@@ -137,6 +141,7 @@ impl LivingEditServer {
         sessions: HashMap::new(),
         rooms,
         codings,
+        agent_names: Default::default(),
         cmd_rx,
       },
       LiveEditServerHandle {
@@ -155,20 +160,21 @@ impl LivingEditServer {
         Command::Disconnect { conn } => {
           self.disconnect(conn).await;
         }
-        Command::Create { conn, room_id, content, conn_tx, res_tx } => {
-          self.create(room_id, conn, content, conn_tx).await;
+        Command::Create { conn, room_id, content, agent_name, conn_tx, res_tx } => {
+          self.create(room_id, conn, content, conn_tx, agent_name).await;
           let _ = res_tx.send(());
         }
+        Command::Join { conn, room_id, agent_name, res_tx } => {
+          let output = self.join(conn, room_id, agent_name).await;
+          let _ = res_tx.send(output);
+        }
+
         Command::List { res_tx } => {
           let _ = res_tx.send(self.list_rooms());
         }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
           let opt_version = self.insert(conn, room_id, content, pos).await;
           let _ = res_tx.send(opt_version);
-        }
-        Command::Join { conn, room_id, res_tx } => {
-          let output = self.join(conn, room_id).await;
-          let _ = res_tx.send(output);
         }
         Command::Delete { conn, room_id, range, res_tx } => {
           let opt_version = self.delete(conn, room_id, range).await;
@@ -207,8 +213,10 @@ impl LivingEditServer {
     id_generator()
   }
 
-  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: mpsc::UnboundedSender<String>) {
+  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: mpsc::UnboundedSender<String>, agent_name: String) {
     self.sessions.insert(conn, conn_tx);
+
+    self.agent_names.insert(conn, agent_name);
 
     self.rooms
       .entry(room_id.clone())
@@ -270,16 +278,17 @@ impl LivingEditServer {
     }
   }
 
-  async fn join(&mut self, conn: ConnId, room_id: RoomId) -> Option<String> {
+  async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> Option<String> {
     self.rooms
       .entry(room_id.clone())
       .or_insert_with(HashSet::new)
       .insert(conn);
 
-    let agent_name = &random_name();
+    self.agent_names.insert(conn, agent_name.clone());
+
     return match self.codings.get_mut(&*room_id.clone()) {
       Some(coding) => {
-        let agent_id = coding.lock().unwrap().join(agent_name);
+        let agent_id = coding.lock().unwrap().join(&*agent_name);
         Some(agent_id.to_string())
       }
       None => {

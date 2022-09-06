@@ -140,13 +140,16 @@ async fn process(
   match action {
     ActionType::CreateRoom(room) => {
       let room_name = random_name();
+      let agent_name = room.agent_name.unwrap_or(random_name());
       let input = room.input.unwrap_or_default();
-      edit_server.create(conn, room_name.clone(), &input, conn_tx).await;
+      edit_server.create(conn, room_name.clone(), agent_name, &input, conn_tx).await;
+
       //todo: make output to object
       session.text(format!("create room {room_name} success!")).await.unwrap();
     }
     ActionType::JoinRoom(room) => {
-      let opt_join = edit_server.join(conn, &room.room_id).await;
+      let agent_name = room.agent_name.unwrap_or(random_name());
+      let opt_join = edit_server.join(conn, &room.room_id, agent_name).await;
       let room_id = room.room_id;
       if let Some(_join) = opt_join {
         session.text(format!("join room {room_id} success!")).await.unwrap();

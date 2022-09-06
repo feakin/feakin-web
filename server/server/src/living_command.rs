@@ -26,6 +26,7 @@ pub enum Command {
     conn: ConnId,
     room_id: RoomId,
     content: String,
+    agent_name: String,
     conn_tx: mpsc::UnboundedSender<Msg>,
     res_tx: oneshot::Sender<()>,
   },
@@ -33,6 +34,7 @@ pub enum Command {
   Join {
     conn: ConnId,
     room_id: RoomId,
+    agent_name: String,
     res_tx: oneshot::Sender<Option<String>>,
   },
 

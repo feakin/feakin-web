@@ -27,7 +27,7 @@ pub struct CreateRoom {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JoinRoom {
-  agent_name: Option<String>,
+  pub agent_name: Option<String>,
   pub room_id: RoomId,
 }
 
