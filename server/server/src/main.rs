@@ -13,8 +13,8 @@ use crate::living_edit_server::LiveEditServerHandle;
 mod living;
 mod living_edit_server;
 mod living_edit_handler;
-mod living_action;
-mod command;
+mod living_action_dto;
+mod living_command;
 
 // keep some api for testing
 #[get("/api/{name}")]

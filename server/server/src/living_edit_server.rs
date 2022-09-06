@@ -9,10 +9,10 @@ use log::error;
 use tokio::sync::{mpsc, oneshot};
 use tokio::sync::mpsc::UnboundedSender;
 
-use crate::command::{Command, Msg};
+use crate::living_command::{Command, Msg};
 use crate::living::live_coding::LiveCoding;
 use crate::living::random_name;
-use crate::living_action::{ConnId, id_generator, RoomId};
+use crate::living_action_dto::{ConnId, id_generator, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {

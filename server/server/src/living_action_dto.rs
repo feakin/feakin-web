@@ -48,7 +48,7 @@ pub enum ActionType {
 
 #[cfg(test)]
 mod tests {
-  use crate::living_action::{ActionType, CreateRoom, InsertAction};
+  use crate::living_action_dto::{ActionType, CreateRoom, InsertAction};
 
   #[test]
   fn serde_from_string_for_insert() {
@@ -91,7 +91,7 @@ mod tests {
 
   #[test]
   fn delete_action() {
-    let action = ActionType::Delete(crate::living_action::DeleteAction {
+    let action = ActionType::Delete(crate::living_action_dto::DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     });
@@ -101,7 +101,7 @@ mod tests {
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::Delete(crate::living_action::DeleteAction {
+    assert_eq!(action, ActionType::Delete(crate::living_action_dto::DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     }));
@@ -109,7 +109,7 @@ mod tests {
 
   #[test]
   fn join_room() {
-    let action = ActionType::JoinRoom(crate::living_action::JoinRoom {
+    let action = ActionType::JoinRoom(crate::living_action_dto::JoinRoom {
       agent_name: Some("agent".to_string()),
       room_id: "room".to_string(),
     });
@@ -119,7 +119,7 @@ mod tests {
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::JoinRoom(crate::living_action::JoinRoom {
+    assert_eq!(action, ActionType::JoinRoom(crate::living_action_dto::JoinRoom {
       agent_name: Some("agent".to_string()),
       room_id: "room".to_string(),
     }));
