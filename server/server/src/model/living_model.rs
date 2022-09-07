@@ -9,4 +9,4 @@ pub fn id_generator() -> u32 {
   thread_rng().gen::<u32>()
 }
 
-pub type Msg = String;
+// pub type Msg = String;

@@ -10,7 +10,7 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::LiveEditServerHandle;
 use crate::living::random_name;
-use crate::model::{ActionType, ConnId, Msg};
+use crate::model::{ActionType, ConnId, FkResponse};
 
 /// How often heartbeat pings are sent
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
@@ -81,15 +81,12 @@ pub async fn live_edit_ws(
         break None;
       }
 
-      // client WebSocket stream ended
       Either::Left((Either::Left((None, _)), _)) => break None,
 
-      // chat messages received from other room participants
       Either::Left((Either::Right((Some(chat_msg), _)), _)) => {
-        session.text(chat_msg).await.unwrap();
+        session.text(serde_json::to_string(&chat_msg).unwrap()).await.unwrap();
       }
 
-      // all connection's message senders were dropped
       Either::Left((Either::Right((None, _)), _)) => unreachable!(
         "all connection message senders were dropped; chat server may have panicked"
       ),
@@ -120,7 +117,7 @@ async fn process(
   session: &mut Session,
   text: &str,
   conn: ConnId,
-  conn_tx: &UnboundedSender<Msg>,
+  conn_tx: &UnboundedSender<FkResponse>,
 ) {
   if text.starts_with('/') {
     log::info!("execute debug command: {}", text);

@@ -33,7 +33,7 @@ pub struct UpstreamResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "value")]
-pub enum ResponseType {
+pub enum FkResponse {
   // TODO: add alias, like join,create,del,ins,msg ?
   CreateResponse(CreateResponse),
   JoinResponse(JoinResponse),
@@ -41,4 +41,18 @@ pub enum ResponseType {
   Insert(String),
   Upstream(UpstreamResponse),
   Message(String),
+  SystemMessage(String),
+}
+
+impl FkResponse {
+  pub fn system_message(msg: String) -> Self {
+    FkResponse::SystemMessage(msg)
+  }
+
+  pub fn upstream(version: String, patch: Vec<u8>) -> Self {
+    FkResponse::Upstream(UpstreamResponse {
+      version,
+      patch,
+    })
+  }
 }

@@ -12,11 +12,11 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::living::live_coding::{LiveCoding, LivingVersion};
 use crate::living::random_name;
-use crate::model::{Command, ConnId, id_generator, Msg, RoomId};
+use crate::model::{Command, ConnId, id_generator, FkResponse, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
-  sessions: HashMap<ConnId, UnboundedSender<Msg>>,
+  sessions: HashMap<ConnId, UnboundedSender<FkResponse>>,
 
   rooms: HashMap<RoomId, HashSet<ConnId>>,
 
@@ -52,7 +52,7 @@ impl LiveEditServerHandle {
     self.cmd_tx.send(Command::Disconnect { conn }).unwrap();
   }
 
-  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, agent_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<Msg>) {
+  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, agent_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<FkResponse>) {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -202,7 +202,7 @@ impl LivingEditServer {
       let patch: Vec<u8>;
 
       if let Some(coding) =  self.codings.get(&room) {
-        let mut coding = coding.lock().unwrap();
+        let coding = coding.lock().unwrap();
         remote_version = coding.remote_version();
         patch = coding.patch_from_version();
       } else {
@@ -214,7 +214,7 @@ impl LivingEditServer {
       for conn_id in sessions {
         if *conn_id != skip {
           if let Some(tx) = self.sessions.get(conn_id) {
-            let _ = tx.send(versions.clone());
+            let _ = tx.send(FkResponse::upstream(versions.clone(), patch.clone()));
           }
         }
       }
@@ -229,7 +229,7 @@ impl LivingEditServer {
         if *conn_id != skip {
           if let Some(tx) = self.sessions.get(conn_id) {
             // errors if client disconnected abruptly and hasn't been timed-out yet
-            let _ = tx.send(msg.clone());
+            let _ = tx.send(FkResponse::system_message(msg.clone()));
           }
         }
       }
@@ -244,7 +244,7 @@ impl LivingEditServer {
     id_generator()
   }
 
-  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: UnboundedSender<Msg>, agent_name: String) {
+  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: UnboundedSender<FkResponse>, agent_name: String) {
     self.sessions.insert(conn, conn_tx);
 
     self.agent_names.insert(conn, agent_name);
