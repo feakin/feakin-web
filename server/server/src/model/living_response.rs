@@ -1,6 +1,7 @@
-use serde::Serialize;
 use serde::Deserialize;
-use crate::living_model::{ConnId, RoomId};
+use serde::Serialize;
+
+use crate::model::{ConnId, RoomId};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JoinResponse {

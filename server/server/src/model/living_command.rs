@@ -1,6 +1,6 @@
 use std::ops::Range;
 use tokio::sync::{mpsc, oneshot};
-use crate::living_model::{ConnId, Msg, RoomId};
+use crate::model::{ConnId, Msg, RoomId};
 
 #[derive(Debug)]
 pub enum Command {

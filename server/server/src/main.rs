@@ -13,10 +13,6 @@ use crate::living_edit_server::LiveEditServerHandle;
 mod living;
 mod living_edit_server;
 mod living_edit_handler;
-mod living_request;
-mod living_response;
-mod living_command;
-mod living_model;
 mod model;
 
 // keep some api for testing

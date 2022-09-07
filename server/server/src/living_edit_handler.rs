@@ -10,9 +10,7 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::LiveEditServerHandle;
 use crate::living::random_name;
-use crate::living_request::ActionType;
-use crate::living_model::Msg;
-use crate::living_model::ConnId;
+use crate::model::{ActionType, ConnId, Msg};
 
 /// How often heartbeat pings are sent
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);

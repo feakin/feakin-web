@@ -1,15 +1,15 @@
 use std::ops::Range;
-use diamond_types::AgentId;
-use rand::{Rng, thread_rng};
-use serde::Serialize;
+
 use serde::Deserialize;
-use crate::living_model::RoomId;
+use serde::Serialize;
+
+use crate::model::RoomId;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct InsertAction {
   pub room_id: RoomId,
   pub content: String,
-  pub pos: usize
+  pub pos: usize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -41,7 +41,7 @@ pub enum ActionType {
 
 #[cfg(test)]
 mod tests {
-  use crate::living_request::{ActionType, CreateRoom, InsertAction};
+  use crate::model::{ActionType, CreateRoom, DeleteAction, InsertAction, JoinRoom};
 
   #[test]
   fn insert_action() {
@@ -84,7 +84,7 @@ mod tests {
 
   #[test]
   fn delete_action() {
-    let action = ActionType::Delete(crate::living_request::DeleteAction {
+    let action = ActionType::Delete(DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     });
@@ -94,7 +94,7 @@ mod tests {
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::Delete(crate::living_request::DeleteAction {
+    assert_eq!(action, ActionType::Delete(DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     }));
@@ -102,7 +102,7 @@ mod tests {
 
   #[test]
   fn join_room() {
-    let action = ActionType::JoinRoom(crate::living_request::JoinRoom {
+    let action = ActionType::JoinRoom(JoinRoom {
       agent_name: Some("agent".to_string()),
       room_id: "room".to_string(),
     });
@@ -112,7 +112,7 @@ mod tests {
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::JoinRoom(crate::living_request::JoinRoom {
+    assert_eq!(action, ActionType::JoinRoom(JoinRoom {
       agent_name: Some("agent".to_string()),
       room_id: "room".to_string(),
     }));
