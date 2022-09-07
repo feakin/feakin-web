@@ -3,6 +3,7 @@
   "version": "0.2.4",
   "private": false,
   "dependencies": {
+    "@braid-protocol/client": "^1.0.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@feakin/exporter": "^0.2.4",
@@ -18,6 +19,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "canvas": "^2.9.3",
+    "diamond-types-web": "^0.1.0",
     "konva": "^8.3.10",
     "monaco-editor": "^0.34.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
