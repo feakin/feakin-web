@@ -12,7 +12,7 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::living::live_coding::LiveCoding;
 use crate::living::random_name;
-use crate::model::{Command, ConnId, DeleteResponse, FkResponse, id_generator, InsertResponse, JoinResponse, RemoteVersion, RoomId};
+use crate::model::{Command, ConnId, FkResponse, id_generator, RemoteVersion, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
@@ -69,7 +69,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap();
   }
 
-  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> InsertResponse {
+  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> FkResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -85,7 +85,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>, agent_name: impl Into<String>) -> JoinResponse {
+  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>, agent_name: impl Into<String>) -> FkResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -100,7 +100,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> DeleteResponse {
+  pub(crate) async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> FkResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -178,7 +178,8 @@ impl LivingEditServer {
           let _ = res_tx.send(FkResponse::insert(opt_version));
         }
         Command::Delete { conn, room_id, range, res_tx } => {
-          let opt_version = self.delete(conn, room_id, range).await;
+          let opt_version = self.delete(conn, room_id.clone(), range).await;
+          self.broadcast_patch(room_id, conn).await;
           let _ = res_tx.send(FkResponse::delete(opt_version));
         }
 
@@ -283,8 +284,8 @@ impl LivingEditServer {
         let agent = conn.to_string();
         mutex_coding.delete(&*agent, range);
 
-        let content = mutex_coding.content().clone();
-        Some(content)
+
+        Some("".to_string())
       }
       None => {
         error!("room {:?} not found", room_id);
@@ -307,7 +308,7 @@ impl LivingEditServer {
     }
   }
 
-  async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> JoinResponse {
+  async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> FkResponse {
     self.rooms
       .entry(room_id.clone())
       .or_insert_with(HashSet::new)
