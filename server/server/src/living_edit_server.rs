@@ -12,7 +12,7 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::living::live_coding::LiveCoding;
 use crate::living::random_name;
-use crate::model::{Command, ConnId, FkResponse, id_generator, RemoteVersion, RoomId};
+use crate::model::{Command, ConnId, DeleteResponse, FkResponse, id_generator, InsertResponse, JoinResponse, RemoteVersion, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
@@ -69,7 +69,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap();
   }
 
-  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> Option<String> {
+  pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> InsertResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -85,7 +85,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>, agent_name: impl Into<String>) -> Option<String> {
+  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>, agent_name: impl Into<String>) -> JoinResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -100,7 +100,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> Option<String> {
+  pub(crate) async fn delete(&self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> DeleteResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -172,7 +172,6 @@ impl LivingEditServer {
           let output = self.join(conn, room_id, agent_name).await;
           let _ = res_tx.send(output);
         }
-
         Command::List { res_tx } => {
           let _ = res_tx.send(self.list_rooms());
         }
@@ -180,11 +179,11 @@ impl LivingEditServer {
           let opt_version = self.insert(conn, room_id.clone(), content, pos).await;
           self.broadcast_patch(room_id, conn).await;
 
-          let _ = res_tx.send(opt_version);
+          let _ = res_tx.send(FkResponse::insert(opt_version));
         }
         Command::Delete { conn, room_id, range, res_tx } => {
           let opt_version = self.delete(conn, room_id, range).await;
-          let _ = res_tx.send(opt_version);
+          let _ = res_tx.send(FkResponse::delete(opt_version));
         }
         Command::Content { room_id, res_tx } => {
           let content = self.content(room_id).await;
@@ -226,7 +225,6 @@ impl LivingEditServer {
       for conn_id in sessions {
         if *conn_id != skip {
           if let Some(tx) = self.sessions.get(conn_id) {
-            // errors if client disconnected abruptly and hasn't been timed-out yet
             let _ = tx.send(FkResponse::system_message(msg.clone()));
           }
         }
@@ -307,7 +305,7 @@ impl LivingEditServer {
     }
   }
 
-  async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> Option<String> {
+  async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> JoinResponse {
     self.rooms
       .entry(room_id.clone())
       .or_insert_with(HashSet::new)
@@ -318,11 +316,11 @@ impl LivingEditServer {
     return match self.codings.get_mut(&*room_id.clone()) {
       Some(coding) => {
         let agent_id = coding.lock().unwrap().join(&*agent_name);
-        Some(agent_id.to_string())
+        FkResponse::join(room_id.clone(), "".to_string(), agent_id.to_string(), None)
       }
       None => {
-        error!("room {:?} not found", room_id);
-        None
+        let error_msg = format!("room {:?} not found", room_id);
+        FkResponse::join("".to_string(), "".to_string(), "".to_string(), Some(error_msg))
       }
     };
   }

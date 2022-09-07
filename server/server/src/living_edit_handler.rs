@@ -146,31 +146,17 @@ async fn process(
     }
     ActionType::JoinRoom(room) => {
       let agent_name = room.agent_name.unwrap_or(random_name());
-      let opt_join = edit_server.join(conn, &room.room_id, agent_name).await;
-      let room_id = room.room_id;
-      if let Some(_join) = opt_join {
-        session.text(format!("join room {room_id} success!")).await.unwrap();
-      } else {
-        session.text(format!("join room {room_id} failed!")).await.unwrap();
-      }
+      let output = edit_server.join(conn, &room.room_id, agent_name).await;
+      session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
-
     ActionType::Delete(delete) => {
-      let opt_output = edit_server.delete(conn, delete.room_id, delete.range).await;
-      if let Some(_output) = opt_output {
-        session.text(format!("delete success!")).await.unwrap();
-      } else {
-        session.text(format!("delete failed!")).await.unwrap();
-      }
+      let output = edit_server.delete(conn, delete.room_id, delete.range).await;
+      session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
 
     ActionType::Insert(insert) => {
-      let opt_output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
-      if let Some(output) = opt_output {
-        session.text(format!("current: {output}")).await.unwrap();
-      } else {
-        session.text(format!("insert failed!")).await.unwrap();
-      }
+      let output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
+      session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
   }
 }

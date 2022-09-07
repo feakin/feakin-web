@@ -5,8 +5,11 @@ use crate::model::{ConnId, RemoteVersion, RoomId};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JoinResponse {
+  pub success: bool,
+  pub error_msg: Option<String>,
   pub room_id: RoomId,
   pub content: String,
+  pub agent_id: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -17,12 +20,12 @@ pub struct CreateResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct DeleteResponse {
-  pub message: String,
+  pub success: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct InsertResponse {
-  pub message: String,
+  pub success: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -37,12 +40,14 @@ pub enum FkResponse {
   // TODO: add alias, like join,create,del,ins,msg ?
   CreateResponse(CreateResponse),
   JoinResponse(JoinResponse),
-  Delete(String),
-  Insert(String),
+  Delete(DeleteResponse),
+  Insert(InsertResponse),
   Upstream(UpstreamResponse),
   Message(String),
   SystemMessage(String),
 }
+
+impl FkResponse {}
 
 impl FkResponse {
   pub fn system_message(msg: String) -> Self {
@@ -54,5 +59,27 @@ impl FkResponse {
       version,
       patch,
     })
+  }
+
+  pub(crate) fn delete(content: Option<String>) -> DeleteResponse {
+    DeleteResponse {
+      success: content.is_some(),
+    }
+  }
+
+  pub(crate) fn insert(content: Option<String>) -> InsertResponse {
+    InsertResponse {
+      success: content.is_some(),
+    }
+  }
+
+  pub(crate) fn join(room_id: String, content: String, agent_id: String, error_msg: Option<String>) -> JoinResponse {
+    JoinResponse {
+      success: error_msg.is_none(),
+      error_msg,
+      room_id,
+      content,
+      agent_id
+    }
   }
 }
