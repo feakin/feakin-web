@@ -42,8 +42,8 @@ pub struct DeleteAction {
 pub enum ActionType {
   CreateRoom(CreateRoom),
   JoinRoom(JoinRoom),
-  Delete(DeleteAction),
-  Insert(InsertAction),
+  DeleteAction(DeleteAction),
+  InsertAction(InsertAction),
 }
 
 #[cfg(test)]
@@ -51,20 +51,20 @@ mod tests {
   use crate::living_action_dto::{ActionType, CreateRoom, InsertAction};
 
   #[test]
-  fn serde_from_string_for_insert() {
+  fn insert_action() {
     let insert = InsertAction {
       room_id: "".to_string(),
       content: "hello".to_string(),
       pos: 0,
     };
-    let action = ActionType::Insert(insert);
+    let action = ActionType::InsertAction(insert);
     let json = serde_json::to_string(&action).unwrap();
 
     assert_eq!(json, r#"{"type":"Insert","value":{"room_id":"","content":"hello","pos":0}}"#);
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::Insert(InsertAction {
+    assert_eq!(action, ActionType::InsertAction(InsertAction {
       room_id: "".to_string(),
       content: "hello".to_string(),
       pos: 0,
@@ -91,7 +91,7 @@ mod tests {
 
   #[test]
   fn delete_action() {
-    let action = ActionType::Delete(crate::living_action_dto::DeleteAction {
+    let action = ActionType::DeleteAction(crate::living_action_dto::DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     });
@@ -101,7 +101,7 @@ mod tests {
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::Delete(crate::living_action_dto::DeleteAction {
+    assert_eq!(action, ActionType::DeleteAction(crate::living_action_dto::DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     }));

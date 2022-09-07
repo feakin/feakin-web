@@ -78,7 +78,7 @@ pub async fn live_edit_ws(
 
       // client WebSocket stream error
       Either::Left((Either::Left((Some(Err(err)), _)), _)) => {
-        log::error!("{}", err);
+        log::error!("{:?}", err);
         break None;
       }
 
@@ -124,6 +124,7 @@ async fn process(
   conn_tx: &UnboundedSender<Msg>,
 ) {
   if text.starts_with('/') {
+    log::info!("execute debug command: {}", text);
     execute_debug_command(edit_server, session, text, conn).await;
     return;
   }
@@ -158,7 +159,7 @@ async fn process(
       }
     }
 
-    ActionType::Delete(delete) => {
+    ActionType::DeleteAction(delete) => {
       let opt_output = edit_server.delete(conn, delete.room_id, delete.range).await;
       if let Some(_output) = opt_output {
         session.text(format!("delete success!")).await.unwrap();
@@ -167,7 +168,7 @@ async fn process(
       }
     }
 
-    ActionType::Insert(insert) => {
+    ActionType::InsertAction(insert) => {
       let opt_output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
       if let Some(output) = opt_output {
         session.text(format!("current: {output}")).await.unwrap();
