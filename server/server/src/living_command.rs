@@ -1,6 +1,6 @@
 use std::ops::Range;
 use tokio::sync::{mpsc, oneshot};
-use crate::living_action_dto::{ConnId, RoomId};
+use crate::living_model::{ConnId, Msg, RoomId};
 
 #[derive(Debug)]
 pub enum Command {
@@ -53,5 +53,3 @@ pub enum Command {
     res_tx: oneshot::Sender<Option<String>>,
   },
 }
-
-pub type Msg = String;

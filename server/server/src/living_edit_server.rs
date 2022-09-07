@@ -5,14 +5,15 @@ use std::sync::{Arc, Mutex};
 
 use actix::Actor;
 use actix_web_actors::ws;
+use diamond_types::LocalVersion;
 use log::error;
 use tokio::sync::{mpsc, oneshot};
 use tokio::sync::mpsc::UnboundedSender;
 
-use crate::living_command::{Command, Msg};
-use crate::living::live_coding::LiveCoding;
+use crate::living_command::Command;
+use crate::living::live_coding::{LiveCoding, LivingVersion};
 use crate::living::random_name;
-use crate::living_action_dto::{ConnId, id_generator, RoomId};
+use crate::living_model::{ConnId, id_generator, Msg, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
@@ -21,6 +22,9 @@ pub struct LivingEditServer {
   rooms: HashMap<RoomId, HashSet<ConnId>>,
 
   codings: HashMap<RoomId, Arc<Mutex<LiveCoding>>>,
+
+  // TODO: merge objects
+  versions: HashMap<ConnId, LocalVersion>,
 
   agent_names: HashMap<ConnId, String>,
 
@@ -140,6 +144,7 @@ impl LivingEditServer {
       Self {
         sessions: HashMap::new(),
         rooms,
+        versions: Default::default(),
         codings,
         agent_names: Default::default(),
         cmd_rx,
@@ -173,7 +178,9 @@ impl LivingEditServer {
           let _ = res_tx.send(self.list_rooms());
         }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
-          let opt_version = self.insert(conn, room_id, content, pos).await;
+          let opt_version = self.insert(conn, room_id.clone(), content, pos).await;
+          self.broadcast_patch(room_id, conn).await;
+
           let _ = res_tx.send(opt_version);
         }
         Command::Delete { conn, room_id, range, res_tx } => {
@@ -188,6 +195,31 @@ impl LivingEditServer {
     }
 
     Ok(())
+  }
+
+  async fn broadcast_patch(&self, room: RoomId, skip: ConnId) {
+    if let Some(sessions) = self.rooms.get(&room) {
+      let remote_version: LivingVersion;
+      let patch: Vec<u8>;
+
+      if let Some(coding) =  self.codings.get(&room) {
+        let mut coding = coding.lock().unwrap();
+        remote_version = coding.remote_version();
+        patch = coding.patch_from_version();
+      } else {
+        return;
+      }
+
+      let versions = serde_json::to_string(&remote_version).unwrap();
+
+      for conn_id in sessions {
+        if *conn_id != skip {
+          if let Some(tx) = self.sessions.get(conn_id) {
+            let _ = tx.send(versions.clone());
+          }
+        }
+      }
+    }
   }
 
   async fn send_system_message(&self, room: &str, skip: ConnId, msg: impl Into<String>) {
@@ -213,7 +245,7 @@ impl LivingEditServer {
     id_generator()
   }
 
-  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: mpsc::UnboundedSender<String>, agent_name: String) {
+  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: UnboundedSender<Msg>, agent_name: String) {
     self.sessions.insert(conn, conn_tx);
 
     self.agent_names.insert(conn, agent_name);

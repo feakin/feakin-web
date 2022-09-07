@@ -12,6 +12,8 @@ pub struct LiveCoding {
   pub(crate) inner: OpLog,
 }
 
+pub type LivingVersion = SmallVec<[RemoteId; 4]>;
+
 impl LiveCoding {
   pub fn new(agent_name: &str) -> Self {
     let mut oplog = OpLog::new();
@@ -55,7 +57,17 @@ impl LiveCoding {
     branch.content().to_string()
   }
 
-  fn to_local(&self, time: Time) -> SmallVec<[RemoteId; 4]> {
+  pub fn remote_version(&self) -> LivingVersion {
+    self.inner.remote_version()
+  }
+
+  pub fn patch_from_version(&self) -> Vec<u8> {
+    let local_version = self.inner.local_version();
+    let bytes = self.inner.encode_from(ENCODE_PATCH, &local_version);
+    bytes
+  }
+
+  fn to_local(&self, time: Time) -> LivingVersion {
     let version = self.inner.local_to_remote_version(&[time]);
     version
   }

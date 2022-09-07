@@ -14,7 +14,9 @@ mod living;
 mod living_edit_server;
 mod living_edit_handler;
 mod living_action_dto;
+mod living_response;
 mod living_command;
+mod living_model;
 
 // keep some api for testing
 #[get("/api/{name}")]

@@ -3,14 +3,7 @@ use diamond_types::AgentId;
 use rand::{Rng, thread_rng};
 use serde::Serialize;
 use serde::Deserialize;
-
-pub type RoomId = String;
-
-pub type ConnId = AgentId;
-
-pub fn id_generator() -> u32 {
-  thread_rng().gen::<u32>()
-}
+use crate::living_model::RoomId;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct InsertAction {
@@ -42,8 +35,8 @@ pub struct DeleteAction {
 pub enum ActionType {
   CreateRoom(CreateRoom),
   JoinRoom(JoinRoom),
-  DeleteAction(DeleteAction),
-  InsertAction(InsertAction),
+  Delete(DeleteAction),
+  Insert(InsertAction),
 }
 
 #[cfg(test)]
@@ -57,14 +50,14 @@ mod tests {
       content: "hello".to_string(),
       pos: 0,
     };
-    let action = ActionType::InsertAction(insert);
+    let action = ActionType::Insert(insert);
     let json = serde_json::to_string(&action).unwrap();
 
     assert_eq!(json, r#"{"type":"Insert","value":{"room_id":"","content":"hello","pos":0}}"#);
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::InsertAction(InsertAction {
+    assert_eq!(action, ActionType::Insert(InsertAction {
       room_id: "".to_string(),
       content: "hello".to_string(),
       pos: 0,
@@ -91,7 +84,7 @@ mod tests {
 
   #[test]
   fn delete_action() {
-    let action = ActionType::DeleteAction(crate::living_action_dto::DeleteAction {
+    let action = ActionType::Delete(crate::living_action_dto::DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     });
@@ -101,7 +94,7 @@ mod tests {
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
-    assert_eq!(action, ActionType::DeleteAction(crate::living_action_dto::DeleteAction {
+    assert_eq!(action, ActionType::Delete(crate::living_action_dto::DeleteAction {
       range: 0..1,
       room_id: "room".to_string(),
     }));

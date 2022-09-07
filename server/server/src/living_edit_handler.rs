@@ -2,7 +2,7 @@ use std::time::{Duration, Instant};
 
 use actix_ws::{Message, Session};
 use futures_util::{
-  future::{select, Either},
+  future::{Either, select},
   StreamExt as _,
 };
 use tokio::{pin, sync::mpsc, time::interval};
@@ -10,8 +10,9 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::LiveEditServerHandle;
 use crate::living::random_name;
-use crate::living_action_dto::{ActionType, ConnId};
-use crate::living_command::Msg;
+use crate::living_action_dto::ActionType;
+use crate::living_model::Msg;
+use crate::living_model::ConnId;
 
 /// How often heartbeat pings are sent
 const HEARTBEAT_INTERVAL: Duration = Duration::from_secs(5);
@@ -159,7 +160,7 @@ async fn process(
       }
     }
 
-    ActionType::DeleteAction(delete) => {
+    ActionType::Delete(delete) => {
       let opt_output = edit_server.delete(conn, delete.room_id, delete.range).await;
       if let Some(_output) = opt_output {
         session.text(format!("delete success!")).await.unwrap();
@@ -168,7 +169,7 @@ async fn process(
       }
     }
 
-    ActionType::InsertAction(insert) => {
+    ActionType::Insert(insert) => {
       let opt_output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
       if let Some(output) = opt_output {
         session.text(format!("current: {output}")).await.unwrap();
