@@ -10,9 +10,9 @@ use log::error;
 use tokio::sync::{mpsc, oneshot};
 use tokio::sync::mpsc::UnboundedSender;
 
-use crate::living::live_coding::{LiveCoding, LivingVersion};
+use crate::living::live_coding::LiveCoding;
 use crate::living::random_name;
-use crate::model::{Command, ConnId, id_generator, FkResponse, RoomId};
+use crate::model::{Command, ConnId, FkResponse, id_generator, RemoteVersion, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
@@ -85,7 +85,7 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>, agent_name: impl Into<String>,) -> Option<String> {
+  pub(crate) async fn join(&self, conn: ConnId, room_id: impl Into<String>, agent_name: impl Into<String>) -> Option<String> {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -198,10 +198,10 @@ impl LivingEditServer {
 
   async fn broadcast_patch(&self, room: RoomId, skip: ConnId) {
     if let Some(sessions) = self.rooms.get(&room) {
-      let remote_version: LivingVersion;
+      let remote_version: RemoteVersion;
       let patch: Vec<u8>;
 
-      if let Some(coding) =  self.codings.get(&room) {
+      if let Some(coding) = self.codings.get(&room) {
         let coding = coding.lock().unwrap();
         remote_version = coding.remote_version();
         patch = coding.patch_from_version();
@@ -209,12 +209,10 @@ impl LivingEditServer {
         return;
       }
 
-      let versions = serde_json::to_string(&remote_version).unwrap();
-
       for conn_id in sessions {
         if *conn_id != skip {
           if let Some(tx) = self.sessions.get(conn_id) {
-            let _ = tx.send(FkResponse::upstream(versions.clone(), patch.clone()));
+            let _ = tx.send(FkResponse::upstream(remote_version.clone(), patch.clone()));
           }
         }
       }
@@ -325,7 +323,7 @@ impl LivingEditServer {
       None => {
         error!("room {:?} not found", room_id);
         None
-      },
+      }
     };
   }
 

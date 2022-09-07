@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use serde::Serialize;
 
-use crate::model::{ConnId, RoomId};
+use crate::model::{ConnId, RemoteVersion, RoomId};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JoinResponse {
@@ -27,7 +27,7 @@ pub struct InsertResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct UpstreamResponse {
-  pub version: String,
+  pub version: RemoteVersion,
   pub patch: Vec<u8>,
 }
 
@@ -49,7 +49,7 @@ impl FkResponse {
     FkResponse::SystemMessage(msg)
   }
 
-  pub fn upstream(version: String, patch: Vec<u8>) -> Self {
+  pub fn upstream(version: RemoteVersion, patch: Vec<u8>) -> Self {
     FkResponse::Upstream(UpstreamResponse {
       version,
       patch,

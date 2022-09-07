@@ -1,18 +1,16 @@
 use std::ops::Range;
 
 use diamond_types::{AgentId, LocalVersion, Time};
-use diamond_types::list::{OpLog};
 use diamond_types::list::encoding::ENCODE_PATCH;
-use diamond_types::list::remote_ids::RemoteId;
+use diamond_types::list::OpLog;
 use log::error;
-use smallvec::SmallVec;
+
+use crate::model::RemoteVersion;
 
 #[derive(Debug)]
 pub struct LiveCoding {
   pub(crate) inner: OpLog,
 }
-
-pub type LivingVersion = SmallVec<[RemoteId; 4]>;
 
 impl LiveCoding {
   pub fn new(agent_name: &str) -> Self {
@@ -57,7 +55,7 @@ impl LiveCoding {
     branch.content().to_string()
   }
 
-  pub fn remote_version(&self) -> LivingVersion {
+  pub fn remote_version(&self) -> RemoteVersion {
     self.inner.remote_version()
   }
 
@@ -67,7 +65,7 @@ impl LiveCoding {
     bytes
   }
 
-  fn to_local(&self, time: Time) -> LivingVersion {
+  fn to_local(&self, time: Time) -> RemoteVersion {
     let version = self.inner.local_to_remote_version(&[time]);
     version
   }
