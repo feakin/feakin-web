@@ -10,7 +10,7 @@ use tokio::sync::mpsc::UnboundedSender;
 
 use crate::LiveEditServerHandle;
 use crate::living::random_name;
-use crate::living_action_dto::ActionType;
+use crate::living_request::ActionType;
 use crate::living_model::Msg;
 use crate::living_model::ConnId;
 
