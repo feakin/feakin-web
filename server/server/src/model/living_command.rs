@@ -1,6 +1,6 @@
 use std::ops::Range;
 use tokio::sync::{mpsc, oneshot};
-use crate::model::{ConnId, DeleteResponse, FkResponse, InsertResponse, JoinResponse, RoomId};
+use crate::model::{ConnId, CreateResponse, DeleteResponse, FkResponse, InsertResponse, JoinResponse, RoomId};
 
 #[derive(Debug)]
 pub enum Command {
@@ -28,7 +28,7 @@ pub enum Command {
     content: String,
     agent_name: String,
     conn_tx: mpsc::UnboundedSender<FkResponse>,
-    res_tx: oneshot::Sender<()>,
+    res_tx: oneshot::Sender<CreateResponse>,
   },
 
   Join {

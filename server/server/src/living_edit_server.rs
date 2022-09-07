@@ -165,25 +165,25 @@ impl LivingEditServer {
           self.disconnect(conn).await;
         }
         Command::Create { conn, room_id, content, agent_name, conn_tx, res_tx } => {
-          self.create(room_id, conn, content, conn_tx, agent_name).await;
-          let _ = res_tx.send(());
+          let room_id = self.create(room_id, conn, content, conn_tx, agent_name).await;
+          let _ = res_tx.send(FkResponse::create(room_id));
         }
         Command::Join { conn, room_id, agent_name, res_tx } => {
           let output = self.join(conn, room_id, agent_name).await;
           let _ = res_tx.send(output);
         }
-        Command::List { res_tx } => {
-          let _ = res_tx.send(self.list_rooms());
-        }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
           let opt_version = self.insert(conn, room_id.clone(), content, pos).await;
           self.broadcast_patch(room_id, conn).await;
-
           let _ = res_tx.send(FkResponse::insert(opt_version));
         }
         Command::Delete { conn, room_id, range, res_tx } => {
           let opt_version = self.delete(conn, room_id, range).await;
           let _ = res_tx.send(FkResponse::delete(opt_version));
+        }
+
+        Command::List { res_tx } => {
+          let _ = res_tx.send(self.list_rooms());
         }
         Command::Content { room_id, res_tx } => {
           let content = self.content(room_id).await;
@@ -240,7 +240,7 @@ impl LivingEditServer {
     id_generator()
   }
 
-  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: UnboundedSender<FkResponse>, agent_name: String) {
+  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: UnboundedSender<FkResponse>, agent_name: String) -> String {
     self.sessions.insert(conn, conn_tx);
 
     self.agent_names.insert(conn, agent_name);
@@ -255,6 +255,8 @@ impl LivingEditServer {
     coding.insert(agent_name, 0, &content);
 
     self.codings.insert(room_id.clone(), Arc::new(Mutex::new(coding)));
+
+    room_id.clone()
   }
 
   async fn insert(&self, conn: ConnId, room_id: RoomId, content: String, pos: usize) -> Option<String> {

@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use serde::Serialize;
 
-use crate::model::{ConnId, RemoteVersion, RoomId};
+use crate::model::{RemoteVersion, RoomId};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JoinResponse {
@@ -15,7 +15,6 @@ pub struct JoinResponse {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct CreateResponse {
   pub room_id: RoomId,
-  pub conn_id: ConnId,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -79,7 +78,13 @@ impl FkResponse {
       error_msg,
       room_id,
       content,
-      agent_id
+      agent_id,
+    }
+  }
+
+  pub(crate) fn create(room_id: String) -> CreateResponse {
+    CreateResponse {
+      room_id,
     }
   }
 }
