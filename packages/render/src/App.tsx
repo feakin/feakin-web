@@ -13,10 +13,13 @@ import { CodeProp, RenderOptions, SupportedCodeLang } from "./type";
 import { HandDrawing } from "./graph/drawn-style/hand-drawing";
 import { NavBar } from "./layout/nav-bar";
 import { SupportedLayout } from "@feakin/exporter/src/layout/layout-engine";
-import { FkMonacoEditor } from "./components/FkMonacoEditor";
+import FkMonacoEditor from "./components/FkMonacoEditor";
+import { webSocket } from "rxjs/webSocket";
 
 export const App = () => {
   const history = new ChangeHistory();
+  // TODO: make url configurable
+  const [subject] = React.useState<any>(webSocket(`ws://localhost:8804/living/edit`));
   const [formats, setFormats] = React.useState<string[]>(() => []);
   const [renderOptions, setRenderOptions] = React.useState<RenderOptions>({
     layout: SupportedLayout.Dagre,
@@ -53,6 +56,12 @@ export const App = () => {
     })
   };
 
+  const [roomId, setRoomId] = React.useState<string>("");
+
+  const updateRoomId = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRoomId(event.target.value);
+  }
+
   return (
     <div>
       <NavBar code={ code } setCode={ setCode }/>
@@ -61,8 +70,10 @@ export const App = () => {
           <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>
             <TextField id="lang-name" disabled size="small" label="Language" value={ code.language }/>
             <TextField id="source-type" disabled size="small" label="Source Type" value={ code.sourceType }/>
+            <TextField id="roomId" size="small" label="Room Id" value={ roomId } onChange={ updateRoomId }/>
           </Box>
-          <FkMonacoEditor code={ code } setCode={ setCode }/>
+          <FkMonacoEditor code={ code } updateCode={ setCode } subject={ subject } room={ roomId }
+                          setRoomId={ setRoomId }/>
         </Grid2>
         <Grid2 xs={ 6 }>
           <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>
