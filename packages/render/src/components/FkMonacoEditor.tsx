@@ -1,12 +1,10 @@
 import MonacoEditor from "react-monaco-editor";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { WebSocketSubject } from "rxjs/webSocket";
 import { editor } from "monaco-editor";
 
 import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
-import { InitOutput } from "diamond-types-web";
-import { subscribeWrapper } from "./editor/subscribe-wrapper";
 
 export interface FkResponse {
   type: string;
@@ -22,13 +20,6 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   useEffect(() => {
     setRoomId(props.room);
   }, [props.room]);
-
-  const [crdt, setCrdt] = useState<InitOutput>(null as any);
-
-  subscribeWrapper("").then(r => {
-    setCrdt(r as any);
-  });
-
 
   useEffect(() => {
     subject.subscribe({
@@ -53,10 +44,6 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   });
 
   function updateFromPatch(msg: FkResponse) {
-    if (crdt != null) {
-      console.log(crdt);
-    }
-
     // const { start, end, text } = msg.value;
     // editor?.executeEdits("fk", new editor.EditOperation(start, end, text));
     // subscribe
