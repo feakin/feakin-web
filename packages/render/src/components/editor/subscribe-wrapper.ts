@@ -10,13 +10,12 @@ const randomId = (len = 12) => (
     .join('')
 )
 
-export async function subscribeWrapper(agentName: string) {
+export async function initBasicWasm() {
   await init()
+}
 
-  let doc = new Doc(agentName);
-
+export function createWrapper() {
   const braidOpts: ClientOpts = {
-    knownDoc: doc,
     parseDoc(contentType, content) {
       const id = randomId()
       let doc = Doc.fromBytes(content as any, id)

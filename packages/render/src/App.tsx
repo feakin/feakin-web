@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { SupportedFileType } from "@feakin/exporter";
 
@@ -62,6 +62,10 @@ export const App = () => {
     setRoomId(event.target.value);
   }
 
+  const joinRoom = () => {
+    subject.next({ "type": "JoinRoom", "value": { "room_id": roomId } });
+  }
+
   return (
     <div>
       <NavBar code={ code } setCode={ setCode }/>
@@ -71,6 +75,7 @@ export const App = () => {
             <TextField id="lang-name" disabled size="small" label="Language" value={ code.language }/>
             <TextField id="source-type" disabled size="small" label="Source Type" value={ code.sourceType }/>
             <TextField id="roomId" size="small" label="Room Id" value={ roomId } onChange={ updateRoomId }/>
+            <Button size={ "small" } onClick={ joinRoom }>Join</Button>
           </Box>
           <FkMonacoEditor code={ code } updateCode={ setCode } subject={ subject } room={ roomId }
                           setRoomId={ setRoomId }/>

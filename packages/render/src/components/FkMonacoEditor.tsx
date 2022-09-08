@@ -6,7 +6,7 @@ import { Buffer } from "buffer";
 
 import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
-import { subscribeWrapper } from "./editor/subscribe-wrapper";
+import { createWrapper, initBasicWasm } from "./editor/subscribe-wrapper";
 
 export interface FkUpstream {
   version: string;
@@ -28,12 +28,12 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     setRoomId(props.room);
   }, [props.room]);
 
-  const [crdt, setCrdt] = useState<any>(null as any);
+  const [isLoadingWasm, setIsLoadingWasm] = useState(Boolean);
 
   useEffect(() => {
-    if (crdt == null) {
-      subscribeWrapper("").then(r => {
-        setCrdt(r as any);
+    if (!isLoadingWasm) {
+      initBasicWasm().then((wasm) => {
+        setIsLoadingWasm(true);
       });
     }
   });
@@ -44,12 +44,16 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         if (roomId.length === 0 && msg.type === "CreateRoom") {
           props.setRoomId(msg.value.room_id);
           setRoomId(msg.value.room_id);
+          return;
         }
 
         // update from patch
         if (msg.type === "Upstream") {
           updateFromPatch(msg);
+          return;
         }
+
+        console.log(msg);
       },
       error: (err: any) => console.log(err),
       complete: () => console.log('complete')
@@ -61,10 +65,11 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   });
 
   function updateFromPatch(msg: FkResponse) {
-    if (crdt != null) {
-      console.log(Buffer.from(msg.value.patch));
-      console.log(crdt.parseDoc(null, msg.value.patch));
-    }
+    let clientOpts = createWrapper();
+    // todo: add init from content;
+    let patch = Buffer.from(msg.value.patch);
+    console.log(patch);
+    console.log(clientOpts.parseDoc!("string", patch));
 
     // const { start, end, text } = msg.value;
     // editor?.executeEdits("fk", new editor.EditOperation(start, end, text));
