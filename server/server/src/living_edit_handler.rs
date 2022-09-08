@@ -138,7 +138,7 @@ async fn process(
     ActionType::CreateRoom(room) => {
       let room_name = random_name();
       let agent_name = room.agent_name.unwrap_or(random_name());
-      let input = room.input.unwrap_or_default();
+      let input = room.content.unwrap_or_default();
       let output = edit_server.create(conn, room_name.clone(), agent_name, &input, conn_tx).await;
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }

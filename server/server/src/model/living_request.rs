@@ -15,7 +15,7 @@ pub struct InsertAction {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct CreateRoom {
   pub agent_name: Option<String>,
-  pub input: Option<String>,
+  pub content: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -68,7 +68,7 @@ mod tests {
   fn create_room() {
     let action = ActionType::CreateRoom(CreateRoom {
       agent_name: Some("agent".to_string()),
-      input: Some("hello".to_string()),
+      content: Some("hello".to_string()),
     });
     let json = serde_json::to_string(&action).unwrap();
 
@@ -78,7 +78,7 @@ mod tests {
 
     assert_eq!(action, ActionType::CreateRoom(CreateRoom {
       agent_name: Some("agent".to_string()),
-      input: Some("hello".to_string()),
+      content: Some("hello".to_string()),
     }));
   }
 

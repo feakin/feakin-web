@@ -32,7 +32,7 @@ impl LiveCoding {
   pub fn insert(&mut self, agent_name: &str, pos: usize, content: &str) -> Time {
     if pos > self.inner.len() {
       // catch for error
-      error!("pos out of range");
+      error!("insert： pos out of range");
       return self.inner.len();
     }
 
@@ -41,12 +41,25 @@ impl LiveCoding {
       return self.inner.len();
     }
 
+    // println!("content len: {}", self.inner.len());
+    // println!("insert: {} {} {}", agent_name, pos, content);
     let agent = self.inner.get_or_create_agent_id(agent_name);
     self.inner.add_insert(agent, pos, content)
   }
 
   pub fn delete(&mut self, agent_name: &str, range: Range<usize>) -> Time {
     let agent = self.inner.get_or_create_agent_id(agent_name);
+    if range.start > range.end {
+      error!("delete： start should < end");
+      return self.inner.len();
+    }
+
+    if (range.start > self.inner.len()) || (range.end > self.inner.len()) {
+      // catch for error
+      error!("delete： range out of range");
+      return self.inner.len();
+    }
+
     self.inner.add_delete_without_content(agent, range)
   }
 
