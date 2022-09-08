@@ -13,7 +13,10 @@ const randomId = (len = 12) => (
 export async function subscribeWrapper(agentName: string) {
   await init()
 
+  let doc = new Doc(agentName);
+
   const braidOpts: ClientOpts = {
+    knownDoc: doc,
     parseDoc(contentType, content) {
       const id = randomId()
       let doc = Doc.fromBytes(content as any, id)

@@ -1,14 +1,21 @@
 import MonacoEditor from "react-monaco-editor";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { WebSocketSubject } from "rxjs/webSocket";
 import { editor } from "monaco-editor";
+import { Buffer } from "buffer";
 
 import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
+import { subscribeWrapper } from "./editor/subscribe-wrapper";
+
+export interface FkUpstream {
+  version: string;
+  patch: Uint8Array;
+}
 
 export interface FkResponse {
   type: string;
-  value: any;
+  value: any | FkUpstream;
 }
 
 function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>, updateCode: (code: CodeProp) => void, room: string, setRoomId: (roomId: string) => void }) {
@@ -20,6 +27,16 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   useEffect(() => {
     setRoomId(props.room);
   }, [props.room]);
+
+  const [crdt, setCrdt] = useState<any>(null as any);
+
+  useEffect(() => {
+    if (crdt == null) {
+      subscribeWrapper("").then(r => {
+        setCrdt(r as any);
+      });
+    }
+  });
 
   useEffect(() => {
     subject.subscribe({
@@ -44,6 +61,11 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   });
 
   function updateFromPatch(msg: FkResponse) {
+    if (crdt != null) {
+      console.log(Buffer.from(msg.value.patch));
+      console.log(crdt.parseDoc(null, msg.value.patch));
+    }
+
     // const { start, end, text } = msg.value;
     // editor?.executeEdits("fk", new editor.EditOperation(start, end, text));
     // subscribe
