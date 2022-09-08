@@ -10,7 +10,7 @@ const randomId = (len = 12) => (
     .join('')
 )
 
-export async function subscribeGraph(agentName: string) {
+export async function subscribeWrapper(agentName: string) {
   await init()
 
   const braidOpts: ClientOpts = {

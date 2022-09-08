@@ -5,8 +5,8 @@ import { editor } from "monaco-editor";
 
 import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
-import { subscribeGraph } from "./editor/subscribe-graph";
 import { InitOutput } from "diamond-types-web";
+import { subscribeWrapper } from "./editor/subscribe-wrapper";
 
 export interface FkResponse {
   type: string;
@@ -25,7 +25,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
 
   const [crdt, setCrdt] = useState<InitOutput>(null as any);
 
-  subscribeGraph("").then(r => {
+  subscribeWrapper("").then(r => {
     setCrdt(r as any);
   });
 
