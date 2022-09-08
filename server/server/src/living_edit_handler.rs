@@ -139,10 +139,8 @@ async fn process(
       let room_name = random_name();
       let agent_name = room.agent_name.unwrap_or(random_name());
       let input = room.input.unwrap_or_default();
-      edit_server.create(conn, room_name.clone(), agent_name, &input, conn_tx).await;
-
-      //todo: make output to object
-      session.text(format!("create room {room_name} success!")).await.unwrap();
+      let output = edit_server.create(conn, room_name.clone(), agent_name, &input, conn_tx).await;
+      session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
     ActionType::JoinRoom(room) => {
       let agent_name = room.agent_name.unwrap_or(random_name());

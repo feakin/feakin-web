@@ -52,7 +52,7 @@ impl LiveEditServerHandle {
     self.cmd_tx.send(Command::Disconnect { conn }).unwrap();
   }
 
-  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, agent_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<FkResponse>) {
+  pub(crate) async fn create(&self, conn: ConnId, room_name: impl Into<String>, agent_name: impl Into<String>, content: impl Into<String>, conn_tx: &UnboundedSender<FkResponse>) -> FkResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
     self.cmd_tx
@@ -66,7 +66,7 @@ impl LiveEditServerHandle {
       })
       .unwrap();
 
-    res_rx.await.unwrap();
+    res_rx.await.unwrap()
   }
 
   pub(crate) async fn insert(&self, conn: ConnId, content: impl Into<String>, pos: usize, room_id: RoomId) -> FkResponse {
