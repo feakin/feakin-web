@@ -10,15 +10,9 @@ const randomId = (len = 12) => (
     .join('')
 )
 
-interface SubGraphOpts {
-  setStatus?(s: Status): void,
-  setInfo?(info: string): void,
-}
-
-export async function subscribeGraph(url: string, opts: SubGraphOpts = {}) {
+export async function subscribeGraph(agentName: string) {
   await init()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const braidOpts: ClientOpts = {
     parseDoc(contentType, content) {
       const id = randomId()
@@ -34,7 +28,5 @@ export async function subscribeGraph(url: string, opts: SubGraphOpts = {}) {
     }
   }
 
-  // todo: change to websocket
-  // let braid = await subscribe<[Doc, Uint32Array]>(url, braidOpts)
-  // let last_value = doc.get()
+  return braidOpts;
 }
