@@ -18,6 +18,10 @@ pub enum Command {
     res_tx: oneshot::Sender<Vec<RoomId>>,
   },
 
+  ListAgents {
+    res_tx: oneshot::Sender<Vec<String>>,
+  },
+
   // for current;
   Content {
     room_id: RoomId,

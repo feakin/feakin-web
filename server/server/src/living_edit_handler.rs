@@ -171,6 +171,12 @@ async fn execute_debug_command(edit_server: &LiveEditServerHandle, session: &mut
         session.text(room).await.unwrap();
       }
     }
+    "/agent" => {
+      let agents = edit_server.list_agent().await;
+      for agent in agents {
+        session.text(agent).await.unwrap();
+      }
+    }
     "/content" => match cmd_args.next() {
       Some(room_id) => {
         let output = edit_server.content(room_id.to_string()).await;

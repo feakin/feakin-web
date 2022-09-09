@@ -10,6 +10,7 @@ pub struct JoinResponse {
   pub room_id: RoomId,
   pub content: Vec<u8>,
   pub agent_id: String,
+  pub agent_name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -72,13 +73,14 @@ impl FkResponse {
     })
   }
 
-  pub(crate) fn join(room_id: String, content: Vec<u8>, agent_id: String, error_msg: Option<String>) -> Self {
+  pub(crate) fn join(room_id: String, content: Vec<u8>, agent_id: String, error_msg: Option<String>, agent_name: String) -> Self {
     FkResponse::Join(JoinResponse {
       success: error_msg.is_none(),
       error_msg,
       room_id,
       content,
       agent_id,
+      agent_name
     })
   }
 

@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 use diamond_types::{AgentId, LocalVersion, Time};
-use diamond_types::list::encoding::{ENCODE_FULL, ENCODE_PATCH};
+use diamond_types::list::encoding::{ENCODE_FULL, ENCODE_PATCH, EncodeOptions};
 use diamond_types::list::OpLog;
 use log::error;
 
@@ -41,10 +41,18 @@ impl LiveCoding {
       return self.inner.len();
     }
 
-    // println!("content len: {}", self.inner.len());
-    // println!("insert: {} {} {}", agent_name, pos, content);
     let agent = self.inner.get_or_create_agent_id(agent_name);
     self.inner.add_insert(agent, pos, content)
+  }
+
+  pub fn create(&mut self, agent_name: &str, content: &str) -> Time {
+    if content.is_empty() {
+      self.inner.get_or_create_agent_id(agent_name);
+      return self.inner.len();
+    }
+
+    let agent = self.inner.get_or_create_agent_id(agent_name);
+    self.inner.add_insert_at(agent, &[], 0, content)
   }
 
   pub fn delete(&mut self, agent_name: &str, range: Range<usize>) -> Time {
@@ -63,8 +71,8 @@ impl LiveCoding {
     self.inner.add_delete_without_content(agent, range)
   }
 
-  pub fn to_bytes(&self) -> Vec<u8> {
-    let bytes = self.inner.encode(ENCODE_FULL);
+  pub fn base_version(&self) -> Vec<u8> {
+    let bytes = self.inner.encode_from(EncodeOptions::default(), &[0]);
     bytes
   }
 
