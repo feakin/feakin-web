@@ -8,6 +8,7 @@ import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
 import { createWrapper, initBasicWasm } from "./editor/subscribe-wrapper";
 import { ClientOpts } from "@braid-protocol/client";
+import { Doc, OpLog } from "diamond-types-web";
 
 export interface FkUpstream {
   version: string;
@@ -51,8 +52,14 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
       }
       case "Join": {
         let buffer = Buffer.from(content);
-        let doc = wrapper.parseDoc!("application/diamond-types", buffer);
-        console.log(doc);
+        console.log(buffer);
+        let doc = Doc.fromBytes([] as any, "agent");
+        doc.merge(buffer as any);
+        // let opLog: OpLog = OpLog.fromBytes(buffer, "agent");
+
+        // console.log(doc);
+        // let doc = wrapper.parseDoc!("application/diamond-types", buffer);
+        // console.log(doc);
         setBraid(wrapper);
         break;
       }
