@@ -7,6 +7,7 @@ import { Buffer } from "buffer";
 import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
 import { createWrapper, initBasicWasm } from "./editor/subscribe-wrapper";
+import { ClientOpts } from "@braid-protocol/client";
 
 export interface FkUpstream {
   version: string;
@@ -23,6 +24,8 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   const [subject] = React.useState<WebSocketSubject<any>>(props.subject);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editor, setEditor] = React.useState<editor.IStandaloneCodeEditor>();
+  // @ts-ignore
+  const [braid, setBraid] = React.useState<ClientOpts>(null);
 
   useEffect(() => {
     setRoomId(props.room);
@@ -38,13 +41,38 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     }
   });
 
+  function initDoc(content: any, type: string) {
+    let wrapper = createWrapper();
+
+    switch (type) {
+      case "CreateRoom": {
+        setBraid(createWrapper());
+        break;
+      }
+      case "Join": {
+        let buffer = Buffer.from(content);
+        let doc = wrapper.parseDoc!("application/diamond-types", buffer);
+        console.log(doc);
+        setBraid(wrapper);
+        break;
+      }
+    }
+  }
+
   useEffect(() => {
     subject.subscribe({
       next: (msg: FkResponse) => {
         if (roomId.length === 0 && msg.type === "CreateRoom") {
           props.setRoomId(msg.value.room_id);
           setRoomId(msg.value.room_id);
+
+          // todo: make return from backend?
+          // initDoc(props.code.content, "CreateRoom");
           return;
+        }
+
+        if (msg.type === "Join") {
+          initDoc(msg.value.content, "Join");
         }
 
         // update from patch
@@ -65,11 +93,10 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   });
 
   function updateFromPatch(msg: FkResponse) {
-    let clientOpts = createWrapper();
     // todo: add init from content;
     let patch = Buffer.from(msg.value.patch);
     console.log(patch);
-    console.log(clientOpts.parseDoc!("string", patch));
+    console.log(braid.parseDoc!("string", patch));
 
     // const { start, end, text } = msg.value;
     // editor?.executeEdits("fk", new editor.EditOperation(start, end, text));
