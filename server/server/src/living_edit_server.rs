@@ -22,7 +22,7 @@ pub struct LivingEditServer {
 
   codings: HashMap<RoomId, Arc<Mutex<LiveCoding>>>,
 
-  versions: HashMap<RoomId, Time>,
+  versions: HashMap<RoomId, LocalVersion>,
 
   agents: HashMap<ConnId, String>,
 
@@ -255,19 +255,18 @@ impl LivingEditServer {
   async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: UnboundedSender<FkResponse>, agent_name: String) -> String {
     self.sessions.insert(conn, conn_tx);
 
-    self.agents.insert(conn, agent_name);
+    self.agents.insert(conn, agent_name.clone());
 
     self.rooms
       .entry(room_id.clone())
       .or_insert_with(HashSet::new)
       .insert(conn);
 
-    let agent_name = &random_name();
-
     let mut coding = LiveCoding::new(&agent_name);
-    let version = coding.create(agent_name, &content);
+    coding.create(&agent_name, &content);
 
-    self.versions.insert(room_id.clone(), version);
+    let vec = coding.inner.local_version();
+    self.versions.insert(room_id.clone(), vec);
     self.codings.insert(room_id.clone(), Arc::new(Mutex::new(coding)));
 
     room_id.clone()
@@ -279,8 +278,8 @@ impl LivingEditServer {
         let mut mutex_coding = coding.lock().unwrap();
         let agent = conn.to_string();
 
-        let version = mutex_coding.insert(&*agent, pos, &content);
-        self.versions.insert(room_id, version);
+        mutex_coding.insert(&*agent, pos, &content);
+        // self.versions.insert(room_id, version);
 
         let content = mutex_coding.content().clone();
         Some(content)
@@ -298,8 +297,8 @@ impl LivingEditServer {
         let mut mutex_coding = coding.lock().unwrap();
         let agent = conn.to_string();
 
-        let version = mutex_coding.delete(&*agent, range);
-        self.versions.insert(room_id, version);
+        mutex_coding.delete(&*agent, range);
+        // self.versions.insert(room_id, version);
 
         Some("".to_string())
       }
@@ -325,19 +324,15 @@ impl LivingEditServer {
   }
 
   async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> FkResponse {
-    self.rooms
-      .entry(room_id.clone())
-      .or_insert_with(HashSet::new)
-      .insert(conn);
-
-    self.agents.insert(conn, agent_name.clone());
-
     return match self.codings.get_mut(&*room_id.clone()) {
       Some(coding) => {
         let mut mutex_coding = coding.lock().unwrap();
 
+        let data = mutex_coding.bytes();
+        println!("data: {:?}", data);
+
+        self.agents.insert(conn, agent_name.clone());
         let agent_id = mutex_coding.join(&*agent_name);
-        let data = mutex_coding.base_version();
 
         FkResponse::join(room_id.clone(), data, agent_id.to_string(), None, agent_name)
       }
