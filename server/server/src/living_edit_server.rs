@@ -319,11 +319,12 @@ impl LivingEditServer {
     return match self.codings.get_mut(&*room_id.clone()) {
       Some(coding) => {
         let agent_id = coding.lock().unwrap().join(&*agent_name);
-        FkResponse::join(room_id.clone(), "".to_string(), agent_id.to_string(), None)
+        let data = coding.lock().unwrap().to_bytes();
+        FkResponse::join(room_id.clone(), data, agent_id.to_string(), None)
       }
       None => {
         let error_msg = format!("room {:?} not found", room_id);
-        FkResponse::join("".to_string(), "".to_string(), "".to_string(), Some(error_msg))
+        FkResponse::join("".to_string(), vec![], "".to_string(), Some(error_msg))
       }
     };
   }

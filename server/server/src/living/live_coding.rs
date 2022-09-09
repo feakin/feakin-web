@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 use diamond_types::{AgentId, LocalVersion, Time};
-use diamond_types::list::encoding::ENCODE_PATCH;
+use diamond_types::list::encoding::{ENCODE_FULL, ENCODE_PATCH};
 use diamond_types::list::OpLog;
 use log::error;
 
@@ -61,6 +61,11 @@ impl LiveCoding {
     }
 
     self.inner.add_delete_without_content(agent, range)
+  }
+
+  pub fn to_bytes(&self) -> Vec<u8> {
+    let bytes = self.inner.encode(ENCODE_FULL);
+    bytes
   }
 
   pub fn content(&self) -> String {
