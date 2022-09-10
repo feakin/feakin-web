@@ -1,3 +1,4 @@
+use diamond_types::LocalVersion;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -30,7 +31,8 @@ pub struct InsertResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct UpstreamResponse {
-  pub version: RemoteVersion,
+  pub before: LocalVersion,
+  pub after: LocalVersion,
   pub patch: Vec<u8>,
 }
 
@@ -54,22 +56,23 @@ impl FkResponse {
     FkResponse::SystemMessage(msg)
   }
 
-  pub fn upstream(version: RemoteVersion, patch: Vec<u8>) -> Self {
+  pub fn upstream(before: LocalVersion, after: LocalVersion, patch: Vec<u8>) -> Self {
     FkResponse::Upstream(UpstreamResponse {
-      version,
+      before,
+      after,
       patch,
     })
   }
 
-  pub(crate) fn delete(content: Option<String>) -> Self {
+  pub(crate) fn delete(version: Option<LocalVersion>) -> Self {
     FkResponse::Delete(DeleteResponse {
-      success: content.is_some(),
+      success: version.is_some(),
     })
   }
 
-  pub(crate) fn insert(content: Option<String>) -> Self {
+  pub(crate) fn insert(version: Option<LocalVersion>) -> Self {
     FkResponse::Insert(InsertResponse {
-      success: content.is_some(),
+      success: version.is_some(),
     })
   }
 

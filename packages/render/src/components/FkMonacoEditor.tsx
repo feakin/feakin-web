@@ -29,6 +29,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   const [braid, setBraid] = React.useState<ClientOpts>(null);
   const [doc, setDoc] = React.useState<Doc>(null as any);
   const [isLoadingWasm, setIsLoadingWasm] = useState(false);
+  const [agentName] = useState("feakin")
 
   useEffect(() => {
     setRoomId(props.room);
@@ -50,10 +51,10 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     switch (type) {
       case "CreateRoom": {
         let opLog = new OpLog();
-        opLog.setAgent("root");
+        opLog.setAgent(agentName);
         opLog.ins(0, props.code.content);
 
-        let fromDoc = Doc.fromBytes(opLog.toBytes(), "root");
+        let fromDoc = Doc.fromBytes(opLog.toBytes(), agentName);
         setDoc(fromDoc);
         break;
       }
@@ -103,16 +104,21 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     });
 
     if (roomId.length <= 0) {
-      subject.next({ "type": "CreateRoom", "value": { "agent_name": "agent", "content": props.code.content } });
+      subject.next({ "type": "CreateRoom", "value": { "agent_name": agentName, "content": props.code.content } });
     }
   }, [isLoadingWasm]);
 
   useEffect(() => {
     if (braid && doc && patch.length > 0) {
-      let merge_version = doc.mergeBytes(patch)
-      console.log("merge version: " + merge_version);
-      let new_version = doc.mergeVersions(doc.getLocalVersion(), merge_version)
-      console.log(new_version);
+      try {
+        console.log(patch)
+        let merge_version = doc.mergeBytes(patch)
+        console.log("merge version: " + merge_version);
+        let new_version = doc.mergeVersions(doc.getLocalVersion(), merge_version)
+        console.log(new_version);
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     // const { start, end, text } = msg.value;

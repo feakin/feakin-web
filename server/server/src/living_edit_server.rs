@@ -5,14 +5,13 @@ use std::sync::{Arc, Mutex};
 
 use actix::Actor;
 use actix_web_actors::ws;
-use diamond_types::{LocalVersion, Time};
+use diamond_types::{LocalVersion};
 use log::error;
 use tokio::sync::{mpsc, oneshot};
 use tokio::sync::mpsc::UnboundedSender;
 
 use crate::living::live_coding::LiveCoding;
-use crate::living::random_name;
-use crate::model::{Command, ConnId, FkResponse, id_generator, RemoteVersion, RoomId};
+use crate::model::{Command, ConnId, FkResponse, id_generator, RoomId};
 
 #[derive(Debug)]
 pub struct LivingEditServer {
@@ -178,14 +177,25 @@ impl LivingEditServer {
           let _ = res_tx.send(output);
         }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
-          let opt_version = self.insert(conn, room_id.clone(), content, pos).await;
-          self.broadcast_patch(room_id, conn).await;
-          let _ = res_tx.send(FkResponse::insert(opt_version));
+          let before_version: Option<LocalVersion> = match self.versions.get(&room_id) {
+            None => None,
+            Some(v) => Some(v.clone())
+          };
+          let after_version = self.insert(conn, room_id.clone(), content, pos).await;
+          self.broadcast_patch(room_id, conn, before_version, after_version.clone()).await;
+
+          let _ = res_tx.send(FkResponse::insert(after_version));
         }
         Command::Delete { conn, room_id, range, res_tx } => {
-          let opt_version = self.delete(conn, room_id.clone(), range).await;
-          self.broadcast_patch(room_id, conn).await;
-          let _ = res_tx.send(FkResponse::delete(opt_version));
+          let before_version: Option<LocalVersion> = match self.versions.get(&room_id) {
+            None => None,
+            Some(v) => Some(v.clone())
+          };
+
+          let after_version = self.delete(conn, room_id.clone(), range).await;
+
+          self.broadcast_patch(room_id, conn, before_version, after_version.clone()).await;
+          let _ = res_tx.send(FkResponse::delete(after_version));
         }
         Command::List { res_tx } => {
           let _ = res_tx.send(self.list_rooms());
@@ -203,15 +213,20 @@ impl LivingEditServer {
     Ok(())
   }
 
-  async fn broadcast_patch(&self, room: RoomId, skip: ConnId) {
+  async fn broadcast_patch(&self, room: RoomId, skip: ConnId, before_version: Option<LocalVersion>, after_version: Option<LocalVersion>) {
+    if before_version.is_none() || after_version.is_none() {
+      return;
+    }
+
+    let before = before_version.unwrap();
+    let after = after_version.unwrap();
+
     if let Some(sessions) = self.rooms.get(&room) {
-      let remote_version: RemoteVersion;
       let patch: Vec<u8>;
 
       if let Some(coding) = self.codings.get(&room) {
         let coding = coding.lock().unwrap();
-        remote_version = coding.remote_version();
-        patch = coding.patch_from_version();
+        patch = coding.patch_since(&before);
       } else {
         return;
       }
@@ -219,7 +234,7 @@ impl LivingEditServer {
       for conn_id in sessions {
         if *conn_id != skip {
           if let Some(tx) = self.sessions.get(conn_id) {
-            let _ = tx.send(FkResponse::upstream(remote_version.clone(), patch.clone()));
+            let _ = tx.send(FkResponse::upstream(before.clone(), after.clone(), patch.clone()));
           }
         }
       }
@@ -272,17 +287,15 @@ impl LivingEditServer {
     room_id.clone()
   }
 
-  async fn insert(&mut self, conn: ConnId, room_id: RoomId, content: String, pos: usize) -> Option<String> {
+  async fn insert(&mut self, conn: ConnId, room_id: RoomId, content: String, pos: usize) -> Option<LocalVersion> {
     match self.codings.get(&*room_id) {
       Some(coding) => {
         let mut mutex_coding = coding.lock().unwrap();
         let agent = conn.to_string();
 
         mutex_coding.insert(&*agent, pos, &content);
-        // self.versions.insert(room_id, version);
 
-        let content = mutex_coding.content().clone();
-        Some(content)
+        Some(mutex_coding.local_version())
       }
       None => {
         error!("room {:?} not found", room_id);
@@ -291,16 +304,14 @@ impl LivingEditServer {
     }
   }
 
-  async fn delete(&mut self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> Option<String> {
+  async fn delete(&mut self, conn: ConnId, room_id: RoomId, range: Range<usize>) -> Option<LocalVersion> {
     match self.codings.get(&*room_id) {
       Some(coding) => {
         let mut mutex_coding = coding.lock().unwrap();
         let agent = conn.to_string();
 
         mutex_coding.delete(&*agent, range);
-        // self.versions.insert(room_id, version);
-
-        Some("".to_string())
+        Some(mutex_coding.local_version())
       }
       None => {
         error!("room {:?} not found", room_id);
@@ -329,7 +340,6 @@ impl LivingEditServer {
         let mut mutex_coding = coding.lock().unwrap();
 
         let data = mutex_coding.bytes();
-        println!("data: {:?}", data);
 
         self.agents.insert(conn, agent_name.clone());
         let agent_id = mutex_coding.join(&*agent_name);

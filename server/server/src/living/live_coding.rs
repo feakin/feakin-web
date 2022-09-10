@@ -77,23 +77,12 @@ impl LiveCoding {
     branch.content().to_string()
   }
 
-  pub fn remote_version(&self) -> RemoteVersion {
-    self.inner.remote_version()
+  pub fn local_version(&self) -> LocalVersion {
+    self.inner.local_version()
   }
 
-  pub fn patch_from_version(&self) -> Vec<u8> {
-    let local_version = self.inner.local_version();
-    let bytes = self.inner.encode_from(ENCODE_PATCH, &local_version);
-    bytes
-  }
-
-  fn to_local(&self, time: Time) -> RemoteVersion {
-    let version = self.inner.local_to_remote_version(&[time]);
-    version
-  }
-
-  fn encode_from_version(&self, version: &[Time]) -> Vec<u8> {
-    let bytes = self.inner.encode_from(ENCODE_PATCH, version);
+  pub fn patch_since(&self, before: &LocalVersion) -> Vec<u8> {
+    let bytes = self.inner.encode_from(ENCODE_PATCH, &before);
     bytes
   }
 }
@@ -101,7 +90,6 @@ impl LiveCoding {
 #[cfg(test)]
 mod tests {
   use diamond_types::list::OpLog;
-  use js_sys::Uint8Array;
 
   use crate::living::live_coding::LiveCoding;
 
@@ -141,47 +129,6 @@ mod tests {
     let branch = live.inner.checkout(&local);
 
     assert_eq!(branch.content().to_string(), "abef");
-  }
-
-  #[test]
-  fn patch_history() {
-    let agent1 = "phodal";
-    let agent2 = "hello";
-
-    let mut live = LiveCoding::new("root");
-    live.insert("root", 0, "abcdef");
-
-    live.insert(agent1, 2, "zero");
-
-    live.join(agent2);
-    let history_version = live.inner.local_version();
-
-    live.delete(agent2, 2..8);
-
-    let local = live.inner.local_version();
-    live.inner.checkout(&local);
-
-    let bytes = live.encode_from_version(&history_version);
-    assert!(bytes.len() > 0);
-  }
-
-  #[test]
-  fn version() {
-    let agent1 = "phodal";
-    let agent2 = "hello";
-
-    let mut live = LiveCoding::new("root");
-    live.insert("root", 0, "abcdef");
-
-    live.insert(agent1, 2, "zero");
-
-    live.join(agent2);
-
-    let time = live.delete(agent2, 2..8);
-
-    let vec = live.to_local(time);
-
-    assert_eq!(vec.len(), 1);
   }
 
   #[test]
