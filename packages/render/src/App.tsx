@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { SupportedFileType } from "@feakin/exporter";

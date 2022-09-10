@@ -1,7 +1,7 @@
 import MonacoEditor from "react-monaco-editor";
 import React, { useCallback, useEffect, useState } from "react";
 import { WebSocketSubject } from "rxjs/webSocket";
-import { editor } from "monaco-editor";
+import { editor, Selection } from "monaco-editor";
 import { Buffer } from "buffer";
 
 import { addDotLangSupport } from "./editor/dot-lang";
@@ -26,6 +26,8 @@ export interface FkResponse {
   value: any | FkUpstream | FkPatch;
 }
 
+export type DTOp = { kind: 'Ins' | 'Del', start: number, end: number, fwd?: boolean, content?: string }
+
 function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>, updateCode: (code: CodeProp) => void, room: string, setRoomId: (roomId: string) => void }) {
   const [roomId, setRoomId] = React.useState<string>(props.room);
   const [subject] = React.useState<WebSocketSubject<any>>(props.subject);
@@ -38,7 +40,6 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   const [agentName] = useState("feakin")
 
   const [content, setContent] = React.useState<string>(props.code.content);
-  const [serverVersion, setServerVersion] = React.useState<any>(null);
 
   useEffect(() => {
     setRoomId(props.room);
@@ -56,7 +57,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     }
   });
 
-  function initDoc(content: any, type: string) {
+  const initDoc = useCallback((content: any, type: string) => {
     switch (type) {
       case "CreateRoom": {
         let opLog = new OpLog();
@@ -64,23 +65,22 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         opLog.ins(0, props.code.content);
 
         let fromDoc = Doc.fromBytes(opLog.toBytes(), agentName);
+
         setDoc(fromDoc);
         break;
       }
       case "Join": {
         let doc = Doc.fromBytes(content as any, agentName)
-        let version = doc.getLocalVersion()
 
         setDoc(doc);
         setContent(doc.get());
-        setServerVersion(version);
         break;
       }
       default: {
         console.log("unknown type");
       }
     }
-  }
+  }, [agentName, props.code.content])
 
   const [patchInfo, setPatchInfo] = React.useState<FkPatch>(null as any);
 
@@ -91,8 +91,6 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
 
     subject.subscribe({
       next: (msg: FkResponse) => {
-        console.log(msg);
-
         if (roomId.length === 0 && msg.type === "CreateRoom") {
           initDoc(msg.value.content, "CreateRoom");
 
@@ -107,7 +105,6 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         }
 
         if (msg.type === "Upstream") {
-          // @ts-ignore
           setPatchInfo(msg.value);
           return;
         }
@@ -117,34 +114,48 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     });
 
     if (roomId.length <= 0) {
+      // Todo: change content to be a json object? But since is same library? will be generate same version?
       subject.next({ "type": "CreateRoom", "value": { "agent_name": agentName, "content": props.code.content } });
     }
-  }, [isLoadingWasm]);
+  }, [agentName, initDoc, isLoadingWasm, props, roomId.length, subject]);
 
   useEffect(() => {
     // Todo: apply patchInfo refactor;
     if (braid && doc && patchInfo) {
+      console.log(doc.getLocalVersion());
+
       try {
         let merge_version = doc.mergeBytes(Buffer.from(patchInfo.patch))
-        doc.mergeVersions(doc.getLocalVersion(), merge_version)
+        doc.mergeVersions(doc.getLocalVersion(), merge_version);
 
-        // if (doc.getLocalVersion() !== serverVersion) {
-        //   throw new Error("merge failed");
-        // }
-        // todo: use editor to update;
-
-        let xfSince = doc.xfSince(patchInfo.before);
-        console.log(xfSince);
-        setContent(doc.get());
+        let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
+        xfSinces.forEach((op) => {
+          switch (op.kind) {
+            case "Ins": {
+              let monacoModel = editor!.getModel();
+              const pos = monacoModel!.getPositionAt(op.start);
+              const range = new Selection(pos.lineNumber, pos.column, pos.lineNumber, pos.column)
+              monacoModel?.applyEdits([{ range, text: op.content! }])
+              break;
+            }
+            case "Del": {
+              let monacoModel = editor!.getModel();
+              const start = monacoModel!.getPositionAt(op.start);
+              const end = monacoModel!.getPositionAt(op.end);
+              const range = new Selection(start.lineNumber, start.column, end.lineNumber, end.column)
+              monacoModel?.applyEdits([{ range, text: "" }])
+              break;
+            }
+            default: {
+              console.log("unknown op: ", op);
+            }
+          }
+        });
       } catch (e) {
         console.log(e);
       }
     }
-
-    // const { start, end, text } = msg.value;
-    // editor?.executeEdits("fk", new editor.EditOperation(start, end, text));
-    // subscribe
-  }, [patchInfo]);
+  }, [braid, doc, editor, patchInfo]);
 
   const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
     event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
