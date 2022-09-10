@@ -8,7 +8,7 @@ import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
 import { createWrapper, initBasicWasm } from "./editor/subscribe-wrapper";
 import { ClientOpts } from "@braid-protocol/client";
-import { Doc, OpLog } from "@feakin/diamond-types-web";
+import { OpLog } from "@feakin/diamond-types-web";
 
 export interface FkUpstream {
   version: string;
@@ -40,7 +40,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         setIsLoadingWasm(true);
 
         let opLog = new OpLog();
-        console.log(opLog.toBytes());
+        console.log(opLog.toBytes())
       });
     }
   });
@@ -55,21 +55,8 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
       }
       case "Join": {
         let buffer = Buffer.from(content);
-        console.log(buffer);
-        let doc = Doc.fromBytes(buffer, "root");
-        // let doc = Doc.fromBytes(Buffer.from( [
-        //     68, 77, 78,  68, 84,  89,  80,  83,  0,
-        //     1,  2,  3,   0, 10,   7,  12,   2,  0,
-        //     0, 13,  1,   4, 20,   6,  21,   0, 22,
-        //     0, 23,  0, 100,  4, 108, 206, 107,  0
-        //   ]
-        // ), "agent");
-        // doc.merge(buffer as any);
-        // let opLog: OpLog = OpLog.fromBytes(buffer, "agent");
-
-        // console.log(doc);
-        // let doc = wrapper.parseDoc!("application/diamond-types", buffer);
-        // console.log(doc);
+        let doc = wrapper.parseDoc!("application/diamond-types", buffer);
+        console.log(doc);
         setBraid(wrapper);
         break;
       }
@@ -105,7 +92,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     });
 
     if (roomId.length <= 0) {
-      subject.next({ "type": "CreateRoom", "value": { "agent_name": "agent", "content": "" } });
+      subject.next({ "type": "CreateRoom", "value": { "agent_name": "agent", "content": props.code.content } });
     }
   });
 

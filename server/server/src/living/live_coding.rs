@@ -202,13 +202,4 @@ mod tests {
     let log = OpLog::load_from(&data).unwrap();
     assert_eq!(log.len(), 210);
   }
-
-  #[test]
-  fn bytes_for_js() {
-    let mut live = LiveCoding::new("root");
-    let data = live.bytes();
-    let output = data.collect::<Vec<u32>>();
-
-    assert_eq!(num, 59);
-  }
 }
