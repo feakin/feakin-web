@@ -283,8 +283,10 @@ impl LivingEditServer {
       }
 
       for conn_id in sessions {
-        if let Some(tx) = self.sessions.get(conn_id) {
-          let _ = tx.send(FkResponse::upstream(before.clone(), after.clone(), patch.clone()));
+        if *conn_id != skip {
+          if let Some(tx) = self.sessions.get(conn_id) {
+            let _ = tx.send(FkResponse::upstream(before.clone(), after.clone(), patch.clone()));
+          }
         }
       }
     }

@@ -95,6 +95,11 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
           setPatchInfo(msg.value);
           return;
         }
+
+        if (msg.type === "Patches") {
+          setPatchInfo(msg.value);
+          return;
+        }
       },
       error: (err: any) => console.log(err),
       complete: () => console.log('complete')
@@ -112,6 +117,10 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       try {
         console.log(`before: ${ patchInfo.before }, after: ${ patchInfo.after }`);
         console.log(`local version: ${ doc.getLocalVersion() }, remote version: ${ doc.getRemoteVersion() }`);
+
+        if (doc.getLocalVersion() === patchInfo.after) {
+          return;
+        }
 
         let bytes = Buffer.from(patchInfo.patch);
 
@@ -144,7 +153,11 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
         //   }
         // });
       } catch (e) {
-        console.log(e);
+        console.error(e);
+        // let version = doc.getLocalVersion();
+        // console.info("try patch for local version: ", version);
+        // const arr = Array.prototype.slice.call(version, 0);
+        // subject.next({ "type": "UpdateByVersion", "value": { "room_id": roomId, "version": arr } });
       }
     }
   }, [editor, patchInfo, doc]);
@@ -157,6 +170,8 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
           type: "Insert",
           value: { content: change.text, pos: change.rangeOffset, room_id: roomId }
         });
+
+        doc.ins(change.rangeOffset, change.text);
       }
 
       if (change.rangeLength > 0) {
@@ -167,7 +182,11 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
             room_id: roomId
           }
         })
+
+        doc.del(change.rangeOffset, change.rangeLength);
       }
+
+      console.log(doc.getLocalVersion());
     })
 
     props.updateCode({
