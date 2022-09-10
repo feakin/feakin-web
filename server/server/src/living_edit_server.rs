@@ -241,6 +241,7 @@ impl LivingEditServer {
       }
 
       for conn_id in sessions {
+        println!("broadcasting patch to {}, agent: {}", conn_id, self.agents.get(conn_id).unwrap());
         if *conn_id != skip {
           if let Some(tx) = self.sessions.get(conn_id) {
             let _ = tx.send(FkResponse::upstream(before.clone(), after.clone(), patch.clone()));
@@ -344,13 +345,18 @@ impl LivingEditServer {
   }
 
   async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> FkResponse {
+    self.rooms
+      .entry(room_id.clone())
+      .or_insert_with(HashSet::new)
+      .insert(conn);
+    self.agents.insert(conn, agent_name.clone());
+
     return match self.codings.get_mut(&*room_id.clone()) {
       Some(coding) => {
         let mut mutex_coding = coding.lock().unwrap();
 
         let data = mutex_coding.bytes();
 
-        self.agents.insert(conn, agent_name.clone());
         let agent_id = mutex_coding.join(&*agent_name);
 
         FkResponse::join(room_id.clone(), data, agent_id.to_string(), None, agent_name)
