@@ -6,7 +6,7 @@ use std::sync::{Arc, Mutex};
 use actix::Actor;
 use actix_web_actors::ws;
 use diamond_types::{LocalVersion};
-use log::error;
+use log::{error, info};
 use tokio::sync::{mpsc, oneshot};
 use tokio::sync::mpsc::UnboundedSender;
 
@@ -177,6 +177,7 @@ impl LivingEditServer {
           let _ = res_tx.send(output);
         }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
+          info!("inserting {} at {}", content, pos);
           let before_version: Option<LocalVersion> = match self.versions.get(&room_id) {
             None => None,
             Some(v) => Some(v.clone())
@@ -187,6 +188,7 @@ impl LivingEditServer {
           let _ = res_tx.send(FkResponse::insert(after_version));
         }
         Command::Delete { conn, room_id, range, res_tx } => {
+          info!("delete: {:?}", range);
           let before_version: Option<LocalVersion> = match self.versions.get(&room_id) {
             None => None,
             Some(v) => Some(v.clone())

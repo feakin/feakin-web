@@ -31,6 +31,8 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   const [isLoadingWasm, setIsLoadingWasm] = useState(false);
   const [agentName] = useState("feakin")
 
+  const [content, setContent] = React.useState<string>(props.code.content);
+
   useEffect(() => {
     setRoomId(props.room);
   }, [props.room]);
@@ -111,11 +113,11 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   useEffect(() => {
     if (braid && doc && patch.length > 0) {
       try {
-        console.log(patch)
         let merge_version = doc.mergeBytes(patch)
-        console.log("merge version: " + merge_version);
-        let new_version = doc.mergeVersions(doc.getLocalVersion(), merge_version)
-        console.log(new_version);
+        doc.mergeVersions(doc.getLocalVersion(), merge_version)
+
+        // todo: use editor to update;
+        setContent(doc.get());
       } catch (e) {
         console.log(e);
       }
@@ -149,6 +151,8 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
       ...props.code,
       content: newValue
     });
+
+    setContent(newValue);
   }, [props, subject, roomId]);
 
   const editorDidMount = useCallback((editor: any, monaco: any) => {
@@ -164,7 +168,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     height="100vh"
     language={ props.code.language }
     theme="vs-dark"
-    value={ props.code.content }
+    value={ content }
     onChange={ handleTextChange }
     editorDidMount={ editorDidMount }
     options={ {
