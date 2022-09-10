@@ -25,10 +25,6 @@ impl LiveCoding {
     id
   }
 
-  pub fn version(&self) -> LocalVersion {
-    self.inner.local_version()
-  }
-
   pub fn insert(&mut self, agent_name: &str, pos: usize, content: &str) -> Time {
     if pos > self.inner.len() {
       // catch for error
@@ -120,7 +116,7 @@ mod tests {
     coding.insert(agent1, 5, "zero");
 
     let _agent = coding.join(agent2);
-    let version = coding.version();
+    let version = coding.inner.local_version();
 
     assert_eq!(version.len(), 1);
     let branch = coding.inner.checkout(&version);
@@ -157,7 +153,7 @@ mod tests {
     live.insert(agent1, 2, "zero");
 
     live.join(agent2);
-    let history_version = live.version();
+    let history_version = live.inner.local_version();
 
     live.delete(agent2, 2..8);
 
@@ -165,7 +161,6 @@ mod tests {
     live.inner.checkout(&local);
 
     let bytes = live.encode_from_version(&history_version);
-    // assert_eq!(String::from_utf8_lossy(&bytes), "abef".to_string());
     assert!(bytes.len() > 0);
   }
 
