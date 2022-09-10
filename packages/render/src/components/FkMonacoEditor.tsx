@@ -62,9 +62,12 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         break;
       }
       case "Join": {
-        let buffer = Buffer.from(content);
-        let newDoc = braid.parseDoc!("application/diamond-types", buffer);
-        setDoc(newDoc);
+        let doc = Doc.fromBytes(content as any, agentName)
+        let version = doc.getLocalVersion()
+
+        setDoc(doc);
+        setContent(doc.get());
+        setServerVersion(version);
         break;
       }
       default: {
