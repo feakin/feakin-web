@@ -1,11 +1,9 @@
 use std::ops::Range;
 
 use diamond_types::{AgentId, LocalVersion, Time};
-use diamond_types::list::{ListCRDT, OpLog};
-use diamond_types::list::encoding::{ENCODE_FULL, ENCODE_PATCH, EncodeOptions};
+use diamond_types::list::{OpLog};
+use diamond_types::list::encoding::{ENCODE_PATCH, EncodeOptions};
 use log::error;
-
-use crate::model::RemoteVersion;
 
 #[derive(Debug)]
 pub struct LiveCoding {

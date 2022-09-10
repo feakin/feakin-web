@@ -3,8 +3,6 @@ use rand::Rng;
 
 pub mod live_coding;
 pub mod live_graph;
-pub mod live_crdt;
-
 
 pub fn random_name() -> String {
   rand::thread_rng()
