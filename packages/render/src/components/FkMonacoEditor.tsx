@@ -1,7 +1,7 @@
 import MonacoEditor from "react-monaco-editor";
 import React, { useCallback, useEffect, useState } from "react";
 import { WebSocketSubject } from "rxjs/webSocket";
-import { editor, Selection } from "monaco-editor";
+import { editor } from "monaco-editor";
 import { Buffer } from "buffer";
 
 import { addDotLangSupport } from "./editor/dot-lang";
@@ -53,7 +53,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       // logout
       subject.next({ "type": "LeaveRoom", "value": { "room_id": props.room, "agent_name": props.agentName } });
     }
-  }, [props.room]);
+  }, [props.agentName, props.room, subject]);
 
   useEffect(() => {
     if (!isLoadingWasm) {
