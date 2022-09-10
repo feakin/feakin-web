@@ -183,6 +183,10 @@ impl LivingEditServer {
             Some(v) => Some(v.clone())
           };
           let after_version = self.insert(conn, room_id.clone(), content, pos).await;
+          if let Some(after_version) = &after_version {
+            self.versions.insert(room_id.clone(), after_version.clone());
+          }
+
           self.broadcast_patch(room_id, conn, before_version, after_version.clone()).await;
 
           let _ = res_tx.send(FkResponse::insert(after_version));
@@ -195,6 +199,9 @@ impl LivingEditServer {
           };
 
           let after_version = self.delete(conn, room_id.clone(), range).await;
+          if let Some(after_version) = &after_version {
+            self.versions.insert(room_id.clone(), after_version.clone());
+          }
 
           self.broadcast_patch(room_id, conn, before_version, after_version.clone()).await;
           let _ = res_tx.send(FkResponse::delete(after_version));

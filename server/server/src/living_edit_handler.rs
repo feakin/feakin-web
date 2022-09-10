@@ -151,7 +151,6 @@ async fn process(
       let output = edit_server.delete(conn, delete.room_id, delete.range).await;
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
-
     ActionType::Insert(insert) => {
       let output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();

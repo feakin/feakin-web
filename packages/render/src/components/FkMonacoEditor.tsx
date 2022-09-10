@@ -15,9 +15,15 @@ export interface FkUpstream {
   patch: Uint8Array;
 }
 
+export interface FkPatch {
+  before: Uint32Array;
+  after: Uint32Array;
+  patch: Uint8Array;
+}
+
 export interface FkResponse {
   type: string;
-  value: any | FkUpstream;
+  value: any | FkUpstream | FkPatch;
 }
 
 function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>, updateCode: (code: CodeProp) => void, room: string, setRoomId: (roomId: string) => void }) {
@@ -76,7 +82,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     }
   }
 
-  const [patch, setPatch] = React.useState<Uint8Array>(null as any);
+  const [patchInfo, setPatchInfo] = React.useState<FkPatch>(null as any);
 
   useEffect(() => {
     if (!isLoadingWasm) {
@@ -101,8 +107,8 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         }
 
         if (msg.type === "Upstream") {
-          setPatch(Buffer.from(msg.value.patch));
-          setServerVersion(msg.value.after);
+          // @ts-ignore
+          setPatchInfo(msg.value);
           return;
         }
       },
@@ -116,15 +122,19 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   }, [isLoadingWasm]);
 
   useEffect(() => {
-    if (braid && doc && patch && patch.length > 0) {
+    // Todo: apply patchInfo refactor;
+    if (braid && doc && patchInfo) {
       try {
-        let merge_version = doc.mergeBytes(patch)
+        let merge_version = doc.mergeBytes(Buffer.from(patchInfo.patch))
         doc.mergeVersions(doc.getLocalVersion(), merge_version)
 
         // if (doc.getLocalVersion() !== serverVersion) {
         //   throw new Error("merge failed");
         // }
         // todo: use editor to update;
+
+        let xfSince = doc.xfSince(patchInfo.before);
+        console.log(xfSince);
         setContent(doc.get());
       } catch (e) {
         console.log(e);
@@ -134,7 +144,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     // const { start, end, text } = msg.value;
     // editor?.executeEdits("fk", new editor.EditOperation(start, end, text));
     // subscribe
-  }, [patch]);
+  }, [patchInfo]);
 
   const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
     event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {

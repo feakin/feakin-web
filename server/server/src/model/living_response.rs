@@ -2,7 +2,7 @@ use diamond_types::LocalVersion;
 use serde::Deserialize;
 use serde::Serialize;
 
-use crate::model::{RemoteVersion, RoomId};
+use crate::model::{RoomId};
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct JoinResponse {
