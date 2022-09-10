@@ -1,5 +1,5 @@
 import { ClientOpts } from "@braid-protocol/client";
-import init, { Doc } from "diamond-types-web";
+import init, { Doc } from "@feakin/diamond-types-web";
 
 export type Status = 'connecting' | 'connected' | 'waiting'
 

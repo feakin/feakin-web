@@ -8,7 +8,7 @@ import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
 import { createWrapper, initBasicWasm } from "./editor/subscribe-wrapper";
 import { ClientOpts } from "@braid-protocol/client";
-import { Doc, OpLog } from "diamond-types-web";
+import { Doc, OpLog } from "@feakin/diamond-types-web";
 
 export interface FkUpstream {
   version: string;
@@ -38,6 +38,9 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     if (!isLoadingWasm) {
       initBasicWasm().then((wasm) => {
         setIsLoadingWasm(true);
+
+        let opLog = new OpLog();
+        console.log(opLog.toBytes());
       });
     }
   });
@@ -102,7 +105,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     });
 
     if (roomId.length <= 0) {
-      subject.next({ "type": "CreateRoom", "value": { "agent_name": "agent", "content": props.code.content } });
+      subject.next({ "type": "CreateRoom", "value": { "agent_name": "agent", "content": "" } });
     }
   });
 

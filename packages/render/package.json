@@ -6,6 +6,7 @@
     "@braid-protocol/client": "^1.0.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "@feakin/diamond-types-web": "^0.1.0",
     "@feakin/exporter": "^0.2.4",
     "@feakin/parser": "^0.2.4",
     "@mui/icons-material": "^5.10.2",
