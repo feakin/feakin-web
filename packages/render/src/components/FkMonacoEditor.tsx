@@ -49,7 +49,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
 
   useEffect(() => {
     setRoomId(props.room);
-    if(subject) {
+    if (subject) {
       // logout
       subject.next({ "type": "LeaveRoom", "value": { "room_id": props.room, "agent_name": props.agentName } });
     }
@@ -92,7 +92,6 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
         }
 
         if (msg.type === "Upstream") {
-          console.log(`before: ${msg.value.before}, after: ${msg.value.after}`);
           setPatchInfo(msg.value);
           return;
         }
@@ -111,39 +110,39 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     // Todo: apply patchInfo refactor;
     if (patchInfo) {
       try {
-        console.log(doc.getLocalVersion());
-        let newDoc = doc;
+        console.log(`before: ${ patchInfo.before }, after: ${ patchInfo.after }`);
+        console.log(`local version: ${ doc.getLocalVersion() }, remote version: ${ doc.getRemoteVersion() }`);
+
         let bytes = Buffer.from(patchInfo.patch);
 
-        let merge_version = newDoc.mergeBytes(bytes)
-        let last_version = newDoc.mergeVersions(newDoc.getLocalVersion(), merge_version);
-        newDoc.localToRemoteVersion(last_version);
+        let merge_version = doc.mergeBytes(bytes)
+        let last_version = doc.mergeVersions(doc.getLocalVersion(), merge_version);
+        doc.localToRemoteVersion(last_version);
 
-        console.log(newDoc.getLocalVersion());
-        let xfSinces: DTOp[] = newDoc.xfSince(patchInfo.before);
-        setDoc(newDoc);
-        xfSinces.forEach((op) => {
-          switch (op.kind) {
-            case "Ins": {
-              let monacoModel = editor!.getModel();
-              const pos = monacoModel!.getPositionAt(op.start);
-              const range = new Selection(pos.lineNumber, pos.column, pos.lineNumber, pos.column)
-              monacoModel?.applyEdits([{ range, text: op.content! }])
-              break;
-            }
-            case "Del": {
-              let monacoModel = editor!.getModel();
-              const start = monacoModel!.getPositionAt(op.start);
-              const end = monacoModel!.getPositionAt(op.end);
-              const range = new Selection(start.lineNumber, start.column, end.lineNumber, end.column)
-              monacoModel?.applyEdits([{ range, text: "" }])
-              break;
-            }
-            default: {
-              console.log("unknown op: ", op);
-            }
-          }
-        });
+        setContent(doc.get());
+        // let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
+        // xfSinces.forEach((op) => {
+        //   switch (op.kind) {
+        //     case "Ins": {
+        //       let monacoModel = editor!.getModel();
+        //       const pos = monacoModel!.getPositionAt(op.start);
+        //       const range = new Selection(pos.lineNumber, pos.column, pos.lineNumber, pos.column)
+        //       monacoModel?.applyEdits([{ range, text: op.content! }])
+        //       break;
+        //     }
+        //     case "Del": {
+        //       let monacoModel = editor!.getModel();
+        //       const start = monacoModel!.getPositionAt(op.start);
+        //       const end = monacoModel!.getPositionAt(op.end);
+        //       const range = new Selection(start.lineNumber, start.column, end.lineNumber, end.column)
+        //       monacoModel?.applyEdits([{ range, text: "" }])
+        //       break;
+        //     }
+        //     default: {
+        //       console.log("unknown op: ", op);
+        //     }
+        //   }
+        // });
       } catch (e) {
         console.log(e);
       }

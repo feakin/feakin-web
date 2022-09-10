@@ -183,7 +183,7 @@ impl LivingEditServer {
           self.disconnect(conn).await;
         }
         Command::Create { conn, room_id, content, agent_name, conn_tx, res_tx } => {
-          let created = self.create(room_id, conn, content, conn_tx, agent_name).await;
+          let created = self.create(conn, room_id, content, conn_tx, agent_name).await;
           let _ = res_tx.send(FkResponse::create(created.0, created.1));
         }
         Command::Join { conn, room_id, agent_name, res_tx } => {
@@ -191,7 +191,6 @@ impl LivingEditServer {
           let _ = res_tx.send(output);
         }
         Command::Insert { conn, content, pos, room_id, res_tx } => {
-          info!("inserting {} at {}", content, pos);
           let before_version: Option<LocalVersion> = self.codings.get(&room_id).map(|coding| {
             let coding = coding.lock().unwrap();
             coding.local_version()
@@ -208,7 +207,6 @@ impl LivingEditServer {
           let _ = res_tx.send(FkResponse::insert(after_version));
         }
         Command::Delete { conn, room_id, range, res_tx } => {
-          info!("delete: {:?}", range);
           let before_version: Option<LocalVersion> = self.codings.get(&room_id).map(|coding| {
             let coding = coding.lock().unwrap();
             coding.local_version()
@@ -265,11 +263,8 @@ impl LivingEditServer {
       }
 
       for conn_id in sessions {
-        if *conn_id != skip {
-          info!("broadcasting patch to {}, agent: {}", conn_id, self.agents.get(conn_id).unwrap_or(&"unknown".to_string()));
-          if let Some(tx) = self.sessions.get(conn_id) {
-            let _ = tx.send(FkResponse::upstream(before.clone(), after.clone(), patch.clone()));
-          }
+        if let Some(tx) = self.sessions.get(conn_id) {
+          let _ = tx.send(FkResponse::upstream(before.clone(), after.clone(), patch.clone()));
         }
       }
     }
@@ -301,18 +296,20 @@ impl LivingEditServer {
     id_generator()
   }
 
-  async fn create(&mut self, room_id: RoomId, conn: ConnId, content: String, conn_tx: UnboundedSender<FkResponse>, agent_name: String) -> (String, Vec<u8>) {
+  async fn create(&mut self, conn: ConnId, room_id: RoomId, content: String, conn_tx: UnboundedSender<FkResponse>, _agent_name: String) -> (String, Vec<u8>) {
     self.sessions.insert(conn, conn_tx);
-
-    self.agents.insert(conn, agent_name.clone());
-
     self.rooms
       .entry(room_id.clone())
       .or_insert_with(HashSet::new)
       .insert(conn);
 
-    let mut coding = LiveCoding::new(&agent_name);
-    coding.create(&agent_name, &content);
+
+    let agent = conn.to_string();
+
+    let mut coding = LiveCoding::new(&agent);
+    self.agents.insert(conn, agent.clone());
+
+    coding.create(&agent, &content);
 
     let bytes = coding.bytes();
 
@@ -369,11 +366,13 @@ impl LivingEditServer {
     }
   }
 
-  async fn join(&mut self, conn: ConnId, room_id: RoomId, agent_name: String) -> FkResponse {
+  async fn join(&mut self, conn: ConnId, room_id: RoomId, _agent_name: String) -> FkResponse {
     self.rooms
       .entry(room_id.clone())
       .or_insert_with(HashSet::new)
       .insert(conn);
+
+    let agent_name = conn.to_string();
     self.agents.insert(conn, agent_name.clone());
 
     return match self.codings.get_mut(&*room_id.clone()) {
@@ -413,7 +412,5 @@ impl LivingEditServer {
     }
   }
 
-  async fn leave_room(&mut self, _room_id: RoomId, conn_id: ConnId) {
-    self.agents.remove(&conn_id);
-  }
+  async fn leave_room(&mut self, _room_id: RoomId, _conn_id: ConnId) {}
 }
