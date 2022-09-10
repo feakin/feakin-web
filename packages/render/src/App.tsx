@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { SupportedFileType } from "@feakin/exporter";
@@ -26,6 +26,13 @@ export const App = () => {
     paintStyle: false,
     paintInstance: new HandDrawing()
   });
+
+  // todo: split websocket
+  // useEffect(() => {
+  //   if (webSocket.current === null) {
+  //     webSocket.current = webSocket("ws://localhost:8080/ws");
+  //   }
+  // });
 
   // todo: add @{AppState} to store the code and history
   const [code, setCode] = React.useState({
