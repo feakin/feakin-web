@@ -32,6 +32,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   const [agentName] = useState("feakin")
 
   const [content, setContent] = React.useState<string>(props.code.content);
+  const [serverVersion, setServerVersion] = React.useState<any>(null);
 
   useEffect(() => {
     setRoomId(props.room);
@@ -98,6 +99,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
 
         if (msg.type === "Upstream") {
           setPatch(Buffer.from(msg.value.patch));
+          setServerVersion(msg.value.after);
           return;
         }
       },
@@ -111,11 +113,14 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
   }, [isLoadingWasm]);
 
   useEffect(() => {
-    if (braid && doc && patch.length > 0) {
+    if (braid && doc && patch && patch.length > 0) {
       try {
         let merge_version = doc.mergeBytes(patch)
         doc.mergeVersions(doc.getLocalVersion(), merge_version)
 
+        // if (doc.getLocalVersion() !== serverVersion) {
+        //   throw new Error("merge failed");
+        // }
         // todo: use editor to update;
         setContent(doc.get());
       } catch (e) {
@@ -140,7 +145,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         subject.next({
           type: "Delete",
           value: {
-            range: { start: change.rangeOffset, end: change.rangeOffset + change.rangeLength - 1 },
+            range: { start: change.rangeOffset, end: change.rangeOffset + change.rangeLength },
             room_id: roomId
           }
         })
