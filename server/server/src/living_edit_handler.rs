@@ -5,6 +5,7 @@ use futures_util::{
   future::{Either, select},
   StreamExt as _,
 };
+use log::info;
 use tokio::{pin, sync::mpsc, time::interval};
 use tokio::sync::mpsc::UnboundedSender;
 
@@ -148,11 +149,17 @@ async fn process(
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
     ActionType::Delete(delete) => {
+      info!("insert: {:?} from {:?}", delete, conn);
       let output = edit_server.delete(conn, delete.room_id, delete.range).await;
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
     ActionType::Insert(insert) => {
+      info!("insert: {:?} from {:?}", insert, conn);
       let output = edit_server.insert(conn, insert.content, insert.pos, insert.room_id).await;
+      session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
+    }
+    ActionType::LeaveRoom(leave) => {
+      let output = edit_server.leave(conn, leave.room_id).await;
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
   }

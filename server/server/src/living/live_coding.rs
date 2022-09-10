@@ -79,8 +79,8 @@ impl LiveCoding {
     self.inner.local_version()
   }
 
-  pub fn patch_since(&self, before: &LocalVersion) -> Vec<u8> {
-    let bytes = self.inner.encode_from(ENCODE_PATCH, &before);
+  pub fn patch_since(&self, version: &LocalVersion) -> Vec<u8> {
+    let bytes = self.inner.encode_from(ENCODE_PATCH, &version);
     bytes
   }
 }
@@ -127,6 +127,18 @@ mod tests {
     let branch = live.inner.checkout(&local);
 
     assert_eq!(branch.content().to_string(), "abef");
+  }
+
+  #[test]
+  fn patch_by_version() {
+    let mut live = LiveCoding::new("root");
+    live.insert("root", 0, "abcdef");
+    let v1 = live.local_version();
+    live.insert("root", 0, " ");
+    live.local_version();
+
+    let vec = live.patch_since(&v1);
+    assert_eq!(vec.len(), 55);
   }
 
   #[test]

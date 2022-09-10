@@ -58,4 +58,10 @@ pub enum Command {
     range: Range<usize>,
     res_tx: oneshot::Sender<FkResponse>,
   },
+
+  LeaveRoom {
+    conn: ConnId,
+    room_id: RoomId,
+    res_tx: oneshot::Sender<FkResponse>,
+  },
 }

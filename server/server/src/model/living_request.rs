@@ -25,6 +25,11 @@ pub struct JoinRoom {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct LeaveRoom {
+  pub room_id: RoomId,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct DeleteAction {
   pub range: Range<usize>,
   pub room_id: RoomId,
@@ -35,6 +40,7 @@ pub struct DeleteAction {
 pub enum ActionType {
   CreateRoom(CreateRoom),
   JoinRoom(JoinRoom),
+  LeaveRoom(LeaveRoom),
   Delete(DeleteAction),
   Insert(InsertAction),
 }

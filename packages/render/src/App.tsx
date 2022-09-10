@@ -86,9 +86,13 @@ export const App = () => {
             <TextField id="roomId" size="small" label="Room Id" value={ roomId } onChange={ updateRoomId }/>
             <Button size={ "small" } onClick={ joinRoom }>Join</Button>
           </Box>
-          <FkMonacoEditor code={ code } updateCode={ setCode } subject={ subject } room={ roomId }
+          <FkMonacoEditor code={ code }
+                          updateCode={ setCode }
+                          subject={ subject }
+                          room={ roomId }
+                          setRoomId={ setRoomId }
                           agentName={ agentName }
-                          setRoomId={ setRoomId }/>
+          />
         </Grid2>
         <Grid2 xs={ 6 }>
           <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>

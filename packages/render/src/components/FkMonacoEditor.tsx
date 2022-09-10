@@ -6,9 +6,8 @@ import { Buffer } from "buffer";
 
 import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
-import { createWrapper, initBasicWasm, randomId } from "./editor/subscribe-wrapper";
-import { ClientOpts } from "@braid-protocol/client";
-import { Doc, OpLog } from "@feakin/diamond-types-web";
+import { initBasicWasm } from "./editor/subscribe-wrapper";
+import { Doc } from "@feakin/diamond-types-web";
 
 export interface FkUpstream {
   version: string;
@@ -40,16 +39,20 @@ interface FkMonacoEditorParams {
 function FkMonacoEditor(props: FkMonacoEditorParams) {
   const [roomId, setRoomId] = React.useState<string>(props.room);
   const [subject] = React.useState<WebSocketSubject<any>>(props.subject);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editor, setEditor] = React.useState<editor.IStandaloneCodeEditor>();
 
   const [doc, setDoc] = React.useState<Doc>(null as any);
+
   const [isLoadingWasm, setIsLoadingWasm] = useState(false);
 
   const [content, setContent] = React.useState<string>(props.code.content);
 
   useEffect(() => {
     setRoomId(props.room);
+    if(subject) {
+      // logout
+      subject.next({ "type": "LeaveRoom", "value": { "room_id": props.room, "agent_name": props.agentName } });
+    }
   }, [props.room]);
 
   useEffect(() => {
@@ -59,31 +62,6 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       });
     }
   });
-
-  const initDoc = useCallback((content: any, type: string) => {
-    switch (type) {
-      case "CreateRoom": {
-        let opLog = new OpLog();
-        opLog.setAgent(props.agentName);
-        opLog.ins(0, props.code.content);
-
-        let fromDoc = Doc.fromBytes(opLog.toBytes(), props.agentName);
-
-        setDoc(fromDoc);
-        break;
-      }
-      case "Join": {
-        let doc = Doc.fromBytes(content as any, props.agentName)
-
-        setDoc(doc);
-        setContent(doc.get());
-        break;
-      }
-      default: {
-        console.log("unknown type");
-      }
-    }
-  }, [props.agentName, props.code.content])
 
   const [patchInfo, setPatchInfo] = React.useState<FkPatch>(null as any);
 
@@ -95,19 +73,26 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     subject.subscribe({
       next: (msg: FkResponse) => {
         if (roomId.length === 0 && msg.type === "CreateRoom") {
-          initDoc(msg.value.content, "CreateRoom");
-
           props.setRoomId(msg.value.room_id);
           setRoomId(msg.value.room_id);
+
+          let newDoc = Doc.fromBytes(msg.value.content as any, props.agentName);
+          newDoc.localToRemoteVersion(newDoc.getLocalVersion());
+          setDoc(newDoc);
+
           return;
         }
 
         if (msg.type === "Join") {
-          initDoc(msg.value.content, "Join");
+          let newDoc = Doc.fromBytes(msg.value.content as any, props.agentName)
+          newDoc.localToRemoteVersion(newDoc.getLocalVersion());
+          setDoc(newDoc);
+          setContent(newDoc.get());
           return;
         }
 
         if (msg.type === "Upstream") {
+          console.log(`before: ${msg.value.before}, after: ${msg.value.after}`);
           setPatchInfo(msg.value);
           return;
         }
@@ -116,22 +101,27 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       complete: () => console.log('complete')
     });
 
+    // Todo: change content to be a json object? But since is same library? will be generate same version?
     if (roomId.length <= 0) {
-      // Todo: change content to be a json object? But since is same library? will be generate same version?
       subject.next({ "type": "CreateRoom", "value": { "agent_name": props.agentName, "content": props.code.content } });
     }
-  }, [props.agentName, initDoc, isLoadingWasm, props, roomId.length, subject]);
+  }, [props.agentName, isLoadingWasm, props, roomId.length, subject, setPatchInfo]);
 
   useEffect(() => {
     // Todo: apply patchInfo refactor;
     if (patchInfo) {
       try {
-        let merge_version = doc.mergeBytes(Buffer.from(patchInfo.patch))
-        let newVersion = doc.mergeVersions(doc.getLocalVersion(), merge_version);
-        console.log(newVersion);
-        setDoc(doc);
+        console.log(doc.getLocalVersion());
+        let newDoc = doc;
+        let bytes = Buffer.from(patchInfo.patch);
 
-        let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
+        let merge_version = newDoc.mergeBytes(bytes)
+        let last_version = newDoc.mergeVersions(newDoc.getLocalVersion(), merge_version);
+        newDoc.localToRemoteVersion(last_version);
+
+        console.log(newDoc.getLocalVersion());
+        let xfSinces: DTOp[] = newDoc.xfSince(patchInfo.before);
+        setDoc(newDoc);
         xfSinces.forEach((op) => {
           switch (op.kind) {
             case "Ins": {
@@ -158,15 +148,17 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
         console.log(e);
       }
     }
-  }, [doc, editor, patchInfo]);
+  }, [editor, patchInfo, doc]);
 
   const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
     event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
       // todo: wrapper to API
-      subject.next({
-        type: "Insert",
-        value: { content: change.text, pos: change.rangeOffset, room_id: roomId }
-      });
+      if (change.text !== "") {
+        subject.next({
+          type: "Insert",
+          value: { content: change.text, pos: change.rangeOffset, room_id: roomId }
+        });
+      }
 
       if (change.rangeLength > 0) {
         subject.next({

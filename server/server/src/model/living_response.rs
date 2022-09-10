@@ -17,6 +17,7 @@ pub struct JoinResponse {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct CreateResponse {
   pub room_id: RoomId,
+  pub content: Vec<u8>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -87,9 +88,14 @@ impl FkResponse {
     })
   }
 
-  pub(crate) fn create(room_id: String) -> Self {
+  pub(crate) fn create(room_id: String, content: Vec<u8>) -> Self {
     FkResponse::CreateRoom(CreateResponse {
       room_id,
+      content
     })
+  }
+
+  pub(crate) fn leave() -> Self {
+    FkResponse::Message("leave".to_string())
   }
 }
