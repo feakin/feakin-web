@@ -4,7 +4,7 @@ import init, { Doc } from "@feakin/diamond-types-web";
 export type Status = 'connecting' | 'connected' | 'waiting'
 
 const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_'
-const randomId = (len = 12) => (
+export const randomId = (len = 12) => (
   Array.from(crypto.getRandomValues(new Uint8Array(len)))
     .map(x => letters[x % letters.length])
     .join('')

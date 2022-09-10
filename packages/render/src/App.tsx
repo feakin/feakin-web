@@ -15,6 +15,7 @@ import { NavBar } from "./layout/nav-bar";
 import { SupportedLayout } from "@feakin/exporter/src/layout/layout-engine";
 import FkMonacoEditor from "./components/FkMonacoEditor";
 import { webSocket } from "rxjs/webSocket";
+import { randomId } from "./components/editor/subscribe-wrapper";
 
 export const App = () => {
   const history = new ChangeHistory();
@@ -69,8 +70,9 @@ export const App = () => {
     setRoomId(event.target.value);
   }
 
+  const agentName = randomId();
   const joinRoom = () => {
-    subject.next({ "type": "JoinRoom", "value": { "room_id": roomId } });
+    subject.next({ "type": "JoinRoom", "value": { "room_id": roomId, "agent_name": agentName } });
   }
 
   return (
@@ -85,6 +87,7 @@ export const App = () => {
             <Button size={ "small" } onClick={ joinRoom }>Join</Button>
           </Box>
           <FkMonacoEditor code={ code } updateCode={ setCode } subject={ subject } room={ roomId }
+                          agentName={ agentName }
                           setRoomId={ setRoomId }/>
         </Grid2>
         <Grid2 xs={ 6 }>

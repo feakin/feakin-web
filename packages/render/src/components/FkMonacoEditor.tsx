@@ -6,7 +6,7 @@ import { Buffer } from "buffer";
 
 import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
-import { createWrapper, initBasicWasm } from "./editor/subscribe-wrapper";
+import { createWrapper, initBasicWasm, randomId } from "./editor/subscribe-wrapper";
 import { ClientOpts } from "@braid-protocol/client";
 import { Doc, OpLog } from "@feakin/diamond-types-web";
 
@@ -28,16 +28,23 @@ export interface FkResponse {
 
 export type DTOp = { kind: 'Ins' | 'Del', start: number, end: number, fwd?: boolean, content?: string }
 
-function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>, updateCode: (code: CodeProp) => void, room: string, setRoomId: (roomId: string) => void }) {
+interface FkMonacoEditorParams {
+  code: CodeProp;
+  subject: WebSocketSubject<any>;
+  updateCode: (code: CodeProp) => void;
+  room: string;
+  agentName: string;
+  setRoomId: (roomId: string) => void;
+}
+
+function FkMonacoEditor(props: FkMonacoEditorParams) {
   const [roomId, setRoomId] = React.useState<string>(props.room);
   const [subject] = React.useState<WebSocketSubject<any>>(props.subject);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editor, setEditor] = React.useState<editor.IStandaloneCodeEditor>();
-  // @ts-ignore
-  const [braid, setBraid] = React.useState<ClientOpts>(null);
+
   const [doc, setDoc] = React.useState<Doc>(null as any);
   const [isLoadingWasm, setIsLoadingWasm] = useState(false);
-  const [agentName] = useState("feakin")
 
   const [content, setContent] = React.useState<string>(props.code.content);
 
@@ -45,13 +52,9 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     setRoomId(props.room);
   }, [props.room]);
 
-
   useEffect(() => {
     if (!isLoadingWasm) {
       initBasicWasm().then((wasm) => {
-        let wrapper = createWrapper();
-        setBraid(wrapper);
-
         setIsLoadingWasm(true);
       });
     }
@@ -61,16 +64,16 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
     switch (type) {
       case "CreateRoom": {
         let opLog = new OpLog();
-        opLog.setAgent(agentName);
+        opLog.setAgent(props.agentName);
         opLog.ins(0, props.code.content);
 
-        let fromDoc = Doc.fromBytes(opLog.toBytes(), agentName);
+        let fromDoc = Doc.fromBytes(opLog.toBytes(), props.agentName);
 
         setDoc(fromDoc);
         break;
       }
       case "Join": {
-        let doc = Doc.fromBytes(content as any, agentName)
+        let doc = Doc.fromBytes(content as any, props.agentName)
 
         setDoc(doc);
         setContent(doc.get());
@@ -80,7 +83,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         console.log("unknown type");
       }
     }
-  }, [agentName, props.code.content])
+  }, [props.agentName, props.code.content])
 
   const [patchInfo, setPatchInfo] = React.useState<FkPatch>(null as any);
 
@@ -115,18 +118,18 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
 
     if (roomId.length <= 0) {
       // Todo: change content to be a json object? But since is same library? will be generate same version?
-      subject.next({ "type": "CreateRoom", "value": { "agent_name": agentName, "content": props.code.content } });
+      subject.next({ "type": "CreateRoom", "value": { "agent_name": props.agentName, "content": props.code.content } });
     }
-  }, [agentName, initDoc, isLoadingWasm, props, roomId.length, subject]);
+  }, [props.agentName, initDoc, isLoadingWasm, props, roomId.length, subject]);
 
   useEffect(() => {
     // Todo: apply patchInfo refactor;
-    if (braid && doc && patchInfo) {
-      console.log(doc.getLocalVersion());
-
+    if (patchInfo) {
       try {
         let merge_version = doc.mergeBytes(Buffer.from(patchInfo.patch))
-        doc.mergeVersions(doc.getLocalVersion(), merge_version);
+        let newVersion = doc.mergeVersions(doc.getLocalVersion(), merge_version);
+        console.log(newVersion);
+        setDoc(doc);
 
         let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
         xfSinces.forEach((op) => {
@@ -155,7 +158,7 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
         console.log(e);
       }
     }
-  }, [braid, doc, editor, patchInfo]);
+  }, [doc, editor, patchInfo]);
 
   const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
     event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
@@ -208,3 +211,4 @@ function FkMonacoEditor(props: { code: CodeProp, subject: WebSocketSubject<any>,
 }
 
 export default FkMonacoEditor;
+
