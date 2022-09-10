@@ -127,6 +127,22 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
+
+  pub(crate) async fn update_by_version(&self, conn: ConnId, room_id: RoomId, local_version: LocalVersion) -> FkResponse {
+    let (res_tx, res_rx) = oneshot::channel();
+
+    self.cmd_tx
+      .send(Command::PatchByVersion {
+        conn,
+        room_id: room_id.to_string(),
+        local_version,
+        res_tx,
+      })
+      .unwrap();
+
+    res_rx.await.unwrap()
+  }
+
   pub async fn list_rooms(&self) -> Vec<String> {
     let (res_tx, res_rx) = oneshot::channel();
     self.cmd_tx.send(Command::List { res_tx }).unwrap();
@@ -235,6 +251,10 @@ impl LivingEditServer {
           info!("leave room: {:?}", room_id);
           self.leave_room(room_id, conn).await;
           let _ = res_tx.send(FkResponse::leave());
+        }
+        Command::PatchByVersion { conn, room_id, local_version, res_tx } => {
+          let output = self.patch_by_version(conn, room_id, local_version).await;
+          let _ = res_tx.send(FkResponse::patch(output.unwrap_or(vec![])));
         }
       }
     }
@@ -413,4 +433,11 @@ impl LivingEditServer {
   }
 
   async fn leave_room(&mut self, _room_id: RoomId, _conn_id: ConnId) {}
+
+  async fn patch_by_version(&self, conn: ConnId, room_id: RoomId, local_version: LocalVersion) -> Option<Vec<u8>> {
+    return self.codings.get(&room_id).map(|coding| {
+      let mutex_coding = coding.lock().unwrap();
+      mutex_coding.patch_since(&local_version)
+    });
+  }
 }

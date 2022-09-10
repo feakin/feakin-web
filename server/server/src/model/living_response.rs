@@ -38,6 +38,11 @@ pub struct UpstreamResponse {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct PatchesResponse {
+  pub patches: Vec<u8>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "value")]
 pub enum FkResponse {
   // TODO: add alias, like join,create,del,ins,msg ?
@@ -46,11 +51,10 @@ pub enum FkResponse {
   Delete(DeleteResponse),
   Insert(InsertResponse),
   Upstream(UpstreamResponse),
+  Patches(PatchesResponse),
   Message(String),
   SystemMessage(String),
 }
-
-impl FkResponse {}
 
 impl FkResponse {
   pub fn system_message(msg: String) -> Self {
@@ -97,5 +101,12 @@ impl FkResponse {
 
   pub(crate) fn leave() -> Self {
     FkResponse::Message("leave".to_string())
+  }
+
+
+  pub(crate) fn patch(patches: Vec<u8>) -> FkResponse {
+    FkResponse::Patches(PatchesResponse {
+      patches,
+    })
   }
 }

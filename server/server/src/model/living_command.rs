@@ -1,4 +1,5 @@
 use std::ops::Range;
+use diamond_types::LocalVersion;
 
 use tokio::sync::{mpsc, oneshot};
 
@@ -62,6 +63,13 @@ pub enum Command {
   LeaveRoom {
     conn: ConnId,
     room_id: RoomId,
+    res_tx: oneshot::Sender<FkResponse>,
+  },
+
+  PatchByVersion {
+    conn: ConnId,
+    room_id: RoomId,
+    local_version: LocalVersion,
     res_tx: oneshot::Sender<FkResponse>,
   },
 }

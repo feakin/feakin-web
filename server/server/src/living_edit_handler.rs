@@ -162,6 +162,10 @@ async fn process(
       let output = edit_server.leave(conn, leave.room_id).await;
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
+    ActionType::UpdateByVersion(update) => {
+      let output = edit_server.update_by_version(conn, update.room_id, update.version).await;
+      session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
+    }
   }
 }
 

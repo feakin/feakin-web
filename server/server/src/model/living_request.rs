@@ -1,4 +1,5 @@
 use std::ops::Range;
+use diamond_types::LocalVersion;
 
 use serde::Deserialize;
 use serde::Serialize;
@@ -36,6 +37,12 @@ pub struct DeleteAction {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct UpdateByVersion {
+  pub room_id: RoomId,
+  pub version: LocalVersion,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "value")]
 pub enum ActionType {
   CreateRoom(CreateRoom),
@@ -43,6 +50,7 @@ pub enum ActionType {
   LeaveRoom(LeaveRoom),
   Delete(DeleteAction),
   Insert(InsertAction),
+  UpdateByVersion(UpdateByVersion),
 }
 
 #[cfg(test)]
