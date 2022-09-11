@@ -29,13 +29,6 @@ export const App = () => {
     paintInstance: new HandDrawing()
   });
 
-  // todo: split websocket
-  // useEffect(() => {
-  //   if (webSocket.current === null) {
-  //     webSocket.current = webSocket("ws://localhost:8080/ws");
-  //   }
-  // });
-
   // todo: add @{AppState} to store the code and history
   const [code, setCode] = React.useState({
     language: SupportedCodeLang.dot,

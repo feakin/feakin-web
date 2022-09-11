@@ -26,7 +26,7 @@ export interface FkResponse {
   value: any | FkUpstream | FkPatch;
 }
 
-export type DTOp = { kind: 'Ins' | 'Del', start: number, end: number, fwd?: boolean, content?: string }
+export type DTOperation = { kind: 'Ins' | 'Del', start: number, end: number, fwd?: boolean, content?: string }
 
 interface FkMonacoEditorParams {
   code: CodeProp;
@@ -132,9 +132,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       let last_version = doc.mergeVersions(doc.getLocalVersion(), merge_version);
       doc.localToRemoteVersion(last_version);
 
-      // setContent(doc.get());
-
-      let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
+      let xfSinces: DTOperation[] = doc.xfSince(patchInfo.before);
       xfSinces.forEach((op) => {
         switch (op.kind) {
           case "Ins": {
@@ -169,10 +167,6 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       setContent(content);
     } catch (e) {
       console.error(e);
-      // let version = doc.getLocalVersion();
-      // console.info("try patch for local version: ", version);
-      // const arr = Array.prototype.slice.call(version, 0);
-      // subject.next({ "type": "UpdateByVersion", "value": { "room_id": roomId, "version": arr } });
     }
   }, [editor, patchInfo, doc, props]);
 
