@@ -40,7 +40,9 @@ async fn living_socket(
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> std::io::Result<()> {
   env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-  let port = 8804;
+  let port = std::env::var("PORT").ok()
+    .map(|val| val.parse::<u16>())
+    .unwrap_or(Ok(8804)).unwrap();
 
   log::info!("starting HTTP server at http://localhost:{port}");
 
@@ -55,7 +57,7 @@ async fn main() -> std::io::Result<()> {
       .service(web::resource("/living/edit").route(web::get().to(living_socket)))
   })
     .workers(2)
-    .bind(("127.0.0.1", port))?
+    .bind(("0.0.0.0", port))?
     .run();
 
   try_join!(http_server, async move { server_handle.await.unwrap() })?;
