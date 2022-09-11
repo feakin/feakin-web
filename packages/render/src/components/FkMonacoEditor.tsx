@@ -165,9 +165,11 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       });
 
       setContent(content);
+      setPatchInfo(null as any);
     } catch (e) {
       console.error(e);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, patchInfo, doc]);
 
   const handleTextChange = useCallback((_newValue: string, event: editor.IModelContentChangedEvent) => {
