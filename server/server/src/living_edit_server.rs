@@ -225,7 +225,7 @@ impl LivingEditServer {
         Command::Insert { conn, content, pos, room_id, res_tx } => {
           let before_version: Option<LocalVersion> = self.codings.get(&room_id).map(|coding| {
             let coding = coding.lock().unwrap();
-            coding.local_version()
+            coding.version()
           });
 
           let after_version = self.insert(conn, room_id.clone(), content, pos).await;
@@ -241,7 +241,7 @@ impl LivingEditServer {
         Command::Delete { conn, room_id, range, res_tx } => {
           let before_version: Option<LocalVersion> = self.codings.get(&room_id).map(|coding| {
             let coding = coding.lock().unwrap();
-            coding.local_version()
+            coding.version()
           });
 
           let after_version = self.delete(conn, room_id.clone(), range).await;
@@ -275,7 +275,7 @@ impl LivingEditServer {
         Command::OpsByPatches { conn, room_id, agent_name, patches, res_tx } => {
           let before_version = self.codings.get(&room_id).map(|coding| {
             let coding = coding.lock().unwrap();
-            coding.local_version()
+            coding.version()
           });
 
           let opt_version = self.ops_by_patches(conn, room_id.clone(), agent_name, patches).await;
@@ -378,9 +378,9 @@ impl LivingEditServer {
         let mut mutex_coding = coding.lock().unwrap();
         let agent = conn.to_string();
 
-        mutex_coding.insert(&*agent, pos, &content);
+        mutex_coding.insert(pos, &content, &*agent);
 
-        Some(mutex_coding.local_version())
+        Some(mutex_coding.version())
       }
       None => {
         error!("room {:?} not found", room_id);
@@ -395,8 +395,9 @@ impl LivingEditServer {
         let mut mutex_coding = coding.lock().unwrap();
         let agent = conn.to_string();
 
-        mutex_coding.delete(&*agent, range);
-        Some(mutex_coding.local_version())
+        mutex_coding.delete(range, &*agent);
+
+        Some(mutex_coding.version())
       }
       None => {
         error!("room {:?} not found", room_id);

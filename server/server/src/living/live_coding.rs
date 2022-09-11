@@ -20,50 +20,52 @@ impl LiveCoding {
   }
 
   pub fn join(&mut self, agent_name: &str) -> AgentId {
-    let id = self.inner.get_or_create_agent_id(agent_name);
-    id
+    self.inner.get_or_create_agent_id(agent_name)
   }
 
-  pub fn insert(&mut self, agent_name: &str, pos: usize, content: &str) -> Time {
+  pub fn create(&mut self, agent_name: &str, content: &str) -> Option<Time> {
+    if content.is_empty() {
+      self.inner.get_or_create_agent_id(agent_name);
+      return None;
+    }
+
+    let agent = self.inner.get_or_create_agent_id(agent_name);
+    let time = self.inner.add_insert_at(agent, &[], 0, content);
+    Some(time)
+  }
+
+  pub fn insert(&mut self, pos: usize, content: &str, agent_name: &str) -> Option<Time> {
     if pos > self.inner.len() {
-      // catch for error
       error!("insert： pos out of range");
-      return self.inner.len();
+      return None;
     }
 
     if content.is_empty() {
+      error!("insert： pos out of range");
       self.inner.get_or_create_agent_id(agent_name);
-      return self.inner.len();
+      return None;
     }
 
     let agent = self.inner.get_or_create_agent_id(agent_name);
-    self.inner.add_insert(agent, pos, content)
+    let time = self.inner.add_insert(agent, pos, content);
+    Some(time)
   }
 
-  pub fn create(&mut self, agent_name: &str, content: &str) -> Time {
-    if content.is_empty() {
-      self.inner.get_or_create_agent_id(agent_name);
-      return self.inner.len();
-    }
-
-    let agent = self.inner.get_or_create_agent_id(agent_name);
-    self.inner.add_insert_at(agent, &[], 0, content)
-  }
-
-  pub fn delete(&mut self, agent_name: &str, range: Range<usize>) -> Time {
+  pub fn delete(&mut self, range: Range<usize>, agent_name: &str) -> Option<Time> {
     let agent = self.inner.get_or_create_agent_id(agent_name);
     if range.start > range.end {
       error!("delete： start should < end");
-      return self.inner.len();
+      return None;
     }
 
     if (range.start > self.inner.len()) || (range.end > self.inner.len()) {
       // catch for error
       error!("delete： range out of range");
-      return self.inner.len();
+      return None;
     }
 
-    self.inner.add_delete_without_content(agent, range)
+    let time = self.inner.add_delete_without_content(agent, range);
+    Some(time)
   }
 
   pub fn bytes(&self) -> Vec<u8> {
@@ -76,7 +78,7 @@ impl LiveCoding {
     branch.content().to_string()
   }
 
-  pub fn local_version(&self) -> LocalVersion {
+  pub fn version(&self) -> LocalVersion {
     self.inner.local_version()
   }
 
@@ -102,10 +104,10 @@ mod tests {
     let agent2 = "hello";
 
     let mut coding = LiveCoding::new("root");
-    coding.insert("root", 0, "abcdef");
+    coding.insert(0, "abcdef", "root");
 
-    coding.insert(agent1, 2, "zero");
-    coding.insert(agent1, 5, "zero");
+    coding.insert(2, "zero", agent1);
+    coding.insert(5, "zero", agent1);
 
     let _agent = coding.join(agent2);
     let version = coding.inner.local_version();
@@ -121,12 +123,12 @@ mod tests {
     let agent2 = "hello";
 
     let mut live = LiveCoding::new("root");
-    live.insert("root", 0, "abcdef");
+    live.insert(0, "abcdef", "root");
 
-    live.insert(agent1, 2, "zero");
+    live.insert(2, "zero", agent1);
 
     live.join(agent2);
-    live.delete(agent2, 2..8);
+    live.delete(2..8, agent2);
 
     let local = live.inner.local_version();
     let branch = live.inner.checkout(&local);
@@ -137,10 +139,10 @@ mod tests {
   #[test]
   fn patch_by_version() {
     let mut live = LiveCoding::new("root");
-    live.insert("root", 0, "abcdef");
-    let v1 = live.local_version();
-    live.insert("root", 0, " ");
-    live.local_version();
+    live.insert(0, "abcdef", "root");
+    let v1 = live.version();
+    live.insert(0, " ", "root");
+    live.version();
 
     let vec = live.patch_since(&v1);
     assert_eq!(vec.len(), 55);
@@ -151,7 +153,7 @@ mod tests {
     let mut live = LiveCoding::new("root");
     live.create("root", "efg");
 
-    live.insert("root", 2, "abcdef");
+    live.insert(2, "abcdef", "root");
     let vec = live.bytes();
 
     assert_eq!(vec.len(), 59);
