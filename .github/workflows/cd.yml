@@ -50,3 +50,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "feakin"
           heroku_email: "gmszone@qq.com"
+          buildpack: "https://github.com/emk/heroku-buildpack-rust.git"

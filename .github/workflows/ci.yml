@@ -39,3 +39,6 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
           repository-name: feakin/online
           folder: packages/render/dist
+
+      - name: Build
+        run: cargo build --release --manifest-path=server/server/Cargo.toml
