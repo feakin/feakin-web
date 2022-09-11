@@ -1,7 +1,7 @@
 import MonacoEditor from "react-monaco-editor";
 import React, { useCallback, useEffect, useState } from "react";
 import { WebSocketSubject } from "rxjs/webSocket";
-import { editor } from "monaco-editor";
+import { editor, Selection } from "monaco-editor";
 import { Buffer } from "buffer";
 
 import { addDotLangSupport } from "./editor/dot-lang";
@@ -115,9 +115,6 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     // Todo: apply patchInfo refactor;
     if (patchInfo) {
       try {
-        console.log(`before: ${ patchInfo.before }, after: ${ patchInfo.after }`);
-        console.log(`local version: ${ doc.getLocalVersion() }, remote version: ${ doc.getRemoteVersion() }`);
-
         if (doc.getLocalVersion() === patchInfo.after) {
           return;
         }
@@ -129,6 +126,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
         doc.localToRemoteVersion(last_version);
 
         setContent(doc.get());
+
         // let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
         // xfSinces.forEach((op) => {
         //   switch (op.kind) {
@@ -136,7 +134,8 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
         //       let monacoModel = editor!.getModel();
         //       const pos = monacoModel!.getPositionAt(op.start);
         //       const range = new Selection(pos.lineNumber, pos.column, pos.lineNumber, pos.column)
-        //       monacoModel?.applyEdits([{ range, text: op.content! }])
+        //       console.log(`insert ${ op.content } at ${ op.start }, pos: ${ pos.lineNumber }, ${ pos.column }`);
+        //       monacoModel?.applyEdits([{ range, text: op.content! }], false)
         //       break;
         //     }
         //     case "Del": {
@@ -144,7 +143,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
         //       const start = monacoModel!.getPositionAt(op.start);
         //       const end = monacoModel!.getPositionAt(op.end);
         //       const range = new Selection(start.lineNumber, start.column, end.lineNumber, end.column)
-        //       monacoModel?.applyEdits([{ range, text: "" }])
+        //       monacoModel?.applyEdits([{ range, text: "" }], false)
         //       break;
         //     }
         //     default: {
@@ -165,13 +164,9 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
   const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
     event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
       let localVersion = doc.getLocalVersion();
-      if (change.text !== "") {
-        doc.ins(change.rangeOffset, change.text);
-      }
 
-      if (change.rangeLength > 0) {
-        doc.del(change.rangeOffset, change.rangeLength);
-      }
+      doc.ins(change.rangeOffset, change.text);
+      doc.del(change.rangeOffset, change.rangeLength);
 
       let patches = doc.getPatchSince(localVersion);
       subject.next({
