@@ -174,7 +174,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       // const arr = Array.prototype.slice.call(version, 0);
       // subject.next({ "type": "UpdateByVersion", "value": { "room_id": roomId, "version": arr } });
     }
-  }, [editor, patchInfo, doc]);
+  }, [editor, patchInfo, doc, props]);
 
   const handleTextChange = useCallback((_newValue: string, event: editor.IModelContentChangedEvent) => {
     if (isApplyPatch) {
