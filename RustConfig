@@ -1,0 +1,1 @@
+RUST_CARGO_BUILD_FLAGS=" --release --manifest-path=server/server/Cargo.toml"
