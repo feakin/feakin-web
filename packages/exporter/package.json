@@ -1,8 +1,8 @@
 {
   "name": "@feakin/exporter",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "dependencies": {
-    "@feakin/parser": "^0.2.4",
+    "@feakin/parser": "^0.3.0",
     "cheerio": "^1.0.0-rc.12",
     "dagre": "^0.8.5",
     "dotparser": "^1.1.1",

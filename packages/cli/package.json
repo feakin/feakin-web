@@ -1,6 +1,6 @@
 {
   "name": "@feakin/cli",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "cli",
   "main": "src/index.js",
   "typings": "src/index.d.ts",
@@ -18,8 +18,8 @@
     "directory": "dist"
   },
   "dependencies": {
-    "@feakin/exporter": "^0.2.4",
-    "@feakin/parser": "^0.2.4",
+    "@feakin/exporter": "^0.3.0",
+    "@feakin/parser": "^0.3.0",
     "@types/jest": "^28.1.7",
     "@types/node": "^18.7.12"
   },
