@@ -40,9 +40,7 @@ async fn living_socket(
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> std::io::Result<()> {
   env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-  let port = std::env::var("PORT").ok()
-    .map(|val| val.parse::<u16>())
-    .unwrap_or(Ok(8804)).unwrap();
+  let port = 8804;
 
   log::info!("starting HTTP server at http://localhost:{port}");
 
