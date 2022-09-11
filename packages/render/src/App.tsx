@@ -20,7 +20,7 @@ import { randomId } from "./components/editor/subscribe-wrapper";
 export const App = () => {
   const history = new ChangeHistory();
   // TODO: make url configurable
-  const host = process.env.NODE_ENV === 'production' ? "ws://feakin.herokuapp.com" : "ws://localhost:8804";
+  const host = process.env.NODE_ENV === 'production' ? "wss://feakin.herokuapp.com" : "ws://localhost:8804";
   const [subject] = React.useState<any>(webSocket(`${ host }/living/edit`));
   const [formats, setFormats] = React.useState<string[]>(() => []);
   const [renderOptions, setRenderOptions] = React.useState<RenderOptions>({
