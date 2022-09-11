@@ -47,3 +47,9 @@ docs/models
 test
 **/coverage/
 build
+/target
+**/*.rs.bk
+Cargo.lock
+bin/
+pkg/
+wasm-pack.log
