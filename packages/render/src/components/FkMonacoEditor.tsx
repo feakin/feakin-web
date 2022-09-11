@@ -192,6 +192,11 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     editor.layout();
     editor.focus();
 
+    // editor.onDidChangeModelContent((event: any) => {
+    //   console.log(event);
+    //   handleTextChange(editor!.getValue(), event);
+    // });
+
     setEditor(editor);
   }, []);
 
