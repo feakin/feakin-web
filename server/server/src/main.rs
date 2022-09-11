@@ -1,3 +1,4 @@
+use rust_embed::RustEmbed;
 use actix_files::NamedFile;
 use actix_web::{App, Error, get, HttpRequest, HttpResponse, HttpServer, Responder, web};
 use actix_web::web::Payload;
@@ -15,14 +16,28 @@ mod living_edit_server;
 mod living_edit_handler;
 mod model;
 
+#[derive(RustEmbed)]
+#[folder = "static/"]
+struct Asset;
+
+
+fn handle_embedded_file(path: &str) -> HttpResponse {
+  match Asset::get(path) {
+    Some(content) => HttpResponse::Ok()
+      .content_type(mime_guess::from_path(path).first_or_octet_stream().as_ref())
+      .body(content.data.into_owned()),
+    None => HttpResponse::NotFound().body("404 Not Found"),
+  }
+}
+
 // keep some api for testing
 #[get("/api/{name}")]
 async fn greet(name: web::Path<String>) -> impl Responder {
   format!("Hello {name}!")
 }
 
-async fn index() -> NamedFile {
-  NamedFile::open_async("./static/index.html").await.unwrap()
+async fn index() -> impl Responder {
+  handle_embedded_file("index.html")
 }
 
 async fn living_socket(
