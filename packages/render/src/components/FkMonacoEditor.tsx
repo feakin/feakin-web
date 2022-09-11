@@ -1,6 +1,7 @@
 import MonacoEditor from "react-monaco-editor";
 import React, { useCallback, useEffect, useState } from "react";
 import { WebSocketSubject } from "rxjs/webSocket";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { editor, Selection } from "monaco-editor";
 import { Buffer } from "buffer";
 
@@ -92,11 +93,13 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
         }
 
         if (msg.type === "Upstream") {
+          setApplyPatching(true);
           setPatchInfo(msg.value);
           return;
         }
 
         if (msg.type === "Patches") {
+          setApplyPatching(true);
           setPatchInfo(msg.value);
           return;
         }
@@ -111,57 +114,73 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     }
   }, [props.agentName, isLoadingWasm, props, roomId.length, subject, setPatchInfo]);
 
+  const [isApplyPatch, setApplyPatching] = React.useState<boolean>(false);
+
   useEffect(() => {
-    // Todo: apply patchInfo refactor;
-    if (patchInfo) {
-      try {
-        if (doc.getLocalVersion() === patchInfo.after) {
-          return;
-        }
+    if (!patchInfo) {
+      return;
+    }
 
-        let bytes = Buffer.from(patchInfo.patch);
-
-        let merge_version = doc.mergeBytes(bytes)
-        let last_version = doc.mergeVersions(doc.getLocalVersion(), merge_version);
-        doc.localToRemoteVersion(last_version);
-
-        setContent(doc.get());
-
-        // let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
-        // xfSinces.forEach((op) => {
-        //   switch (op.kind) {
-        //     case "Ins": {
-        //       let monacoModel = editor!.getModel();
-        //       const pos = monacoModel!.getPositionAt(op.start);
-        //       const range = new Selection(pos.lineNumber, pos.column, pos.lineNumber, pos.column)
-        //       console.log(`insert ${ op.content } at ${ op.start }, pos: ${ pos.lineNumber }, ${ pos.column }`);
-        //       monacoModel?.applyEdits([{ range, text: op.content! }], false)
-        //       break;
-        //     }
-        //     case "Del": {
-        //       let monacoModel = editor!.getModel();
-        //       const start = monacoModel!.getPositionAt(op.start);
-        //       const end = monacoModel!.getPositionAt(op.end);
-        //       const range = new Selection(start.lineNumber, start.column, end.lineNumber, end.column)
-        //       monacoModel?.applyEdits([{ range, text: "" }], false)
-        //       break;
-        //     }
-        //     default: {
-        //       console.log("unknown op: ", op);
-        //     }
-        //   }
-        // });
-      } catch (e) {
-        console.error(e);
-        // let version = doc.getLocalVersion();
-        // console.info("try patch for local version: ", version);
-        // const arr = Array.prototype.slice.call(version, 0);
-        // subject.next({ "type": "UpdateByVersion", "value": { "room_id": roomId, "version": arr } });
+    try {
+      if (doc.getLocalVersion() === patchInfo.after) {
+        return;
       }
+
+      let bytes = Buffer.from(patchInfo.patch);
+
+      let merge_version = doc.mergeBytes(bytes)
+      let last_version = doc.mergeVersions(doc.getLocalVersion(), merge_version);
+      doc.localToRemoteVersion(last_version);
+
+      // setContent(doc.get());
+
+      let xfSinces: DTOp[] = doc.xfSince(patchInfo.before);
+      xfSinces.forEach((op) => {
+        switch (op.kind) {
+          case "Ins": {
+            let monacoModel = editor!.getModel();
+            const pos = monacoModel!.getPositionAt(op.start);
+            const range = new Selection(pos.lineNumber, pos.column, pos.lineNumber, pos.column)
+            monacoModel?.applyEdits([{ range, text: op.content! }], false)
+            break;
+          }
+          case "Del": {
+            let monacoModel = editor!.getModel();
+            const start = monacoModel!.getPositionAt(op.start);
+            const end = monacoModel!.getPositionAt(op.end);
+            const range = new Selection(start.lineNumber, start.column, end.lineNumber, end.column)
+            monacoModel?.applyEdits([{ range, text: "" }], false)
+            break;
+          }
+          default: {
+            console.log("unknown op: ", op);
+          }
+        }
+      });
+
+      setApplyPatching(false);
+
+      let content = doc.get();
+      props.updateCode({
+        ...props.code,
+        content: content
+      });
+
+      setContent(content);
+    } catch (e) {
+      console.error(e);
+      // let version = doc.getLocalVersion();
+      // console.info("try patch for local version: ", version);
+      // const arr = Array.prototype.slice.call(version, 0);
+      // subject.next({ "type": "UpdateByVersion", "value": { "room_id": roomId, "version": arr } });
     }
   }, [editor, patchInfo, doc]);
 
-  const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
+  const handleTextChange = useCallback((_newValue: string, event: editor.IModelContentChangedEvent) => {
+    if (isApplyPatch) {
+      return;
+    }
+
     let localVersion = doc.getLocalVersion();
 
     event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
@@ -179,23 +198,20 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       }
     })
 
+    // todo: update by samples
+    let content = doc.get();
     props.updateCode({
       ...props.code,
-      content: newValue
+      content: content
     });
 
-    setContent(newValue);
-  }, [props, doc, subject, roomId]);
+    setContent(content);
+  }, [isApplyPatch, doc, subject, roomId, props]);
 
   const editorDidMount = useCallback((editor: any, monaco: any) => {
     addDotLangSupport(monaco);
     editor.layout();
     editor.focus();
-
-    // editor.onDidChangeModelContent((event: any) => {
-    //   console.log(event);
-    //   handleTextChange(editor!.getValue(), event);
-    // });
 
     setEditor(editor);
   }, []);

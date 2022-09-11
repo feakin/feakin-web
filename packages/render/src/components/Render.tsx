@@ -239,7 +239,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
           throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
       }
     } catch (e) {
-      console.error(e);
+      console.info(e);
     }
   }, [props.code, props.options]);
 
