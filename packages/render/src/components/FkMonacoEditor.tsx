@@ -164,29 +164,16 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
 
   const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
     event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
-      // todo: wrapper to API
       let localVersion = doc.getLocalVersion();
       if (change.text !== "") {
-        // subject.next({
-        //   type: "Insert",
-        //   value: { content: change.text, pos: change.rangeOffset, room_id: roomId }
-        // });
         doc.ins(change.rangeOffset, change.text);
       }
 
       if (change.rangeLength > 0) {
-        // subject.next({
-        //   type: "Delete",
-        //   value: {
-        //     range: { start: change.rangeOffset, end: change.rangeOffset + change.rangeLength },
-        //     room_id: roomId
-        //   }
-        // })
         doc.del(change.rangeOffset, change.rangeLength);
       }
 
       let patches = doc.getPatchSince(localVersion);
-      console.log(patches);
       subject.next({
         type: "OpsByPatches",
         value: {
