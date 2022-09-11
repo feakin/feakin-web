@@ -79,36 +79,3 @@ async fn main() -> std::io::Result<()> {
 
   Ok(())
 }
-
-#[cfg(test)]
-mod tests {
-  use actix_web::{http::{self, header::ContentType}, test};
-
-  use super::*;
-
-  #[actix_web::test]
-  async fn test_index_ok() {
-    let req = test::TestRequest::default()
-      .insert_header(ContentType::plaintext())
-      .to_http_request();
-
-    let resp = index().await;
-    assert_eq!(resp.into_response(&req).status(), http::StatusCode::OK);
-  }
-
-  // #[actix_web::test]
-  // async fn test_websocket() {
-  //   let (req, mut pl) = TestRequest::default()
-  //     .insert_header((CONTENT_TYPE, "application/json"))
-  //     .insert_header((CONTENT_LENGTH, 16))
-  //     .set_payload(Bytes::from_static(b"{\"name\": \"test\"}"))
-  //     .app_data(web::Data::new(JsonConfig::default().limit(10)))
-  //     .to_http_parts();
-  //
-  //   let (edit_server, server_tx) = LivingEditServer::new();
-  //
-  //   let resp = living_socket(req, actix_web::web::Payload(pl), web::Data::new(server_tx)).await;
-  //   assert_eq!(resp.unwrap().status(), http::StatusCode::SWITCHING_PROTOCOLS);
-  // }
-}
-
