@@ -43,6 +43,13 @@ pub struct UpdateByVersion {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct OpsByPatches {
+  pub room_id: RoomId,
+  pub patches: Vec<u8>,
+  pub agent_name: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag = "type", content = "value")]
 pub enum ActionType {
   CreateRoom(CreateRoom),
@@ -51,6 +58,7 @@ pub enum ActionType {
   Delete(DeleteAction),
   Insert(InsertAction),
   UpdateByVersion(UpdateByVersion),
+  OpsByPatches(OpsByPatches),
 }
 
 #[cfg(test)]

@@ -166,6 +166,10 @@ async fn process(
       let output = edit_server.update_by_version(conn, update.room_id, update.version).await;
       session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
     }
+    ActionType::OpsByPatches(ops) => {
+      let output = edit_server.ops_by_patches(conn, ops.room_id, ops.patches, ops.agent_name).await;
+      session.text(serde_json::to_string(&output).unwrap()).await.unwrap();
+    }
   }
 }
 

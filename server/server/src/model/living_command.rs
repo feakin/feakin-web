@@ -72,4 +72,12 @@ pub enum Command {
     local_version: LocalVersion,
     res_tx: oneshot::Sender<FkResponse>,
   },
+
+  OpsByPatches {
+    conn: ConnId,
+    room_id: RoomId,
+    agent_name: String,
+    patches: Vec<u8>,
+    res_tx: oneshot::Sender<FkResponse>,
+  }
 }

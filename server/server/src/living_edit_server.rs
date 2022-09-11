@@ -127,7 +127,6 @@ impl LiveEditServerHandle {
     res_rx.await.unwrap()
   }
 
-
   pub(crate) async fn update_by_version(&self, conn: ConnId, room_id: RoomId, local_version: LocalVersion) -> FkResponse {
     let (res_tx, res_rx) = oneshot::channel();
 
@@ -136,6 +135,23 @@ impl LiveEditServerHandle {
         conn,
         room_id: room_id.to_string(),
         local_version,
+        res_tx,
+      })
+      .unwrap();
+
+    res_rx.await.unwrap()
+  }
+
+
+  pub(crate) async fn ops_by_patches(&self, conn: ConnId, room_id: RoomId, patches: Vec<u8>, agent_name: String) -> FkResponse {
+    let (res_tx, res_rx) = oneshot::channel();
+
+    self.cmd_tx
+      .send(Command::OpsByPatches {
+        conn,
+        room_id: room_id.to_string(),
+        agent_name,
+        patches,
         res_tx,
       })
       .unwrap();
@@ -255,6 +271,21 @@ impl LivingEditServer {
         Command::PatchByVersion { conn, room_id, local_version, res_tx } => {
           let output = self.patch_by_version(conn, room_id, local_version).await;
           let _ = res_tx.send(FkResponse::patch(output.unwrap_or(vec![])));
+        }
+        Command::OpsByPatches { conn, room_id, agent_name, patches, res_tx } => {
+          let before_version = self.codings.get(&room_id).map(|coding| {
+            let coding = coding.lock().unwrap();
+            coding.local_version()
+          });
+
+          let opt_version = self.ops_by_patches(conn, room_id.clone(), agent_name, patches).await;
+          if opt_version.is_none() {
+            let string = format!("ops by patches error: {:?}", opt_version);
+            let _ = res_tx.send(FkResponse::Message(string)).unwrap();
+          } else {
+            self.broadcast_patch(room_id, conn, before_version, opt_version.clone()).await;
+            let _ = res_tx.send(FkResponse::insert(opt_version));
+          }
         }
       }
     }
@@ -441,5 +472,22 @@ impl LivingEditServer {
       let mutex_coding = coding.lock().unwrap();
       mutex_coding.patch_since(&local_version)
     });
+  }
+
+  async fn ops_by_patches(&self, conn: ConnId, room_id: RoomId, agent_name: String, patches: Vec<u8>) -> Option<LocalVersion> {
+    if let Some(coding) = self.codings.get(&room_id) {
+      let mut mutex_coding = coding.lock().unwrap();
+      return match mutex_coding.apply_patch(patches) {
+        Ok(version) => {
+          Some(version)
+        }
+        Err(err) => {
+          error!("error applying patch: {:?}", err);
+          None
+        }
+      };
+    }
+
+    None
   }
 }

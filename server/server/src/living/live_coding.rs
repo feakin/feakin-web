@@ -3,6 +3,7 @@ use std::ops::Range;
 use diamond_types::{AgentId, LocalVersion, Time};
 use diamond_types::list::{OpLog};
 use diamond_types::list::encoding::{ENCODE_PATCH, EncodeOptions};
+use diamond_types::list::encoding::encode_tools::ParseError;
 use log::error;
 
 #[derive(Debug)]
@@ -82,6 +83,10 @@ impl LiveCoding {
   pub fn patch_since(&self, version: &LocalVersion) -> Vec<u8> {
     let bytes = self.inner.encode_from(ENCODE_PATCH, &version);
     bytes
+  }
+
+  pub fn apply_patch(&mut self, patches: Vec<u8>) -> Result<LocalVersion, ParseError> {
+    self.inner.decode_and_add(&patches)
   }
 }
 
