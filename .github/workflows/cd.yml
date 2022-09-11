@@ -15,6 +15,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+
       - uses: nrwl/nx-set-shas@v2
         with:
           main-branch-name: master
@@ -38,3 +43,12 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
           repository-name: feakin/online
           folder: packages/render/dist
+
+      - name: Build
+        run: cargo build --release --manifest-path=server/server/Cargo.toml
+
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "phodal"
+          heroku_email: "gmszone@qq.com"
