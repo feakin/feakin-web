@@ -162,22 +162,21 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
   }, [editor, patchInfo, doc]);
 
   const handleTextChange = useCallback((newValue: string, event: editor.IModelContentChangedEvent) => {
-    event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
-      let localVersion = doc.getLocalVersion();
+    let localVersion = doc.getLocalVersion();
 
+    event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
       doc.ins(change.rangeOffset, change.text);
       doc.del(change.rangeOffset, change.rangeLength);
+    })
 
-      let patches = doc.getPatchSince(localVersion);
-      subject.next({
-        type: "OpsByPatches",
-        value: {
-          room_id: roomId,
-          agent_name: props.agentName,
-          patches: Array.prototype.slice.call(patches)
-        }
-      })
-
+    let patches = doc.getPatchSince(localVersion);
+    subject.next({
+      type: "OpsByPatches",
+      value: {
+        room_id: roomId,
+        agent_name: props.agentName,
+        patches: Array.prototype.slice.call(patches)
+      }
     })
 
     props.updateCode({
