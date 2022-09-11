@@ -122,7 +122,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     }
 
     try {
-      if (doc.getLocalVersion() === patchInfo.after) {
+      if (doc && doc.getLocalVersion() === patchInfo.after) {
         return;
       }
 
@@ -168,7 +168,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     } catch (e) {
       console.error(e);
     }
-  }, [editor, patchInfo, doc, props]);
+  }, [editor, patchInfo, doc]);
 
   const handleTextChange = useCallback((_newValue: string, event: editor.IModelContentChangedEvent) => {
     if (isApplyPatch) {
