@@ -3,4 +3,5 @@
 members = [
   "server/server",
   "server/parser-wasm",
+  "server/fkl-parser",
 ]
