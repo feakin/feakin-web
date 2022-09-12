@@ -56,7 +56,7 @@ pub enum ActionType {
   JoinRoom(JoinRoom),
   LeaveRoom(LeaveRoom),
 
-  // TODO: remote Delete, Insert for future? It's unused 
+  // TODO: remote Delete, Insert for future? It's unused
   Delete(DeleteAction),
   Insert(InsertAction),
 

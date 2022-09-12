@@ -129,8 +129,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       let bytes = Buffer.from(patchInfo.patch);
 
       let merge_version = doc.mergeBytes(bytes)
-      let last_version = doc.mergeVersions(doc.getLocalVersion(), merge_version);
-      doc.localToRemoteVersion(last_version);
+      doc.mergeVersions(doc.getLocalVersion(), merge_version);
 
       editor!.updateOptions({ readOnly: true });
 
