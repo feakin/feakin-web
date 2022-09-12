@@ -55,8 +55,11 @@ pub enum ActionType {
   CreateRoom(CreateRoom),
   JoinRoom(JoinRoom),
   LeaveRoom(LeaveRoom),
+
+  // TODO: remote Delete, Insert for future? It's unused 
   Delete(DeleteAction),
   Insert(InsertAction),
+
   UpdateByVersion(UpdateByVersion),
   OpsByPatches(OpsByPatches),
 }
