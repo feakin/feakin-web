@@ -132,6 +132,8 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       let last_version = doc.mergeVersions(doc.getLocalVersion(), merge_version);
       doc.localToRemoteVersion(last_version);
 
+      editor!.updateOptions({ readOnly: true });
+
       let xfSinces: DTOperation[] = doc.xfSince(patchInfo.before);
       xfSinces.forEach((op) => {
         switch (op.kind) {
@@ -157,6 +159,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       });
 
       setApplyPatching(false);
+      editor!.updateOptions({ readOnly: false });
 
       let content = doc.get();
       props.updateCode({
@@ -170,7 +173,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
       console.error(e);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, patchInfo, doc]);
+  }, [editor, patchInfo]);
 
   const handleTextChange = useCallback((_newValue: string, event: editor.IModelContentChangedEvent) => {
     if (isApplyPatch) {
@@ -187,11 +190,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     let patches = doc.getPatchSince(localVersion);
     subject.next({
       type: "OpsByPatches",
-      value: {
-        room_id: roomId,
-        agent_name: props.agentName,
-        patches: Array.prototype.slice.call(patches)
-      }
+      value: { room_id: roomId, agent_name: props.agentName, patches: Array.prototype.slice.call(patches) }
     })
 
     // todo: update by samples
