@@ -2,5 +2,5 @@
 
 members = [
   "server/server",
-  "server/parser-rust",
+  "server/parser-wasm",
 ]
