@@ -23,7 +23,8 @@ mod tests {
 
   #[test]
   fn it_works() {
-    parse("ContextMap {
+    parse("
+ContextMap {
   ShoppingCarContext -> MallContext;
   ShoppingCarContext <-> MallContext;
 }
@@ -38,11 +39,24 @@ Module ExtCargo { }
 
   #[test]
   fn long_string() {
-    parse(r#"Aggregate {
+    parse(r#"
+Aggregate {
   """ inline doc sample
 just for test
 """
+}
+"#);
+  }
 
+  #[test]
+  fn aggregate() {
+    parse(r#"
+Context ShoppingCarContext {
+  Aggregate ShoppingCart {
+    Entity Product {
+      constructor(name: String, price: Money)
+    }
+  }
 }
 "#);
   }

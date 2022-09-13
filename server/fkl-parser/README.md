@@ -156,3 +156,13 @@ ContextMap {
   }
 }
 ```
+
+基于微服务的 DDD
+
+核心域：Bounded Context, Unique Language,
+
+支持域：Domain Object
+
+通用域：Layered Architecture, Multiple Modules,
+
+

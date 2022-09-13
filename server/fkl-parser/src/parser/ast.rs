@@ -1,6 +1,8 @@
 use serde::Deserialize;
 use serde::Serialize;
 
+// strategy DDD
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ContextMap {
   pub name: String,
@@ -8,13 +10,11 @@ pub struct ContextMap {
   pub relations: Vec<BoundedContextRelation>
 }
 
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct BoundedContext {
   pub name: String,
 }
 
-// BoundedContextRelation
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum BoundedContextRelation {
   // Symmetric relation
@@ -30,6 +30,8 @@ pub enum BoundedContextRelation {
   PublishedLanguage,
 }
 
+// tactic DDD
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Aggregate {
   pub name: String,
@@ -37,11 +39,6 @@ pub struct Aggregate {
   pub is_root: bool,
   pub context: String,
   pub entities: Vec<Entity>
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct DomainCommand {
-  pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

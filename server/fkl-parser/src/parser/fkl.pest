@@ -12,7 +12,7 @@ context_map_decl = {
 }
 
 context_decl = {
-  "Context" ~ identifier ~ "{" ~ module_decl* ~ "}"
+  "Context" ~ identifier ~ "{" ~ (module_decl | aggregate_decl)* ~ "}"
 }
 
 context_network = {
@@ -45,7 +45,7 @@ ext_module_decl = {
 }
 
 aggregate_decl = {
-  "Aggregate" ~ "{" ~ ( inline_doc)* ~ "}"
+  "Aggregate" ~ identifier ~ "{" ~ ( inline_doc | entity_decl)* ~ "}"
 }
 
 inline_doc = {
@@ -54,7 +54,19 @@ inline_doc = {
 
 // Entity should be like a concept
 entity_decl = {
-  ("Concept" | "Entity" ) ~ "{" ~ "}"
+  ("Concept" | "Entity" ) ~ identifier ~ "{" ~ (constructor_decl)* ~ "}"
+}
+
+constructor_decl = {
+  "constructor" ~ "(" ~ (parameter_decl ~ ( "," ~ parameter_decl)*)? ~ ")"
+}
+
+parameter_decl = {
+  identifier ~ ":" ~ type_
+}
+
+type_ = {
+  identifier
 }
 
 keywords = _{
