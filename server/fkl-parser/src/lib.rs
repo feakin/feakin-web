@@ -4,3 +4,8 @@ extern crate pest_derive;
 
 mod parser;
 mod model;
+
+mod tactic;
+mod strategy;
+// implementation-binding
+mod binding;
