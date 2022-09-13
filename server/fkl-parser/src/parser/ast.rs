@@ -35,9 +35,7 @@ pub struct Aggregate {
   pub name: String,
   pub is_root: bool,
   pub context: String,
-  pub fields: Vec<Field>,
-  pub commands: Vec<DomainCommand>,
-  pub events: Vec<DomainEvent>,
+  pub entities: Vec<Entity>
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

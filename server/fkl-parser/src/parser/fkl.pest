@@ -4,6 +4,7 @@ declaration = {
   context_map_decl
   | context_decl
   | ext_module_decl
+  | aggregate_decl
 }
 
 context_map_decl = {
@@ -44,7 +45,11 @@ ext_module_decl = {
 }
 
 aggregate_decl = {
-  "Aggregate" ~ "{" ~ "}"
+  "Aggregate" ~ "{" ~ ( inline_doc)* ~ "}"
+}
+
+inline_doc = {
+  "\"\"\"" ~ (inline_doc | !"\"\"\"" ~ ANY)* ~ "\"\"\""
 }
 
 // Entity should be like a concept

@@ -35,4 +35,15 @@ Context ShoppingCarContext {
 Module ExtCargo { }
 ");
   }
+
+  #[test]
+  fn long_string() {
+    parse(r#"Aggregate {
+  """ inline doc sample
+just for test
+"""
+
+}
+"#);
+  }
 }

@@ -52,6 +52,14 @@ SubDomain Cart {
   }
 }
 
+// make owner ship?
+Aggregate (owner="") {
+  """ inline doc sample
+just for test
+"""
+
+}
+
 // global detail for Cart.
 Entity Cart {
 
