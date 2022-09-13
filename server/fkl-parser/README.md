@@ -12,6 +12,41 @@ DDD Building Blocks
   - Generic Domain
 - Layered Architecture
 
+```kotlin
+ContextMap {
+  Context ShoppingCarContext(display = "Shopping") with ACL
+  
+}
+
+Context ShoppingCarContext  {
+  
+}
+
+// render wtih UML styled?
+SubDomain Cart {
+  Aggregate Cart {
+    Entity Cart
+    ValueObject CartId
+    ValueObject CartStatus
+    ValueObject CartItem
+    ValueObject CartItemQuantity
+    ValueObject CartItemPrice
+    ValueObject CartItemTotal
+    ValueObject CartTotal
+  }
+}
+
+DomainLanguage Shopping {
+
+}
+
+```
+
+```kotlin
+
+}
+```
+
 ```groovy
 ContextMap {
   context1 {
