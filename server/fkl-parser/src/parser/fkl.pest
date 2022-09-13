@@ -1,0 +1,34 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+
+identifier = @{
+ !keywords | (ASCII_ALPHA | ASCII_ALPHANUMERIC | "_") ~ (ASCII_ALPHANUMERIC | "_")*
+}
+
+declarations = _{ SOI ~ declaration ~ EOI }
+
+declaration = {
+  "ContextMap" ~ identifier ~ "{"  ~ "}"
+}
+
+keywords = _{
+  "ContextMap" | "Context"
+}
+
+double_quoted_string  = @{ "\"" ~ (!("\"") ~ ANY)* ~ "\""}
+single_quoted_string  = @{ "\'" ~ (!("\'") ~ ANY)* ~ "\'"}
+
+// normal
+string = @{
+    double_quoted_string |
+    single_quoted_string
+}
+number = @{ '0'..'9'+ }
+int = @{ number | "-" ~ "0"* ~ '1'..'9' ~ number? }
+
+
+// comments
+newline    = _{ "\n" | "\r\n" }
+WHITESPACE = _{ " " | "\t" | newline }
+block_comment = _{ "/*" ~ (block_comment | !"*/" ~ ANY)* ~ "*/" }
+COMMENT    = _{ block_comment | ("//" ~ (!newline ~ ANY)*) }

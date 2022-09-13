@@ -1,31 +1,44 @@
 # Feakin Knowledge Languag
 
-DDD Building Blocks
+## DDD Building Blocks
 
 - ContextMap
 - Bounded Context
   - Shared Kernel
   - Anti-corruption Layer
-- Domain
-  - Sub-domain
+- Subdomin
   - Core-domain
-  - Generic Domain
+  - Supporting-domain
+  - Generic-domain
 - Layered Architecture
+
+## Syntax and Semantics
 
 ```kotlin
 ContextMap {
-  Context ShoppingCarContext(display = "Shopping") with ACL
-  
+  with? type("Landscape")
+  ShoppingCarContext <-> MallContext;
 }
 
 Context ShoppingCarContext  {
-  
+  with? acl {
+    with type("Anti-corruption Layer")
+    with name("ShoppingCarACL")
+    with description("Anti-corruption Layer for ShoppingCar")
+  }
+  with display("Shopping Car")
 }
 
 // render wtih UML styled?
 SubDomain Cart {
   Aggregate Cart {
-    Entity Cart
+    // Concept or UML like ?
+    // can be inside or outside of the Aggregate
+    Entity Cart {
+      
+    }
+    
+    // it's to many, can change in different way.
     ValueObject CartId
     ValueObject CartStatus
     ValueObject CartItem
@@ -34,6 +47,11 @@ SubDomain Cart {
     ValueObject CartItemTotal
     ValueObject CartTotal
   }
+}
+
+// global detail for Cart.
+Entity Cart {
+
 }
 
 DomainLanguage Shopping {
@@ -67,12 +85,12 @@ ContextMap {
 }
 ```
 
-Context Binding
+## Context Binding
 
 binding source code to Context Map
 
 ```
 ContextBinding {
-
+  basePackage = se.citerus.dddsample.domain.model
 }
 ```
