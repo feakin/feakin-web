@@ -16,8 +16,8 @@
 
 ```kotlin
 ContextMap {
-  with? type("Landscape")
-  ShoppingCarContext <-> MallContext;
+  // with? type("Landscape")
+  ShoppingCarContext(acl = NormalACL) <-> MallContext(acl = NormalACL);
 }
 
 Context ShoppingCarContext  {
@@ -31,7 +31,10 @@ Context ShoppingCarContext  {
 
 // render wtih UML styled?
 SubDomain Cart {
-  Aggregate Cart {
+  Aggregate Cart(display = "") {
+    type = aggregateRoot, display = "Cart";
+    something = "likethat";
+
     // Concept or UML like ?
     // can be inside or outside of the Aggregate
     Entity Cart {
@@ -57,10 +60,71 @@ Entity Cart {
 DomainLanguage Shopping {
 
 }
+```
+
+API Binding
+
+// [https://contextmapper.org/docs/mdsl/](https://contextmapper.org/docs/mdsl/)
+
+```kotlin
+ShoppingCarContext.API {
+  // align to constructure for copy;
+  model Address(id: Integeter);
+  model AddressId(id: String);
+
+  DomainEvent createAddress {
+    Description "Creates new address for customer"
+    PreValidate {
+      // validate the input
+    }
+    Payload Address
+    Response AddressId
+  }
+}
 
 ```
 
+## Context Binding
+
+binding source code to Context Map
+
+```
+ContextBinding {
+  basePackage = se.citerus.dddsample.domain.model
+}
+```
+
+## Styles
+
+Styles:
+
 ```kotlin
+styles {
+
+    // node
+    element "Software System" {
+        background #1168bd
+        color #ffffff
+    }
+    element "Person" {
+        shape person
+        background #08427b
+        color #ffffff
+    }
+    
+    // edge
+    relationship <tag> {
+        thickness <integer>
+        color #777777
+        colour #777777
+        dashed <true|false>
+        style <solid|dashed|dotted>
+        routing <Direct|Orthogonal|Curved>
+        fontSize <integer>
+        width <integer>
+        position <integer: 0-100>
+        opacity <integer: 0-100>
+    }
 
 }
 ```
@@ -82,15 +146,5 @@ ContextMap {
       presentation
     }
   }
-}
-```
-
-## Context Binding
-
-binding source code to Context Map
-
-```
-ContextBinding {
-  basePackage = se.citerus.dddsample.domain.model
 }
 ```

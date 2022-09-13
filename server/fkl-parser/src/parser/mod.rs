@@ -1,5 +1,7 @@
 use pest::Parser;
 
+mod ast;
+
 #[derive(Parser)]
 #[grammar = "parser/fkl.pest"]
 pub struct FklParser;
@@ -21,6 +23,16 @@ mod tests {
 
   #[test]
   fn it_works() {
-    parse("ContextMap {}");
+    parse("ContextMap {
+  ShoppingCarContext -> MallContext;
+  ShoppingCarContext <-> MallContext;
+}
+
+Context ShoppingCarContext {
+  Module Cargo { }
+}
+
+Module ExtCargo { }
+");
   }
 }

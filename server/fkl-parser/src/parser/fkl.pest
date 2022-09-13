@@ -1,22 +1,80 @@
-alpha = { 'a'..'z' | 'A'..'Z' }
-digit = { '0'..'9' }
-
-identifier = @{
- !keywords | (ASCII_ALPHA | ASCII_ALPHANUMERIC | "_") ~ (ASCII_ALPHANUMERIC | "_")*
-}
-
-declarations = _{ SOI ~ declaration ~ EOI }
+declarations = _{ SOI ~ declaration* ~ EOI }
 
 declaration = {
-  "ContextMap" ~ identifier ~ "{"  ~ "}"
+  context_map_decl
+  | context_decl
+  | ext_module_decl
+}
+
+context_map_decl = {
+  "ContextMap" ~ "{" ~ context_network* ~ "}"
+}
+
+context_decl = {
+  "Context" ~ identifier ~ "{" ~ module_decl* ~ "}"
+}
+
+context_network = {
+  context_node_decl
+  | context_map_relation
+}
+
+context_node_decl = {
+  "useContext" ~ identifier
+}
+
+context_map_relation = {
+  identifier ~ relationship ~ identifier ~ ";"?
+}
+
+relationship = {
+  rs_both | rs_left_to_right | rs_right_to_left
+}
+
+rs_left_to_right = { "->" }
+rs_right_to_left = { "<-" }
+rs_both = { "<->" }
+
+module_decl = {
+  "Module" ~ identifier ~ "{" ~ aggregate_decl* ~ "}"
+}
+
+ext_module_decl = {
+  module_decl
+}
+
+aggregate_decl = {
+  "Aggregate" ~ "{" ~ "}"
+}
+
+// Entity should be like a concept
+entity_decl = {
+  ("Concept" | "Entity" ) ~ "{" ~ "}"
 }
 
 keywords = _{
+  // DDD Keywords
   "ContextMap" | "Context"
+  //  Domain Analysis Keywords
+  | "SubDomain" | "GenericDomain" | "SupportingDomain" | "CoreDomain"
+  // Strategic
+  // TODO?
+  // Tactic Keywords
+  | "Aggregate" | "Entity" | "ValueObject" | "VO" | "Service" | "DomainEvent" | "CommandEvent"
+  // Implementation - Layered Keywords
+  | "Module" | "Repository" | "Service" | "Factory" | "ApplicationService" | "DomainService"
+  // Implementation - APIs
+  | "ApiEndpoints"
+  // TODO: DDD Relationship
+  | "Partnership" | "CustomerSupplier" | "Conformist" | "SeparateWay"
 }
 
 double_quoted_string  = @{ "\"" ~ (!("\"") ~ ANY)* ~ "\""}
 single_quoted_string  = @{ "\'" ~ (!("\'") ~ ANY)* ~ "\'"}
+
+identifier = @{
+ !keywords ~ (ASCII_ALPHA | ASCII_ALPHANUMERIC | "_") ~ (ASCII_ALPHANUMERIC | "_")*
+}
 
 // normal
 string = @{
@@ -25,7 +83,6 @@ string = @{
 }
 number = @{ '0'..'9'+ }
 int = @{ number | "-" ~ "0"* ~ '1'..'9' ~ number? }
-
 
 // comments
 newline    = _{ "\n" | "\r\n" }
