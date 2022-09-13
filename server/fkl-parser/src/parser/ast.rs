@@ -33,6 +33,7 @@ pub enum BoundedContextRelation {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Aggregate {
   pub name: String,
+  pub description: String,
   pub is_root: bool,
   pub context: String,
   pub entities: Vec<Entity>
@@ -58,4 +59,17 @@ pub struct  Entity {
 pub struct  Field {
   pub name: String,
   pub type_: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Attribute {
+  pub key: String,
+  pub value: String
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Property {
+  pub required: bool,
+  pub nullable: bool,
+  pub unique: bool,
 }
