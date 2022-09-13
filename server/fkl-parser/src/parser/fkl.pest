@@ -62,10 +62,10 @@ constructor_decl = {
 }
 
 parameter_decl = {
-  identifier ~ ":" ~ type_
+  identifier ~ ":" ~ param_type
 }
 
-type_ = {
+param_type = {
   identifier
 }
 

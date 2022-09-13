@@ -4,10 +4,26 @@ use serde::Serialize;
 // strategy DDD
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct UbiquitousLanguage {
+  pub name: String,
+  pub description: String,
+  pub words: Vec<UniqWord>,
+}
+
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct UniqWord {
+  pub unique_name: String,
+  pub display_name: String,
+  // soft link
+  pub context_name: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ContextMap {
   pub name: String,
   pub contexts: BoundedContext,
-  pub relations: Vec<BoundedContextRelation>
+  pub relations: Vec<BoundedContextRelation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -38,7 +54,7 @@ pub struct Aggregate {
   pub description: String,
   pub is_root: bool,
   pub context: String,
-  pub entities: Vec<Entity>
+  pub entities: Vec<Entity>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -47,21 +63,21 @@ pub struct DomainEvent {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct  Entity {
+pub struct Entity {
   pub name: String,
   pub fields: Vec<Field>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct  Field {
+pub struct Field {
   pub name: String,
-  pub type_: String,
+  pub field_type: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Attribute {
   pub key: String,
-  pub value: String
+  pub value: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -69,4 +85,18 @@ pub struct Property {
   pub required: bool,
   pub nullable: bool,
   pub unique: bool,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ValueObject {
+  pub name: String,
+  pub fields: Vec<Field>,
+}
+
+// Binding
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Parameter {
+  pub name: String,
+  pub param_type: String,
 }
