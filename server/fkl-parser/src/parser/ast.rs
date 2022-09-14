@@ -21,6 +21,27 @@ pub struct UniqueWord {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Domain {
+  pub name: String,
+  pub description: String,
+  pub sub_domains: Vec<SubDomain>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SubDomain {
+  pub name: String,
+  pub subdomain_type: SubDomainType,
+  pub entities: Vec<Entity>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum SubDomainType {
+  Core,
+  Generic,
+  Supporting,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ContextMap {
   pub name: String,
   pub contexts: BoundedContext,
