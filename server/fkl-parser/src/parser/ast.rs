@@ -93,7 +93,7 @@ pub struct ValueObject {
   pub fields: Vec<Field>,
 }
 
-// Binding
+// Binding To Function
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Parameter {

@@ -1,5 +1,12 @@
 # Feakin Knowledge Languag
 
+- [ ] DDD Model
+- [ ] DSL Parser
+  - [ ] DSL Syntax
+  - [ ] Ast Model
+- [ ] Code Binding 
+- [ ] Code Generator Model
+
 ## DDD Building Blocks
 
 - ContextMap

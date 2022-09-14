@@ -40,7 +40,7 @@ Module ExtCargo { }
   #[test]
   fn long_string() {
     parse(r#"
-Aggregate {
+Aggregate Sample {
   """ inline doc sample
 just for test
 """
