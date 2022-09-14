@@ -100,3 +100,29 @@ pub struct Parameter {
   pub name: String,
   pub param_type: String,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Trait {
+  pub name: String,
+  pub description: String,
+  pub parameters: Vec<Parameter>,
+  pub return_type: Vec<Parameter>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct RestApi {
+  pub name: String,
+  pub method: HttpMethod,
+  pub path: String,
+  pub parameters: Vec<Parameter>,
+  pub return_type: Vec<Parameter>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum HttpMethod {
+  Get,
+  Post,
+  Put,
+  Delete,
+  Patch,
+}
