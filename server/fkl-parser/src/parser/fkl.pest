@@ -59,7 +59,7 @@ entity_decl = {
 }
 
 constructor_decl = {
-  "constructor" ~ "(" ~ (parameter_decl ~ ( "," ~ parameter_decl)*)? ~ ")"
+  "constructor" ~ "(" ~ (parameter_decl ~ ","?)* ~ ")"
 }
 
 parameter_decl = {
@@ -67,8 +67,11 @@ parameter_decl = {
 }
 
 param_type = {
-  identifier
+  list ~ "<" ~ identifier ~ ">"
+  | identifier
 }
+
+list = { ("List" | "Vec") }
 
 keywords = _{
   // DDD Keywords

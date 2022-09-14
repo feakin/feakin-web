@@ -79,114 +79,124 @@ Context SalesContext {
   }
 }
 
-// Entity Opportunity {
-//   constructor(
-//     id: String,
-//     name: String,
-//     description: String,
-//     status: OpportunityStatus,
-//     amount: Money,
-//     probability: Probability,
-//     closeDate: Date,
-//     contacts: Vec<Contact>,
-//     products: Vec<Product>,
-//     notes: Vec<Note>,
-//     attachments: Vec<Attachment>,
-//     activities: Vec<Activity>,
-//     tasks: Vec<Task>,
-//     events: Vec<Event>,
-//     created: DateTime,
-//     createdBy: String,
-//     modified: DateTime,
-//     modifiedBy: String
-//   )
-// }
-//
-// Entity Pipeline {
-//   constructor(
-//     id: String,
-//     name: String,
-//     description: String,
-//     stages: Vec<Stage>,
-//     opportunities: Vec<Opportunity>,
-//     created: DateTime,
-//     createdBy: String,
-//     modified: DateTime,
-//     modifiedBy: String
-//   )
-// }
-//
-// Entity Contact {
-//   id: String,
-//   firstName: String,
-//   lastName: String,
-//   email: String,
-//   phone: String,
-//   title: String,
-//   department: String,
-//   account: Account,
-//   address: Address,
-//   created: DateTime,
-//   createdBy: String,
-//   modified: DateTime,
-//   modifiedBy: String,
-// }
-//
-// Entity Account {
-//   id: String,
-//   name: String,
-//   website: String,
-//   phone: String,
-//   industry: String,
-//   employees: String,
-//   annualRevenue: Money,
-//   billingAddress: Address,
-//   shippingAddress: Address,
-//   contacts: Vec<Contact>,
-//   created: DateTime,
-//   createdBy: String,
-//   modified: DateTime,
-//   modifiedBy: String,
-// }
-//
-// Entity Product {
-//   id: String,
-//   name: String,
-//   description: String,
-//   price: Money,
-//   category: String,
-//   created: DateTime,
-//   createdBy: String,
-//   modified: DateTime,
-//   modifiedBy: String,
-// }
-//
-// Entity Territory {
-//   id: String,
-//   name: String,
-//   description: String,
-//   created: DateTime,
-//   createdBy: String,
-//   modified: DateTime,
-//   modifiedBy: String,
-// }
-//
-// Entity SalesPerson {
-//   id: String,
-//   firstName: String,
-//   lastName: String,
-//   email: String,
-//   phone: String,
-//   title: String,
-//   department: String,
-//   account: Account,
-//   address: Address,
-//   territories: Vec<Territory>,
-//   created: DateTime,
-//   createdBy: String,
-//   modified: DateTime,
-//   modifiedBy: String,
-// }
+Entity Opportunity {
+  constructor(
+    id: String,
+    name: String,
+    description: String,
+    status: OpportunityStatus,
+    amount: Money,
+    probability: Probability,
+    closeDate: Date,
+    contacts: Vec<Contact>,
+    products: Vec<Product>,
+    notes: Vec<Note>,
+    attachments: Vec<Attachment>,
+    activities: Vec<Activity>,
+    tasks: Vec<Task>,
+    events: Vec<Event>,
+    created: DateTime,
+    createdBy: String,
+    modified: DateTime,
+    modifiedBy: String
+  )
+}
+
+Entity Pipeline {
+  constructor(
+    id: String,
+    name: String,
+    description: String,
+    stages: Vec<Stage>,
+    opportunities: Vec<Opportunity>,
+    created: DateTime,
+    createdBy: String,
+    modified: DateTime,
+    modifiedBy: String
+  )
+}
+
+Entity Contact {
+  constructor(
+    id: String,
+    firstName: String,
+    lastName: String,
+    email: String,
+    phone: String,
+    title: String,
+    department: String,
+    account: Account,
+    address: Address,
+    created: DateTime,
+    createdBy: String,
+    modified: DateTime,
+    modifiedBy: String,
+  )
+}
+
+Entity Account {
+  constructor(
+    id: String,
+    name: String,
+    website: String,
+    phone: String,
+    industry: String,
+    employees: String,
+    annualRevenue: Money,
+    billingAddress: Address,
+    shippingAddress: Address,
+    contacts: Vec<Contact>,
+    created: DateTime,
+    createdBy: String,
+    modified: DateTime,
+    modifiedBy: String,
+  )
+}
+
+Entity Product {
+  constructor(
+    id: String,
+    name: String,
+    description: String,
+    price: Money,
+    category: String,
+    created: DateTime,
+    createdBy: String,
+    modified: DateTime,
+    modifiedBy: String,
+  )
+}
+
+Entity Territory {
+  constructor(
+    id: String,
+    name: String,
+    description: String,
+    created: DateTime,
+    createdBy: String,
+    modified: DateTime,
+    modifiedBy: String,
+  )
+}
+
+Entity SalesPerson {
+  constructor(
+    id: String,
+    firstName: String,
+    lastName: String,
+    email: String,
+    phone: String,
+    title: String,
+    department: String,
+    account: Account,
+    address: Address,
+    territories: Vec<Territory>,
+    created: DateTime,
+    createdBy: String,
+    modified: DateTime,
+    modifiedBy: String,
+  )
+}
 ");
   }
 }
