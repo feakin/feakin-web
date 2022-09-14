@@ -71,6 +71,17 @@ pub enum BoundedContextRelation {
 // tactic DDD
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct DomainService {
+  pub name: String
+}
+
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ApplicationService {
+  pub name: String
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Aggregate {
   pub name: String,
   pub description: String,

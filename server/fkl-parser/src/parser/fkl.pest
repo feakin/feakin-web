@@ -5,6 +5,7 @@ declaration = {
   | context_decl
   | ext_module_decl
   | aggregate_decl
+  | entity_decl
 }
 
 context_map_decl = {

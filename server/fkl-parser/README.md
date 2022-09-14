@@ -6,6 +6,11 @@
   - [ ] Ast Model
 - [ ] Code Binding 
 - [ ] Code Generator Model
+- [ ] Workflow DSL
+  - [ ] Event Storming
+    - [ ] Role
+    - [ ] Command
+    - [ ] Event
 
 ## DDD Building Blocks
 
