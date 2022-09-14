@@ -17,14 +17,14 @@ context_decl = {
 
 context_network = {
   context_node_decl
-  | context_map_relation
+  | context_node_rel
 }
 
 context_node_decl = {
-  "useContext" ~ identifier
+  "context" ~ identifier
 }
 
-context_map_relation = {
+context_node_rel = {
   identifier ~ relationship ~ identifier ~ ";"?
 }
 

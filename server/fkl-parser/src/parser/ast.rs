@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -7,12 +8,12 @@ use serde::Serialize;
 pub struct UbiquitousLanguage {
   pub name: String,
   pub description: String,
-  pub words: Vec<UniqWord>,
+  // use hashmap to make sure it's unique
+  pub words: HashMap<String, UniqueWord>,
 }
 
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct UniqWord {
+pub struct UniqueWord {
   pub unique_name: String,
   pub display_name: String,
   // soft link
