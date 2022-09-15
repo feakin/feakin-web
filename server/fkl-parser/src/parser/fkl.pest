@@ -9,7 +9,7 @@ declaration = {
 }
 
 context_map_decl = {
-  "ContextMap" ~ "{" ~ (context_node_decl | context_node_rel | inline_doc)* ~ "}"
+  "ContextMap" ~ identifier? ~ "{" ~ (context_node_decl | context_node_rel | inline_doc)* ~ "}"
 }
 
 context_decl = {

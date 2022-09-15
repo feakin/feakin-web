@@ -1,13 +1,15 @@
+use std::collections::HashMap;
+use pest::iterators::{Pair, Pairs};
+
+use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, FklDeclaration};
+use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
-use pest::iterators::Pairs;
-use crate::parser::ast::{ContextMap, FklDeclaration};
-use crate::parser::parse_result::ParseError;
 
 #[derive(Parser)]
 #[grammar = "parser/fkl.pest"]
 pub struct FklParser;
 
-pub fn parse(code: &str) -> Result<Vec<FklDeclaration>, ParseError> {
+pub fn parse(code: &str) -> ParseResult<Vec<FklDeclaration>> {
   match FklParser::parse(Rule::declarations, code) {
     Err(e) => {
       let fancy_e = e.renamed_rules(|rule| {
@@ -35,6 +37,12 @@ fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
         Rule::context_map_decl => {
           decl = FklDeclaration::ContextMap(consume_context_map(p));
         }
+        Rule::aggregate_decl => {
+          decl = FklDeclaration::Aggregate(consume_aggregate(p));
+        }
+        Rule::context_decl => {
+          decl = FklDeclaration::BoundedContext(consume_context(p));
+        }
         _ => println!("unreachable content rule: {:?}", p.as_rule())
       };
     }
@@ -42,23 +50,84 @@ fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
   }).collect::<Vec<FklDeclaration>>()
 }
 
-fn consume_context_map(pair: pest::iterators::Pair<Rule>) -> ContextMap {
-  let context_map = Default::default();
+fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
+  let mut context_decl_map: HashMap<String, BoundedContext> = HashMap::new();
+  let mut context_name = String::new();
   for p in pair.into_inner() {
     match p.as_rule() {
-      _ => println!("unreachable content rule: {:?}", p.as_rule())
+      Rule::identifier => {
+        context_name = p.as_str().to_string();
+      }
+      Rule::context_node_rel => {
+        for p in p.into_inner() {
+          match p.as_rule() {
+            Rule::identifier => {
+              let context_name = p.as_str().to_string();
+              context_decl_map.insert(context_name.clone(), BoundedContext {
+                name: context_name,
+              });
+            }
+            _ => println!("unreachable content rule: {:?}", p.as_rule())
+          };
+        }
+      }
+      _ => println!("unreachable context_map rule: {:?}", p.as_rule())
     };
   }
-  return context_map;
+
+  return ContextMap {
+    name: context_name,
+    contexts: context_decl_map.values().cloned().collect(),
+    relations: vec![],
+  };
+}
+
+fn consume_context(pair: Pair<Rule>) -> BoundedContext {
+  let mut context = BoundedContext::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        context.name = p.as_str().to_string();
+      }
+      _ => println!("unreachable context rule: {:?}", p.as_rule())
+    };
+  }
+  return context;
+}
+
+fn consume_aggregate(pair: Pair<Rule>) -> Aggregate {
+  let mut aggregate = Aggregate::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        aggregate.name = p.as_str().to_string();
+      }
+      Rule::inline_doc => {
+        aggregate.inline_doc = parse_inline_doc(p);
+      }
+      _ => println!("unreachable aggregate rule: {:?}", p.as_rule())
+    };
+  }
+  return aggregate;
+}
+
+fn parse_inline_doc(pair: Pair<Rule>) -> String {
+  let mut doc = String::new();
+  // remove """ from the beginning and end
+  pair.as_str().chars().skip(3).take(pair.as_str().len() - 6).for_each(|c| {
+    doc.push(c);
+  });
+  return doc;
 }
 
 #[cfg(test)]
 mod tests {
+  use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, FklDeclaration};
   use crate::parser::parser::parse;
 
   #[test]
-  fn it_works() {
-    parse(r#"
+  fn parse_context_map() {
+    let decls = parse(r#"
 ContextMap {
   ShoppingCarContext -> MallContext;
   ShoppingCarContext <-> MallContext;
@@ -67,20 +136,42 @@ ContextMap {
 Context ShoppingCarContext {
   Module Cargo { }
 }
-
-Module ExtCargo { }
 "#).unwrap();
+
+    assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMap {
+      name: "".to_string(),
+      contexts: vec![
+        BoundedContext {
+          name: "ShoppingCarContext".to_string()
+        },
+        BoundedContext {
+          name: "MallContext".to_string()
+        },
+      ],
+      relations: vec![],
+    }));
   }
 
   #[test]
   fn long_string() {
-    parse(r#"
+    let decls = parse(r#"
 Aggregate Sample {
   """ inline doc sample
 just for test
 """
 }
 "#).unwrap();
+
+    assert_eq!(decls[0], FklDeclaration::Aggregate(Aggregate {
+      name: "Sample".to_string(),
+      description: "".to_string(),
+      is_root: false,
+      inline_doc: r#" inline doc sample
+just for test
+"#.to_string(),
+      used_context: "".to_string(),
+      entities: vec![],
+    }));
   }
 
   #[test]

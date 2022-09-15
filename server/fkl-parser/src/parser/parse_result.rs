@@ -73,7 +73,7 @@ impl From<String> for ParseError {
 //   }
 // }
 /// Convenient wrapper around std::Result.
-pub type Result<T> = std::prelude::v1::Result<T, ParseError>;
+pub type ParseResult<T> = std::prelude::v1::Result<T, ParseError>;
 
 #[cfg(test)]
 mod tests {

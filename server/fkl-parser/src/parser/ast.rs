@@ -57,7 +57,7 @@ pub enum SubDomainType {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct ContextMap {
   pub name: String,
-  pub contexts: BoundedContext,
+  pub contexts: Vec<BoundedContext>,
   pub relations: Vec<BoundedContextRelation>,
 }
 
@@ -93,12 +93,12 @@ pub struct ApplicationService {
   pub name: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct Aggregate {
   pub name: String,
   pub description: String,
   pub is_root: bool,
-  //
+  pub inline_doc: String,
   pub used_context: String,
   pub entities: Vec<Entity>,
 }
