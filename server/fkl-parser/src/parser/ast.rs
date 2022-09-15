@@ -109,14 +109,15 @@ pub struct DomainEvent {
   pub name: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct Entity {
   pub name: String,
   pub identify: Field,
+  pub inline_doc: String,
   pub fields: Vec<Field>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct Field {
   pub name: String,
   pub field_type: String,

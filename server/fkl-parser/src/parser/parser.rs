@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::iterators::{Pair, Pairs};
 
-use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, FklDeclaration};
+use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, Entity, Field, FklDeclaration};
 use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
 
@@ -37,11 +37,14 @@ fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
         Rule::context_map_decl => {
           decl = FklDeclaration::ContextMap(consume_context_map(p));
         }
+        Rule::context_decl => {
+          decl = FklDeclaration::BoundedContext(consume_context(p));
+        }
         Rule::aggregate_decl => {
           decl = FklDeclaration::Aggregate(consume_aggregate(p));
         }
-        Rule::context_decl => {
-          decl = FklDeclaration::BoundedContext(consume_context(p));
+        Rule::entity_decl => {
+          decl = FklDeclaration::Entity(consume_entity(p));
         }
         _ => println!("unreachable content rule: {:?}", p.as_rule())
       };
@@ -115,10 +118,68 @@ fn consume_aggregate(pair: Pair<Rule>) -> Aggregate {
       Rule::inline_doc => {
         aggregate.inline_doc = parse_inline_doc(p);
       }
+      Rule::entity_decl => {
+        aggregate.entities.push(consume_entity(p));
+      }
       _ => println!("unreachable aggregate rule: {:?}", p.as_rule())
     };
   }
   return aggregate;
+}
+
+fn consume_entity(pair: Pair<Rule>) -> Entity {
+  let mut entity = Entity::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        entity.name = p.as_str().to_string();
+      }
+      Rule::constructor_decl => {
+        entity.fields = consume_constructor(p);
+      }
+      Rule::inline_doc => {
+        entity.inline_doc = parse_inline_doc(p);
+      }
+      _ => println!("unreachable entity rule: {:?}", p.as_rule())
+    };
+  }
+  return entity;
+}
+
+fn consume_constructor(pair: Pair<Rule>) -> Vec<Field> {
+  let mut fields: Vec<Field> = vec![];
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::parameters_decl => {
+        for p in p.into_inner() {
+          match p.as_rule() {
+            Rule::parameter_decl => {
+              fields.push(consume_parameter(p));
+            }
+            _ => println!("unreachable parameter_decl rule: {:?}", p.as_rule())
+          }
+        }
+      }
+      _ => println!("unreachable constructor rule: {:?}", p.as_rule())
+    };
+  }
+  return fields;
+}
+
+fn consume_parameter(pair: Pair<Rule>) -> Field {
+  let mut field = Field::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        field.name = p.as_str().to_string();
+      }
+      Rule::param_type => {
+        field.field_type = p.as_str().to_string();
+      }
+      _ => println!("unreachable parameter rule: {:?}", p.as_rule())
+    };
+  }
+  return field;
 }
 
 fn parse_inline_doc(pair: Pair<Rule>) -> String {
@@ -132,7 +193,7 @@ fn parse_inline_doc(pair: Pair<Rule>) -> String {
 
 #[cfg(test)]
 mod tests {
-  use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, FklDeclaration};
+  use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, Entity, Field, FklDeclaration};
   use crate::parser::parser::parse;
 
   #[test]
@@ -188,15 +249,35 @@ just for test
 
   #[test]
   fn aggregate() {
-    parse(r#"
-Context ShoppingCarContext {
-  Aggregate ShoppingCart {
-    Entity Product {
-      constructor(name: String, price: Money)
-    }
+    let decls = parse(r#"
+Aggregate ShoppingCart {
+  Entity Product {
+    constructor(name: String, price: Money)
   }
 }
 "#).unwrap();
+
+    assert_eq!(decls[0], FklDeclaration::Aggregate(Aggregate {
+      name: "ShoppingCart".to_string(),
+      description: "".to_string(),
+      is_root: false,
+      inline_doc: "".to_string(),
+      used_context: "".to_string(),
+      entities: vec![Entity {
+        name: "Product".to_string(),
+        identify: Default::default(),
+        inline_doc: "".to_string(),
+        fields: vec![
+          Field {
+            name: "name".to_string(),
+            field_type: "String".to_string(),
+          },
+          Field {
+            name: "price".to_string(),
+            field_type: "Money".to_string(),
+          }],
+      }],
+    }))
   }
 
 
