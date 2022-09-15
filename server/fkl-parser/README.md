@@ -73,17 +73,15 @@ SubDomain Cart {
     // Concept or UML like ?
     // can be inside or outside of the Aggregate
     Entity Cart {
-      
+      // it's to many, can change in different way.
+      ValueObject CartId
+      ValueObject CartStatus
+      ValueObject CartItem
+      ValueObject CartItemQuantity
+      ValueObject CartItemPrice
+      ValueObject CartItemTotal
+      ValueObject CartTotal 
     }
-    
-    // it's to many, can change in different way.
-    ValueObject CartId
-    ValueObject CartStatus
-    ValueObject CartItem
-    ValueObject CartItemQuantity
-    ValueObject CartItemPrice
-    ValueObject CartItemTotal
-    ValueObject CartTotal
   }
 }
 

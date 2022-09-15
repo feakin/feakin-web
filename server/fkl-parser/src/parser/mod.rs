@@ -199,4 +199,21 @@ Entity SalesPerson {
 }
 ");
   }
+
+  #[test]
+  fn basic_vo_inline_aggregate() {
+    parse(r#"Context Cart {
+  Aggregate Cart {
+    Entity Cart {
+      ValueObject CartId
+      ValueObject CartStatus
+      ValueObject CartItem
+      ValueObject CartItemQuantity
+      ValueObject CartItemPrice
+      ValueObject CartItemTotal
+      ValueObject CartTotal
+    }
+  }
+}"#);
+  }
 }

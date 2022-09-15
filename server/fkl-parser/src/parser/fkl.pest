@@ -55,11 +55,15 @@ inline_doc = {
 
 // Entity should be like a concept
 entity_decl = {
-  ("Concept" | "Entity" ) ~ identifier ~ "{" ~ (constructor_decl)* ~ "}"
+  ("Concept" | "Entity" ) ~ identifier ~ "{" ~ (constructor_decl | value_object_decl)* ~ "}"
 }
 
 constructor_decl = {
   "constructor" ~ "(" ~ (parameter_decl ~ ","?)* ~ ")"
+}
+
+value_object_decl = {
+  ("VO" | "ValueObject") ~ identifier ~ ("{" ~ param_type* ~ "}")?
 }
 
 parameter_decl = {
