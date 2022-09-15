@@ -9,16 +9,11 @@ declaration = {
 }
 
 context_map_decl = {
-  "ContextMap" ~ "{" ~ context_network* ~ "}"
+  "ContextMap" ~ "{" ~ (context_node_decl | context_node_rel | inline_doc)* ~ "}"
 }
 
 context_decl = {
-  "Context" ~ identifier ~ "{" ~ (module_decl | aggregate_decl)* ~ "}"
-}
-
-context_network = {
-  context_node_decl
-  | context_node_rel
+  "Context" ~ identifier ~ "{" ~ (module_decl | aggregate_decl | inline_doc)* ~ "}"
 }
 
 context_node_decl = {
@@ -26,10 +21,10 @@ context_node_decl = {
 }
 
 context_node_rel = {
-  identifier ~ relationship ~ identifier ~ ";"?
+  identifier ~ rel_symbol ~ identifier ~ ";"?
 }
 
-relationship = {
+rel_symbol = {
   rs_both | rs_left_to_right | rs_right_to_left
 }
 
@@ -38,7 +33,7 @@ rs_right_to_left = { "<-" }
 rs_both = { "<->" }
 
 module_decl = {
-  "Module" ~ identifier ~ "{" ~ aggregate_decl* ~ "}"
+  "Module" ~ identifier ~ "{" ~ (aggregate_decl | inline_doc)* ~ "}"
 }
 
 ext_module_decl = {
@@ -46,7 +41,7 @@ ext_module_decl = {
 }
 
 aggregate_decl = {
-  "Aggregate" ~ identifier ~ "{" ~ ( inline_doc | entity_decl)* ~ "}"
+  "Aggregate" ~ identifier ~ "{" ~ (entity_decl | inline_doc)* ~ "}"
 }
 
 inline_doc = {
@@ -55,15 +50,19 @@ inline_doc = {
 
 // Entity should be like a concept
 entity_decl = {
-  ("Concept" | "Entity" ) ~ identifier ~ "{" ~ (constructor_decl | value_object_decl)* ~ "}"
+  ("Concept" | "Entity" ) ~ identifier ~ "{" ~ (constructor_decl | value_object_decl | inline_doc)* ~ "}"
 }
 
 constructor_decl = {
-  "constructor" ~ "(" ~ (parameter_decl ~ ","?)* ~ ")"
+  "constructor" ~ "(" ~ parameters_decl ~ ")"
 }
 
 value_object_decl = {
   ("VO" | "ValueObject") ~ identifier ~ ("{" ~ param_type* ~ "}")?
+}
+
+parameters_decl = {
+  (parameter_decl ~ ","?)*
 }
 
 parameter_decl = {

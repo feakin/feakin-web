@@ -75,7 +75,6 @@ pub struct DomainService {
   pub name: String
 }
 
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ApplicationService {
   pub name: String
@@ -86,7 +85,8 @@ pub struct Aggregate {
   pub name: String,
   pub description: String,
   pub is_root: bool,
-  pub context: String,
+  //
+  pub used_context: String,
   pub entities: Vec<Entity>,
 }
 
