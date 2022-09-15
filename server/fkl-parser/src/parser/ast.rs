@@ -57,8 +57,21 @@ pub enum SubDomainType {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct ContextMap {
   pub name: String,
+  pub state: ContextState,
   pub contexts: Vec<BoundedContext>,
   pub relations: Vec<BoundedContextRelation>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum ContextState {
+  AsIs,
+  ToBe,
+}
+
+impl Default for ContextState {
+  fn default() -> Self {
+    ContextState::ToBe
+  }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
@@ -67,8 +80,34 @@ pub struct BoundedContext {
   pub aggregates: Vec<Aggregate>,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+pub struct BoundedContextRelation {
+  pub from: String,
+  pub to: String,
+  pub relation_direction: RelationDirection,
+  pub from_rel: Option<ContextRelationType> ,
+  pub to_rel: Option<ContextRelationType>
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum BoundedContextRelation {
+pub enum RelationDirection {
+  None,
+  // -->
+  Start,
+  // <--
+  End,
+  // <->
+  StartAnEnd
+}
+
+impl Default for RelationDirection {
+  fn default() -> Self {
+    RelationDirection::None
+  }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum ContextRelationType {
   // Symmetric relation
   SharedKernel,
   Partnership,

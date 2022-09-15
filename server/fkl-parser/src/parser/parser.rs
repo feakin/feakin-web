@@ -87,6 +87,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
 
   return ContextMap {
     name: context_name,
+    state: Default::default(),
     contexts,
     relations: vec![],
   };
@@ -211,6 +212,7 @@ Context ShoppingCarContext {
 
     assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMap {
       name: "".to_string(),
+      state: Default::default(),
       contexts: vec![
         BoundedContext {
           name: "MallContext".to_string(),
