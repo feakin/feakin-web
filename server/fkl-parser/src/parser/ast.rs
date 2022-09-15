@@ -127,6 +127,7 @@ pub struct Attribute {
   pub value: String,
 }
 
+// ???
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Property {
   pub required: bool,
