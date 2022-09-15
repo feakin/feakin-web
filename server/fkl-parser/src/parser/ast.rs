@@ -5,6 +5,19 @@ use serde::Serialize;
 // strategy DDD
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum FklDeclaration {
+  None,
+  ContextMap(ContextMap),
+  BoundedContext(BoundedContext),
+  Domain(Domain),
+  Aggregate(Aggregate),
+  DomainService(DomainService),
+  ApplicationService(ApplicationService),
+  Entity(Entity),
+  ValueObject(ValueObject),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct UbiquitousLanguage {
   pub name: String,
   pub description: String,
@@ -41,14 +54,14 @@ pub enum SubDomainType {
   Supporting,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct ContextMap {
   pub name: String,
   pub contexts: BoundedContext,
   pub relations: Vec<BoundedContextRelation>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct BoundedContext {
   pub name: String,
 }
@@ -72,12 +85,12 @@ pub enum BoundedContextRelation {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct DomainService {
-  pub name: String
+  pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ApplicationService {
-  pub name: String
+  pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -98,6 +111,7 @@ pub struct DomainEvent {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Entity {
   pub name: String,
+  pub identify: Field,
   pub fields: Vec<Field>,
 }
 

@@ -1,20 +1,58 @@
-use pest::Parser;
+use pest::{Parser};
+use pest::iterators::Pairs;
+use crate::parser::ast::{ContextMap, FklDeclaration};
+use crate::parser::parse_result::ParseError;
 
 mod ast;
+mod parse_result;
 
 #[derive(Parser)]
 #[grammar = "parser/fkl.pest"]
 pub struct FklParser;
 
-
-fn parse(code: &str) {
-  let pairs = FklParser::parse(Rule::declarations, code).unwrap_or_else(|e| panic!("{}", e));
-  for pair in pairs {
-    // A pair is a combination of the rule which matched and a span of input
-    println!("Rule:    {:?}", pair.as_rule());
-    println!("Span:    {:?}", pair.as_span());
-    println!("Text:    {}", pair.as_str());
+fn parse(code: &str) -> Result<Vec<FklDeclaration>, ParseError> {
+  match FklParser::parse(Rule::declaration, code) {
+    Err(e) => {
+      let fancy_e = e.renamed_rules(|rule| {
+        match *rule {
+          _ => {
+            format!("{:?}", rule)
+          }
+        }
+      });
+      return Err(ParseError::msg(fancy_e));
+    }
+    Ok(pairs) => {
+      Ok(consume_declarations(pairs))
+    }
   }
+}
+
+fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
+  pairs.filter(|pair| {
+    return pair.as_rule() == Rule::declaration;
+  }).map(|pair| {
+    let mut decl: FklDeclaration = FklDeclaration::None;
+    for p in pair.into_inner() {
+      match p.as_rule() {
+        Rule::context_map_decl => {
+          decl = FklDeclaration::ContextMap(consume_context_map(p));
+        }
+        _ => println!("unreachable content rule: {:?}", p.as_rule())
+      };
+    }
+    return decl;
+  }).collect::<Vec<FklDeclaration>>()
+}
+
+fn consume_context_map(pair: pest::iterators::Pair<Rule>) -> ContextMap {
+  let mut context_map = Default::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      _ => println!("unreachable content rule: {:?}", p.as_rule())
+    };
+  }
+  return context_map;
 }
 
 #[cfg(test)]
@@ -34,7 +72,7 @@ Context ShoppingCarContext {
 }
 
 Module ExtCargo { }
-");
+").expect("TODO: panic message");
   }
 
   #[test]
@@ -45,7 +83,7 @@ Aggregate Sample {
 just for test
 """
 }
-"#);
+"#).expect("TODO: panic message");
   }
 
   #[test]
@@ -58,7 +96,7 @@ Context ShoppingCarContext {
     }
   }
 }
-"#);
+"#).expect("TODO: panic message");
   }
 
 
@@ -214,6 +252,6 @@ Entity SalesPerson {
       ValueObject CartTotal
     }
   }
-}"#);
+}"#).expect("TODO: panic message");
   }
 }
