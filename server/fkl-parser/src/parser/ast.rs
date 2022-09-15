@@ -64,6 +64,7 @@ pub struct ContextMap {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct BoundedContext {
   pub name: String,
+  pub aggregates: Vec<Aggregate>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

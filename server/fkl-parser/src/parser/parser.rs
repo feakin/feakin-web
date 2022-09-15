@@ -65,6 +65,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
               let context_name = p.as_str().to_string();
               context_decl_map.insert(context_name.clone(), BoundedContext {
                 name: context_name,
+                aggregates: vec![],
               });
             }
             _ => println!("unreachable content rule: {:?}", p.as_rule())
@@ -75,9 +76,15 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
     };
   }
 
+  // sort context map by name
+  let mut contexts = context_decl_map.into_iter().map(|(_, v)| v)
+    .collect::<Vec<BoundedContext>>();
+
+  contexts.sort_by(|a, b| a.name.cmp(&b.name));
+
   return ContextMap {
     name: context_name,
-    contexts: context_decl_map.values().cloned().collect(),
+    contexts,
     relations: vec![],
   };
 }
@@ -88,6 +95,9 @@ fn consume_context(pair: Pair<Rule>) -> BoundedContext {
     match p.as_rule() {
       Rule::identifier => {
         context.name = p.as_str().to_string();
+      }
+      Rule::aggregate_decl => {
+        context.aggregates.push(consume_aggregate(p));
       }
       _ => println!("unreachable context rule: {:?}", p.as_rule())
     };
@@ -142,10 +152,12 @@ Context ShoppingCarContext {
       name: "".to_string(),
       contexts: vec![
         BoundedContext {
-          name: "ShoppingCarContext".to_string()
+          name: "MallContext".to_string(),
+          aggregates: vec![],
         },
         BoundedContext {
-          name: "MallContext".to_string()
+          name: "ShoppingCarContext".to_string(),
+          aggregates: vec![],
         },
       ],
       relations: vec![],
