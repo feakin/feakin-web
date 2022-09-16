@@ -12,19 +12,31 @@
     - [ ] Command
     - [ ] Event
 
+# System Level
+
+# Org. Modeling
+
+- Application Level 
+- Team Topology Model
+
+# Continuous feedback
+
+- C4
+
+# Domain DSL Language
+
 ## DDD Building Blocks
 
 - ContextMap
 - Bounded Context
   - Shared Kernel
   - Anti-corruption Layer
-- Subdomin
+- SubDomain
   - Core-domain
   - Supporting-domain
   - Generic-domain
 - Layered Architecture
 
-# Feakin Language
 
 Syntax:
 
