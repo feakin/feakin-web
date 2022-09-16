@@ -82,27 +82,27 @@ pub struct BoundedContext {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct ContextRelation {
-  pub from: String,
-  pub to: String,
-  pub relation_direction: RelationDirection,
-  pub from_rel: Option<ContextRelationType> ,
-  pub to_rel: Option<ContextRelationType>
+  pub source: String,
+  pub target: String,
+  pub connection_type: RelationDirection,
+  pub source_type: Option<ContextRelationType> ,
+  pub target_type: Option<ContextRelationType>
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum RelationDirection {
-  None,
+  Undirected,
   // -->
-  Start,
+  Directed,
   // <--
-  End,
+  AntiDirected,
   // <->
-  StartAnEnd
+  BiDirected
 }
 
 impl Default for RelationDirection {
   fn default() -> Self {
-    RelationDirection::None
+    RelationDirection::Undirected
   }
 }
 

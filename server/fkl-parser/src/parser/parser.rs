@@ -65,7 +65,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
       }
       Rule::context_node_rel => {
         let mut names: Vec<String> = vec![];
-        let mut direction: RelationDirection = RelationDirection::None;
+        let mut direction: RelationDirection = RelationDirection::Undirected;
 
         for p in p.into_inner() {
           match p.as_rule() {
@@ -81,13 +81,13 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
               for p in p.into_inner() {
                 match p.as_rule() {
                   Rule::rs_both => {
-                    direction = RelationDirection::StartAnEnd;
+                    direction = RelationDirection::BiDirected;
                   }
                   Rule::rs_left_to_right => {
-                    direction = RelationDirection::Start;
+                    direction = RelationDirection::Directed;
                   }
                   Rule::rs_right_to_left => {
-                    direction = RelationDirection::End;
+                    direction = RelationDirection::AntiDirected;
                   }
                   _ => println!("unreachable entity rule: {:?}", p.as_rule())
                 };
@@ -98,11 +98,11 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
         }
 
         relations.push(ContextRelation {
-          from: names[0].clone(),
-          to: names[1].clone(),
-          relation_direction: direction,
-          from_rel: None,
-          to_rel: None,
+          source: names[0].clone(),
+          target: names[1].clone(),
+          connection_type: direction,
+          source_type: None,
+          target_type: None,
         });
       }
       _ => println!("unreachable context_map rule: {:?}", p.as_rule())
@@ -225,7 +225,7 @@ fn parse_inline_doc(pair: Pair<Rule>) -> String {
 #[cfg(test)]
 mod tests {
   use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration};
-  use crate::parser::ast::RelationDirection::{Start, StartAnEnd};
+  use crate::parser::ast::RelationDirection::{Directed, BiDirected};
   use crate::parser::parser::parse;
 
   #[test]
@@ -255,8 +255,8 @@ Context ShoppingCarContext {
         },
       ],
       relations: vec![
-        ContextRelation { from: "ShoppingCarContext".to_string(), to: "MallContext".to_string(), relation_direction: Start, from_rel: None, to_rel: None },
-        ContextRelation { from: "ShoppingCarContext".to_string(), to: "MallContext".to_string(), relation_direction: StartAnEnd, from_rel: None, to_rel: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: Directed, source_type: None, target_type: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: BiDirected, source_type: None, target_type: None },
       ],
     }));
   }
