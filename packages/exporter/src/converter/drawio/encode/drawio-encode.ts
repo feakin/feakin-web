@@ -19,10 +19,11 @@ export const DrawioEncode = {
         return undefined;
       }
 
+      // todo: related to
       const diagram = $diagrams[0];
       let isDrawioEncodedText = diagram.children.length == 1 && diagram.children[0].type === 'text';
       if (isDrawioEncodedText) {
-        return DrawioEncode.decode(diagrams);
+        return DrawioEncode.decode((diagram.children[0] as any).data);
       }
 
       if(diagram.children.length > 1) {

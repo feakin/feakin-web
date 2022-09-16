@@ -98,4 +98,14 @@ digraph {
 
     fs.writeFileSync("./test/from-dot.drawio", output);
   });
+
+  it('from drawio to graphviz 2', () => {
+    const data = fs.readFileSync('_fixtures/drawio/user-story-mapping.drawio', 'utf8');
+    const executor = new DrawioImporter(data);
+    const graph: Graph = executor.parse();
+
+    const output = new DotExporter(graph).export();
+
+    expect(output).toContain('"Persona 1"');
+  });
 });
