@@ -49,10 +49,15 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
   const [content, setContent] = React.useState<string>(props.code.content);
 
   useEffect(() => {
-    setRoomId(props.room);
-    if (subject) {
-      // logout
-      subject.next({ "type": "LeaveRoom", "value": { "room_id": props.room, "agent_name": props.agentName } });
+    setContent(props.code.content);
+  }, [props.code.content]);
+
+  useEffect(() => {
+    if (props.room.length > 0) {
+      setRoomId(props.room);
+      if (subject) {
+        subject.next({ "type": "LeaveRoom", "value": { "room_id": props.room, "agent_name": props.agentName } });
+      }
     }
   }, [props.agentName, props.room, subject]);
 
@@ -174,26 +179,32 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor, patchInfo]);
 
-  const handleTextChange = useCallback((_newValue: string, event: editor.IModelContentChangedEvent) => {
+  const handleTextChange = useCallback((newContent: string, event: editor.IModelContentChangedEvent) => {
     if (isApplyPatch) {
       return;
     }
 
-    let localVersion = doc.getLocalVersion();
+    let content;
+    if (doc) {
+      let localVersion = doc.getLocalVersion();
 
-    event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
-      doc.ins(change.rangeOffset, change.text);
-      doc.del(change.rangeOffset, change.rangeLength);
-    })
+      event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
+        doc.ins(change.rangeOffset, change.text);
+        doc.del(change.rangeOffset, change.rangeLength);
+      })
 
-    let patches = doc.getPatchSince(localVersion);
-    subject.next({
-      type: "OpsByPatches",
-      value: { room_id: roomId, agent_name: props.agentName, patches: Array.prototype.slice.call(patches) }
-    })
+      let patches = doc.getPatchSince(localVersion);
+      subject.next({
+        type: "OpsByPatches",
+        value: { room_id: roomId, agent_name: props.agentName, patches: Array.prototype.slice.call(patches) }
+      })
 
-    // todo: update by samples
-    let content = doc.get();
+      // todo: update by samples
+      content = doc.get();
+    } else {
+      content = newContent;
+    }
+
     props.updateCode({
       ...props.code,
       content: content
