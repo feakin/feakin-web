@@ -59,7 +59,7 @@ pub struct ContextMap {
   pub name: String,
   pub state: ContextState,
   pub contexts: Vec<BoundedContext>,
-  pub relations: Vec<BoundedContextRelation>,
+  pub relations: Vec<ContextRelation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -81,7 +81,7 @@ pub struct BoundedContext {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct BoundedContextRelation {
+pub struct ContextRelation {
   pub from: String,
   pub to: String,
   pub relation_direction: RelationDirection,

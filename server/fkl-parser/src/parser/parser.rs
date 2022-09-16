@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::iterators::{Pair, Pairs};
 
-use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, Entity, Field, FklDeclaration};
+use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, RelationDirection};
 use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
 
@@ -56,24 +56,54 @@ fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
 fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
   let mut context_decl_map: HashMap<String, BoundedContext> = HashMap::new();
   let mut context_name = String::new();
+  let mut relations: Vec<ContextRelation> = Vec::new();
+
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
         context_name = p.as_str().to_string();
       }
       Rule::context_node_rel => {
+        let mut names: Vec<String> = vec![];
+        let mut direction: RelationDirection = RelationDirection::None;
+
         for p in p.into_inner() {
           match p.as_rule() {
             Rule::identifier => {
               let context_name = p.as_str().to_string();
+              names.push(context_name.clone());
               context_decl_map.insert(context_name.clone(), BoundedContext {
                 name: context_name,
                 aggregates: vec![],
               });
             }
+            Rule::rel_symbol => {
+              for p in p.into_inner() {
+                match p.as_rule() {
+                  Rule::rs_both => {
+                    direction = RelationDirection::StartAnEnd;
+                  }
+                  Rule::rs_left_to_right => {
+                    direction = RelationDirection::Start;
+                  }
+                  Rule::rs_right_to_left => {
+                    direction = RelationDirection::End;
+                  }
+                  _ => println!("unreachable entity rule: {:?}", p.as_rule())
+                };
+              }
+            }
             _ => println!("unreachable content rule: {:?}", p.as_rule())
           };
         }
+
+        relations.push(ContextRelation {
+          from: names[0].clone(),
+          to: names[1].clone(),
+          relation_direction: direction,
+          from_rel: None,
+          to_rel: None,
+        });
       }
       _ => println!("unreachable context_map rule: {:?}", p.as_rule())
     };
@@ -89,7 +119,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
     name: context_name,
     state: Default::default(),
     contexts,
-    relations: vec![],
+    relations,
   };
 }
 
@@ -194,7 +224,8 @@ fn parse_inline_doc(pair: Pair<Rule>) -> String {
 
 #[cfg(test)]
 mod tests {
-  use crate::parser::ast::{Aggregate, BoundedContext, ContextMap, Entity, Field, FklDeclaration};
+  use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration};
+  use crate::parser::ast::RelationDirection::{Start, StartAnEnd};
   use crate::parser::parser::parse;
 
   #[test]
@@ -223,7 +254,10 @@ Context ShoppingCarContext {
           aggregates: vec![],
         },
       ],
-      relations: vec![],
+      relations: vec![
+        ContextRelation { from: "ShoppingCarContext".to_string(), to: "MallContext".to_string(), relation_direction: Start, from_rel: None, to_rel: None },
+        ContextRelation { from: "ShoppingCarContext".to_string(), to: "MallContext".to_string(), relation_direction: StartAnEnd, from_rel: None, to_rel: None },
+      ],
     }));
   }
 
