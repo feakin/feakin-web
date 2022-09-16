@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::iterators::{Pair, Pairs};
 
-use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, RelationDirection};
+use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, RelationDirection, ValueObject};
 use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
 
@@ -84,10 +84,10 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
                     direction = RelationDirection::BiDirected;
                   }
                   Rule::rs_left_to_right => {
-                    direction = RelationDirection::Directed;
+                    direction = RelationDirection::PositiveDirected;
                   }
                   Rule::rs_right_to_left => {
-                    direction = RelationDirection::AntiDirected;
+                    direction = RelationDirection::NegativeDirected;
                   }
                   _ => println!("unreachable entity rule: {:?}", p.as_rule())
                 };
@@ -171,6 +171,9 @@ fn consume_entity(pair: Pair<Rule>) -> Entity {
       Rule::inline_doc => {
         entity.inline_doc = parse_inline_doc(p);
       }
+      Rule::value_object_decl => {
+        entity.value_objects.push(consume_value_object(p));
+      }
       _ => println!("unreachable entity rule: {:?}", p.as_rule())
     };
   }
@@ -213,19 +216,28 @@ fn consume_parameter(pair: Pair<Rule>) -> Field {
   return field;
 }
 
+fn consume_value_object(pair: Pair<Rule>) -> ValueObject {
+  let mut value_object = ValueObject::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        value_object.name = p.as_str().to_string();
+      }
+      _ => println!("unreachable value_object rule: {:?}", p.as_rule())
+    };
+  }
+  return value_object;
+}
+
 fn parse_inline_doc(pair: Pair<Rule>) -> String {
-  let mut doc = String::new();
-  // remove """ from the beginning and end
-  pair.as_str().chars().skip(3).take(pair.as_str().len() - 6).for_each(|c| {
-    doc.push(c);
-  });
-  return doc;
+  let len = "\"\"\"".len();
+  return pair.as_str().chars().skip(len).take(pair.as_str().len() - len * 2).collect();
 }
 
 #[cfg(test)]
 mod tests {
-  use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration};
-  use crate::parser::ast::RelationDirection::{Directed, BiDirected};
+  use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration, ValueObject};
+  use crate::parser::ast::RelationDirection::{PositiveDirected, BiDirected};
   use crate::parser::parser::parse;
 
   #[test]
@@ -255,7 +267,7 @@ Context ShoppingCarContext {
         },
       ],
       relations: vec![
-        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: Directed, source_type: None, target_type: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: PositiveDirected, source_type: None, target_type: None },
         ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: BiDirected, source_type: None, target_type: None },
       ],
     }));
@@ -312,10 +324,10 @@ Aggregate ShoppingCart {
             name: "price".to_string(),
             field_type: "Money".to_string(),
           }],
+        value_objects: vec![],
       }],
     }))
   }
-
 
   #[test]
   fn full_sample() {
@@ -457,7 +469,7 @@ Entity SalesPerson {
 
   #[test]
   fn basic_vo_inline_aggregate() {
-    parse(r#"Context Cart {
+    let decls = parse(r#"Context Cart {
   Aggregate Cart {
     Entity Cart {
       ValueObject CartId
@@ -470,5 +482,61 @@ Entity SalesPerson {
     }
   }
 }"#).unwrap();
+
+    assert_eq!(decls[0], FklDeclaration::BoundedContext(BoundedContext {
+      name: "Cart".to_string(),
+      aggregates: vec![
+        Aggregate {
+          name: "Cart".to_string(),
+          description: "".to_string(),
+          is_root: false,
+          inline_doc: "".to_string(),
+          used_context: "".to_string(),
+          entities: vec![Entity {
+            name: "Cart".to_string(),
+            identify: Default::default(),
+            inline_doc: "".to_string(),
+            fields: vec![],
+            value_objects: vec![
+              ValueObject {
+                name: "CartId".to_string(),
+                inline_doc: "".to_string(),
+                fields: vec![],
+              },
+              ValueObject {
+                name: "CartStatus".to_string(),
+                inline_doc: "".to_string(),
+                fields: vec![],
+              },
+              ValueObject {
+                name: "CartItem".to_string(),
+                inline_doc: "".to_string(),
+                fields: vec![],
+              },
+              ValueObject {
+                name: "CartItemQuantity".to_string(),
+                inline_doc: "".to_string(),
+                fields: vec![],
+              },
+              ValueObject {
+                name: "CartItemPrice".to_string(),
+                inline_doc: "".to_string(),
+                fields: vec![],
+              },
+              ValueObject {
+                name: "CartItemTotal".to_string(),
+                inline_doc: "".to_string(),
+                fields: vec![],
+              },
+              ValueObject {
+                name: "CartTotal".to_string(),
+                inline_doc: "".to_string(),
+                fields: vec![],
+              },
+            ],
+          }],
+        }
+      ],
+    }));
   }
 }

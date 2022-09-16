@@ -29,7 +29,6 @@ pub struct UbiquitousLanguage {
 pub struct UniqueWord {
   pub unique_name: String,
   pub display_name: String,
-  // soft link
   pub context_name: Option<String>,
 }
 
@@ -93,9 +92,9 @@ pub struct ContextRelation {
 pub enum RelationDirection {
   Undirected,
   // -->
-  Directed,
+  PositiveDirected,
   // <--
-  AntiDirected,
+  NegativeDirected,
   // <->
   BiDirected
 }
@@ -154,6 +153,7 @@ pub struct Entity {
   pub identify: Field,
   pub inline_doc: String,
   pub fields: Vec<Field>,
+  pub value_objects: Vec<ValueObject>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
@@ -176,9 +176,10 @@ pub struct Property {
   pub unique: bool,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct ValueObject {
   pub name: String,
+  pub inline_doc: String,
   pub fields: Vec<Field>,
 }
 
