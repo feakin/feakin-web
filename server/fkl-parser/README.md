@@ -36,7 +36,10 @@
   - Supporting-domain
   - Generic-domain
 - Layered Architecture
-
+  - Domain
+  - Application
+  - Infrastructure
+  - Interface
 
 Syntax:
 
