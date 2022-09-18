@@ -312,6 +312,7 @@ Aggregate ShoppingCart {
       inline_doc: "".to_string(),
       used_context: "".to_string(),
       entities: vec![Entity {
+        is_aggregate_root: false,
         name: "Product".to_string(),
         identify: Default::default(),
         inline_doc: "".to_string(),
@@ -493,6 +494,7 @@ Entity SalesPerson {
           inline_doc: "".to_string(),
           used_context: "".to_string(),
           entities: vec![Entity {
+            is_aggregate_root: false,
             name: "Cart".to_string(),
             identify: Default::default(),
             inline_doc: "".to_string(),

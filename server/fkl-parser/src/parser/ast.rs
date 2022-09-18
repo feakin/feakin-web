@@ -149,6 +149,7 @@ pub struct DomainEvent {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct Entity {
+  pub is_aggregate_root: bool,
   pub name: String,
   pub identify: Field,
   pub inline_doc: String,
