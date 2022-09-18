@@ -1,4 +1,4 @@
-# Feakin Knowledge Languag
+# Feakin Knowledge Language
 
 - [ ] DDD Model
 - [ ] DSL Parser
