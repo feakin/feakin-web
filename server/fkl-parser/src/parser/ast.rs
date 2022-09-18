@@ -84,8 +84,8 @@ pub struct ContextRelation {
   pub source: String,
   pub target: String,
   pub connection_type: RelationDirection,
-  pub source_type: Option<ContextRelationType> ,
-  pub target_type: Option<ContextRelationType>
+  pub source_type: Option<ContextRelationType>,
+  pub target_type: Option<ContextRelationType>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -96,7 +96,7 @@ pub enum RelationDirection {
   // <--
   NegativeDirected,
   // <->
-  BiDirected
+  BiDirected,
 }
 
 impl Default for RelationDirection {
@@ -112,12 +112,13 @@ pub enum ContextRelationType {
   Partnership,
   // Upstream Downstream
   CustomerSupplier,
-  GenericUpstreamDownstream,
-  // SeparateWay,
   Conformist,
   AntiCorruptionLayer,
   OpenHostService,
   PublishedLanguage,
+  SeparateWay,
+  // added in book "DDD Reference"
+  BigBallOfMud,
 }
 
 // tactic DDD
