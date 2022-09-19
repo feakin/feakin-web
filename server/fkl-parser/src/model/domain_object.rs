@@ -1,3 +1,13 @@
+pub enum DomainObjectType {
+  ApplicationService,
+  AggregateRoot,
+  DomainEvent,
+  Entity,
+  ValueObject,
+}
+
 pub trait DomainObject {
-  fn is_aggregate_root(&self) -> bool;
+  fn name(&self) -> &str;
+  fn inline_doc(&self) -> &str;
+  fn object_type(&self) -> DomainObjectType;
 }

@@ -9,3 +9,5 @@ mod tactic;
 mod strategy;
 // implementation-binding
 mod binding;
+
+pub use parser::parse;

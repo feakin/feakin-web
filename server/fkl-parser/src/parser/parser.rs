@@ -610,7 +610,7 @@ Entity SalesPerson {
 Component SalesComponent {
   name = 'Sample Phodal';
   type: Application;
-  // Aggregate SalesOrder;
+  Aggregate SalesOrder;
 }
 "#);
 
