@@ -6,6 +6,7 @@ declaration = {
   | ext_module_decl
   | aggregate_decl
   | entity_decl
+  | component_decl
 }
 
 context_map_decl = {
@@ -72,6 +73,23 @@ parameter_decl = {
 param_type = {
   list ~ "<" ~ identifier ~ ">"
   | identifier
+}
+
+component_decl = {
+  "Component" ~ identifier ~ "{" ~ (attr_decl | inline_doc | use_aggregate )* ~ "}"
+}
+
+use_aggregate = {
+  "Aggregate" ~ identifier ~ ";"?
+}
+
+attr_decl = {
+  // component_type
+  identifier ~ (":" | "=") ~ attr_value ~ ";"?
+}
+
+attr_value = {
+  identifier | string
 }
 
 list = { ("List" | "Vec") }

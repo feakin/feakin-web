@@ -1,3 +1,3 @@
 pub trait DomainObject {
-  fn is_aggregate(&self) -> bool;
+  fn is_aggregate_root(&self) -> bool;
 }

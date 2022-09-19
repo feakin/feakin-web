@@ -15,6 +15,7 @@ pub enum FklDeclaration {
   ApplicationService(ApplicationService),
   Entity(Entity),
   ValueObject(ValueObject),
+  Component(Component),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -166,7 +167,7 @@ pub struct Field {
   pub field_type: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct Attribute {
   pub key: String,
   pub value: String,
@@ -219,4 +220,29 @@ pub enum HttpMethod {
   Put,
   Delete,
   Patch,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+pub struct Component {
+  pub name: String,
+  pub component_type: ComponentType,
+  pub inline_doc: String,
+  pub attributes: Vec<Attribute>
+}
+
+// binding
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum ComponentType {
+  Application,
+  Service,
+  Module,
+  Package,
+  //  or Classes ?
+  Entities,
+}
+
+impl Default for ComponentType {
+  fn default() -> Self {
+    ComponentType::Application
+  }
 }

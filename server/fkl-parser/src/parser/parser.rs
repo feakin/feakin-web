@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::iterators::{Pair, Pairs};
 
-use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, RelationDirection, ValueObject};
+use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, RelationDirection, ValueObject, Component, Attribute};
 use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
 
@@ -45,6 +45,9 @@ fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
         }
         Rule::entity_decl => {
           decl = FklDeclaration::Entity(consume_entity(p));
+        }
+        Rule::component_decl => {
+          decl = FklDeclaration::Component(consume_component(p));
         }
         _ => println!("unreachable content rule: {:?}", p.as_rule())
       };
@@ -229,6 +232,64 @@ fn consume_value_object(pair: Pair<Rule>) -> ValueObject {
   return value_object;
 }
 
+fn consume_component(pair: Pair<Rule>) -> Component {
+  let mut component = Component::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        component.name = p.as_str().to_string();
+      }
+      Rule::inline_doc => {
+        component.inline_doc = parse_inline_doc(p);
+      }
+      Rule::attr_decl => {
+        component.attributes.push(consume_attribute(p));
+      }
+      _ => println!("unreachable component rule: {:?}", p.as_rule())
+    };
+  }
+  return component;
+}
+
+fn consume_attribute(pair: Pair<Rule>) -> Attribute {
+  let mut attribute = Attribute::default();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        attribute.key = p.as_str().to_string();
+      }
+      Rule::attr_value => {
+        attribute.value = consume_attr_value(p);
+      }
+      _ => println!("unreachable attribute rule: {:?}", p.as_rule())
+    };
+  }
+  return attribute;
+}
+
+fn consume_attr_value(pair: Pair<Rule>) -> String {
+  let mut value = String::new();
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        value = p.as_str().to_string();
+      }
+      Rule::string => {
+        value = parse_string(p.as_str());
+      }
+      _ => println!("unreachable attr_value rule: {:?}", p.as_rule())
+    };
+  }
+  return value;
+}
+
+fn parse_string(str: &str) -> String {
+  let mut s = str.to_string();
+  s.remove(0);
+  s.remove(s.len() - 1);
+  return s;
+}
+
 fn parse_inline_doc(pair: Pair<Rule>) -> String {
   let len = "\"\"\"".len();
   return pair.as_str().chars().skip(len).take(pair.as_str().len() - len * 2).collect();
@@ -236,7 +297,7 @@ fn parse_inline_doc(pair: Pair<Rule>) -> String {
 
 #[cfg(test)]
 mod tests {
-  use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration, ValueObject};
+  use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration, ValueObject, Component, ComponentType, Attribute};
   use crate::parser::ast::RelationDirection::{PositiveDirected, BiDirected};
   use crate::parser::parser::parse;
 
@@ -249,7 +310,7 @@ ContextMap {
 }
 
 Context ShoppingCarContext {
-  Module Cargo { }
+
 }
 "#).unwrap();
 
@@ -292,7 +353,7 @@ just for test
 "#.to_string(),
       used_context: "".to_string(),
       entities: vec![],
-      value_objects: vec![]
+      value_objects: vec![],
     }));
   }
 
@@ -328,7 +389,7 @@ Aggregate ShoppingCart {
           }],
         value_objects: vec![],
       }],
-      value_objects: vec![]
+      value_objects: vec![],
     }))
   }
 
@@ -340,11 +401,9 @@ ContextMap {
 }
 
 Context SalesContext {
-  Module Sales {
-    Aggregate SalesOrder {
-      Entity SalesOrderLine {
-        constructor(product: Product, quantity: Quantity)
-      }
+  Aggregate SalesOrder {
+    Entity SalesOrderLine {
+      constructor(product: Product, quantity: Quantity)
     }
   }
 }
@@ -539,8 +598,34 @@ Entity SalesPerson {
               },
             ],
           }],
-          value_objects: vec![]
+          value_objects: vec![],
         }
+      ],
+    }));
+  }
+
+  #[test]
+  fn bind_api() {
+    let decls = parse(r#"
+Component SalesComponent {
+  name = 'Sample Phodal';
+  type: Application;
+  // Aggregate SalesOrder;
+}
+"#);
+
+    assert_eq!(decls.unwrap()[0], FklDeclaration::Component(Component {
+      name: "SalesComponent".to_string(),
+      inline_doc: "".to_string(),
+      component_type: ComponentType::Application,
+      attributes: vec![
+        Attribute {
+          key: "name".to_string(),
+          value: "Sample Phodal".to_string(),
+        }, Attribute {
+          key: "type".to_string(),
+          value: "Application".to_string(),
+        },
       ],
     }));
   }
