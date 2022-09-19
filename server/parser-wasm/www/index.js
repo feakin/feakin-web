@@ -1,7 +1,8 @@
-// import init from "parser-rust";
-//
-// init().then(wasm => {
-//   console.log(wasm);
-//   // wasm.parse("../");
-// })
-//
+import init from "parser-rust";
+
+async function run() {
+  await init();
+}
+
+run();
+
