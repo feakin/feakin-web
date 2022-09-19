@@ -1,0 +1,19 @@
+{
+  "name": "feakin-wasm-testing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --mode production",
+    "serve": "webpack serve --mode development",
+    "start": "webpack-dev-server --mode development --open"
+  },
+  "dependencies": {
+    "webpack": "^5.58.2",
+    "webpack-cli": "^4.9.0"
+  },
+  "devDependencies": {
+    "parser-rust": "../pkg-web",
+    "webpack-dev-server": "^4.3.1"
+  }
+}
