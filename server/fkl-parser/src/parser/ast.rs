@@ -7,8 +7,8 @@ use serde::Serialize;
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum FklDeclaration {
   None,
-  ContextMap(ContextMap),
-  BoundedContext(BoundedContext),
+  ContextMap(ContextMapAst),
+  BoundedContext(BoundedContextAst),
   Domain(Domain),
   Aggregate(Aggregate),
   DomainService(DomainService),
@@ -55,38 +55,25 @@ pub enum SubDomainType {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct ContextMap {
+pub struct ContextMapAst {
   pub name: String,
-  pub state: ContextState,
-  pub contexts: Vec<BoundedContext>,
-  pub relations: Vec<ContextRelation>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum ContextState {
-  AsIs,
-  ToBe,
-}
-
-impl Default for ContextState {
-  fn default() -> Self {
-    ContextState::ToBe
-  }
+  pub contexts: Vec<BoundedContextAst>,
+  pub relations: Vec<ContextRelationAst>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct BoundedContext {
+pub struct BoundedContextAst {
   pub name: String,
   pub aggregates: Vec<Aggregate>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct ContextRelation {
+pub struct ContextRelationAst {
   pub source: String,
   pub target: String,
   pub connection_type: RelationDirection,
-  pub source_type: Option<ContextRelationType>,
-  pub target_type: Option<ContextRelationType>,
+  pub source_type: Option<String>,
+  pub target_type: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -104,22 +91,6 @@ impl Default for RelationDirection {
   fn default() -> Self {
     RelationDirection::Undirected
   }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum ContextRelationType {
-  // Symmetric relation
-  SharedKernel,
-  Partnership,
-  // Upstream Downstream
-  CustomerSupplier,
-  Conformist,
-  AntiCorruptionLayer,
-  OpenHostService,
-  PublishedLanguage,
-  SeparateWay,
-  // added in book "DDD Reference"
-  BigBallOfMud,
 }
 
 // tactic DDD
