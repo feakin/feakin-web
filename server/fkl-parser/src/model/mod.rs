@@ -1,2 +1,2 @@
-mod domain_object;
-mod relation;
+pub mod tactic;
+pub mod strategy;
