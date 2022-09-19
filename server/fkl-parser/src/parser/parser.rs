@@ -292,6 +292,7 @@ just for test
 "#.to_string(),
       used_context: "".to_string(),
       entities: vec![],
+      value_objects: vec![]
     }));
   }
 
@@ -327,6 +328,7 @@ Aggregate ShoppingCart {
           }],
         value_objects: vec![],
       }],
+      value_objects: vec![]
     }))
   }
 
@@ -537,6 +539,7 @@ Entity SalesPerson {
               },
             ],
           }],
+          value_objects: vec![]
         }
       ],
     }));

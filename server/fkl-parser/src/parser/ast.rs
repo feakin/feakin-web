@@ -141,6 +141,7 @@ pub struct Aggregate {
   pub inline_doc: String,
   pub used_context: String,
   pub entities: Vec<Entity>,
+  pub value_objects: Vec<ValueObject>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -150,6 +151,7 @@ pub struct DomainEvent {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub struct Entity {
+  // Aggregate Root
   pub is_aggregate_root: bool,
   pub name: String,
   pub identify: Field,
