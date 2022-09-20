@@ -5,10 +5,11 @@ use serde::Serialize;
 // strategy DDD
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub enum FklDeclaration {
   None,
-  ContextMap(ContextMapAst),
-  BoundedContext(BoundedContextAst),
+  ContextMap(ContextMap),
+  BoundedContext(BoundedContext),
   Domain(Domain),
   Aggregate(Aggregate),
   DomainService(DomainService),
@@ -29,7 +30,9 @@ pub struct UbiquitousLanguage {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct UniqueWord {
   pub unique_name: String,
+  #[serde(rename(serialize = "displayName", deserialize = "displayName"))]
   pub display_name: String,
+  #[serde(rename(serialize = "contextName", deserialize = "contextName"))]
   pub context_name: Option<String>,
 }
 
@@ -37,12 +40,14 @@ pub struct UniqueWord {
 pub struct Domain {
   pub name: String,
   pub description: String,
+  #[serde(rename(serialize = "subDomains", deserialize = "subDomains"))]
   pub sub_domains: Vec<SubDomain>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SubDomain {
   pub name: String,
+  #[serde(rename(serialize = "subDomainType", deserialize = "subDomainType"))]
   pub subdomain_type: SubDomainType,
   pub entities: Vec<Entity>,
 }
@@ -55,20 +60,22 @@ pub enum SubDomainType {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct ContextMapAst {
+#[serde(rename_all = "camelCase")]
+pub struct ContextMap {
   pub name: String,
-  pub contexts: Vec<BoundedContextAst>,
-  pub relations: Vec<ContextRelationAst>,
+  pub contexts: Vec<BoundedContext>,
+  pub relations: Vec<ContextRelation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct BoundedContextAst {
+pub struct BoundedContext {
   pub name: String,
   pub aggregates: Vec<Aggregate>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct ContextRelationAst {
+#[serde(rename_all = "camelCase")]
+pub struct ContextRelation {
   pub source: String,
   pub target: String,
   pub connection_type: RelationDirection,
@@ -93,6 +100,23 @@ impl Default for RelationDirection {
   }
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub enum ContextRelationType {
+  // Symmetric relation
+  SharedKernel,
+  Partnership,
+  // Upstream Downstream
+  CustomerSupplier,
+  Conformist,
+  AntiCorruptionLayer,
+  OpenHostService,
+  PublishedLanguage,
+  SeparateWay,
+  // added in book "DDD Reference"
+  BigBallOfMud,
+}
+
 // tactic DDD
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -106,6 +130,7 @@ pub struct ApplicationService {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct Aggregate {
   pub name: String,
   pub description: String,
@@ -122,8 +147,8 @@ pub struct DomainEvent {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct Entity {
-  // Aggregate Root
   pub is_aggregate_root: bool,
   pub name: String,
   pub identify: Field,
@@ -168,6 +193,7 @@ pub struct Parameter {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct Trait {
   pub name: String,
   pub description: String,
@@ -176,6 +202,7 @@ pub struct Trait {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
 pub struct RestApi {
   pub name: String,
   pub method: HttpMethod,
@@ -194,6 +221,7 @@ pub enum HttpMethod {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct Component {
   pub name: String,
   pub component_type: ComponentType,

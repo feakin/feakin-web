@@ -30,9 +30,12 @@ pub struct BoundedContext {
 pub struct ContextRelation {
   pub source: String,
   pub target: String,
+  #[serde(rename(serialize = "contextRelationType", deserialize = "contextRelationType"))]
   pub connection_type: RelationDirection,
-  pub source_type: Option<ContextRelationType>,
-  pub target_type: Option<ContextRelationType>,
+  #[serde(rename(serialize = "sourceType", deserialize = "sourceType"))]
+  pub source_type: Option<String>,
+  #[serde(rename(serialize = "targetType", deserialize = "targetType"))]
+  pub target_type: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -50,21 +53,4 @@ impl Default for RelationDirection {
   fn default() -> Self {
     RelationDirection::Undirected
   }
-}
-
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum ContextRelationType {
-  // Symmetric relation
-  SharedKernel,
-  Partnership,
-  // Upstream Downstream
-  CustomerSupplier,
-  Conformist,
-  AntiCorruptionLayer,
-  OpenHostService,
-  PublishedLanguage,
-  SeparateWay,
-  // added in book "DDD Reference"
-  BigBallOfMud,
 }

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::iterators::{Pair, Pairs};
 
-use crate::parser::ast::{Aggregate, BoundedContextAst, ContextRelationAst, ContextMapAst, Entity, Field, FklDeclaration, RelationDirection, ValueObject, Component, Attribute};
+use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, RelationDirection, ValueObject, Component, Attribute};
 use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
 
@@ -56,10 +56,10 @@ fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
   }).collect::<Vec<FklDeclaration>>()
 }
 
-fn consume_context_map(pair: Pair<Rule>) -> ContextMapAst {
-  let mut context_decl_map: HashMap<String, BoundedContextAst> = HashMap::new();
+fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
+  let mut context_decl_map: HashMap<String, BoundedContext> = HashMap::new();
   let mut context_name = String::new();
-  let mut relations: Vec<ContextRelationAst> = Vec::new();
+  let mut relations: Vec<ContextRelation> = Vec::new();
 
   for p in pair.into_inner() {
     match p.as_rule() {
@@ -75,7 +75,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapAst {
             Rule::identifier => {
               let context_name = p.as_str().to_string();
               names.push(context_name.clone());
-              context_decl_map.insert(context_name.clone(), BoundedContextAst {
+              context_decl_map.insert(context_name.clone(), BoundedContext {
                 name: context_name,
                 aggregates: vec![],
               });
@@ -100,7 +100,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapAst {
           };
         }
 
-        relations.push(ContextRelationAst {
+        relations.push(ContextRelation {
           source: names[0].clone(),
           target: names[1].clone(),
           connection_type: direction,
@@ -114,19 +114,19 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapAst {
 
   // sort context map by name
   let mut contexts = context_decl_map.into_iter().map(|(_, v)| v)
-    .collect::<Vec<BoundedContextAst>>();
+    .collect::<Vec<BoundedContext>>();
 
   contexts.sort_by(|a, b| a.name.cmp(&b.name));
 
-  return ContextMapAst {
+  return ContextMap {
     name: context_name,
     contexts,
     relations,
   };
 }
 
-fn consume_context(pair: Pair<Rule>) -> BoundedContextAst {
-  let mut context = BoundedContextAst::default();
+fn consume_context(pair: Pair<Rule>) -> BoundedContext {
+  let mut context = BoundedContext::default();
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
@@ -296,7 +296,7 @@ fn parse_inline_doc(pair: Pair<Rule>) -> String {
 
 #[cfg(test)]
 mod tests {
-  use crate::parser::ast::{Aggregate, ContextRelationAst, BoundedContextAst, ContextMapAst, Entity, Field, FklDeclaration, ValueObject, Component, ComponentType, Attribute};
+  use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration, ValueObject, Component, ComponentType, Attribute};
   use crate::parser::ast::RelationDirection::{PositiveDirected, BiDirected};
   use crate::parser::parser::parse;
 
@@ -313,21 +313,21 @@ Context ShoppingCarContext {
 }
 "#).unwrap();
 
-    assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMapAst {
+    assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMap {
       name: "".to_string(),
       contexts: vec![
-        BoundedContextAst {
+        BoundedContext {
           name: "MallContext".to_string(),
           aggregates: vec![],
         },
-        BoundedContextAst {
+        BoundedContext {
           name: "ShoppingCarContext".to_string(),
           aggregates: vec![],
         },
       ],
       relations: vec![
-        ContextRelationAst { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: PositiveDirected, source_type: None, target_type: None },
-        ContextRelationAst { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: BiDirected, source_type: None, target_type: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: PositiveDirected, source_type: None, target_type: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: BiDirected, source_type: None, target_type: None },
       ],
     }));
   }
@@ -543,7 +543,7 @@ Entity SalesPerson {
   }
 }"#).unwrap();
 
-    assert_eq!(decls[0], FklDeclaration::BoundedContext(BoundedContextAst {
+    assert_eq!(decls[0], FklDeclaration::BoundedContext(BoundedContext {
       name: "Cart".to_string(),
       aggregates: vec![
         Aggregate {
