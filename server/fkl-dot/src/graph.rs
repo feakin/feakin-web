@@ -1,5 +1,6 @@
 use std::fmt;
-use std::fmt::{Display, Formatter};
+use std::fmt::{Display, Formatter, Write};
+use crate::config::ident;
 
 use crate::edge::Edge;
 use crate::node::Node;
@@ -36,14 +37,17 @@ impl Display for Graph {
     out.write_str(&format!("digraph {} {{", self.name))?;
 
     for node in &self.nodes {
+      // out.write_str(&format!("{}", ident(1)))?;
       out.write_str(&format!("{}", node))?
     }
 
     for edge in &self.edges {
+      // out.write_str(&format!("{}", ident(1)))?;
       out.write_str(&format!("{}", edge))?
     }
 
     for subgraph in &self.subgraph {
+      // out.write_str(&format!("{}", ident(1)))?;
       out.write_str(&format!("{}", subgraph))?
     }
 

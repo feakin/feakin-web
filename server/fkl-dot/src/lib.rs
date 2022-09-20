@@ -1,3 +1,4 @@
+pub mod config;
 pub mod graph;
 pub mod subgraph;
 pub mod node;
