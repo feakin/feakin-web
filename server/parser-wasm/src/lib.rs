@@ -16,9 +16,15 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub fn parse(input: String) -> Result<JsValue, JsValue>  {
-  let values = fkl_parse(input.as_str()).unwrap();
-  let js_value = serde_wasm_bindgen::to_value(&values)?;
-
-  Ok(js_value)
+pub fn parse(input: String) -> Result<JsValue, JsValue> {
+  match fkl_parse(input.as_str()) {
+    Ok(decls) => {
+      let js_value = serde_wasm_bindgen::to_value(&decls)?;
+      Ok(js_value)
+    }
+    Err(error) => {
+      let error_msg = error.to_string();
+      Err(serde_wasm_bindgen::to_value(&error_msg)?)
+    }
+  }
 }
