@@ -19,8 +19,6 @@ mod tests {
 
     graph.add_subgraph(subgraph);
 
-    let str = graph.to_dot();
-
-    assert_eq!(str, "digraph empty_graph {a [label=\"a\"];subgraph empty_subgraph {};}");
+    assert_eq!(format!("{}", graph), "digraph empty_graph {a [label=\"a\"];subgraph empty_subgraph {}}");
   }
 }

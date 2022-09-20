@@ -1,3 +1,6 @@
+use std::fmt;
+use std::fmt::{Display, Formatter};
+
 use crate::edge::Edge;
 use crate::node::Node;
 use crate::subgraph::Subgraph;
@@ -26,22 +29,24 @@ impl Graph {
   pub(crate) fn add_subgraph(&mut self, subgraph: Subgraph) {
     self.subgraph.push(subgraph);
   }
+}
 
-  pub(crate) fn to_dot(&self) -> String {
-    let mut dot = String::new();
-
-    dot.push_str(&format!("digraph {} {{", self.name));
+impl Display for Graph {
+  fn fmt(&self, out: &mut Formatter<'_>) -> fmt::Result {
+    out.write_str(&format!("digraph {} {{", self.name))?;
 
     for node in &self.nodes {
-      dot.push_str(&format!("{};", node.to_dot()));
+      out.write_str(&format!("{}", node))?
+    }
+
+    for edge in &self.edges {
+      out.write_str(&format!("{}", edge))?
     }
 
     for subgraph in &self.subgraph {
-      dot.push_str(&format!("{};", subgraph.to_dot()));
+      out.write_str(&format!("{}", subgraph))?
     }
 
-    dot.push_str("}");
-
-    dot
+    out.write_str("}")
   }
 }
