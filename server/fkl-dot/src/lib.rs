@@ -1,14 +1,26 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+pub mod graph;
+pub mod subgraph;
+pub mod node;
+pub mod edge;
+
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+  use crate::graph::Graph;
+  use crate::node::Node;
+  use crate::subgraph::Subgraph;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+  #[test]
+  fn sample_for_graph() {
+    let mut graph = Graph::new("empty_graph");
+    graph.add_node(Node::new("a"));
+
+    let subgraph = Subgraph::new("empty_subgraph");
+
+    graph.add_subgraph(subgraph);
+
+    let str = graph.to_dot();
+
+    assert_eq!(str, "digraph empty_graph {a [label=\"a\"];subgraph empty_subgraph {};}");
+  }
 }
