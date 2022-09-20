@@ -9,16 +9,16 @@ use fkl_parser::parse as fkl_parse;
 #[cfg(feature = "wee_alloc")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-//
-// #[wasm_bindgen]
-// extern {
-//     fn parse(s: &str);
-// }
 
 #[wasm_bindgen]
-pub fn parse(s: &str) -> JsValue {
-  let values = fkl_parse(s)
-    .expect("TODO: panic message");
+extern "C" {
+  fn alert(s: &str);
+}
 
-  serde_wasm_bindgen::to_value(&values).unwrap()
+#[wasm_bindgen]
+pub fn parse(input: String) -> Result<JsValue, JsValue>  {
+  let values = fkl_parse(input.as_str()).unwrap();
+  let js_value = serde_wasm_bindgen::to_value(&values)?;
+
+  Ok(js_value)
 }

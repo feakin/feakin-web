@@ -1,8 +1,9 @@
-import init from "parser-rust";
+import init from "fkl-wasm";
+import { parse } from "fkl-wasm";
 
-init().then((wasm) => {
-  let result = wasm.parse("hello world");
-  console.log(result);
-});
-
-console.log("..");
+init().then(() => {
+  let result = parse(`ContextMap {
+  SalesContext <-> SalesContext;
+}`);
+  console.log(JSON.stringify(result, null, 2));
+}).catch(console.error);
