@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+  "fkl-dot",
+  "fkl-parser",
+  "server",
+  "parser-wasm",
+]
