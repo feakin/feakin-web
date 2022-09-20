@@ -1,12 +1,3 @@
-Feakin Rust 
+# Feakin CRDT Server 
 
-- server. 
-  - collaboration server with CRDT.
-- parser-wasm
-  - [x] parser wrapper for frontend
-- fkl-parser
-  - [ ] model design
-- fkl-generator
-  - [ ] auto generate code from model
-  - [ ] auto generate documentation from model
-
+This is a simple server that implements a CRDT. It is a work in progress.
