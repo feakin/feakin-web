@@ -23,6 +23,14 @@ impl Subgraph {
       subgraph: Vec::new(),
     }
   }
+
+  pub(crate) fn add_subgraph(&mut self, subgraph: Subgraph) {
+    self.subgraph.push(subgraph);
+  }
+
+  pub(crate) fn add_node(&mut self, node: Node) {
+    self.nodes.push(node);
+  }
 }
 
 impl fmt::Display for Subgraph {
