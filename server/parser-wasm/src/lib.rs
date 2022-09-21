@@ -3,6 +3,7 @@ mod dot_gen;
 
 use wasm_bindgen::prelude::*;
 use fkl_parser::parse as fkl_parse;
+use crate::utils::set_panic_hook;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -24,6 +25,8 @@ impl FklParser {
 
   #[wasm_bindgen]
   pub fn to_dot(&self) -> String {
+    set_panic_hook();
+
     let ast = fkl_parse(&self.str).unwrap();
     let dot = dot_gen::to_dot(&ast);
     dot
@@ -31,6 +34,8 @@ impl FklParser {
 
   #[wasm_bindgen]
   pub fn parse(&self) -> Result<JsValue, JsValue> {
+    set_panic_hook();
+
     match fkl_parse(self.str.as_str()) {
       Ok(decls) => {
         let js_value = serde_wasm_bindgen::to_value(&decls)?;

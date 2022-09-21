@@ -70,7 +70,7 @@ pub struct BoundedContext {
 pub struct ContextRelation {
   pub source: String,
   pub target: String,
-  pub connection_type: RelationDirection,
+  pub direction: RelationDirection,
   pub source_type: Option<String>,
   pub target_type: Option<String>,
 }

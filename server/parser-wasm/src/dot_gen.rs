@@ -8,20 +8,25 @@ pub(crate) fn to_dot(context_map: &ContextMap) -> String {
     .contexts
     .iter()
     .for_each(|context| graph.add_node(Node::new(&context.name)));
+
   format!("{}", graph)
 }
 
 #[cfg(test)]
 mod test {
-  use fkl_parser::mir::ContextMap;
+  use fkl_parser::parse;
   use crate::dot_gen::to_dot;
-  use fkl_parser::parser::parse;
 
   #[test]
   fn test_to_dot() {
-    let map = &ContextMap::default();
-    let result = to_dot(map);
-
-    assert_eq!(result, "digraph fkl {}");
+    let context_map = parse(r#"
+ContextMap {
+  ShoppingCarContext -> MallContext;
+  ShoppingCarContext <-> MallContext;
+}
+    "#).unwrap();
+    let string = to_dot(&context_map);
+    println!("{}", string);
+    // assert_eq!(to_dot(&context_map), r#"digraph fkl {ShoppingCarContext [label=\"ShoppingCarContext\"];MallContext [label=\"MallContext\"];}"#);
   }
 }

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::iterators::{Pair, Pairs};
 
-use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, RelationDirection, ValueObject, Component, Attribute};
+use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, ValueObject, Component, Attribute, RelationDirection};
 use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
 
@@ -103,7 +103,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
         relations.push(ContextRelation {
           source: names[0].clone(),
           target: names[1].clone(),
-          connection_type: direction,
+          direction: direction,
           source_type: None,
           target_type: None,
         });
@@ -326,8 +326,8 @@ Context ShoppingCarContext {
         },
       ],
       relations: vec![
-        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: PositiveDirected, source_type: None, target_type: None },
-        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), connection_type: BiDirected, source_type: None, target_type: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), direction: PositiveDirected, source_type: None, target_type: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), direction: BiDirected, source_type: None, target_type: None },
       ],
     }));
   }

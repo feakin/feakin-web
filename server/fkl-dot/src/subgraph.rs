@@ -8,7 +8,7 @@ pub struct Subgraph {
   name: String,
   label: String,
   // for indent
-  depth: usize,
+  // depth: usize,
   nodes: Vec<Node>,
   edges: Vec<Edge>,
   subgraph: Vec<Subgraph>,
@@ -19,7 +19,7 @@ impl Subgraph {
     Subgraph {
       name: naming(name),
       label: label.to_string(),
-      depth: 0,
+      // depth: 0,
       nodes: Vec::new(),
       edges: Vec::new(),
       subgraph: Vec::new(),
