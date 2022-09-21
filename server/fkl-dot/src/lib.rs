@@ -63,4 +63,14 @@ mod tests {
 
     assert_eq!(format!("{}", graph), r#"digraph graph_with_edge_and_subgraph {a [label="a"];b [label="b"];a -> b;subgraph cluster_empty_subgraph {label="Empty Subgraph";c [label="c"];}}"#);
   }
+
+  #[test]
+  fn graph_width_rect_shape_style() {
+    let mut graph = Graph::new("graph_width_rect_shape_style");
+    graph.use_default_style();
+
+    graph.add_node(Node::new("a"));
+
+    assert_eq!(format!("{}", graph), r#"digraph graph_width_rect_shape_style {node [shape=box style=filled ];a [label="a"];}"#);
+  }
 }
