@@ -39,4 +39,28 @@ mod tests {
 
     assert_eq!(format!("{}", graph), r#"digraph nested_subgraph {a [label="a"];subgraph cluster_empty_subgraph {label="Empty Subgraph";b [label="b"];subgraph cluster_nested_subgraph {label="Nested Subgraph";c [label="c"];}}}"#);
   }
+
+  #[test]
+  fn graph_with_edge() {
+    let mut graph = Graph::new("graph_with_edge");
+    graph.add_node(Node::new("a"));
+    graph.add_node(Node::new("b"));
+    graph.add_edge("a", "b");
+
+    assert_eq!(format!("{}", graph), r#"digraph graph_with_edge {a [label="a"];b [label="b"];a -> b;}"#);
+  }
+
+  #[test]
+  fn graph_with_edge_and_subgraph() {
+    let mut graph = Graph::new("graph_with_edge_and_subgraph");
+    graph.add_node(Node::new("a"));
+    graph.add_node(Node::new("b"));
+    graph.add_edge("a", "b");
+
+    let mut subgraph = Subgraph::new("empty_subgraph", "Empty Subgraph");
+    subgraph.add_node(Node::new("c"));
+    graph.add_subgraph(subgraph);
+
+    assert_eq!(format!("{}", graph), r#"digraph graph_with_edge_and_subgraph {a [label="a"];b [label="b"];a -> b;subgraph cluster_empty_subgraph {label="Empty Subgraph";c [label="c"];}}"#);
+  }
 }
