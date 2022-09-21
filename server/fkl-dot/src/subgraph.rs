@@ -30,7 +30,7 @@ impl Subgraph {
     self.subgraph.push(subgraph);
   }
 
-  pub(crate) fn add_node(&mut self, node: Node) {
+  pub fn add_node(&mut self, node: Node) {
     self.nodes.push(node);
   }
 }

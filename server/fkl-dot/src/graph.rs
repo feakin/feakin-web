@@ -26,8 +26,16 @@ impl Graph {
     self.nodes.push(node);
   }
 
+  pub fn add_edge(&mut self, source: &str, target: &str) {
+    self.edges.push(Edge::new(source.to_string(), target.to_string()));
+  }
+
   pub fn add_subgraph(&mut self, subgraph: Subgraph) {
     self.subgraph.push(subgraph);
+  }
+
+  pub fn set_name(&mut self, name: &String) {
+    self.name = name.to_string();
   }
 }
 
