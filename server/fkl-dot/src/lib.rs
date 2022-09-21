@@ -1,8 +1,8 @@
-pub mod config;
 pub mod graph;
 pub mod subgraph;
 pub mod node;
 pub mod edge;
+pub mod helper;
 
 
 #[cfg(test)]
@@ -30,12 +30,13 @@ mod tests {
     let mut subgraph = Subgraph::new("empty_subgraph", "Empty Subgraph");
     subgraph.add_node(Node::new("b"));
 
-    let nested_subgraph = Subgraph::new("nested_subgraph", "Nested Subgraph");
+    let mut nested_subgraph = Subgraph::new("nested_subgraph", "Nested Subgraph");
+    nested_subgraph.add_node(Node::new("c"));
     subgraph.add_subgraph(nested_subgraph);
 
     graph.add_subgraph(subgraph);
 
 
-    assert_eq!(format!("{}", graph), r#"digraph nested_subgraph {a [label="a"];subgraph empty_subgraph {label="Empty Subgraph";b [label="b"];subgraph nested_subgraph {label="Nested Subgraph";}}}"#);
+    assert_eq!(format!("{}", graph), r#"digraph nested_subgraph {a [label="a"];subgraph cluster_empty_subgraph {label="Empty Subgraph";b [label="b"];subgraph cluster_nested_subgraph {label="Nested Subgraph";c [label="c"];}}}"#);
   }
 }

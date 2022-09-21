@@ -14,8 +14,13 @@ pub struct Subgraph {
 
 impl Subgraph {
   pub fn new(name: &str, label: &str) -> Self {
+    let mut new_name = name.to_string();
+    if !name.starts_with("cluster_") {
+      new_name = format!("cluster_{}", name);
+    }
+
     Subgraph {
-      name: name.to_string(),
+      name: new_name.to_string(),
       label: label.to_string(),
       depth: 0,
       nodes: Vec::new(),
