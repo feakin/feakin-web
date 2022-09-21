@@ -16,10 +16,10 @@ mod tests {
     let mut graph = Graph::new("empty_graph");
     graph.add_node(Node::new("a"));
 
-    let subgraph = Subgraph::new("empty_subgraph");
+    let subgraph = Subgraph::new("empty_subgraph", "Empty Subgraph");
 
     graph.add_subgraph(subgraph);
 
-    assert_eq!(format!("{}", graph), "digraph empty_graph {a [label=\"a\"];subgraph empty_subgraph {}}");
+    assert_eq!(format!("{}", graph), "digraph empty_graph {a [label=\"a\"];subgraph empty_subgraph {label=\"Empty Subgraph\";}}");
   }
 }

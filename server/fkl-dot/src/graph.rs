@@ -1,6 +1,5 @@
 use std::fmt;
-use std::fmt::{Display, Formatter, Write};
-use crate::config::ident;
+use std::fmt::{Display, Formatter};
 
 use crate::edge::Edge;
 use crate::node::Node;
