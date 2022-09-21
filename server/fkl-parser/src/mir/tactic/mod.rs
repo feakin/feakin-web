@@ -1,3 +1,3 @@
-mod domain_object;
-mod relation;
-mod aggregate;
+pub mod domain_object;
+pub mod relation;
+pub mod aggregate;

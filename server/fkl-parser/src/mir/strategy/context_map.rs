@@ -27,14 +27,12 @@ pub struct BoundedContext {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "camelCase")]
 pub struct ContextRelation {
   pub source: String,
   pub target: String,
-  #[serde(rename(serialize = "contextRelationType", deserialize = "contextRelationType"))]
   pub connection_type: RelationDirection,
-  #[serde(rename(serialize = "sourceType", deserialize = "sourceType"))]
   pub source_type: Option<String>,
-  #[serde(rename(serialize = "targetType", deserialize = "targetType"))]
   pub target_type: Option<String>,
 }
 

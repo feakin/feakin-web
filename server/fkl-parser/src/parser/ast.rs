@@ -47,16 +47,8 @@ pub struct Domain {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SubDomain {
   pub name: String,
-  #[serde(rename(serialize = "subDomainType", deserialize = "subDomainType"))]
-  pub subdomain_type: SubDomainType,
-  pub entities: Vec<Entity>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum SubDomainType {
-  Core,
-  Generic,
-  Supporting,
+  pub subdomain_type: String,
+  pub entities: Vec<BoundedContext>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]

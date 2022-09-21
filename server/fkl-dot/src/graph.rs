@@ -24,7 +24,7 @@ impl Graph {
     }
   }
 
-  pub(crate) fn add_node(&mut self, node: Node) {
+  pub fn add_node(&mut self, node: Node) {
     self.nodes.push(node);
   }
 

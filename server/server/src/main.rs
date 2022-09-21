@@ -1,5 +1,4 @@
 use rust_embed::RustEmbed;
-use actix_files::NamedFile;
 use actix_web::{App, Error, get, HttpRequest, HttpResponse, HttpServer, Responder, web};
 use actix_web::web::Payload;
 use tokio::{
