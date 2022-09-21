@@ -3,7 +3,7 @@ extern crate pest;
 extern crate pest_derive;
 
 pub mod parser;
-mod model;
+mod mir;
 
 mod tactic;
 mod strategy;
