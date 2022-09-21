@@ -1,4 +1,3 @@
-
 pub fn naming(name: &str) -> String {
   let mut new_name = name.to_string();
   if !name.starts_with("cluster_") {
@@ -12,7 +11,6 @@ pub(crate) fn to_snakecase(name: &str) -> String {
   let chars = name.chars();
   let mut result = String::new();
   for c in chars {
-    // replace space with _
     if c == ' ' {
       result.push('_');
       continue;

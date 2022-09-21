@@ -7,6 +7,7 @@ use crate::node::Node;
 pub struct Subgraph {
   name: String,
   label: String,
+  // for indent
   depth: usize,
   nodes: Vec<Node>,
   edges: Vec<Edge>,

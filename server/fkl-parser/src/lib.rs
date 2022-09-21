@@ -2,7 +2,7 @@ extern crate pest;
 #[macro_use]
 extern crate pest_derive;
 
-mod parser;
+pub mod parser;
 mod model;
 
 mod tactic;
@@ -11,3 +11,4 @@ mod strategy;
 mod binding;
 
 pub use parser::parse;
+pub use parser::ast;

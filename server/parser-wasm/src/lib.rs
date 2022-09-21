@@ -23,6 +23,13 @@ impl FklParser {
   }
 
   #[wasm_bindgen]
+  pub fn to_dot(&self) -> String {
+    let ast = fkl_parse(&self.str).unwrap();
+    let dot = dot_gen::to_dot(&ast);
+    dot
+  }
+
+  #[wasm_bindgen]
   pub fn parse(&self) -> Result<JsValue, JsValue> {
     match fkl_parse(self.str.as_str()) {
       Ok(decls) => {
