@@ -19,7 +19,7 @@ mod tests {
     let subgraph = Subgraph::new("empty_subgraph", "Empty Subgraph");
     graph.add_subgraph(subgraph);
 
-    assert_eq!(format!("{}", graph), "digraph empty_graph {a [label=\"a\"];subgraph empty_subgraph {label=\"Empty Subgraph\";}}");
+    assert_eq!(format!("{}", graph), r#"digraph empty_graph {a [label="a"];subgraph cluster_empty_subgraph {label="Empty Subgraph";}}"#);
   }
 
   #[test]

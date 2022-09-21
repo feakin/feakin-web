@@ -1,6 +1,7 @@
 use std::fmt;
 
 use crate::edge::Edge;
+use crate::helper::naming::naming;
 use crate::node::Node;
 
 pub struct Subgraph {
@@ -14,13 +15,8 @@ pub struct Subgraph {
 
 impl Subgraph {
   pub fn new(name: &str, label: &str) -> Self {
-    let mut new_name = name.to_string();
-    if !name.starts_with("cluster_") {
-      new_name = format!("cluster_{}", name);
-    }
-
     Subgraph {
-      name: new_name.to_string(),
+      name: naming(name),
       label: label.to_string(),
       depth: 0,
       nodes: Vec::new(),
