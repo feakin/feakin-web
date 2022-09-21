@@ -5,9 +5,7 @@ extern crate pest_derive;
 pub mod parser;
 mod mir;
 
-mod tactic;
-mod strategy;
-// implementation-binding
+// implementation-binding dsl
 mod binding;
 
 pub use parser::parse;
