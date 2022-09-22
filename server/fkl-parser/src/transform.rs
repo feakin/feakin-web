@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use indexmap::IndexMap;
 
 use crate::{ContextMap, mir, ParseError};
 use crate::mir::{BoundedContext, ConnectionDirection, ContextRelationType};
@@ -6,7 +6,7 @@ use crate::parser::parse as ast_parse;
 use crate::parser::ast::{FklDeclaration, RelationDirection};
 
 pub struct Transform {
-  pub contexts: HashMap<String, BoundedContext>,
+  pub contexts: IndexMap<String, BoundedContext>,
   pub relations: Vec<mir::ContextRelation>,
 }
 
@@ -56,7 +56,6 @@ impl Transform {
       Err(e) => return Err(e),
     };
 
-    println!("{:?}", transform.contexts);
     Ok(ContextMap {
       name: "".to_string(),
       state: Default::default(),
