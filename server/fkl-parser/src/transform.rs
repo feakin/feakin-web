@@ -56,6 +56,7 @@ impl Transform {
       Err(e) => return Err(e),
     };
 
+    println!("{:?}", transform.contexts);
     Ok(ContextMap {
       name: "".to_string(),
       state: Default::default(),

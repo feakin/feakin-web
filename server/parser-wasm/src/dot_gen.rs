@@ -1,7 +1,6 @@
-use std::collections::HashMap;
 use fkl_dot::graph::Graph;
 use fkl_dot::node::Node;
-use fkl_parser::mir::{ConnectionDirection, ContextMap, ContextRelation, ContextRelationType};
+use fkl_parser::mir::{ConnectionDirection, ContextMap, ContextRelation};
 use crate::bc_edge_style;
 use crate::bc_edge_style::BcEdgeStyle;
 

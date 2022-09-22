@@ -2,6 +2,7 @@ use std::fmt;
 use std::fmt::{Display, Formatter};
 
 use crate::edge::Edge;
+use crate::helper::config::indent;
 use crate::node::Node;
 use crate::subgraph::Subgraph;
 
@@ -64,24 +65,23 @@ impl Graph {
 
 impl Display for Graph {
   fn fmt(&self, out: &mut Formatter<'_>) -> fmt::Result {
+    let space = indent(1);
     out.write_str(&format!("digraph {} {{\n", self.name))?;
 
     if !self.node_styles.is_empty() {
-      out.write_str("  node [")?;
-      out.write_str(&format!("{}", &self.node_styles.join(" ")))?;
-      out.write_str("];\n")?;
+      out.write_str(&format!("{}node [{}];\n", space, self.node_styles.join(" ")))?;
     }
 
     for node in &self.nodes {
-      out.write_str(&format!("  {}\n", node))?
+      out.write_str(&format!("{}{}\n", space, node))?
     }
 
     for edge in &self.edges {
-      out.write_str(&format!("  {}\n", edge))?
+      out.write_str(&format!("{}{}\n", space, edge))?
     }
 
     for subgraph in &self.subgraph {
-      out.write_str(&format!("  {}\n", subgraph))?
+      out.write_str(&format!("\n{}\n", subgraph))?
     }
 
     out.write_str("}")

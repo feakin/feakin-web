@@ -98,8 +98,14 @@ ContextMap {
     "#).unwrap();
     let string = to_dot(&context_map);
 
-    let except = r#"digraph  {node [shape=box style=filled ];ShoppingCartContext [label="ShoppingCartContext"];MallContext [label="MallContext"];MallContext -> ShoppingCartContext;MallContext -> ShoppingCartContext;ShoppingCartContext -> MallContext;}"#;
-    assert_eq!(string.len(), except.len());
+    assert_eq!(string, r#"digraph  {
+  node [shape=box style=filled];
+  MallContext [label="MallContext"];
+  ShoppingCartContext [label="ShoppingCartContext"];
+  ShoppingCartContext -> MallContext;
+  MallContext -> ShoppingCartContext;
+  ShoppingCartContext -> MallContext;
+}"#);
   }
 
   #[test]
@@ -128,7 +134,14 @@ ContextMap {
 }
     "#).unwrap();
 
-    // let string = to_dot(&context_map);
-    // assert_eq!(string, r#"digraph  {node [shape=box style=filled ];MallContext [label="MallContext"];ShoppingCartContext [label="ShoppingCartContext"];ShoppingCartContext -> MallContext [label="AntiCorruptionLayer",headlabel="D"];MallContext -> ShoppingCartContext;ShoppingCartContext -> MallContext;}"#);
+    let string = to_dot(&context_map);
+    assert_eq!(string, r#"digraph  {
+  node [shape=box style=filled];
+  MallContext [label="MallContext"];
+  ShoppingCartContext [label="ShoppingCartContext"];
+  ShoppingCartContext -> MallContext [label="AntiCorruptionLayer",headlabel="D"];
+  MallContext -> ShoppingCartContext;
+  ShoppingCartContext -> MallContext;
+}"#);
   }
 }
