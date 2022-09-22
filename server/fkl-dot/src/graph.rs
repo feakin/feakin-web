@@ -36,7 +36,7 @@ impl Graph {
     self.subgraph.push(subgraph);
   }
 
-  pub fn set_name(&mut self, name: &String) {
+  pub fn set_name(&mut self, name: &str) {
     self.name = name.to_string();
   }
 
@@ -72,17 +72,14 @@ impl Display for Graph {
     }
 
     for node in &self.nodes {
-      // out.write_str(&format!("{}", ident(1)))?;
       out.write_str(&format!("{}", node))?
     }
 
     for edge in &self.edges {
-      // out.write_str(&format!("{}", ident(1)))?;
       out.write_str(&format!("{}", edge))?
     }
 
     for subgraph in &self.subgraph {
-      // out.write_str(&format!("{}", ident(1)))?;
       out.write_str(&format!("{}", subgraph))?
     }
 

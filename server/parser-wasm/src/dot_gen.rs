@@ -3,7 +3,7 @@ use fkl_dot::node::Node;
 use fkl_parser::mir::{ConnectionDirection, ContextMap};
 
 pub(crate) fn to_dot(context_map: &ContextMap) -> String {
-  let mut graph = Graph::new("fkl");
+  let mut graph = Graph::new(&context_map.name);
   graph.use_default_style();
 
   context_map
@@ -49,8 +49,8 @@ ContextMap {
 }
     "#).unwrap();
     let string = to_dot(&context_map);
-    println!("{}", string);
 
-    // assert_eq!(to_dot(&context_map), r#"digraph fkl {node [shape=box style=filled ];ShoppingCartContext [label="ShoppingCartContext"];MallContext [label="MallContext"];MallContext -> ShoppingCartContext;MallContext -> ShoppingCartContext;ShoppingCartContext -> MallContext;}"#);
+    let except = r#"digraph  {node [shape=box style=filled ];ShoppingCartContext [label="ShoppingCartContext"];MallContext [label="MallContext"];MallContext -> ShoppingCartContext;MallContext -> ShoppingCartContext;ShoppingCartContext -> MallContext;}"#;
+    assert_eq!(string.len(), except.len());
   }
 }

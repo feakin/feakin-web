@@ -1,3 +1,5 @@
+extern crate core;
+
 mod utils;
 mod dot_gen;
 
