@@ -20,6 +20,7 @@ pub(crate) fn generate_edge_style(source: &Vec<ContextRelationType>, target: &Ve
   };
 
   if source.len() > 0 {
+    // pickup first ?
     style.label = source[0].to_string();
   }
 

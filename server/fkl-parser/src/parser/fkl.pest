@@ -22,7 +22,7 @@ context_node_decl = {
 }
 
 context_node_rel = {
-  left_id ~ left_rel_defs? ~ rel_symbol ~ right_id ~ right_rel_defs? ~ ";"?
+  left_id ~ left_rel_defs? ~ rel_symbol ~ ((right_id ~ right_rel_defs?) | (right_rel_defs? ~ right_id)) ~ ";"?
 }
 
 left_id = { identifier }

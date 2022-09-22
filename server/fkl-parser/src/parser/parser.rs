@@ -667,7 +667,7 @@ Component SalesComponent {
   SalesContext [ OHS ] <-> OrderContext [ rel = "ACL, OHS" ];
 }"#).unwrap();
 
-    assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMapDecl {
+    let except = FklDeclaration::ContextMap(ContextMapDecl {
       name: "Mall".to_string(),
       contexts: vec![
         BoundedContextDecl { name: "OrderContext".to_string(), aggregates: vec![] },
@@ -680,6 +680,12 @@ Component SalesComponent {
         source_types: vec!["OHS".to_string()],
         target_types: vec!["ACL".to_string(), "OHS".to_string()],
       }],
-    }));
+    });
+    assert_eq!(decls[0], except);
+
+    let order2 = parse(r#"ContextMap Mall {
+  SalesContext [ OHS ] <-> [rel = "ACL, OHS" ] OrderContext;
+}"#).unwrap();
+    assert_eq!(order2[0], except);
   }
 }
