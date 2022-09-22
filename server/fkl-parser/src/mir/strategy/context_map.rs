@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter};
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -104,6 +105,23 @@ pub enum ContextRelationType {
 impl Default for ContextRelationType {
   fn default() -> Self {
     ContextRelationType::None
+  }
+}
+
+impl Display for ContextRelationType {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    match self {
+      ContextRelationType::None => write!(f, "None"),
+      ContextRelationType::SharedKernel => write!(f, "SharedKernel"),
+      ContextRelationType::Partnership => write!(f, "Partnership"),
+      ContextRelationType::CustomerSupplier => write!(f, "CustomerSupplier"),
+      ContextRelationType::Conformist => write!(f, "Conformist"),
+      ContextRelationType::AntiCorruptionLayer => write!(f, "AntiCorruptionLayer"),
+      ContextRelationType::OpenHostService => write!(f, "OpenHostService"),
+      ContextRelationType::PublishedLanguage => write!(f, "PublishedLanguage"),
+      ContextRelationType::SeparateWay => write!(f, "SeparateWay"),
+      ContextRelationType::BigBallOfMud => write!(f, "BigBallOfMud"),
+    }
   }
 }
 
