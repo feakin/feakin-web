@@ -1,0 +1,10 @@
+repos:
+  - url: .
+    languages: [Rust, JavaScript]
+
+plugins:
+  - name: swagger
+  - name: struct
+    config:
+      - key: ctags
+        value: /usr/local/bin/ctags

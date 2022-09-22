@@ -53,3 +53,5 @@ Cargo.lock
 bin/
 pkg/
 wasm-pack.log
+coco_plugins/
+.coco/
