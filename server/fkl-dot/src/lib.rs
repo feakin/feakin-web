@@ -19,7 +19,10 @@ mod tests {
     let subgraph = Subgraph::new("empty_subgraph", "Empty Subgraph");
     graph.add_subgraph(subgraph);
 
-    assert_eq!(format!("{}", graph), r#"digraph empty_graph {a [label="a"];subgraph cluster_empty_subgraph {label="Empty Subgraph";}}"#);
+    assert_eq!(format!("{}", graph), r#"digraph empty_graph {
+  a [label="a"];
+  subgraph cluster_empty_subgraph {label="Empty Subgraph";}
+}"#);
   }
 
   #[test]
@@ -37,7 +40,10 @@ mod tests {
     graph.add_subgraph(subgraph);
 
 
-    assert_eq!(format!("{}", graph), r#"digraph nested_subgraph {a [label="a"];subgraph cluster_empty_subgraph {label="Empty Subgraph";b [label="b"];subgraph cluster_nested_subgraph {label="Nested Subgraph";c [label="c"];}}}"#);
+    assert_eq!(format!("{}", graph), r#"digraph nested_subgraph {
+  a [label="a"];
+  subgraph cluster_empty_subgraph {label="Empty Subgraph";b [label="b"];subgraph cluster_nested_subgraph {label="Nested Subgraph";c [label="c"];}}
+}"#);
   }
 
   #[test]
@@ -47,7 +53,11 @@ mod tests {
     graph.add_node(Node::new("b"));
     graph.add_edge("a", "b");
 
-    assert_eq!(format!("{}", graph), r#"digraph graph_with_edge {a [label="a"];b [label="b"];a -> b;}"#);
+    assert_eq!(format!("{}", graph), r#"digraph graph_with_edge {
+  a [label="a"];
+  b [label="b"];
+  a -> b;
+}"#);
   }
 
   #[test]
@@ -61,7 +71,12 @@ mod tests {
     subgraph.add_node(Node::new("c"));
     graph.add_subgraph(subgraph);
 
-    assert_eq!(format!("{}", graph), r#"digraph graph_with_edge_and_subgraph {a [label="a"];b [label="b"];a -> b;subgraph cluster_empty_subgraph {label="Empty Subgraph";c [label="c"];}}"#);
+    assert_eq!(format!("{}", graph), r#"digraph graph_with_edge_and_subgraph {
+  a [label="a"];
+  b [label="b"];
+  a -> b;
+  subgraph cluster_empty_subgraph {label="Empty Subgraph";c [label="c"];}
+}"#);
   }
 
   #[test]
@@ -71,6 +86,9 @@ mod tests {
 
     graph.add_node(Node::new("a"));
 
-    assert_eq!(format!("{}", graph), r#"digraph graph_width_rect_shape_style {node [shape=box style=filled ];a [label="a"];}"#);
+    assert_eq!(format!("{}", graph), r#"digraph graph_width_rect_shape_style {
+  node [shape=box style=filled];
+  a [label="a"];
+}"#);
   }
 }

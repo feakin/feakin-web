@@ -64,27 +64,24 @@ impl Graph {
 
 impl Display for Graph {
   fn fmt(&self, out: &mut Formatter<'_>) -> fmt::Result {
-    out.write_str(&format!("digraph {} {{", self.name))?;
+    out.write_str(&format!("digraph {} {{\n", self.name))?;
 
-    // render node styles: node [shape=rect style=filled]
     if !self.node_styles.is_empty() {
-      out.write_str("node [")?;
-      for style in &self.node_styles {
-        out.write_str(&format!("{} ", style))?;
-      }
-      out.write_str("];")?;
+      out.write_str("  node [")?;
+      out.write_str(&format!("{}", &self.node_styles.join(" ")))?;
+      out.write_str("];\n")?;
     }
 
     for node in &self.nodes {
-      out.write_str(&format!("{}", node))?
+      out.write_str(&format!("  {}\n", node))?
     }
 
     for edge in &self.edges {
-      out.write_str(&format!("{}", edge))?
+      out.write_str(&format!("  {}\n", edge))?
     }
 
     for subgraph in &self.subgraph {
-      out.write_str(&format!("{}", subgraph))?
+      out.write_str(&format!("  {}\n", subgraph))?
     }
 
     out.write_str("}")
