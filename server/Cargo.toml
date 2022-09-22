@@ -2,6 +2,7 @@
 
 members = [
   "fkl-dot",
+  "fkl-lsp",
   "fkl-parser",
   "server",
   "parser-wasm",
