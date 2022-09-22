@@ -69,8 +69,8 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
       Rule::context_node_rel => {
         let mut names: Vec<String> = vec![];
         let mut direction: RelationDirection = RelationDirection::Undirected;
-        let mut source_type: Option<String> = None;
-        let mut target_type: Option<String> = None;
+        let mut source_type: Vec<String> = vec![];
+        let mut target_type: Vec<String> = vec![];
 
         for p in p.into_inner() {
           match p.as_rule() {
@@ -98,21 +98,21 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
                 };
               }
             }
-            Rule::left_rel_def => {
+            Rule::left_rel_defs => {
               for p in p.into_inner() {
                 match p.as_rule() {
-                  Rule::rel_def => {
-                    source_type = rel_def(p);
+                  Rule::rel_defs => {
+                    source_type = rel_defs(p);
                   }
                   _ => {}
                 }
               }
             }
-            Rule::right_rel_def => {
+            Rule::right_rel_defs => {
               for p in p.into_inner() {
                 match p.as_rule() {
-                  Rule::rel_def => {
-                    target_type = rel_def(p);
+                  Rule::rel_defs => {
+                    target_type = rel_defs(p);
                   }
                   _ => {}
                 }
@@ -126,8 +126,8 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
           source: names[0].clone(),
           target: names[1].clone(),
           direction,
-          source_type,
-          target_type,
+          source_types: source_type,
+          target_types: target_type,
         });
       }
       _ => println!("unreachable context_map rule: {:?}", p.as_rule())
@@ -147,18 +147,18 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
   };
 }
 
-fn rel_def(pair: Pair<Rule>) -> Option<String> {
-  let mut rel_def: Option<String> = None;
+fn rel_defs(pair: Pair<Rule>) -> Vec<String> {
+  let mut types: Vec<String> = vec![];
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
-        rel_def = Some(p.as_str().to_string());
+        types.push(p.as_str().to_string());
       }
       _ => println!("unreachable rel_def rule: {:?}", p.as_rule())
     };
   }
 
-  return rel_def;
+  return types;
 }
 
 fn consume_context(pair: Pair<Rule>) -> BoundedContextDecl {
@@ -362,8 +362,8 @@ Context ShoppingCarContext {
         },
       ],
       relations: vec![
-        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), direction: PositiveDirected, source_type: None, target_type: None },
-        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), direction: BiDirected, source_type: None, target_type: None },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), direction: PositiveDirected, source_types: vec![], target_types: vec![] },
+        ContextRelation { source: "ShoppingCarContext".to_string(), target: "MallContext".to_string(), direction: BiDirected, source_types: vec![], target_types: vec![] },
       ],
     }));
   }
@@ -664,7 +664,7 @@ Component SalesComponent {
   #[test]
   fn rel_with_context_map() {
     let decls = parse(r#"ContextMap Mall {
-  SalesContext [ OHS ] <-> OrderContext [ rel = ACL ];
+  SalesContext [ OHS ] <-> OrderContext [ rel = "ACL, OHS" ];
 }"#).unwrap();
 
     assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMapDecl {
@@ -677,8 +677,8 @@ Component SalesComponent {
         source: "SalesContext".to_string(),
         target: "OrderContext".to_string(),
         direction: BiDirected,
-        source_type: Some("OHS".to_string()),
-        target_type: Some("ACL".to_string()),
+        source_types: vec!["OHS".to_string()],
+        target_types: vec!["ACL".to_string(), "OHS".to_string()],
       }],
     }));
   }

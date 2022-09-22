@@ -33,8 +33,8 @@ impl Transform {
                   source: relation.source.clone(),
                   target: relation.target.clone(),
                   connection_type: transform_connection(&relation.direction),
-                  source_type: ContextRelationType::from_str(&relation.source_type),
-                  target_type: ContextRelationType::from_str(&relation.target_type),
+                  source_type: ContextRelationType::list(&relation.source_types),
+                  target_type: ContextRelationType::list(&relation.target_types),
                 };
                 transform.relations.push(rel);
               });
@@ -131,8 +131,8 @@ ContextMap {
         source: "ShoppingCartContext".to_string(),
         target: "MallContext".to_string(),
         connection_type: PositiveDirected,
-        source_type: ContextRelationType::AntiCorruptionLayer,
-        target_type: ContextRelationType::AntiCorruptionLayer,
+        source_type: vec![ContextRelationType::AntiCorruptionLayer],
+        target_type: vec![ContextRelationType::AntiCorruptionLayer],
       }]);
   }
 }

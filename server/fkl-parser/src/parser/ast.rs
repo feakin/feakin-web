@@ -71,8 +71,8 @@ pub struct ContextRelation {
   pub source: String,
   pub target: String,
   pub direction: RelationDirection,
-  pub source_type: Option<String>,
-  pub target_type: Option<String>,
+  pub source_types: Vec<String>,
+  pub target_types: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

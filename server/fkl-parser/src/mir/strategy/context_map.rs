@@ -50,8 +50,8 @@ pub struct ContextRelation {
   pub source: String,
   pub target: String,
   pub connection_type: ConnectionDirection,
-  pub source_type: ContextRelationType,
-  pub target_type: ContextRelationType,
+  pub source_type: Vec<ContextRelationType>,
+  pub target_type: Vec<ContextRelationType>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -108,24 +108,23 @@ impl Default for ContextRelationType {
 }
 
 impl ContextRelationType {
-  pub fn from_str(str: &Option<String>) -> Self {
-    match str {
-      Some(str) =>
-        match str.to_lowercase().as_str() {
-          "sharedkernel" | "sk" => ContextRelationType::SharedKernel,
-          "partnership" | "p" => ContextRelationType::Partnership,
-          "customersupplier" | "cs" => ContextRelationType::CustomerSupplier,
-          "conformist" | "c" => ContextRelationType::Conformist,
-          "anticorruptionlayer" | "acl" => ContextRelationType::AntiCorruptionLayer,
-          "openhostservice" | "ohs" => ContextRelationType::OpenHostService,
-          "publishedlanguage" | "pl" => ContextRelationType::PublishedLanguage,
-          "separateway" | "sw" => ContextRelationType::SeparateWay,
-          "bigballofmud" | "bb" => ContextRelationType::BigBallOfMud,
-          _ => {
-            ContextRelationType::None
-          }
-        },
-      None => ContextRelationType::None,
-    }
+  pub fn list(types: &Vec<String>) -> Vec<ContextRelationType> {
+    types
+      .iter()
+      .map(|t| match t.to_lowercase().as_str() {
+        "sharedkernel" | "sk" => ContextRelationType::SharedKernel,
+        "partnership" | "p" => ContextRelationType::Partnership,
+        "customersupplier" | "cs" => ContextRelationType::CustomerSupplier,
+        "conformist" | "c" => ContextRelationType::Conformist,
+        "anticorruptionlayer" | "acl" => ContextRelationType::AntiCorruptionLayer,
+        "openhostservice" | "ohs" => ContextRelationType::OpenHostService,
+        "publishedlanguage" | "pl" => ContextRelationType::PublishedLanguage,
+        "separateway" | "sw" => ContextRelationType::SeparateWay,
+        "bigballofmud" | "bb" => ContextRelationType::BigBallOfMud,
+        _ => {
+          ContextRelationType::None
+        }
+      })
+      .collect()
   }
 }

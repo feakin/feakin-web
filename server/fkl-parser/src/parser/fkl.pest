@@ -22,17 +22,18 @@ context_node_decl = {
 }
 
 context_node_rel = {
-  left_id ~ left_rel_def? ~ rel_symbol ~ right_id ~ right_rel_def? ~ ";"?
+  left_id ~ left_rel_defs? ~ rel_symbol ~ right_id ~ right_rel_defs? ~ ";"?
 }
 
 left_id = { identifier }
 right_id = { identifier }
 
-left_rel_def = { rel_def }
-right_rel_def = { rel_def }
+left_rel_defs = { rel_defs }
+right_rel_defs = { rel_defs }
 
-rel_def = {
+rel_defs = {
   "[" ~ "rel" ~ "=" ~ identifier ~ "]"
+  | "[" ~ "rel" ~ "=" ~ "\"" ~ (identifier ~ ","?)* ~ "\"" ~ "]"
   | "[" ~ identifier ~ "]"
 }
 
