@@ -23,20 +23,21 @@ impl Transform {
           match decl {
             FklDeclaration::None => {}
             FklDeclaration::ContextMap(context_map) => {
-              transform.contexts = context_map.contexts.iter().map(|context| {
+               context_map.contexts.iter().for_each(|context| {
                 let bounded_context = mir::BoundedContext::new(&context.name);
-                (bounded_context.name.clone(), bounded_context)
-              }).collect();
+                 transform.contexts.insert(bounded_context.name.clone(), bounded_context);
+              });
 
-              transform.relations = context_map.relations.iter().map(|relation| {
-                mir::ContextRelation {
+              context_map.relations.iter().for_each(|relation| {
+                let rel = mir::ContextRelation {
                   source: relation.source.clone(),
                   target: relation.target.clone(),
                   connection_type: transform_connection(&relation.direction),
                   source_type: ContextRelationType::from_str(&relation.source_type),
                   target_type: ContextRelationType::from_str(&relation.target_type),
-                }
-              }).collect();
+                };
+                transform.relations.push(rel);
+              });
             }
             FklDeclaration::BoundedContext(_) => {}
             FklDeclaration::Domain(_) => {}
@@ -75,14 +76,16 @@ mod tests {
   use crate::transform::Transform;
 
   #[test]
-  fn test_mir() {
+  fn basic_mir() {
     let str = r#"
 ContextMap {
   ShoppingCarContext -> MallContext;
   ShoppingCarContext <-> MallContext;
 }
 "#;
-    let result = Transform::mir(str);
-    println!("{:?}", result);
+    let context_map = Transform::mir(str).unwrap();
+
+    assert_eq!(context_map.contexts.len(), 2);
+    assert_eq!(context_map.relations.len(), 2);
   }
 }

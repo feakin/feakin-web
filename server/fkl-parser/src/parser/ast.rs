@@ -8,15 +8,15 @@ use serde::Serialize;
 #[serde(rename_all = "camelCase")]
 pub enum FklDeclaration {
   None,
-  ContextMap(ContextMap),
-  BoundedContext(BoundedContext),
-  Domain(Domain),
-  Aggregate(Aggregate),
-  DomainService(DomainService),
-  ApplicationService(ApplicationService),
-  Entity(Entity),
-  ValueObject(ValueObject),
-  Component(Component),
+  ContextMap(ContextMapDecl),
+  BoundedContext(BoundedContextDecl),
+  Domain(DomainDecl),
+  Aggregate(AggregateDecl),
+  Entity(EntityDecl),
+  ValueObject(ValueObjectDecl),
+  Component(ComponentDecl),
+  DomainService(DomainServiceDecl),
+  ApplicationService(ApplicationServiceDecl),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -37,7 +37,7 @@ pub struct UniqueWord {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct Domain {
+pub struct DomainDecl {
   pub name: String,
   pub description: String,
   #[serde(rename(serialize = "subDomains", deserialize = "subDomains"))]
@@ -48,21 +48,21 @@ pub struct Domain {
 pub struct SubDomain {
   pub name: String,
   pub subdomain_type: String,
-  pub entities: Vec<BoundedContext>,
+  pub entities: Vec<BoundedContextDecl>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct ContextMap {
+pub struct ContextMapDecl {
   pub name: String,
-  pub contexts: Vec<BoundedContext>,
+  pub contexts: Vec<BoundedContextDecl>,
   pub relations: Vec<ContextRelation>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct BoundedContext {
+pub struct BoundedContextDecl {
   pub name: String,
-  pub aggregates: Vec<Aggregate>,
+  pub aggregates: Vec<AggregateDecl>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
@@ -112,25 +112,25 @@ pub enum ContextRelationType {
 // tactic DDD
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct DomainService {
+pub struct DomainServiceDecl {
   pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct ApplicationService {
+pub struct ApplicationServiceDecl {
   pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct Aggregate {
+pub struct AggregateDecl {
   pub name: String,
   pub description: String,
   pub is_root: bool,
   pub inline_doc: String,
   pub used_context: String,
-  pub entities: Vec<Entity>,
-  pub value_objects: Vec<ValueObject>,
+  pub entities: Vec<EntityDecl>,
+  pub value_objects: Vec<ValueObjectDecl>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -140,13 +140,13 @@ pub struct DomainEvent {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct Entity {
+pub struct EntityDecl {
   pub is_aggregate_root: bool,
   pub name: String,
   pub identify: Field,
   pub inline_doc: String,
   pub fields: Vec<Field>,
-  pub value_objects: Vec<ValueObject>,
+  pub value_objects: Vec<ValueObjectDecl>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
@@ -170,7 +170,7 @@ pub struct Property {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
-pub struct ValueObject {
+pub struct ValueObjectDecl {
   pub name: String,
   pub inline_doc: String,
   pub fields: Vec<Field>,
@@ -214,7 +214,7 @@ pub enum HttpMethod {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct Component {
+pub struct ComponentDecl {
   pub name: String,
   pub component_type: ComponentType,
   pub inline_doc: String,

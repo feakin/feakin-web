@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::iterators::{Pair, Pairs};
 
-use crate::parser::ast::{Aggregate, BoundedContext, ContextRelation, ContextMap, Entity, Field, FklDeclaration, ValueObject, Component, Attribute, RelationDirection};
+use crate::parser::ast::{AggregateDecl, BoundedContextDecl, ContextRelation, ContextMapDecl, EntityDecl, Field, FklDeclaration, ValueObjectDecl, ComponentDecl, Attribute, RelationDirection};
 use crate::parser::parse_result::{ParseError, ParseResult};
 use crate::pest::Parser;
 
@@ -56,8 +56,8 @@ fn consume_declarations(pairs: Pairs<Rule>) -> Vec<FklDeclaration> {
   }).collect::<Vec<FklDeclaration>>()
 }
 
-fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
-  let mut context_decl_map: HashMap<String, BoundedContext> = HashMap::new();
+fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
+  let mut context_decl_map: HashMap<String, BoundedContextDecl> = HashMap::new();
   let mut context_name = String::new();
   let mut relations: Vec<ContextRelation> = Vec::new();
 
@@ -75,7 +75,7 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
             Rule::identifier => {
               let context_name = p.as_str().to_string();
               names.push(context_name.clone());
-              context_decl_map.insert(context_name.clone(), BoundedContext {
+              context_decl_map.insert(context_name.clone(), BoundedContextDecl {
                 name: context_name,
                 aggregates: vec![],
               });
@@ -114,19 +114,19 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMap {
 
   // sort context map by name
   let mut contexts = context_decl_map.into_iter().map(|(_, v)| v)
-    .collect::<Vec<BoundedContext>>();
+    .collect::<Vec<BoundedContextDecl>>();
 
   contexts.sort_by(|a, b| a.name.cmp(&b.name));
 
-  return ContextMap {
+  return ContextMapDecl {
     name: context_name,
     contexts,
     relations,
   };
 }
 
-fn consume_context(pair: Pair<Rule>) -> BoundedContext {
-  let mut context = BoundedContext::default();
+fn consume_context(pair: Pair<Rule>) -> BoundedContextDecl {
+  let mut context = BoundedContextDecl::default();
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
@@ -141,8 +141,8 @@ fn consume_context(pair: Pair<Rule>) -> BoundedContext {
   return context;
 }
 
-fn consume_aggregate(pair: Pair<Rule>) -> Aggregate {
-  let mut aggregate = Aggregate::default();
+fn consume_aggregate(pair: Pair<Rule>) -> AggregateDecl {
+  let mut aggregate = AggregateDecl::default();
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
@@ -160,8 +160,8 @@ fn consume_aggregate(pair: Pair<Rule>) -> Aggregate {
   return aggregate;
 }
 
-fn consume_entity(pair: Pair<Rule>) -> Entity {
-  let mut entity = Entity::default();
+fn consume_entity(pair: Pair<Rule>) -> EntityDecl {
+  let mut entity = EntityDecl::default();
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
@@ -218,8 +218,8 @@ fn consume_parameter(pair: Pair<Rule>) -> Field {
   return field;
 }
 
-fn consume_value_object(pair: Pair<Rule>) -> ValueObject {
-  let mut value_object = ValueObject::default();
+fn consume_value_object(pair: Pair<Rule>) -> ValueObjectDecl {
+  let mut value_object = ValueObjectDecl::default();
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
@@ -231,8 +231,8 @@ fn consume_value_object(pair: Pair<Rule>) -> ValueObject {
   return value_object;
 }
 
-fn consume_component(pair: Pair<Rule>) -> Component {
-  let mut component = Component::default();
+fn consume_component(pair: Pair<Rule>) -> ComponentDecl {
+  let mut component = ComponentDecl::default();
   for p in pair.into_inner() {
     match p.as_rule() {
       Rule::identifier => {
@@ -296,7 +296,7 @@ fn parse_inline_doc(pair: Pair<Rule>) -> String {
 
 #[cfg(test)]
 mod tests {
-  use crate::parser::ast::{Aggregate, ContextRelation, BoundedContext, ContextMap, Entity, Field, FklDeclaration, ValueObject, Component, ComponentType, Attribute};
+  use crate::parser::ast::{AggregateDecl, ContextRelation, BoundedContextDecl, ContextMapDecl, EntityDecl, Field, FklDeclaration, ValueObjectDecl, ComponentDecl, ComponentType, Attribute};
   use crate::parser::ast::RelationDirection::{PositiveDirected, BiDirected};
   use crate::parser::parser::parse;
 
@@ -313,14 +313,14 @@ Context ShoppingCarContext {
 }
 "#).unwrap();
 
-    assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMap {
+    assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMapDecl {
       name: "".to_string(),
       contexts: vec![
-        BoundedContext {
+        BoundedContextDecl {
           name: "MallContext".to_string(),
           aggregates: vec![],
         },
-        BoundedContext {
+        BoundedContextDecl {
           name: "ShoppingCarContext".to_string(),
           aggregates: vec![],
         },
@@ -342,7 +342,7 @@ just for test
 }
 "#).unwrap();
 
-    assert_eq!(decls[0], FklDeclaration::Aggregate(Aggregate {
+    assert_eq!(decls[0], FklDeclaration::Aggregate(AggregateDecl {
       name: "Sample".to_string(),
       description: "".to_string(),
       is_root: false,
@@ -365,13 +365,13 @@ Aggregate ShoppingCart {
 }
 "#).unwrap();
 
-    assert_eq!(decls[0], FklDeclaration::Aggregate(Aggregate {
+    assert_eq!(decls[0], FklDeclaration::Aggregate(AggregateDecl {
       name: "ShoppingCart".to_string(),
       description: "".to_string(),
       is_root: false,
       inline_doc: "".to_string(),
       used_context: "".to_string(),
-      entities: vec![Entity {
+      entities: vec![EntityDecl {
         is_aggregate_root: false,
         name: "Product".to_string(),
         identify: Default::default(),
@@ -543,53 +543,53 @@ Entity SalesPerson {
   }
 }"#).unwrap();
 
-    assert_eq!(decls[0], FklDeclaration::BoundedContext(BoundedContext {
+    assert_eq!(decls[0], FklDeclaration::BoundedContext(BoundedContextDecl {
       name: "Cart".to_string(),
       aggregates: vec![
-        Aggregate {
+        AggregateDecl {
           name: "Cart".to_string(),
           description: "".to_string(),
           is_root: false,
           inline_doc: "".to_string(),
           used_context: "".to_string(),
-          entities: vec![Entity {
+          entities: vec![EntityDecl {
             is_aggregate_root: false,
             name: "Cart".to_string(),
             identify: Default::default(),
             inline_doc: "".to_string(),
             fields: vec![],
             value_objects: vec![
-              ValueObject {
+              ValueObjectDecl {
                 name: "CartId".to_string(),
                 inline_doc: "".to_string(),
                 fields: vec![],
               },
-              ValueObject {
+              ValueObjectDecl {
                 name: "CartStatus".to_string(),
                 inline_doc: "".to_string(),
                 fields: vec![],
               },
-              ValueObject {
+              ValueObjectDecl {
                 name: "CartItem".to_string(),
                 inline_doc: "".to_string(),
                 fields: vec![],
               },
-              ValueObject {
+              ValueObjectDecl {
                 name: "CartItemQuantity".to_string(),
                 inline_doc: "".to_string(),
                 fields: vec![],
               },
-              ValueObject {
+              ValueObjectDecl {
                 name: "CartItemPrice".to_string(),
                 inline_doc: "".to_string(),
                 fields: vec![],
               },
-              ValueObject {
+              ValueObjectDecl {
                 name: "CartItemTotal".to_string(),
                 inline_doc: "".to_string(),
                 fields: vec![],
               },
-              ValueObject {
+              ValueObjectDecl {
                 name: "CartTotal".to_string(),
                 inline_doc: "".to_string(),
                 fields: vec![],
@@ -612,7 +612,7 @@ Component SalesComponent {
 }
 "#);
 
-    assert_eq!(decls.unwrap()[0], FklDeclaration::Component(Component {
+    assert_eq!(decls.unwrap()[0], FklDeclaration::Component(ComponentDecl {
       name: "SalesComponent".to_string(),
       inline_doc: "".to_string(),
       component_type: ComponentType::Application,

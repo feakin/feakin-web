@@ -97,7 +97,7 @@ mod tests {
     });
     let json = serde_json::to_string(&action).unwrap();
 
-    assert_eq!(json, r#"{"type":"CreateRoom","value":{"agent_name":"agent","input":"hello"}}"#);
+    assert_eq!(json, r#"{"type":"CreateRoom","value":{"agent_name":"agent","content":"hello"}}"#);
 
     let action: ActionType = serde_json::from_str(&json).unwrap();
 
