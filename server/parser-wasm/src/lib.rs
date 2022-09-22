@@ -2,6 +2,7 @@ extern crate core;
 
 mod utils;
 mod dot_gen;
+mod bc_edge_style;
 
 use wasm_bindgen::prelude::*;
 use fkl_parser::parse as fkl_parse;

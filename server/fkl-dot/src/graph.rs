@@ -48,6 +48,10 @@ impl Graph {
     self.add_node_style(&format!("shape={}", shape));
   }
 
+  pub fn add_edge_with_style(&mut self, source: &str, target: &str, style: Vec<String>) {
+    self.edges.push(Edge::styled(source.to_string(), target.to_string(), style));
+  }
+
   pub(crate) fn set_style(&mut self, style: &str) {
     self.add_node_style(&format!("style={}", style));
   }
