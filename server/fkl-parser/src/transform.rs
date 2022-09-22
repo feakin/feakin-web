@@ -131,8 +131,8 @@ ContextMap {
         source: "ShoppingCartContext".to_string(),
         target: "MallContext".to_string(),
         connection_type: PositiveDirected,
-        source_type: ContextRelationType::None,
-        target_type: ContextRelationType::None,
+        source_type: ContextRelationType::AntiCorruptionLayer,
+        target_type: ContextRelationType::AntiCorruptionLayer,
       }]);
   }
 }

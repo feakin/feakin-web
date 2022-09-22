@@ -111,16 +111,16 @@ impl ContextRelationType {
   pub fn from_str(str: &Option<String>) -> Self {
     match str {
       Some(str) =>
-        match str.as_str() {
-          "SharedKernel" | "SK" => ContextRelationType::SharedKernel,
-          "Partnership" | "P" => ContextRelationType::Partnership,
-          "CustomerSupplier" | "CS" => ContextRelationType::CustomerSupplier,
-          "Conformist" | "C" => ContextRelationType::Conformist,
-          "AntiCorruptionLayer" | "ACL" => ContextRelationType::AntiCorruptionLayer,
-          "OpenHostService" | "OHS" => ContextRelationType::OpenHostService,
-          "PublishedLanguage" | "PL" => ContextRelationType::PublishedLanguage,
-          "SeparateWay" | "SW" => ContextRelationType::SeparateWay,
-          "BigBallOfMud" | "BB" => ContextRelationType::BigBallOfMud,
+        match str.to_lowercase().as_str() {
+          "sharedkernel" | "sk" => ContextRelationType::SharedKernel,
+          "partnership" | "p" => ContextRelationType::Partnership,
+          "customersupplier" | "cs" => ContextRelationType::CustomerSupplier,
+          "conformist" | "c" => ContextRelationType::Conformist,
+          "anticorruptionlayer" | "acl" => ContextRelationType::AntiCorruptionLayer,
+          "openhostservice" | "ohs" => ContextRelationType::OpenHostService,
+          "publishedlanguage" | "pl" => ContextRelationType::PublishedLanguage,
+          "separateway" | "sw" => ContextRelationType::SeparateWay,
+          "bigballofmud" | "bb" => ContextRelationType::BigBallOfMud,
           _ => {
             ContextRelationType::None
           }
