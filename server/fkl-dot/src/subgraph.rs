@@ -26,7 +26,7 @@ impl Subgraph {
     }
   }
 
-  pub(crate) fn add_subgraph(&mut self, subgraph: Subgraph) {
+  pub fn add_subgraph(&mut self, subgraph: Subgraph) {
     self.subgraph.push(subgraph);
   }
 

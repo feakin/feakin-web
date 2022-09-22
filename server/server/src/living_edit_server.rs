@@ -468,14 +468,14 @@ impl LivingEditServer {
 
   async fn leave_room(&mut self, _room_id: RoomId, _conn_id: ConnId) {}
 
-  async fn patch_by_version(&self, conn: ConnId, room_id: RoomId, local_version: LocalVersion) -> Option<Vec<u8>> {
+  async fn patch_by_version(&self, _conn: ConnId, room_id: RoomId, local_version: LocalVersion) -> Option<Vec<u8>> {
     return self.codings.get(&room_id).map(|coding| {
       let mutex_coding = coding.lock().unwrap();
       mutex_coding.patch_since(&local_version)
     });
   }
 
-  async fn ops_by_patches(&self, conn: ConnId, room_id: RoomId, agent_name: String, patches: Vec<u8>) -> Option<LocalVersion> {
+  async fn ops_by_patches(&self, _conn: ConnId, room_id: RoomId, _agent_name: String, patches: Vec<u8>) -> Option<LocalVersion> {
     if let Some(coding) = self.codings.get(&room_id) {
       let mut mutex_coding = coding.lock().unwrap();
       return match mutex_coding.apply_patch(patches) {
