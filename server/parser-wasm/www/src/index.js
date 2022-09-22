@@ -1,10 +1,7 @@
-import init, {FklParser} from "fkl-wasm";
-import { parse } from "fkl-wasm";
+import {FklParser} from "@feakin/fkl-wasm-web";
 
-init().then(() => {
-  let result = new FklParser(`ContextMap {
+let result = new FklParser(`ContextMap {
   SalesContext <-> SalesContext;
 }`).parse();
-  console.log(result);
-  console.log(JSON.stringify(result, null, 2));
-}).catch(console.error);
+
+console.log(result);
