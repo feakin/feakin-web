@@ -7,14 +7,14 @@ use crate::parser::ast::{FklDeclaration, RelationDirection};
 
 pub struct Transform {
   pub contexts: HashMap<String, BoundedContext>,
-  pub relations: Vec<mir::ContextRelation>
+  pub relations: Vec<mir::ContextRelation>,
 }
 
 impl Transform {
   pub fn mir(str: &str) -> Result<ContextMap, ParseError> {
     let mut transform = Transform {
       contexts: Default::default(),
-      relations: vec![]
+      relations: vec![],
     };
 
     match ast_parse(str) {
@@ -23,9 +23,9 @@ impl Transform {
           match decl {
             FklDeclaration::None => {}
             FklDeclaration::ContextMap(context_map) => {
-               context_map.contexts.iter().for_each(|context| {
+              context_map.contexts.iter().for_each(|context| {
                 let bounded_context = mir::BoundedContext::new(&context.name);
-                 transform.contexts.insert(bounded_context.name.clone(), bounded_context);
+                transform.contexts.insert(bounded_context.name.clone(), bounded_context);
               });
 
               context_map.relations.iter().for_each(|relation| {
@@ -76,6 +76,8 @@ fn transform_connection(rd: &RelationDirection) -> ConnectionDirection {
 
 #[cfg(test)]
 mod tests {
+  use crate::mir::ConnectionDirection::PositiveDirected;
+  use crate::mir::{ContextRelation, ContextRelationType};
   use crate::transform::Transform;
 
   #[test]
@@ -112,5 +114,25 @@ Context OrderContext {
 
     assert_eq!(context_map.contexts.len(), 3);
     assert_eq!(context_map.relations.len(), 2);
+  }
+
+  #[test]
+  fn mir_rel() {
+    let str = r#"
+ContextMap {
+  ShoppingCartContext [acl] -> MallContext [acl];
+}
+"#;
+    let context_map = Transform::mir(str).unwrap();
+
+    assert_eq!(context_map.contexts.len(), 2);
+    assert_eq!(context_map.relations, vec![
+      ContextRelation {
+        source: "ShoppingCartContext".to_string(),
+        target: "MallContext".to_string(),
+        connection_type: PositiveDirected,
+        source_type: ContextRelationType::None,
+        target_type: ContextRelationType::None,
+      }]);
   }
 }

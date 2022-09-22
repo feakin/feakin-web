@@ -69,10 +69,12 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
       Rule::context_node_rel => {
         let mut names: Vec<String> = vec![];
         let mut direction: RelationDirection = RelationDirection::Undirected;
+        let mut source_type: Option<String> = None;
+        let mut target_type: Option<String> = None;
 
         for p in p.into_inner() {
           match p.as_rule() {
-            Rule::identifier => {
+            Rule::left_id | Rule::right_id => {
               let context_name = p.as_str().to_string();
               names.push(context_name.clone());
               context_decl_map.insert(context_name.clone(), BoundedContextDecl {
@@ -96,16 +98,36 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
                 };
               }
             }
-            _ => println!("unreachable content rule: {:?}", p.as_rule())
+            Rule::left_rel_def => {
+              for p in p.into_inner() {
+                match p.as_rule() {
+                  Rule::rel_def => {
+                    source_type = rel_def(p);
+                  }
+                  _ => {}
+                }
+              }
+            }
+            Rule::right_rel_def => {
+              for p in p.into_inner() {
+                match p.as_rule() {
+                  Rule::rel_def => {
+                    target_type = rel_def(p);
+                  }
+                  _ => {}
+                }
+              }
+            }
+            _ => println!("unreachable context rel rule: {:?}", p.as_rule())
           };
         }
 
         relations.push(ContextRelation {
           source: names[0].clone(),
           target: names[1].clone(),
-          direction: direction,
-          source_type: None,
-          target_type: None,
+          direction,
+          source_type,
+          target_type,
         });
       }
       _ => println!("unreachable context_map rule: {:?}", p.as_rule())
@@ -123,6 +145,20 @@ fn consume_context_map(pair: Pair<Rule>) -> ContextMapDecl {
     contexts,
     relations,
   };
+}
+
+fn rel_def(pair: Pair<Rule>) -> Option<String> {
+  let mut rel_def: Option<String> = None;
+  for p in pair.into_inner() {
+    match p.as_rule() {
+      Rule::identifier => {
+        rel_def = Some(p.as_str().to_string());
+      }
+      _ => println!("unreachable rel_def rule: {:?}", p.as_rule())
+    };
+  }
+
+  return rel_def;
 }
 
 fn consume_context(pair: Pair<Rule>) -> BoundedContextDecl {
@@ -344,7 +380,6 @@ just for test
 
     assert_eq!(decls[0], FklDeclaration::Aggregate(AggregateDecl {
       name: "Sample".to_string(),
-      description: "".to_string(),
       is_root: false,
       inline_doc: r#" inline doc sample
 just for test
@@ -367,7 +402,6 @@ Aggregate ShoppingCart {
 
     assert_eq!(decls[0], FklDeclaration::Aggregate(AggregateDecl {
       name: "ShoppingCart".to_string(),
-      description: "".to_string(),
       is_root: false,
       inline_doc: "".to_string(),
       used_context: "".to_string(),
@@ -548,7 +582,6 @@ Entity SalesPerson {
       aggregates: vec![
         AggregateDecl {
           name: "Cart".to_string(),
-          description: "".to_string(),
           is_root: false,
           inline_doc: "".to_string(),
           used_context: "".to_string(),
@@ -625,6 +658,28 @@ Component SalesComponent {
           value: "Application".to_string(),
         },
       ],
+    }));
+  }
+
+  #[test]
+  fn rel_with_context_map() {
+    let decls = parse(r#"ContextMap Mall {
+  SalesContext [ OHS ] <-> OrderContext [ rel = ACL ];
+}"#).unwrap();
+
+    assert_eq!(decls[0], FklDeclaration::ContextMap(ContextMapDecl {
+      name: "Mall".to_string(),
+      contexts: vec![
+        BoundedContextDecl { name: "OrderContext".to_string(), aggregates: vec![] },
+        BoundedContextDecl { name: "SalesContext".to_string(), aggregates: vec![] },
+      ],
+      relations: vec![ContextRelation {
+        source: "SalesContext".to_string(),
+        target: "OrderContext".to_string(),
+        direction: BiDirected,
+        source_type: Some("OHS".to_string()),
+        target_type: Some("ACL".to_string()),
+      }],
     }));
   }
 }

@@ -92,23 +92,6 @@ impl Default for RelationDirection {
   }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "camelCase")]
-pub enum ContextRelationType {
-  // Symmetric relation
-  SharedKernel,
-  Partnership,
-  // Upstream Downstream
-  CustomerSupplier,
-  Conformist,
-  AntiCorruptionLayer,
-  OpenHostService,
-  PublishedLanguage,
-  SeparateWay,
-  // added in book "DDD Reference"
-  BigBallOfMud,
-}
-
 // tactic DDD
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -125,7 +108,6 @@ pub struct ApplicationServiceDecl {
 #[serde(rename_all = "camelCase")]
 pub struct AggregateDecl {
   pub name: String,
-  pub description: String,
   pub is_root: bool,
   pub inline_doc: String,
   pub used_context: String,

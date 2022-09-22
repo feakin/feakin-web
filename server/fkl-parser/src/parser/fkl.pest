@@ -22,7 +22,22 @@ context_node_decl = {
 }
 
 context_node_rel = {
-  identifier ~ rel_symbol ~ identifier ~ ";"?
+  left_id ~ left_rel_def? ~ rel_symbol ~ right_id ~ right_rel_def? ~ ";"?
+}
+
+left_id = { identifier }
+right_id = { identifier }
+
+left_rel_def = { rel_def }
+right_rel_def = { rel_def }
+
+rel_def = {
+  "[" ~ "rel" ~ "=" ~ identifier ~ "]"
+  | "[" ~ identifier ~ "]"
+}
+
+rel_keyword = {
+  "rel" | "relation"
 }
 
 rel_symbol = {
