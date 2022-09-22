@@ -39,7 +39,10 @@ impl Transform {
                 transform.relations.push(rel);
               });
             }
-            FklDeclaration::BoundedContext(_) => {}
+            FklDeclaration::BoundedContext(bc) => {
+              let bounded_context = mir::BoundedContext::new(&bc.name);
+              transform.contexts.insert(bounded_context.name.clone(), bounded_context);
+            }
             FklDeclaration::Domain(_) => {}
             FklDeclaration::Aggregate(_) => {}
             FklDeclaration::DomainService(_) => {}
@@ -79,13 +82,35 @@ mod tests {
   fn basic_mir() {
     let str = r#"
 ContextMap {
-  ShoppingCarContext -> MallContext;
-  ShoppingCarContext <-> MallContext;
+  ShoppingCartContext -> MallContext;
+  ShoppingCartContext <-> MallContext;
 }
 "#;
     let context_map = Transform::mir(str).unwrap();
 
     assert_eq!(context_map.contexts.len(), 2);
+    assert_eq!(context_map.relations.len(), 2);
+  }
+
+  #[test]
+  fn bounded_context_out_context_map() {
+    let str = r#"
+ContextMap {
+  ShoppingCartContext -> MallContext;
+  ShoppingCartContext <-> MallContext;
+}
+
+Context ShoppingCartContext {
+
+}
+
+Context OrderContext {
+
+}
+"#;
+    let context_map = Transform::mir(str).unwrap();
+
+    assert_eq!(context_map.contexts.len(), 3);
     assert_eq!(context_map.relations.len(), 2);
   }
 }
