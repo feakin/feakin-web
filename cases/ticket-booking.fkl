@@ -1,12 +1,28 @@
 ContextMap TicketBooking {
-
+  Reservation -> Cinema;
+  Reservation -> Movie;
+  Reservation -> User;
 }
 
 Aggregate Reservation {
-  entity Ticket, Reservation
+  Entity Ticket, Reservation;
 }
 
-Entity Reservation  {}
+Entity Reservation  {
+  Struct {
+    id: String;
+    token: UUID;
+    status: ReservationStatus = ReservationStatus.OPEN;
+    expiresAt: LocalDateTime;
+    createdAt: LocalDateTime;
+    screeningId: String;
+    screeningStartTime: LocalDateTime;
+    name: String;
+    surname: String;
+    tickets: Set<Ticket>;
+    totalPrice: BigDecimal;
+  }
+}
 
 Entity Ticket  {}
 
@@ -30,6 +46,22 @@ Aggregate User {
   Entity User;
 }
 
-Entity User {}
+Entity User {
+  Struct {
+    id: UUID;
+    mobile: String;
+    email: String;
+    username: String;
+    password: String;
+    address: String;
+  }
+}
+
+ValueObject Payment {
+  id: UUID;
+  payment_type: PaymentType;
+  descripiton: String;
+}
 
 ValueObject Price { }
+ValueObject Notifications { }
