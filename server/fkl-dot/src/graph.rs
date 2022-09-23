@@ -6,6 +6,9 @@ use crate::helper::config::indent;
 use crate::node::Node;
 use crate::subgraph::Subgraph;
 
+// use fkl_derive::Entity;
+
+// #[derive(Entity)]
 pub struct Graph {
   name: String,
   nodes: Vec<Node>,

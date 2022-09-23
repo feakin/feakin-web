@@ -8,3 +8,4 @@ repository = "https://github.com/feakin/feakin/"
 license = "MPL-2.0"
 
 [dependencies]
+#fkl_derive = { path = "../fkl_derive" }
