@@ -1,3 +1,6 @@
+use serde::Deserialize;
+use serde::Serialize;
+
 use crate::mir::tactic::block::Field;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]

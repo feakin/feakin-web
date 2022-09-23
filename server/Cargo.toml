@@ -1,10 +1,10 @@
 [workspace]
 
 members = [
-  "fkl-dot",
-  "fkl-lsp",
-  "fkl-parser",
-  "fkl_derive",
+  "fkl_codegen_dot",
+  "fkl_lsp",
+  "fkl_parser",
+  "domain_derive",
   "server",
-  "parser-wasm",
+  "fkl_parser_wasm",
 ]

@@ -1,4 +1,7 @@
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+use serde::Deserialize;
+use serde::Serialize;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum DomainObjectType {
   ApplicationService,
   AggregateRoot,
@@ -17,4 +20,7 @@ pub trait DomainObject {
   fn name(&self) -> &str;
   fn inline_doc(&self) -> &str;
   fn object_type(&self) -> DomainObjectType;
+
+  fn is_aggregate_root(&self) -> bool;
+  fn has_unique_id(&self) -> bool;
 }
