@@ -32,7 +32,8 @@ Core Technical:
   - [x] Editor
 - [ ] DSL
   - [ ] FKL Syntax
-  - [ ] FKL Parser
+  - [x] FKL Parser
+  - [ ] FKL LSP
 - [ ] Editor
   - [x] Dot Language
   - [ ] Fkl Language 
