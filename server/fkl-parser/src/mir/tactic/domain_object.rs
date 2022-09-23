@@ -1,9 +1,16 @@
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 pub enum DomainObjectType {
   ApplicationService,
   AggregateRoot,
   DomainEvent,
   Entity,
   ValueObject,
+}
+
+impl Default for DomainObjectType {
+  fn default() -> Self {
+    DomainObjectType::ValueObject
+  }
 }
 
 pub trait DomainObject {

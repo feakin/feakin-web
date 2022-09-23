@@ -1,4 +1,5 @@
 pub mod domain_object;
-pub mod relation;
 pub mod aggregate;
 pub mod entity;
+pub mod value_object;
+pub mod block;
