@@ -11,7 +11,6 @@ use crate::transform::Transform;
 pub mod parser;
 pub mod mir;
 
-mod binding;
 mod transform;
 
 pub fn parse(rule_content: &str) -> Result<ContextMap, ParseError> {
