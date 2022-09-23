@@ -1,0 +1,35 @@
+ContextMap TicketBooking {
+
+}
+
+Aggregate Reservation {
+  entity Ticket, Reservation
+}
+
+Entity Reservation  {}
+
+Entity Ticket  {}
+
+Aggregate Cinema {
+  Entity Cinema, ScreeningRoom, Seat;
+}
+
+Entity Cinema { }
+Entity ScreeningRoom { }
+Entity Seat { }
+
+Aggregate Movie {
+  Entity Movie, Actor, Publisher;
+}
+
+Entity Movie { }
+Entity Actor { }
+Entity Publisher { }
+
+Aggregate User {
+  Entity User;
+}
+
+Entity User {}
+
+ValueObject Price { }
