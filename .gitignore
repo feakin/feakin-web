@@ -55,3 +55,4 @@ pkg/
 wasm-pack.log
 coco_plugins/
 .coco/
+lib/

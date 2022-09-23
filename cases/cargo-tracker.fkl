@@ -1,0 +1,31 @@
+// based on: https://github.com/eclipse-ee4j/cargotracker
+ContextMap CargoTracker {
+
+}
+
+Aggregate Cargo {
+
+}
+
+Aggregate Handling {
+
+}
+
+Aggregate Location {
+
+}
+
+Aggregate Voyage {
+  Entity Voyage, Schedule, CarrierMovement
+}
+
+Entity CarrierMovement {
+  """A carrier movement is a vessel voyage from one location to another. """
+  Struct {
+    id: id;
+    departureLocation: Location;
+    arrivalLocation: Location;
+    departureTime: LocalDateTime;
+    arrivalTime: LocalDateTime;
+  }
+}
