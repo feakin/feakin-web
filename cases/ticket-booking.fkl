@@ -60,7 +60,7 @@ Entity User {
 ValueObject Payment {
   id: UUID;
   payment_type: PaymentType;
-  descripiton: String;
+  description: String;
 }
 
 ValueObject Price { }
