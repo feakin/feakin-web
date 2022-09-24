@@ -43,7 +43,7 @@ jobs:
           folder: packages/render/dist
 
       - name: Build
-        run: cargo build --release --manifest-path=server/server/Cargo.toml
+        run: cargo build --release --manifest-path=crates/server/Cargo.toml
 
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
