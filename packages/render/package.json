@@ -21,6 +21,7 @@
     "@types/react-dom": "^18.0.6",
     "babel-plugin-transform-import-meta": "^2.2.0",
     "canvas": "^2.9.3",
+    "copy-webpack-plugin": "^11.0.0",
     "diamond-types-web": "^0.1.0",
     "konva": "^8.3.10",
     "monaco-editor": "^0.34.0",

@@ -2,16 +2,13 @@ import { GraphvizJson, Pos } from "../../graphviz-json";
 import { Graph, Node } from "../../model/graph";
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
-import { graphvizSync } from "@hpcc-js/wasm";
+import { graphviz } from "@hpcc-js/wasm";
 
 export class DotWasmImporter extends Importer {
   override isPromise = true;
 
   override async parsePromise(): Promise<Graph> {
-    const output = await graphvizSync().then(async (graph) => {
-      return graph.layout(this.content, "json");
-    });
-
+    const output = await graphviz.layout(this.content, "json");
     return GraphvizToGim(JSON.parse(output));
   }
 }

@@ -6,11 +6,10 @@ import { DrawioImporter } from "./drawio/drawio-importer";
 import { MermaidImporter } from "./mermaid/mermaid-importer";
 import { DrawioExporter } from "./drawio/drawio-exporter";
 import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
-
-import { DotImporter } from "./dot/dot-importer";
 import { Exporter } from "./exporter";
 import { DotExporter } from "./dot/dot-exporter";
 import { MermaidExporter } from "./mermaid/mermaid-exporter";
+import { DotWasmImporter } from "./dot/dot-wasm-importer";
 
 export enum SupportedFileType {
   EXCALIDRAW = "excalidraw",
@@ -80,8 +79,8 @@ export class Converter {
         parser = new MermaidImporter(content);
         break;
       case SupportedFileType.GRAPHVIZ:
-        // parser = new DotWasmImporter(content);
-        parser = new DotImporter(content);
+        parser = new DotWasmImporter(content);
+        // parser = new DotImporter(content);
         break;
       default:
         throw new Error("Unsupported file type");
