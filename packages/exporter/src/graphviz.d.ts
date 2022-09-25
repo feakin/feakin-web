@@ -41,13 +41,6 @@ export interface Node {
   width?: string
 }
 
-export interface Draw2 {
-  op: string
-  grad?: string
-  color?: string
-  points?: number[][]
-}
-
 export interface Ldraw {
   op: string
   size?: number
@@ -64,16 +57,15 @@ export interface Edge {
   _gvid: number
   tail: number
   head: number
-  _draw_: Draw3[]
+  _draw_: Draw[]
   _hdraw_: Hdraw[]
+  _hldraw_?: Hldraw[]
+  _ldraw_?: Ldraw[]
+  head_lp?: string
+  headlabel?: string
+  label: string
+  lp?: string
   pos: string
-}
-
-export interface Draw3 {
-  op: string
-  grad?: string
-  color?: string
-  points?: number[][]
 }
 
 export interface Hdraw {
@@ -82,4 +74,16 @@ export interface Hdraw {
   grad?: string
   color?: string
   points?: number[][]
+}
+
+export interface Hldraw {
+  op: string
+  size?: number
+  face?: string
+  grad?: string
+  color?: string
+  pt?: number[]
+  align?: string
+  width?: number
+  text?: string
 }

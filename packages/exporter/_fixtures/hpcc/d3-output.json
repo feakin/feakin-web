@@ -1,5 +1,5 @@
 {
-  "name": "%3",
+  "name": "TicketBooking",
   "directed": true,
   "strict": false,
   "_draw_":
@@ -16,16 +16,18 @@
     },
     {
       "op": "P",
-      "points": [[0.000,0.000],[0.000,45.000],[120.000,45.000],[120.000,0.000]]
+      "points": [[0.000,0.000],[0.000,393.000],[499.000,393.000],[499.000,0.000]]
     }
   ],
-  "bb": "0,0,120,45",
+  "bb": "0,0,499,393",
+  "component": "true",
+  "label": "",
+  "layout": "fdp",
   "xdotversion": "1.7",
-  "_subgraph_cnt": 0,
+  "_subgraph_cnt": 8,
   "objects": [
     {
-      "_gvid": 0,
-      "name": "a",
+      "name": "cluster_reservation",
       "_draw_":
       [
         {
@@ -34,8 +36,8 @@
           "color": "#000000"
         },
         {
-          "op": "e",
-          "rect": [27.410,27.330,27.000,18.000]
+          "op": "p",
+          "points": [[134.140,195.280],[134.140,359.280],[300.140,359.280],[300.140,195.280]]
         }
       ],
       "_ldraw_":
@@ -52,20 +54,502 @@
         },
         {
           "op": "T",
-          "pt": [27.410,23.130],
+          "pt": [217.140,342.680],
           "align": "c",
-          "width": 6.210,
-          "text": "a"
+          "width": 120.520,
+          "text": "Reservation(Context)"
+        }
+      ],
+      "bb": "134.14,195.28,300.14,359.28",
+      "component": "true",
+      "label": "Reservation(Context)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "217.14,346.88",
+      "lwidth": "1.67",
+      "_gvid": 0,
+      "subgraphs": [
+        1
+      ],
+      "nodes": [
+        14,15
+      ]
+    },
+    {
+      "name": "cluster_aggregate_reservation",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "p",
+          "points": [[142.380,202.920],[142.380,326.920],[292.380,326.920],[292.380,202.920]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [217.380,310.320],
+          "align": "c",
+          "width": 134.500,
+          "text": "Reservation(Aggregate)"
+        }
+      ],
+      "bb": "142.38,202.92,292.38,326.92",
+      "component": "true",
+      "label": "Reservation(Aggregate)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "217.38,314.52",
+      "lwidth": "1.87",
+      "_gvid": 1,
+      "nodes": [
+        14,15
+      ]
+    },
+    {
+      "name": "cluster_cinema",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "p",
+          "points": [[323.210,57.730],[323.210,239.730],[499.210,239.730],[499.210,57.730]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [411.210,223.130],
+          "align": "c",
+          "width": 97.200,
+          "text": "Cinema(Context)"
+        }
+      ],
+      "bb": "323.21,57.73,499.21,239.73",
+      "component": "true",
+      "label": "Cinema(Context)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "411.21,227.33",
+      "lwidth": "1.35",
+      "_gvid": 2,
+      "subgraphs": [
+        3
+      ],
+      "nodes": [
+        8,9,10
+      ]
+    },
+    {
+      "name": "cluster_aggregate_cinema",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "p",
+          "points": [[331.450,65.370],[331.450,207.370],[491.450,207.370],[491.450,65.370]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [411.450,190.770],
+          "align": "c",
+          "width": 111.170,
+          "text": "Cinema(Aggregate)"
+        }
+      ],
+      "bb": "331.45,65.371,491.45,207.37",
+      "component": "true",
+      "label": "Cinema(Aggregate)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "411.45,194.97",
+      "lwidth": "1.54",
+      "_gvid": 3,
+      "nodes": [
+        8,9,10
+      ]
+    },
+    {
+      "name": "cluster_movie",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "p",
+          "points": [[65.000,0.440],[65.000,182.440],[217.000,182.440],[217.000,0.440]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [141.000,165.840],
+          "align": "c",
+          "width": 90.210,
+          "text": "Movie(Context)"
+        }
+      ],
+      "bb": "65.005,0.43676,217,182.44",
+      "component": "true",
+      "label": "Movie(Context)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "141,170.04",
+      "lwidth": "1.25",
+      "_gvid": 4,
+      "subgraphs": [
+        5
+      ],
+      "nodes": [
+        11,12,13
+      ]
+    },
+    {
+      "name": "cluster_aggregate_movie",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "p",
+          "points": [[73.240,8.080],[73.240,150.080],[209.240,150.080],[209.240,8.080]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [141.240,133.480],
+          "align": "c",
+          "width": 104.180,
+          "text": "Movie(Aggregate)"
+        }
+      ],
+      "bb": "73.243,8.0776,209.24,150.08",
+      "component": "true",
+      "label": "Movie(Aggregate)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "141.24,137.68",
+      "lwidth": "1.45",
+      "_gvid": 5,
+      "nodes": [
+        11,12,13
+      ]
+    },
+    {
+      "name": "cluster_user",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "p",
+          "points": [[-0.040,277.440],[-0.040,393.440],[125.960,393.440],[125.960,277.440]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [62.960,376.840],
+          "align": "c",
+          "width": 80.090,
+          "text": "User(Context)"
+        }
+      ],
+      "bb": "-0.043106,277.44,125.96,393.44",
+      "component": "true",
+      "label": "User(Context)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "62.957,381.04",
+      "lwidth": "1.11",
+      "_gvid": 6,
+      "subgraphs": [
+        7
+      ],
+      "nodes": [
+        16
+      ]
+    },
+    {
+      "name": "cluster_aggregate_user",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "p",
+          "points": [[8.200,285.080],[8.200,361.080],[118.200,361.080],[118.200,285.080]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [63.200,344.480],
+          "align": "c",
+          "width": 94.060,
+          "text": "User(Aggregate)"
+        }
+      ],
+      "bb": "8.195,285.08,118.2,361.08",
+      "component": "true",
+      "label": "User(Aggregate)",
+      "layout": "fdp",
+      "lheight": "0.23",
+      "lp": "63.195,348.68",
+      "lwidth": "1.31",
+      "_gvid": 7,
+      "nodes": [
+        16
+      ]
+    },
+    {
+      "_gvid": 8,
+      "name": "entity_Cinema",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[483.230,157.010],[424.140,157.010],[424.140,121.010],[483.230,121.010]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [453.690,134.810],
+          "align": "c",
+          "width": 43.540,
+          "text": "Cinema"
         }
       ],
       "height": "0.5",
-      "label": "\\N",
-      "pos": "27.406,27.334",
+      "label": "Cinema",
+      "pos": "453.69,139.01",
+      "shape": "box",
+      "style": "filled",
+      "width": "0.82701"
+    },
+    {
+      "_gvid": 9,
+      "name": "entity_ScreeningRoom",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[445.890,109.010],[339.480,109.010],[339.480,73.010],[445.890,73.010]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [392.690,86.810],
+          "align": "c",
+          "width": 90.210,
+          "text": "ScreeningRoom"
+        }
+      ],
+      "height": "0.5",
+      "label": "ScreeningRoom",
+      "pos": "392.69,91.011",
+      "shape": "box",
+      "style": "filled",
+      "width": "1.4751"
+    },
+    {
+      "_gvid": 10,
+      "name": "entity_Seat",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[411.690,175.010],[357.690,175.010],[357.690,139.010],[411.690,139.010]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [384.690,152.810],
+          "align": "c",
+          "width": 24.100,
+          "text": "Seat"
+        }
+      ],
+      "height": "0.5",
+      "label": "Seat",
+      "pos": "384.69,157.01",
+      "shape": "box",
+      "style": "filled",
       "width": "0.75"
     },
     {
-      "_gvid": 1,
-      "name": "b",
+      "_gvid": 11,
+      "name": "entity_Movie",
       "_draw_":
       [
         {
@@ -74,8 +558,13 @@
           "color": "#000000"
         },
         {
-          "op": "e",
-          "rect": [92.860,17.550,27.000,18.000]
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[135.480,117.720],[81.480,117.720],[81.480,81.720],[135.480,81.720]]
         }
       ],
       "_ldraw_":
@@ -92,15 +581,252 @@
         },
         {
           "op": "T",
-          "pt": [92.860,13.350],
+          "pt": [108.480,95.520],
           "align": "c",
-          "width": 7.000,
-          "text": "b"
+          "width": 36.550,
+          "text": "Movie"
         }
       ],
       "height": "0.5",
-      "label": "\\N",
-      "pos": "92.862,17.555",
+      "label": "Movie",
+      "pos": "108.48,99.719",
+      "shape": "box",
+      "style": "filled",
+      "width": "0.75"
+    },
+    {
+      "_gvid": 12,
+      "name": "entity_Actor",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[201.480,99.720],[147.480,99.720],[147.480,63.720],[201.480,63.720]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [174.480,77.520],
+          "align": "c",
+          "width": 31.880,
+          "text": "Actor"
+        }
+      ],
+      "height": "0.5",
+      "label": "Actor",
+      "pos": "174.48,81.719",
+      "shape": "box",
+      "style": "filled",
+      "width": "0.75"
+    },
+    {
+      "_gvid": 13,
+      "name": "entity_Publisher",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[155.870,51.720],[87.090,51.720],[87.090,15.720],[155.870,15.720]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [121.480,29.520],
+          "align": "c",
+          "width": 52.890,
+          "text": "Publisher"
+        }
+      ],
+      "height": "0.5",
+      "label": "Publisher",
+      "pos": "121.48,33.719",
+      "shape": "box",
+      "style": "filled",
+      "width": "0.9568"
+    },
+    {
+      "_gvid": 14,
+      "name": "entity_Ticket",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[280.620,294.560],[226.620,294.560],[226.620,258.560],[280.620,258.560]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [253.620,272.360],
+          "align": "c",
+          "width": 35.760,
+          "text": "Ticket"
+        }
+      ],
+      "height": "0.5",
+      "label": "Ticket",
+      "pos": "253.62,276.56",
+      "shape": "box",
+      "style": "filled",
+      "width": "0.75"
+    },
+    {
+      "_gvid": 15,
+      "name": "entity_Reservation",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[236.990,246.560],[154.250,246.560],[154.250,210.560],[236.990,210.560]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [195.620,224.360],
+          "align": "c",
+          "width": 66.870,
+          "text": "Reservation"
+        }
+      ],
+      "height": "0.5",
+      "label": "Reservation",
+      "pos": "195.62,228.56",
+      "shape": "box",
+      "style": "filled",
+      "width": "1.151"
+    },
+    {
+      "_gvid": 16,
+      "name": "entity_User",
+      "_draw_":
+      [
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "C",
+          "grad": "none",
+          "color": "#d3d3d3"
+        },
+        {
+          "op": "P",
+          "points": [[90.430,328.720],[36.430,328.720],[36.430,292.720],[90.430,292.720]]
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [63.430,306.520],
+          "align": "c",
+          "width": 26.430,
+          "text": "User"
+        }
+      ],
+      "height": "0.5",
+      "label": "User",
+      "pos": "63.433,310.72",
+      "shape": "box",
+      "style": "filled",
       "width": "0.75"
     }
   ],
@@ -108,7 +834,7 @@
     {
       "_gvid": 0,
       "tail": 0,
-      "head": 1,
+      "head": 2,
       "_draw_":
       [
         {
@@ -118,7 +844,7 @@
         },
         {
           "op": "b",
-          "points": [[50.720,36.750],[56.010,36.680],[61.650,36.040],[67.030,34.930]]
+          "points": [[300.290,222.200],[304.980,219.090],[309.720,215.960],[314.460,212.820]]
         }
       ],
       "_hdraw_":
@@ -139,15 +865,59 @@
         },
         {
           "op": "P",
-          "points": [[68.170,38.240],[76.900,32.230],[66.330,31.490]]
+          "points": [[316.570,215.620],[322.970,207.180],[312.700,209.780]]
         }
       ],
-      "pos": "e,76.897,32.233 50.724,36.75 56.009,36.675 61.649,36.036 67.03,34.926"
+      "_hldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [317.920,194.580],
+          "align": "c",
+          "width": 10.110,
+          "text": "D"
+        }
+      ],
+      "_ldraw_":
+      [
+        {
+          "op": "F",
+          "size": 14.000,
+          "face": "Times-Roman"
+        },
+        {
+          "op": "c",
+          "grad": "none",
+          "color": "#000000"
+        },
+        {
+          "op": "T",
+          "pt": [366.860,221.710],
+          "align": "c",
+          "width": 118.970,
+          "text": "AntiCorruptionLayer"
+        }
+      ],
+      "head_lp": "317.92,198.78",
+      "headlabel": "D",
+      "label": "AntiCorruptionLayer",
+      "lp": "366.86,225.91",
+      "pos": "e,322.97,207.18 300.29,222.2 304.98,219.09 309.72,215.96 314.46,212.82"
     },
     {
       "_gvid": 1,
       "tail": 0,
-      "head": 1,
+      "head": 4,
       "_draw_":
       [
         {
@@ -157,7 +927,7 @@
         },
         {
           "op": "b",
-          "points": [[43.490,12.610],[48.240,10.960],[53.630,9.710],[59.060,8.960]]
+          "points": [[183.530,195.230],[183.100,194.180],[182.670,193.130],[182.240,192.090]]
         }
       ],
       "_hdraw_":
@@ -178,25 +948,26 @@
         },
         {
           "op": "P",
-          "points": [[59.690,12.420],[69.380,8.140],[59.140,5.440]]
+          "points": [[185.390,190.550],[178.360,182.630],[178.920,193.210]]
         }
       ],
-      "pos": "e,69.382,8.141 43.492,12.614 48.245,10.962 53.631,9.7147 59.057,8.9604"
+      "label": "",
+      "pos": "e,178.36,182.63 183.53,195.23 183.1,194.18 182.67,193.13 182.24,192.09"
     },
     {
       "_gvid": 2,
-      "tail": 1,
-      "head": 0,
+      "tail": 0,
+      "head": 6,
       "_draw_":
       [
         {
           "op": "c",
           "grad": "none",
-          "color": "#0000ff"
+          "color": "#000000"
         },
         {
           "op": "b",
-          "points": [[66.240,21.530],[65.470,21.650],[64.690,21.760],[63.920,21.880]]
+          "points": [[133.730,308.740],[133.570,308.800],[133.410,308.860],[133.250,308.920]]
         }
       ],
       "_hdraw_":
@@ -208,20 +979,20 @@
         {
           "op": "c",
           "grad": "none",
-          "color": "#0000ff"
+          "color": "#000000"
         },
         {
           "op": "C",
           "grad": "none",
-          "color": "#0000ff"
+          "color": "#000000"
         },
         {
           "op": "P",
-          "points": [[63.170,18.450],[53.790,23.390],[64.200,25.380]]
+          "points": [[134.230,304.820],[126.110,311.620],[136.700,311.370]]
         }
       ],
-      "color": "blue",
-      "pos": "e,53.794,23.392 66.239,21.532 65.469,21.647 64.694,21.763 63.917,21.879"
+      "label": "",
+      "pos": "e,126.11,311.62 133.73,308.74 133.57,308.8 133.41,308.86 133.25,308.92"
     }
   ]
 }
