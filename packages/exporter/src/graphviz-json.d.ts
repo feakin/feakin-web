@@ -15,10 +15,15 @@ export type Drawops = (
   | Style
   )[]
 
+// An end point consists of a {\tt point} preceded by {\tt "e,"};
+// a start point consists of a {\tt point} preceded by {\tt "s,"}. The
+// optional components are separated by spaces.
+export type Pos = string;
+
 /**
  * JSON representation of a graph encoding xdot attributes
  */
-export interface GraphvizJSON {
+export interface GraphvizJson {
   /**
    * The graph name
    */
@@ -68,6 +73,7 @@ export interface NodeOrSubgraph {
   _draw_?: Drawops
   _ldraw_?: Drawops
   additionalProperties?: string
+  pos?: Pos
 
   [k: string]: unknown
 }
@@ -167,6 +173,8 @@ export interface Edge {
   _hldraw_?: Drawops
   _tldraw_?: Drawops
   additionalProperties?: string
+
+  pos?: Pos
 
   [k: string]: unknown
 }

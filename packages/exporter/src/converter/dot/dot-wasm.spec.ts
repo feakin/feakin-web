@@ -1,19 +1,31 @@
-import {graphvizSync} from "@hpcc-js/wasm";
+import { graphvizSync } from "@hpcc-js/wasm";
+import { GraphvizToGim } from "./dot-wasm";
+import { DotImporter } from "./dot-importer";
+import { Graph } from "../../model/graph";
 
 describe('Dot Wasm', () => {
+  it('compare items', () => {
+    const importer = new DotImporter(`digraph {
+  a -> b
+}`);
+    const graph: Graph = importer.parse();
+    console.log(JSON.stringify(graph));
+  });
+
   it('edge with', async () => {
     const source = `digraph {
-  a -> b
-  a -> b
-  b -> a [color=blue]
+  node [shape=box style=filled];
+  a -> b;
 }
 `;
 
     const output = await graphvizSync().then((graph) => {
-      return graph.layout(source, "json", "fdp")
+      return graph.layout(source, "json")
     });
 
-    console.log(output);
+    const structure = JSON.parse(output);
+    console.log(structure);
+    console.log(JSON.stringify(GraphvizToGim(structure)));
   });
 
   it('sample 2', async () => {
@@ -69,7 +81,6 @@ describe('Dot Wasm', () => {
     const output = await graphvizSync().then((graph) => {
       return graph.layout(source, "json", "fdp")
     });
-
-    console.log(output);
+    // console.log(output);
   });
 });
