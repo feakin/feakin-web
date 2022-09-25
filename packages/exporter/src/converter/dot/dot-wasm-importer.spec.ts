@@ -1,5 +1,5 @@
 import { graphvizSync } from "@hpcc-js/wasm";
-import { GraphvizToGim, parseGraphvizPos } from "./dot-wasm";
+import { GraphvizToGim, parseGraphvizPos } from "./dot-wasm-importer";
 import { DotImporter } from "./dot-importer";
 import { Graph } from "../../model/graph";
 

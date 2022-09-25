@@ -1,7 +1,18 @@
 import { GraphvizJson, Pos } from "../../graphviz-json";
 import { Graph, Node } from "../../model/graph";
-import { Point } from "@feakin/exporter";
+import { Importer } from "../importer";
+import { Point } from "../../model/geometry/point";
+import { graphvizSync } from "@hpcc-js/wasm";
 
+export class DotWasmImporter extends Importer {
+  override async parsePromise(): Promise<Graph> {
+    const output = await graphvizSync().then(async (graph) => {
+      return graph.layout(this.content, "json");
+    });
+
+    return GraphvizToGim(JSON.parse(output));
+  }
+}
 
 export function parseGraphvizPos(pos_str: Pos | undefined): Point[] {
   const pos: string = pos_str ? pos_str : "0,0";

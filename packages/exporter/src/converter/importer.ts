@@ -2,6 +2,7 @@ import { ElementProperty, Graph } from "../model/graph";
 
 export class Importer implements StringParser {
   content: string;
+  isPromise = false;
 
   constructor(content: string) {
     this.content = content;
@@ -9,6 +10,12 @@ export class Importer implements StringParser {
 
   parse(): Graph {
     return {} as Graph;
+  }
+
+  async parsePromise(): Promise<Graph> {
+    return new Promise<Graph>((resolve, reject) => {
+      resolve({} as Graph);
+    });
   }
 
   // convert element properties
