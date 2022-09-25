@@ -47,9 +47,11 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
 
   const exportFile = (outputType: string) => {
     const isBrowser = true;
-    const outputCode = Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).target(outputType);
-    fileExport(outputCode, outputType);
-    setExportEl(null);
+    Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).then((converter) => {
+      const outputCode = converter.target(outputType);
+      fileExport(outputCode, outputType);
+      setExportEl(null);
+    });
   }
 
   const importFile = () => {

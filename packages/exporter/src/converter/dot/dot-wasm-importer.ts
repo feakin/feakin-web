@@ -5,6 +5,8 @@ import { Point } from "../../model/geometry/point";
 import { graphvizSync } from "@hpcc-js/wasm";
 
 export class DotWasmImporter extends Importer {
+  override isPromise = true;
+
   override async parsePromise(): Promise<Graph> {
     const output = await graphvizSync().then(async (graph) => {
       return graph.layout(this.content, "json");

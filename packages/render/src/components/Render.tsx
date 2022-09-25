@@ -226,14 +226,20 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
       switch (props.code.sourceType) {
         case SupportedFileType.GRAPHVIZ:
         case SupportedFileType.MERMAID:
-          setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          Converter.fromContent(props.code.content, props.code.sourceType).then((data) => {
+            setGraph(data.graph);
+          });
           break;
         case SupportedFileType.DRAWIO:
           let isBrowser = true;
-          setGraph(Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).graph);
+          Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).then((data) => {
+            setGraph(data.graph);
+          });
           break;
         case SupportedFileType.EXCALIDRAW:
-          setGraph(Converter.fromContent(props.code.content, props.code.sourceType).graph);
+          Converter.fromContent(props.code.content, props.code.sourceType).then((data) => {
+            setGraph(data.graph);
+          });
           break;
         default:
           throw new Error(`Unsupported source type: ${ props.code.sourceType }`);

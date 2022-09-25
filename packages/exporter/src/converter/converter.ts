@@ -46,14 +46,18 @@ export class Converter {
    * @param isBrowser
    * @returns {Graph}
    */
-  static fromContent(content: string, fileExt: string, isBrowser = false): Converter {
+  static fromContent(content: string, fileExt: string, isBrowser = false): Promise<Converter> {
     const parser = this.createFrom(fileExt, content, isBrowser);
-    const graph = parser.parse();
-    return this.fromGraph(graph);
-  }
+    if (parser.isPromise) {
+      return parser.parsePromise().then((graph) => {
+        return Promise.resolve(new Converter(graph))
+      });
+    } else {
+      const graph = parser.parse();
+      const converter = new Converter(graph);
 
-  static fromGraph(graph: Graph) {
-    return new Converter(graph);
+      return Promise.resolve(converter);
+    }
   }
 
   /**
@@ -76,6 +80,7 @@ export class Converter {
         parser = new MermaidImporter(content);
         break;
       case SupportedFileType.GRAPHVIZ:
+        // parser = new DotWasmImporter(content);
         parser = new DotImporter(content);
         break;
       default:
