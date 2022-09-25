@@ -1,89 +1,172 @@
-export interface GraphvizOutput {
+export type Rectangle = [number, number, number, number]
+export type Point = [number, number]
+export type Pointlist = Point[]
+export type Point3 = [number, number, number]
+export type Color = string
+export type Drawops = (
+  | Ellipse
+  | Polygon
+  | Polyline
+  | Bspline
+  | Text
+  | FontStyle
+  | Drawcolor
+  | Font
+  | Style
+  )[]
+
+/**
+ * JSON representation of a graph encoding xdot attributes
+ */
+export interface GraphvizJSON {
+  /**
+   * The graph name
+   */
   name: string
+  /**
+   * True if the graph is directed
+   */
   directed: boolean
+  /**
+   * True if the graph is strict
+   */
   strict: boolean
-  _draw_: Draw[]
-  bb: string
-  component: string
-  label: string
-  layout: string
-  xdotversion: string
+  /**
+   * Number of subgraphs in the graph
+   */
   _subgraph_cnt: number
-  objects: Node[]
-  edges: Edge[]
+  /**
+   * The graph's subgraphs followed by the graph's nodes
+   */
+  objects?: NodeOrSubgraph[]
+  edges?: Edge[]
+  _draw_?: Drawops
+  _ldraw_?: Drawops
+  additionalProperties?: string
+
+  [k: string]: unknown
 }
 
-export interface Draw {
-  op: string
-  grad?: string
-  color?: string
-  points?: number[][]
-}
-
-export interface Node {
-  name: string
-  _draw_: Draw2[]
-  _ldraw_: Ldraw[]
-  bb?: string
-  component?: string
-  label: string
-  layout?: string
-  lheight?: string
-  lp?: string
-  lwidth?: string
+export interface NodeOrSubgraph {
   _gvid: number
+  /**
+   * The node or subgraph name
+   */
+  name: string
+  /**
+   * index of a child subgraph
+   */
   subgraphs?: number[]
+  /**
+   * index of a node in this subgraph
+   */
   nodes?: number[]
-  height?: string
-  pos?: string
-  shape?: string
-  style?: string
-  width?: string
+  /**
+   * index of an edge in this subgraph
+   */
+  edges?: number[]
+  _draw_?: Drawops
+  _ldraw_?: Drawops
+  additionalProperties?: string
+
+  [k: string]: unknown
 }
 
-export interface Ldraw {
+export interface Ellipse {
   op: string
-  size?: number
-  face?: string
-  grad?: string
-  color?: string
-  pt?: number[]
-  align?: string
-  width?: number
-  text?: string
+  rect: Rectangle
+
+  [k: string]: unknown
+}
+
+export interface Polygon {
+  op: string
+  points: Pointlist
+
+  [k: string]: unknown
+}
+
+export interface Polyline {
+  op: string
+  points: Pointlist
+
+  [k: string]: unknown
+}
+
+export interface Bspline {
+  op: string
+  points: Pointlist
+
+  [k: string]: unknown
+}
+
+export interface Text {
+  op: string
+  pt: Point
+  align: string
+  text: string
+  width: number
+
+  [k: string]: unknown
+}
+
+export interface FontStyle {
+  op: string
+  fontchar: number
+
+  [k: string]: unknown
+}
+
+export interface Drawcolor {
+  op: string
+  p0?: Point | Point3
+  p1?: Point | Point3
+  grad: "none" | "linear" | "radial"
+  color?: Color
+  stops?: Stop[]
+
+  [k: string]: unknown
+}
+
+export interface Stop {
+  frac: number
+  color: Color
+
+  [k: string]: unknown
+}
+
+export interface Font {
+  op: string
+  size: number
+  face: string
+
+  [k: string]: unknown
+}
+
+export interface Style {
+  op: string
+  style: string
+
+  [k: string]: unknown
 }
 
 export interface Edge {
   _gvid: number
+  /**
+   * _gvid of tail node
+   */
   tail: number
+  /**
+   * _gvid of tail head
+   */
   head: number
-  _draw_: Draw[]
-  _hdraw_: Hdraw[]
-  _hldraw_?: Hldraw[]
-  _ldraw_?: Ldraw[]
-  head_lp?: string
-  headlabel?: string
-  label: string
-  lp?: string
-  pos: string
-}
+  _draw_?: Drawops
+  _ldraw_?: Drawops
+  _hdraw_?: Drawops
+  _tdraw_?: Drawops
+  _hldraw_?: Drawops
+  _tldraw_?: Drawops
+  additionalProperties?: string
 
-export interface Hdraw {
-  op: string
-  style?: string
-  grad?: string
-  color?: string
-  points?: number[][]
-}
-
-export interface Hldraw {
-  op: string
-  size?: number
-  face?: string
-  grad?: string
-  color?: string
-  pt?: number[]
-  align?: string
-  width?: number
-  text?: string
+  [k: string]: unknown
 }
