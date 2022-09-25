@@ -1,14 +1,17 @@
 import { GraphvizJson, Pos } from "../../graphviz-json";
-import { Graph, Node } from "../../model/graph";
+import { defaultEdgeProperty, Graph, Node } from "../../model/graph";
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
-import { graphviz } from "@hpcc-js/wasm";
+import { graphvizSync } from "@hpcc-js/wasm";
 
 export class DotWasmImporter extends Importer {
   override isPromise = true;
 
   override async parsePromise(): Promise<Graph> {
-    const output = await graphviz.layout(this.content, "json");
+    const output = await graphvizSync().then(async (graph) => {
+      return graph.layout(this.content, "json");
+    });
+
     return GraphvizToGim(JSON.parse(output));
   }
 }
@@ -41,12 +44,17 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
   if (graphviz.objects) {
     graphviz.objects.forEach((obj) => {
       const loc = parseGraphvizPos(obj.pos)[0];
+      const width = parseFloat( <string>obj['width']);
+      const height = parseFloat(<string>obj['height']);
+
       const node: Node = {
         id: obj._gvid.toString(),
         label: obj.name,
         x: loc.x,
         y: loc.y,
-        props: {},
+        width: 100 * width,
+        height: 60 * height,
+        //  todo: change to polygon?
       };
 
       graph.nodes.push(node);
@@ -65,7 +73,7 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
           sourceId: edge.tail.toString(),
           targetId: edge.head.toString(),
         },
-        props: {}
+        props: defaultEdgeProperty
       });
     });
   }

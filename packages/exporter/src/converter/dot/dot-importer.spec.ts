@@ -202,6 +202,7 @@ describe('DotImporter', () => {
   }
 }`);
     const graph: Graph = importer.parse();
+    console.log(graph);
 
     expect(graph.nodes.length).toBe(5);
     const first = graph.nodes[0];

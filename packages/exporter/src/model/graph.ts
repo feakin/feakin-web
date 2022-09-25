@@ -82,6 +82,7 @@ export interface NodeData {
   children?: string[];
   curved?: boolean;
   shape?: ShapeType;
+  points?: Point[];
 
   [key: string]: any;
 }
