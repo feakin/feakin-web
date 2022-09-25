@@ -8,20 +8,27 @@ import parse, {
   NodeStmt,
   Subgraph
 } from "dotparser";
-import { nanoid } from "nanoid";
+import {nanoid} from "nanoid";
 
-import { Importer } from "../importer";
-import { Edge, ElementProperty, Graph, Node } from "../../model/graph";
-import { layoutFromGraph } from "../../layout/dagre/dagre-layout";
-import { Arrowhead } from "../../model/edge/decorator/arrowhead";
-import { LineStyle } from "../../model/edge/decorator/line-style";
-import { LineDashStyle } from "../../model/edge/decorator/line-dash-style";
+import {Importer} from "../importer";
+import {Edge, ElementProperty, Graph, Node} from "../../model/graph";
+import {layoutFromGraph} from "../../layout/dagre/dagre-layout";
+import {Arrowhead} from "../../model/edge/decorator/arrowhead";
+import {LineStyle} from "../../model/edge/decorator/line-style";
+import {LineDashStyle} from "../../model/edge/decorator/line-dash-style";
+import {LayoutOptions} from "../../model/layout/layout-options";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph);
 
 export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
+  attrs_by_target: any = {
+    graph: {},
+    node: {},
+    edge: {}
+  };
+
   subgraphNode: Map<(string | number), {
     label: string;
     parentId?: string | number | undefined;
@@ -45,8 +52,11 @@ export class DotImporter extends Importer {
 
     return {
       nodes: Array.from(this.nodes.values()),
-      edges: Array.from(this.edges.values())
-    };
+      edges: Array.from(this.edges.values()),
+      props: {
+        data: this.attrs_by_target
+      }
+    }
   }
 
   override parse(): Graph {
@@ -80,7 +90,28 @@ export class DotImporter extends Importer {
       })
     });
 
-    return layoutFromGraph(graph);
+    let config: LayoutOptions = {
+      direction: 'TB',
+      node: {
+        width: 100,
+        height: 40,
+      },
+      ext: {}
+    };
+
+    if (graph.props?.data?.["graph"]) {
+      config.ext!.graph = graph.props?.data?.["graph"];
+    }
+
+    if (graph.props?.data?.["node"]) {
+      config.ext!.node = graph.props?.data?.["node"];
+    }
+
+    if (graph.props?.data?.["edge"]) {
+      config.ext!.edge = graph.props?.data?.["edge"];
+    }
+
+    return layoutFromGraph(graph, config);
   }
 
   private parseChildren(children: DotElement[], parent: DotGraph | DotElement, attrs?: any, graphId?: string | number | undefined) {
@@ -112,6 +143,19 @@ export class DotImporter extends Importer {
                 ...parentId,
                 label: attrs['label'],
               });
+            }
+          } else {
+            const parsedAttrs = this.parseAttrs(child.attr_list);
+            switch (child.target) {
+              case "graph":
+                Object.assign(this.attrs_by_target.graph, parsedAttrs);
+                break;
+              case "node":
+                Object.assign(this.attrs_by_target.node, parsedAttrs);
+                break;
+              case "edge":
+                Object.assign(this.attrs_by_target.edge, parsedAttrs);
+                break;
             }
           }
           break;
@@ -174,10 +218,10 @@ export class DotImporter extends Importer {
         const lastNode = children[index - 1];
         const currentNode = child;
 
-        let edgeId = `${ lastNode.id }_${ currentNode.id }`;
+        let edgeId = `${lastNode.id}_${currentNode.id}`;
 
         if (this.edges.has(edgeId)) {
-          edgeId = `${ edgeId }_${ index }`;
+          edgeId = `${edgeId}_${index}`;
         }
 
         this.edges.set(edgeId, {

@@ -23,6 +23,7 @@ Core Technical:
   - [x] 模板创建。支持创建模板，并基于 Graph MIR 进行转换，转换成其它图表格式。
   - [ ] 多样化图形布局。支持 Dagre、ELK、Cola 等布局。
   - [x] Dagre
+    - [ ] replace Grapvhiz to WASM
   - [ ] 手绘风格。
     - [x] Rough.js sample
 - [x] Collaboration

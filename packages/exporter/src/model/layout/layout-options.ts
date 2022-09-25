@@ -15,5 +15,10 @@ export interface LayoutOptions {
     width: number;
     // each node height
     height: number;
+  },
+  ext?: {
+    node?: any,
+    edge?: any,
+    graph?: any
   }
 }

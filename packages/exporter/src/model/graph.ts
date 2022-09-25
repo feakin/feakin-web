@@ -24,6 +24,11 @@ interface GraphProperty extends ElementProperty {
   height?: number;
   position?: Point;
   css?: any | undefined;
+  data?: CustomProperty;
+}
+
+interface CustomProperty {
+  [key: string]: any;
 }
 
 // ElementProperty are used to define the graphical representation of edges and edges.
