@@ -1,9 +1,17 @@
 import { graphvizSync } from "@hpcc-js/wasm";
-import { GraphvizToGim } from "./dot-wasm";
+import { GraphvizToGim, parseGraphvizPos } from "./dot-wasm";
 import { DotImporter } from "./dot-importer";
 import { Graph } from "../../model/graph";
 
 describe('Dot Wasm', () => {
+  it('parse graphviz location', () => {
+    expect(parseGraphvizPos(undefined)).toEqual([{x: 0, y: 0}]);
+    expect(parseGraphvizPos("")).toEqual([{x: 0, y: 0}]);
+    expect(parseGraphvizPos("0,0")).toEqual([{x: 0, y: 0}]);
+    expect(parseGraphvizPos("e,27,36.104 27,71.697")).toEqual([{x: 27, y: 36.104}, {x: 27, y: 71.697}]);
+    expect(parseGraphvizPos("s,27,36.104 27,71.697")).toEqual([{x: 27, y: 36.104}, {x: 27, y: 71.697}]);
+  });
+
   it('compare items', () => {
     const importer = new DotImporter(`digraph {
   a -> b
