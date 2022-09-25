@@ -4,6 +4,9 @@ export interface GraphvizOutput {
   strict: boolean
   _draw_: Draw[]
   bb: string
+  component: string
+  label: string
+  layout: string
   xdotversion: string
   _subgraph_cnt: number
   objects: Node[]
@@ -18,21 +21,31 @@ export interface Draw {
 }
 
 export interface Node {
-  _gvid: number
   name: string
   _draw_: Draw2[]
   _ldraw_: Ldraw[]
-  height: string
+  bb?: string
+  component?: string
   label: string
-  pos: string
-  width: string
+  layout?: string
+  lheight?: string
+  lp?: string
+  lwidth?: string
+  _gvid: number
+  subgraphs?: number[]
+  nodes?: number[]
+  height?: string
+  pos?: string
+  shape?: string
+  style?: string
+  width?: string
 }
 
 export interface Draw2 {
   op: string
   grad?: string
   color?: string
-  rect?: number[]
+  points?: number[][]
 }
 
 export interface Ldraw {
@@ -54,7 +67,6 @@ export interface Edge {
   _draw_: Draw3[]
   _hdraw_: Hdraw[]
   pos: string
-  color?: string
 }
 
 export interface Draw3 {
