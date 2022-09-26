@@ -1,7 +1,7 @@
 import { graphvizSync } from "@hpcc-js/wasm";
 import { nanoid } from "nanoid";
 
-import { Drawops, Ellipse, GraphvizJson, NodeOrSubgraph, Polygon, Pos, Text } from "../../graphviz-json";
+import { Drawops, Ellipse, GraphvizJson, NodeOrSubgraph, Polygon, Pos, Text } from "./graphviz-json";
 import { defaultEdgeProperty, ElementProperty, Graph, Node } from "../../model/graph";
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
