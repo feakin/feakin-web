@@ -4,9 +4,9 @@ import { Group, Line, Text } from "react-konva";
 import { Drawable } from "roughjs/bin/core";
 import { Context } from "konva/lib/Context";
 
-import { RenderOptions } from "../type";
+import { RenderOptions } from "../../type";
 
-function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
+function FkEdgeShape(props: { edge: Edge, options: RenderOptions }) {
   const { points, label, controlPoints } = props.edge
   let flatPoints = flattenPoints(props.edge.points);
 
@@ -44,4 +44,4 @@ function EdgeShape(props: { edge: Edge, options: RenderOptions }) {
   </Group>
 }
 
-export default EdgeShape;
+export default FkEdgeShape;

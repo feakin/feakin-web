@@ -8,9 +8,9 @@ import {
   RectangleShape,
   TriangleShape
 } from "@feakin/exporter";
-import FkRect from "./shapes/FkRect";
-import FkPolygonShape from "./shapes/FkPolygonShape";
-import FkEllipseShape from "./shapes/FkEllipseShape";
+import FkRect from "./node/FkRect";
+import FkPolygonShape from "./node/FkPolygonShape";
+import FkEllipseShape from "./node/FkEllipseShape";
 import { RenderOptions } from "../type";
 
 function NodeRender(node: Node, prop?: ElementProperty, options: RenderOptions = {}) {

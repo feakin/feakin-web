@@ -3,12 +3,12 @@ import { Layer, Rect, Stage, Transformer, } from 'react-konva';
 import Konva from 'konva';
 import { Converter, Edge, Graph, Node, SupportedFileType } from "@feakin/exporter";
 
-import { FK_RECT_NAME } from './shapes/FkRect';
+import { FK_RECT_NAME } from './node/FkRect';
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
-import EdgeShape from "./EdgeShape";
 import { CodeProp, RenderOptions } from "../type";
 import init, { FklParser } from "@feakin/fkl-wasm-web";
+import FkEdgeShape from './edge/FkEdgeShape';
 
 async function initFklWasm() {
   await init();
@@ -280,7 +280,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
       <Layer ref={ layerRef }>
         { graph.nodes && graph.nodes.map((node: Node) => NodeRender(node, undefined, props.options)) }
         { graph.edges && graph.edges.map((edge: Edge) => {
-          return <EdgeShape key={ edge.id } edge={ edge } options={ props.options }/>;
+          return <FkEdgeShape key={ edge.id } edge={ edge } options={ props.options }/>;
         })
         }
 

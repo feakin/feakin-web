@@ -5,11 +5,11 @@ import { WebSocketSubject } from "rxjs/webSocket";
 import { editor, Selection } from "monaco-editor";
 import { Buffer } from "buffer";
 
-import { addDotLangSupport } from "./editor/dot-lang";
-import { CodeProp } from "../type";
-import { initBasicWasm } from "./editor/subscribe-wrapper";
+import { addDotLangSupport } from "./dot-lang";
+import { CodeProp } from "../../type";
+import { initBasicWasm } from "./subscribe-wrapper";
 import { Doc } from "@feakin/diamond-types-web";
-import { addFklLangSupport } from "./editor/fkl-lang";
+import { addFklLangSupport } from "./fkl-lang";
 
 export interface FkUpstream {
   version: string;

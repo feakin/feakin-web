@@ -13,7 +13,7 @@ import { CodeProp, RenderOptions, SupportedCodeLang } from "./type";
 import { HandDrawing } from "./graph/drawn-style/hand-drawing";
 import { NavBar } from "./layout/nav-bar";
 import { SupportedLayout } from "@feakin/exporter/src/layout/layout-engine";
-import FkMonacoEditor from "./components/FkMonacoEditor";
+import FkMonacoEditor from "./components/editor/FkMonacoEditor";
 import { webSocket } from "rxjs/webSocket";
 import { randomId } from "./components/editor/subscribe-wrapper";
 
