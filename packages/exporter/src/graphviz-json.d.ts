@@ -75,6 +75,8 @@ export interface NodeOrSubgraph {
   additionalProperties?: string
   pos?: Pos
 
+  style?: string
+
   [k: string]: unknown
 }
 

@@ -26,7 +26,7 @@ function NodeRender(node: Node, prop?: ElementProperty, options: RenderOptions =
         const triangle = new TriangleShape(node.x, node.y, node.width, node.height);
         return Polygon(node, triangle);
         case 'polygon':
-      const polygon = new PolygonShape(node.x, node.y, node.width, node.height, node.data?.points);
+      const polygon = new PolygonShape(node.x, node.y, node.width, node.height, node.data?.points, node.data?.labelPosition);
         return Polygon(node, polygon);
       default:
         return Rectangle(node);

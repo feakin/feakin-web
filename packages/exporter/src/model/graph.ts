@@ -50,7 +50,7 @@ export interface EdgeProperty extends ElementProperty {
 export const defaultEdgeProperty: EdgeProperty = {
   color: "black",
   fill: {
-    color: "#000000"
+    color: "#ffffff"
   },
   stroke: {
     color: "#000000",
@@ -86,7 +86,7 @@ export interface NodeData {
   // for custom shape
   points?: Point[];
   // for label
-  center?: Point;
+  labelPosition?: Point;
 
   [key: string]: any;
 }

@@ -1,7 +1,7 @@
 import { graphvizSync } from "@hpcc-js/wasm";
 
-import { Drawops, GraphvizJson, Polygon, Pos } from "../../graphviz-json";
-import { defaultEdgeProperty, Graph, Node } from "../../model/graph";
+import { Drawops, GraphvizJson, NodeOrSubgraph, Polygon, Pos, Text } from "../../graphviz-json";
+import { defaultEdgeProperty, ElementProperty, Graph, Node } from "../../model/graph";
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
 import { ShapeType } from "../../model/node/base/shape-type";
@@ -50,6 +50,62 @@ function pointsFrom(_draw_: Drawops | undefined): Point[] {
   }
 }
 
+function labelFromDraw(_draw_: Drawops | undefined) {
+  const text = "";
+  if (_draw_ === undefined) {
+    return {
+      text: text,
+      position: {x: 0, y: 0}
+    };
+  }
+
+  const pointOp = _draw_.filter(op => (op.op === "T"));
+  if (pointOp.length <= 0) {
+    return {
+      text: text,
+      position: {x: 0, y: 0}
+    };
+  }
+  const textNode = pointOp[0]! as Text;
+  const pointOpElement = textNode.pt;
+
+  const offset = textNode.width / 2;
+
+  return {
+    text: textNode.text,
+    position: {x: pointOpElement[0] - offset, y: pointOpElement[1]}
+  };
+}
+
+function propFromObj(obj: NodeOrSubgraph): ElementProperty {
+  const props = Object.assign({}, defaultEdgeProperty);
+  let filled = false;
+  if (obj['style']) {
+    filled = (<string>obj.style).includes("filled")
+  }
+
+  if (filled) {
+    obj._draw_?.forEach((op) => {
+      switch (op.op) {
+        case "c":
+          props.font = {
+            fontColor: <string>op.color,
+          };
+          break;
+        case "C":
+          props.fill = {
+            color: <string>op.color,
+          };
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  return props;
+}
+
 export function GraphvizToGim(graphviz: GraphvizJson): Graph {
   const graph: Graph = {
     nodes: [],
@@ -60,14 +116,15 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
   const nodeMap: Map<string, Node> = new Map();
 
   if (graphviz.objects) {
-    graphviz.objects.forEach((obj) => {
+    graphviz.objects.forEach((obj: NodeOrSubgraph) => {
       const loc = parseGraphvizPos(obj.pos)[0];
       const width = parseFloat(<string>obj['width']);
       const height = parseFloat(<string>obj['height']);
 
+      const labelInfo = labelFromDraw(obj._ldraw_);
       const node: Node = {
         id: obj._gvid.toString(),
-        label: obj.name,
+        label: labelInfo.text,
         x: loc.x,
         y: loc.y,
         width: width,
@@ -76,7 +133,9 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
         data: {
           shape: ShapeType.Polygon,
           points: pointsFrom(obj._draw_),
-        }
+          labelPosition: labelInfo.position,
+        },
+        props: propFromObj(obj),
       };
 
       graph.nodes.push(node);
