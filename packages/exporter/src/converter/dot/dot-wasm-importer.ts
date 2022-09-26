@@ -1,6 +1,6 @@
 import { graphvizSync } from "@hpcc-js/wasm";
 
-import { Drawops, GraphvizJson, NodeOrSubgraph, Polygon, Pos, Text } from "../../graphviz-json";
+import { Drawops, Ellipse, GraphvizJson, NodeOrSubgraph, Polygon, Pos, Text } from "../../graphviz-json";
 import { defaultEdgeProperty, ElementProperty, Graph, Node } from "../../model/graph";
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
@@ -35,19 +35,38 @@ export function parseGraphvizPos(pos_str: Pos | undefined): Point[] {
   });
 }
 
+function rectToPoints(rect: [number, number, number, number]) : Point[] {
+  const [centerX, centerY, width, height] = rect;
+  const x = centerX - width;
+  const y = centerY - height;
+
+  return [
+    {x: x, y: y},
+    {x: x + width * 2, y: y},
+    {x: x + width * 2, y: y + height * 2},
+    {x: x, y: y + height * 2},
+  ];
+}
+
 function pointsFrom(_draw_: Drawops | undefined): Point[] {
   if (_draw_ === undefined) {
     return [];
   }
-  const pointOp = _draw_.filter(op => (op.op === "P" || op.op === "p"));
-  if (pointOp.length <= 0) {
-    return [];
-  } else {
-    const pointOpElement = pointOp[0]!;
-    return (pointOpElement as Polygon).points.map((point: any[]) => {
-      return {x: point[0], y: point[1]};
-    });
+
+  for (let element of _draw_) {
+    if (element.op === "P" || element.op === "p") {
+      const polygon = element as Polygon;
+
+      return polygon.points.map((point: any[]) => {
+        return {x: point[0], y: point[1]};
+      });
+    } else if (element.op === "e") {
+      const polyline = element as Ellipse;
+      return rectToPoints(polyline.rect);
+    }
   }
+
+  return [];
 }
 
 function labelFromDraw(_draw_: Drawops | undefined) {
@@ -122,6 +141,8 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
       const height = parseFloat(<string>obj['height']);
 
       const labelInfo = labelFromDraw(obj._ldraw_);
+      console.log(labelInfo);
+
       const node: Node = {
         id: obj._gvid.toString(),
         label: labelInfo.text,

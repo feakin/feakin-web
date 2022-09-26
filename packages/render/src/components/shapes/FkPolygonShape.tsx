@@ -10,7 +10,8 @@ interface FkPolygonShapeProps {
 
 function FkPolygonShape(props: FkPolygonShapeProps) {
   const [isDragging, setIsDragging] = useState(false);
-  const [labelPosition] = useState(props.shape.labelPosition());
+  const labelPosition = props.shape.labelPosition();
+
   const [position, setPosition] = useState({
     x: props.shape.x,
     y: props.shape.y

@@ -22,7 +22,10 @@ export class PolygonShape extends Shape {
   }
 
   override labelPosition() {
-    return this._labelPosition ?? this.center();
+    if (this._labelPosition != null) {
+      return this._labelPosition;
+    }
+    return this.center();
   }
 
   override center(): Point {

@@ -1,5 +1,5 @@
 import { graphvizSync } from "@hpcc-js/wasm";
-import { GraphvizToGim, parseGraphvizPos } from "./dot-wasm-importer";
+import { DotWasmImporter, GraphvizToGim, parseGraphvizPos } from "./dot-wasm-importer";
 import { DotImporter } from "./dot-importer";
 import { Graph } from "../../model/graph";
 
@@ -12,8 +12,25 @@ describe('Dot Wasm', () => {
     expect(parseGraphvizPos("s,27,36.104 27,71.697")).toEqual([{x: 27, y: 36.104}, {x: 27, y: 71.697}]);
   });
 
-  it('compare items', () => {
-    const importer = new DotImporter(`digraph {
+  it('compare items', async () => {
+    const source = `digraph {
+  a -> b
+}`;
+    const importer = new DotWasmImporter(source);
+
+    const output = await graphvizSync().then((graph) => {
+      return graph.layout(source, "json")
+    });
+
+    console.log(output);
+
+    const graph: Graph = await importer.parsePromise();
+
+    console.log(JSON.stringify(graph));
+  });
+
+  it('normal importer', () => {
+    const importer = new DotWasmImporter(`digraph {
   a -> b
 }`);
     const graph: Graph = importer.parse();
