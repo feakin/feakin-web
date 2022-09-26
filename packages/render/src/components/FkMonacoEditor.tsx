@@ -9,6 +9,7 @@ import { addDotLangSupport } from "./editor/dot-lang";
 import { CodeProp } from "../type";
 import { initBasicWasm } from "./editor/subscribe-wrapper";
 import { Doc } from "@feakin/diamond-types-web";
+import { addFklLangSupport } from "./editor/fkl-lang";
 
 export interface FkUpstream {
   version: string;
@@ -215,6 +216,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
 
   const editorDidMount = useCallback((editor: any, monaco: any) => {
     addDotLangSupport(monaco);
+    addFklLangSupport(monaco);
     editor.layout();
     editor.focus();
 
