@@ -6,16 +6,28 @@ import { defaultEdgeProperty, ElementProperty, Graph, Node } from "../../model/g
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
 import { ShapeType } from "../../model/node/base/shape-type";
+import * as fs from "fs";
 
 export class DotWasmImporter extends Importer {
   override isPromise = true;
 
   override async parsePromise(): Promise<Graph> {
-    const output = await graphvizSync().then(async (graph) => {
+    let output = await graphvizSync().then(async (graph) => {
       return graph.layout(this.content, "json");
     });
 
-    return this.graphvizToGim(JSON.parse(output));
+    try {
+      fs.writeFileSync("output.json", output);
+      output = JSON.parse(output.trim());
+    } catch (e) {
+      console.error(e);
+      return {
+        nodes: [],
+        edges: [],
+      } as Graph;
+    }
+
+    return this.graphvizToGim(output as unknown as GraphvizJson);
   }
 
   static parseGraphvizPos(pos_str: Pos | undefined): Point[] {

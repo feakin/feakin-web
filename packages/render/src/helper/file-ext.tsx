@@ -32,7 +32,7 @@ export function extToCodeType(ext: string): {
       }
     case "fkl":
       return {
-        sourceType: SupportedFileType.DRAWIO,
+        sourceType: SupportedFileType.Feakin,
         lang: SupportedCodeLang.fkl
       }
     default:

@@ -1,4 +1,3 @@
-import { graphvizSync } from "@hpcc-js/wasm";
 import { DotWasmImporter } from "./dot-wasm-importer";
 import { Graph } from "../../model/graph";
 
@@ -62,6 +61,36 @@ describe('Dot Wasm', () => {
 
     // node after subgraph
     expect(output.nodes[4].data!.shape).toEqual("ellipse");
+  });
+
+  it('error handling ', async function () {
+    const source = `digraph TicketBooking {
+  component=true;layout=fdp;
+  node [shape=box style=filled];
+  cluster_reservation -> cluster_cinema;
+  cluster_reservation -> cluster_movie;
+  cluster_reservation -> cluster_user;
+
+  subgraph cluster_cinema {
+    label="Cinema(Context)";
+  }
+
+  subgraph cluster_movie {
+    label="Movie(Context)";
+  }
+
+  subgraph cluster_reservation {
+    label="Reservation(Context)";
+  }
+
+  subgraph cluster_user {
+    label="User(Context)";
+  }
+}
+`;
+    const importer = new DotWasmImporter(source);
+    const output = await importer.parsePromise();
+    expect(output.nodes.length).toEqual(0);
   });
 
   it('sample 2', async () => {
