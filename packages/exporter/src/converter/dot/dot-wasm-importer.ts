@@ -6,10 +6,10 @@ import { defaultEdgeProperty, ElementProperty, Graph, Node } from "../../model/g
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
 import { ShapeType } from "../../model/node/base/shape-type";
-import * as fs from "fs";
 
 export class DotWasmImporter extends Importer {
   override isPromise = true;
+  trailingCommaRegex = /,(?!\s*?[{["'\w])/g;
 
   override async parsePromise(): Promise<Graph> {
     let output = await graphvizSync().then(async (graph) => {
@@ -17,8 +17,7 @@ export class DotWasmImporter extends Importer {
     });
 
     try {
-      fs.writeFileSync("output.json", output);
-      output = JSON.parse(output.trim());
+      output = JSON.parse(output.replace(this.trailingCommaRegex, ''));
     } catch (e) {
       console.error(e);
       return {

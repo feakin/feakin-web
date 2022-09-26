@@ -4,6 +4,10 @@ ContextMap TicketBooking {
   Reservation -> User;
 }
 
+Context Reservation {
+  Aggregate Reservation;
+}
+
 Aggregate Reservation {
   Entity Ticket, Reservation;
 }
@@ -26,6 +30,10 @@ Entity Reservation  {
 
 Entity Ticket  {}
 
+Context Cinema {
+  Aggregate Cinema;
+}
+
 Aggregate Cinema {
   Entity Cinema, ScreeningRoom, Seat;
 }
@@ -34,6 +42,10 @@ Entity Cinema { }
 Entity ScreeningRoom { }
 Entity Seat { }
 
+Context Movie {
+  Aggregate Movie;
+}
+
 Aggregate Movie {
   Entity Movie, Actor, Publisher;
 }
@@ -41,6 +53,10 @@ Aggregate Movie {
 Entity Movie { }
 Entity Actor { }
 Entity Publisher { }
+
+Context User {
+  Aggregate User;
+}
 
 Aggregate User {
   Entity User;
@@ -57,11 +73,13 @@ Entity User {
   }
 }
 
-ValueObject Payment {
+Entity Payment {
   Struct {
     id: UUID;
-    payment_type: PaymentType;
-    description: String;
+    amount: BigDecimal;
+    currency: Currency;
+    status: PaymentStatus;
+    createdAt: LocalDateTime;
   }
 }
 
