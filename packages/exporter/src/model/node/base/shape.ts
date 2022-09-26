@@ -28,6 +28,7 @@ export class Shape {
   x: number;
   y: number;
   type: ShapeType = ShapeType.None;
+
   private _isRounded = false;
   get isRounded(): boolean {
     return this._isRounded;
@@ -57,6 +58,13 @@ export class Shape {
    */
   scale(scale: number) {
     //
+  }
+
+  labelPosition() {
+    return {
+      x: this.x,
+      y: this.y
+    }
   }
 
   /**

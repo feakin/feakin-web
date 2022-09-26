@@ -82,7 +82,11 @@ export interface NodeData {
   children?: string[];
   curved?: boolean;
   shape?: ShapeType;
+
+  // for custom shape
   points?: Point[];
+  // for label
+  center?: Point;
 
   [key: string]: any;
 }

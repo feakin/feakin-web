@@ -7,16 +7,22 @@ export class PolygonShape extends Shape {
   width: number;
   height: number;
   _points: Point[];
+  _labelPosition: Point | undefined;
 
-  constructor(x = 0, y = 0, width = 0, height = 0, points?: Point[]) {
+  constructor(x = 0, y = 0, width = 0, height = 0, points?: Point[], labelPosition?: Point) {
     super(x, y);
     this.width = width;
     this.height = height;
     this._points = points ?? [];
+    this._labelPosition = labelPosition;
   }
 
   override points(): Point[] {
     return this._points;
+  }
+
+  override labelPosition() {
+    return this._labelPosition ?? this.center();
   }
 
   override center(): Point {
