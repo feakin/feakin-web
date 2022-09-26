@@ -5,7 +5,8 @@ import { SupportedLayout } from "@feakin/exporter/src/layout/layout-engine";
 export enum SupportedCodeLang {
   dot = "dot",
   xml = "xml",
-  json = "json"
+  json = "json",
+  fkl = "fkl"
 }
 
 export interface CodeProp {

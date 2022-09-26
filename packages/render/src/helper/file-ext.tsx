@@ -30,6 +30,11 @@ export function extToCodeType(ext: string): {
         sourceType: SupportedFileType.DRAWIO,
         lang: SupportedCodeLang.xml
       }
+    case "fkl":
+      return {
+        sourceType: SupportedFileType.DRAWIO,
+        lang: SupportedCodeLang.fkl
+      }
     default:
       return null;
   }

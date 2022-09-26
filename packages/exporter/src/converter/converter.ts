@@ -16,6 +16,7 @@ export enum SupportedFileType {
   DRAWIO = "drawio",
   MERMAID = "mermaid",
   GRAPHVIZ = "graphviz",
+  Feakin = "feakin",
 }
 
 export enum SupportedTarget {

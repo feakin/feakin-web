@@ -7,6 +7,7 @@ import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
 import { CodeProp, RenderOptions } from "../type";
+import { FklParser } from "@feakin/fkl-wasm-web";
 
 function Render(props: { code: CodeProp, history: ChangeHistory, options: RenderOptions }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -240,6 +241,18 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
           Converter.fromContent(props.code.content, props.code.sourceType).then((data) => {
             setGraph(data.graph);
           });
+          break;
+        case SupportedFileType.Feakin:
+          try {
+            let parser = new FklParser(props.code.content);
+            let output = parser.to_dot();
+
+            Converter.fromContent(output, SupportedFileType.GRAPHVIZ).then((data) => {
+              setGraph(data.graph);
+            });
+          } catch (e) {
+            console.error(e);
+          }
           break;
         default:
           throw new Error(`Unsupported source type: ${ props.code.sourceType }`);
