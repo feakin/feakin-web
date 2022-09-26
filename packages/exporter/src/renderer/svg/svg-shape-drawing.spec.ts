@@ -34,9 +34,9 @@ describe('SvgShapeDrawing', () => {
 
   it('circle', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
-    drawing.drawEllipse(new EllipseShape(0, 0, 100));
+    drawing.drawEllipse(new EllipseShape(0, 0, 100, 100));
 
-    expect(svg.innerHTML).toBe('<circle cx="0" cy="0" r="100" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="#000000"></circle>');
+    expect(svg.innerHTML).toBe('<circle cx="0" cy="0" r="2" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="#000000"></circle>');
   });
 
   it('path', () => {

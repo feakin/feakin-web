@@ -90,7 +90,7 @@ describe('Dot Wasm', () => {
 `;
     const importer = new DotWasmImporter(source);
     const output = await importer.parsePromise();
-    expect(output.nodes.length).toEqual(0);
+    expect(output.nodes.length).toEqual(4);
   });
 
   it('sample 2', async () => {
