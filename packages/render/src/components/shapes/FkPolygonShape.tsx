@@ -10,7 +10,7 @@ interface FkPolygonShapeProps {
 
 function FkPolygonShape(props: FkPolygonShapeProps) {
   const [isDragging, setIsDragging] = useState(false);
-  const [labelPosition] = useState(props.shape.center());
+  const [labelPosition] = useState(props.shape.labelPosition());
   const [position, setPosition] = useState({
     x: props.shape.x,
     y: props.shape.y
@@ -20,8 +20,8 @@ function FkPolygonShape(props: FkPolygonShapeProps) {
   return (
     <React.Fragment>
       <Line
-        x={ props.shape.x }
-        y={ props.shape.y }
+        x={ 0 }
+        y={ 0 }
         points={ flattenPoints(props.shape.points()) }
         draggable={ props.draggable || true }
         fill={ props.node.props?.fill?.color || '#fff' }

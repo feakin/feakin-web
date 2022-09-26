@@ -39,7 +39,7 @@ function pointsFrom(_draw_: Drawops | undefined): Point[] {
   if (_draw_ === undefined) {
     return [];
   }
-  const pointOp = _draw_.filter(op => op.op === "P");
+  const pointOp = _draw_.filter(op => (op.op === "P" || op.op === "p"));
   if (pointOp.length <= 0) {
     return [];
   } else {
@@ -62,7 +62,7 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
   if (graphviz.objects) {
     graphviz.objects.forEach((obj) => {
       const loc = parseGraphvizPos(obj.pos)[0];
-      const width = parseFloat( <string>obj['width']);
+      const width = parseFloat(<string>obj['width']);
       const height = parseFloat(<string>obj['height']);
 
       const node: Node = {
