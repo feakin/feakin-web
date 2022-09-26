@@ -20,6 +20,29 @@ describe('Dot Wasm', () => {
     console.log(JSON.stringify(graph));
   });
 
+
+  it('sample', async () => {
+    const source = `digraph G {
+  compound=true;
+  subgraph cluster0 {
+    a [shape="triangle", fillcolor=red, style=filled];
+    b [shape="diamond"];
+    a -> b;
+    c -> d;
+  }
+  subgraph cluster1 {
+    e -> g;
+    e -> f;
+  }
+}`;
+
+    const output = await graphvizSync().then((graph) => {
+      return graph.layout(source, "json")
+    });
+
+    console.log(output);
+  });
+
   it('edge with', async () => {
     const source = `digraph {
   node [shape=box style=filled];

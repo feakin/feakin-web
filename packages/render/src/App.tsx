@@ -35,6 +35,7 @@ export const App = () => {
     sourceType: SupportedFileType.GRAPHVIZ,
     content: `digraph G {
   compound=true;
+  node [shape=box style=filled];
   subgraph cluster0 {
     a [shape="triangle", fillcolor=red, style=filled];
     b [shape="diamond"];

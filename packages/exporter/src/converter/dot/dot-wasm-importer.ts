@@ -14,7 +14,8 @@ export class DotWasmImporter extends Importer {
       return graph.layout(this.content, "json");
     });
 
-    return GraphvizToGim(JSON.parse(output));
+    const model = GraphvizToGim(JSON.parse(output));
+    return model;
   }
 }
 
