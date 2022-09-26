@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Layer, Rect, Stage, Transformer, } from 'react-konva';
+import init, { FklParser } from "@feakin/fkl-wasm-web";
 import Konva from 'konva';
+
 import { FK_RECT_NAME } from './shapes/FkRect';
 import { Converter, Edge, Graph, Node, SupportedFileType } from "@feakin/exporter";
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
 import { CodeProp, RenderOptions } from "../type";
-import init, { FklParser } from "@feakin/fkl-wasm-web";
 
 async function initFklWasm() {
   await init();
@@ -152,13 +153,6 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
   // todo: add connections for edges
   // https://javascript.plainenglish.io/creating-connections-between-objects-with-konva-react-34eebb7c50a
   const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
-    // if(process.env.NODE_ENV === 'development.md') {
-    //   const state = stageRef.current?.getStage().getPointerPosition();
-    //   if (state != null) {
-    //     const text = `Cursor position is: ${state.x}, ${ state.y }`;
-    //     console.log(text);
-    //   }
-    // }
     // no drawing - skipping
     if (!isDrawing.current) {
       return;
