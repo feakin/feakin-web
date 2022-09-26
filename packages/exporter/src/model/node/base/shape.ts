@@ -68,7 +68,7 @@ export class Shape {
   }
 
   /**
-   * the center potint of the shape
+   * the center point of the shape
    */
   center(): Point {
     return {

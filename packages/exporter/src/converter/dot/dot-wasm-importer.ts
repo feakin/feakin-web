@@ -1,8 +1,10 @@
-import { GraphvizJson, Pos } from "../../graphviz-json";
+import { graphvizSync } from "@hpcc-js/wasm";
+
+import { Drawops, GraphvizJson, Polygon, Pos } from "../../graphviz-json";
 import { defaultEdgeProperty, Graph, Node } from "../../model/graph";
 import { Importer } from "../importer";
 import { Point } from "../../model/geometry/point";
-import { graphvizSync } from "@hpcc-js/wasm";
+import { ShapeType } from "../../model/node/base/shape-type";
 
 export class DotWasmImporter extends Importer {
   override isPromise = true;
@@ -32,6 +34,21 @@ export function parseGraphvizPos(pos_str: Pos | undefined): Point[] {
   });
 }
 
+function pointsFrom(_draw_: Drawops | undefined): Point[] {
+  if (_draw_ === undefined) {
+    return [];
+  }
+  const pointOp = _draw_.filter(op => op.op === "P");
+  if (pointOp.length <= 0) {
+    return [];
+  } else {
+    const pointOpElement = pointOp[0]!;
+    return (pointOpElement as Polygon).points.map((point: any[]) => {
+      return {x: point[0], y: point[1]};
+    });
+  }
+}
+
 export function GraphvizToGim(graphviz: GraphvizJson): Graph {
   const graph: Graph = {
     nodes: [],
@@ -52,9 +69,13 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
         label: obj.name,
         x: loc.x,
         y: loc.y,
-        width: 100 * width,
-        height: 60 * height,
+        width: width,
+        height: height,
         //  todo: change to polygon?
+        data: {
+          shape: ShapeType.Polygon,
+          points: pointsFrom(obj._draw_),
+        }
       };
 
       graph.nodes.push(node);

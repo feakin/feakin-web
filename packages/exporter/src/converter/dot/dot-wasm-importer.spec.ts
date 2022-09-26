@@ -32,7 +32,7 @@ describe('Dot Wasm', () => {
     });
 
     const structure = JSON.parse(output);
-    console.log(structure);
+
     console.log(JSON.stringify(GraphvizToGim(structure)));
   });
 
