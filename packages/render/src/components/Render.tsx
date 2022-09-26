@@ -7,7 +7,12 @@ import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
 import { CodeProp, RenderOptions } from "../type";
-import { FklParser } from "@feakin/fkl-wasm-web";
+import init, { FklParser } from "@feakin/fkl-wasm-web";
+
+async function initFklWasm() {
+  await init();
+  return FklParser;
+}
 
 function Render(props: { code: CodeProp, history: ChangeHistory, options: RenderOptions }) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -19,6 +24,10 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
   const [scale, setScale] = useState({
     x: 1,
     y: 1,
+  });
+
+  initFklWasm().then((fklParser) => {
+    //
   });
 
   const [graph, setGraph] = React.useState<Graph>(
@@ -34,16 +43,16 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
 
       let minScale = Math.min(xScale, yScale);
       if (minScale >= 1) {
-        setScale({ x: 1, y: 1 });
+        setScale({x: 1, y: 1});
       } else {
-        setScale({ x: minScale, y: minScale });
+        setScale({x: minScale, y: minScale});
       }
     }
   }, [graph]);
 
   useEffect(() => {
     if (stageRef.current?.content.parentElement) {
-      const { width, height } = stageRef.current.content.parentElement.getBoundingClientRect();
+      const {width, height} = stageRef.current.content.parentElement.getBoundingClientRect();
       stageRef.current?.width(width)
       stageRef.current?.height(height)
     }

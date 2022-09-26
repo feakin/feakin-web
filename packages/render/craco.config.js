@@ -2,7 +2,7 @@ const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-// const CopyPlugin = require("copy-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 // const webpack = require('webpack');
 
 module.exports = {
@@ -80,6 +80,16 @@ module.exports = {
       ]
 
       return config;
+    },
+    plugins: {
+      add: [
+        new CopyPlugin({
+          patterns: [{
+            from: "../../node_modules/@hpcc-js/wasm/dist/graphvizlib.wasm",
+            to: "static/js/"
+          }],
+        }),
+      ],
     },
   },
   jest: {
