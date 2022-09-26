@@ -1,6 +1,6 @@
-import { ElementProperty, Graph } from "../model/graph";
+import { Graph } from "../model/graph";
 
-export class Importer implements StringParser {
+export class Importer {
   content: string;
   isPromise = false;
 
@@ -12,19 +12,12 @@ export class Importer implements StringParser {
     return {} as Graph;
   }
 
+  /**
+   * support for wasm, like Graphviz
+    */
   async parsePromise(): Promise<Graph> {
     return new Promise<Graph>((resolve, reject) => {
       resolve({} as Graph);
     });
   }
-
-  // convert element properties
-  transProp(source: any): ElementProperty {
-    return {} as ElementProperty;
-  }
-
-}
-
-export interface StringParser {
-  parse(): Graph;
 }

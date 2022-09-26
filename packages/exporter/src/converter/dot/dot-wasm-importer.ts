@@ -237,5 +237,4 @@ export class DotWasmImporter extends Importer {
 
     return graph;
   }
-
 }

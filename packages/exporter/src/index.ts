@@ -1,6 +1,7 @@
 export * from './converter/converter';
 export * from './converter/dot/dot-exporter';
 export * from './converter/dot/dot-importer';
+export * from './converter/dot/dot-wasm-importer';
 export * from "./converter/drawio/cell-state";
 export * from './converter/drawio/cell-state-style';
 export * from './converter/drawio/drawio-exporter';
@@ -27,7 +28,6 @@ export * from './converter/mermaid/mermaid-importer';
 export * from './enviroment/env';
 
 export * from './layout/dagre/dagre-layout';
-export * from "./layout/dagre/dagre-layout-converter";
 export * from "./layout/elk/elk-layout";
 export * from './layout/simple-network';
 

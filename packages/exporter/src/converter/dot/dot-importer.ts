@@ -20,6 +20,9 @@ import {LayoutOptions} from "../../model/layout/layout-options";
 
 type DotElement = (AttrStmt | EdgeStmt | NodeStmt | Subgraph | NodeId | DotGraph);
 
+/**
+ * @deprecated Use {@link DotWasmImporter} instead.
+ */
 export class DotImporter extends Importer {
   nodes: Map<(string | number), Node> = new Map();
   edges: Map<(string | number), Edge> = new Map();
