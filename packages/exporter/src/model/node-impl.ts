@@ -24,8 +24,8 @@ export class NodeImpl implements Node, DataExt<Node> {
         return ShapeType.Diamond;
       case 'hexagon':
         return ShapeType.Hexagon;
-      case 'circle':
-        return ShapeType.Circle;
+      case 'ellipse':
+        return ShapeType.Ellipse;
       case 'line':
         return ShapeType.Line;
       case 'polygon':
