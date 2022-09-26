@@ -17,27 +17,22 @@ describe('Dot Wasm', () => {
 }`;
     const importer = new DotWasmImporter(source);
 
-    const output = await graphvizSync().then((graph) => {
-      return graph.layout(source, "json")
-    });
-
-    console.log(output);
-
     const graph: Graph = await importer.parsePromise();
 
-    console.log(JSON.stringify(graph));
+    expect(graph.nodes.length).toEqual(2);
+    expect(graph.edges.length).toEqual(1);
   });
 
-  it('normal importer', () => {
+  it('width ellipse shape', async () => {
     const importer = new DotWasmImporter(`digraph {
   a -> b
 }`);
-    const graph: Graph = importer.parse();
-    console.log(JSON.stringify(graph));
+    const graph: Graph = await importer.parsePromise();
+    expect(graph.nodes[0].data!.shape).toEqual("ellipse");
+    expect(graph.nodes[1].data!.shape).toEqual("ellipse");
   });
 
-
-  it('sample', async () => {
+  it('subgraph', async () => {
     const source = `digraph G {
   compound=true;
   subgraph cluster0 {
@@ -52,11 +47,21 @@ describe('Dot Wasm', () => {
   }
 }`;
 
-    const output = await graphvizSync().then((graph) => {
-      return graph.layout(source, "json")
-    });
+    const importer = new DotWasmImporter(source);
+    const output: Graph = await importer.parsePromise();
 
-    console.log(output);
+    expect(output.nodes.length).toEqual(9);
+    expect(output.edges.length).toEqual(4);
+
+    let aNode = output.nodes[2];
+    expect(aNode.data!.shape).toEqual("polygon");
+    expect(aNode.label).toEqual("a");
+    expect(aNode.props!.fill!.color).toEqual("#ff0000");
+
+    expect(output.nodes[3].data!.shape).toEqual("polygon");
+
+    // node after subgraph
+    expect(output.nodes[4].data!.shape).toEqual("ellipse");
   });
 
   it('sample 2', async () => {
@@ -109,9 +114,9 @@ describe('Dot Wasm', () => {
   }
 }`;
 
-    const output = await graphvizSync().then((graph) => {
-      return graph.layout(source, "json", "fdp")
-    });
-    // console.log(output);
+    const importer = new DotWasmImporter(source);
+    const output: Graph = await importer.parsePromise();
+
+    expect(output.nodes.length).toEqual(17);
   });
 });
