@@ -1,15 +1,22 @@
 import React, { useRef } from "react";
 import { AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { Converter, formatXml } from "@feakin/exporter";
+import { Converter, DrawioEncode, formatXml } from "@feakin/exporter";
+
 import { fileExport } from "../actions/file-export";
 import { extToCodeType, getExtension } from "../helper/file-ext";
 import { FkTemplate } from "../templates/fk-template";
 import { templates } from "../templates/templates";
-import { CodeProp } from "../type";
-import DrawioEncode from "@feakin/exporter/src/converter/drawio/encode/drawio-encode";
+import { CodeProp, SupportedCodeLang } from "../type";
+import init, { FklParser } from "@feakin/fkl-wasm-web";
 
 const DOT_LANG = "dot";
+
+
+async function initFklWasm() {
+  await init();
+  return FklParser;
+}
 
 export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => void }) {
   const [fileEl, setFileEl] = React.useState<null | HTMLElement>(null);
@@ -20,6 +27,11 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
   const isOpenFileMenu = Boolean(fileEl);
   const isOpenExportMenu = Boolean(exportEl);
   const isOpenTemplateMenu = Boolean(templateEl);
+
+  initFklWasm().then((fklParser) => {
+    //
+  });
+
 
   const handleFieMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setFileEl(event.currentTarget);
@@ -47,11 +59,24 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
 
   const exportFile = (outputType: string) => {
     const isBrowser = true;
-    Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).then((converter) => {
-      const outputCode = converter.target(outputType);
-      fileExport(outputCode, outputType);
-      setExportEl(null);
-    });
+
+    switch (props.code.language) {
+      case SupportedCodeLang.fkl:
+        const fklParser = new FklParser(props.code.content);
+        const content = fklParser.to_dot();
+        Converter.fromContent(content, props.code.sourceType, isBrowser).then((converter) => {
+          const outputCode = converter.target(outputType);
+          fileExport(outputCode, outputType);
+          setExportEl(null);
+        });
+        break;
+      default:
+        Converter.fromContent(props.code.content, props.code.sourceType, isBrowser).then((converter) => {
+          const outputCode = converter.target(outputType);
+          fileExport(outputCode, outputType);
+          setExportEl(null);
+        });
+    }
   }
 
   const importFile = () => {
@@ -75,19 +100,29 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
       if (codeType != null) {
         file.text().then(text => {
           let newText = text;
-          if(codeType!.sourceType === "drawio") {
-            let decodeXml = DrawioEncode.decodeXml(text);
-            if(decodeXml) {
-              newText = formatXml(decodeXml);
-            } else {
-              newText = text;
-            }
+          let compiledText = text;
+
+          // pre-process for context
+          switch (codeType!.sourceType) {
+            case "drawio":
+              let decodeXml = DrawioEncode.decodeXml(text);
+              if (decodeXml) {
+                newText = formatXml(decodeXml);
+              } else {
+                newText = text;
+              }
+              break;
+            case "feakin":
+              let fklParser = new FklParser(text);
+              compiledText = fklParser.parse();
+              break;
           }
 
           props.setCode({
             language: codeType!.lang,
             sourceType: codeType!.sourceType,
-            content: newText
+            content: newText,
+            compiledContent: compiledText,
           });
         })
       } else {
@@ -139,7 +174,7 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
   }
 
   let templateMenus = <><Button
-    sx={ { my: 2, color: 'white', display: 'block' } }
+    sx={ {my: 2, color: 'white', display: 'block'} }
     aria-controls={ isOpenTemplateMenu ? 'template-menu' : undefined }
     aria-haspopup="true"
     aria-expanded={ isOpenTemplateMenu ? 'true' : undefined }
@@ -162,10 +197,10 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
 
   return <AppBar position="static">
     <Toolbar>
-      <Box sx={ { display: { xs: 'none', md: 'flex', flexGrow: 1 } } }>
+      <Box sx={ {display: {xs: 'none', md: 'flex', flexGrow: 1}} }>
         <Button
           id="basic-button"
-          sx={ { my: 2, color: 'white', display: 'block' } }
+          sx={ {my: 2, color: 'white', display: 'block'} }
           aria-controls={ isOpenFileMenu ? 'file-menu' : undefined }
           aria-haspopup="true"
           aria-expanded={ isOpenFileMenu ? 'true' : undefined }
@@ -176,7 +211,7 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
         { fileMenus }
         { templateMenus }
         <Button
-          sx={ { my: 2, color: 'white', display: 'block' } }
+          sx={ {my: 2, color: 'white', display: 'block'} }
           aria-controls={ isOpenFileMenu ? 'export-menu' : undefined }
           aria-haspopup="true"
           aria-expanded={ isOpenFileMenu ? 'true' : undefined }
@@ -186,7 +221,7 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
         </Button>
         { exportMenus }
       </Box>
-      <Box sx={ { display: { xs: 'none', md: 'flex' } } }>
+      <Box sx={ {display: {xs: 'none', md: 'flex'}} }>
         <IconButton onClick={ () => window.open("https://github.com/feakin/feakin") } size="large"
                     aria-label="GitHub" color="inherit">
           <GitHubIcon/>
@@ -194,6 +229,6 @@ export function NavBar(props: { code: CodeProp, setCode: (code: CodeProp) => voi
       </Box>
     </Toolbar>
 
-    <input type='file' id='file' ref={ inputFile } style={ { display: 'none' } } onChange={ onChangeFile }/>
+    <input type='file' id='file' ref={ inputFile } style={ {display: 'none'} } onChange={ onChangeFile }/>
   </AppBar>;
 }

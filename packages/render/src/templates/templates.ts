@@ -1,5 +1,6 @@
-import { FkTemplate } from "./fk-template";
 import { SupportedFileType } from "@feakin/exporter";
+
+import { FkTemplate } from "./fk-template";
 import { SupportedCodeLang } from "../type";
 
 export const templates: FkTemplate[] = [
@@ -9,6 +10,7 @@ export const templates: FkTemplate[] = [
     template: {
       sourceType: SupportedFileType.GRAPHVIZ,
       language: SupportedCodeLang.dot,
+      compiledContent: '',
       content: `digraph {
   "分析阶段" -> "分析方式";
   "编译前" -> ".java, .kotlin, .xml";
@@ -40,6 +42,7 @@ export const templates: FkTemplate[] = [
     template: {
       sourceType: SupportedFileType.GRAPHVIZ,
       language: SupportedCodeLang.dot,
+      compiledContent: '',
       content: `digraph {
   compound=true;
   node [ fontname="Handlee" ];
@@ -78,6 +81,7 @@ export const templates: FkTemplate[] = [
     template: {
       sourceType: SupportedFileType.Feakin,
       language: SupportedCodeLang.fkl,
+      compiledContent: '',
       content: `ContextMap TicketBooking {
   Reservation -> Cinema;
   Reservation -> Movie;

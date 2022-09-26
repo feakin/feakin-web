@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Layer, Rect, Stage, Transformer, } from 'react-konva';
-import init, { FklParser } from "@feakin/fkl-wasm-web";
 import Konva from 'konva';
+import { Converter, Edge, Graph, Node, SupportedFileType } from "@feakin/exporter";
 
 import { FK_RECT_NAME } from './shapes/FkRect';
-import { Converter, Edge, Graph, Node, SupportedFileType } from "@feakin/exporter";
 import { ChangeHistory } from "../repository/change-history";
 import NodeRender from "./NodeRender";
 import EdgeShape from "./EdgeShape";
 import { CodeProp, RenderOptions } from "../type";
+import init, { FklParser } from "@feakin/fkl-wasm-web";
 
 async function initFklWasm() {
   await init();
@@ -161,7 +161,6 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
     const stage: Konva.Stage = e.target.getStage()!!;
     const point = stage.getPointerPosition()!!;
     let lastLine = lines[lines.length - 1];
-    // add point
     lastLine = lastLine.concat([point.x, point.y]);
 
     // replace last
@@ -263,7 +262,7 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
     } catch (e) {
       console.info(e);
     }
-  }, [props.code, props.options]);
+  }, [props.code, props.options, props.code.compiledContent]);
 
   return (
     <Stage

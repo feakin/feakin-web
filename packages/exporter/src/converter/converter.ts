@@ -33,6 +33,7 @@ export class Converter {
   get graph(): Graph {
     return this._graph;
   }
+
   private readonly _graph: Graph;
 
   constructor(graph: Graph) {
@@ -81,16 +82,19 @@ export class Converter {
         break;
       case SupportedFileType.GRAPHVIZ:
         parser = new DotWasmImporter(content);
-        // parser = new DotImporter(content);
+        break;
+      case SupportedFileType.Feakin:
+        parser = new DotWasmImporter(content);
         break;
       default:
-        throw new Error("Unsupported file type");
+        throw new Error("Unsupported file type: " + fileExt);
     }
 
     return parser;
   }
 
   target(target: string): string {
+    console.log(target)
     let exporter: Exporter<any>;
     switch (target) {
       case SupportedTarget.EXCALIDRAW:

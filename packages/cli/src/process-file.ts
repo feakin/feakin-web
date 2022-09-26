@@ -14,7 +14,7 @@ export async function processFile(inputFile: string, outputFile: string) {
   const outExt = getExtension(outputFile);
   const inputContent = fs.readFileSync(inputFile, 'utf8');
 
-  await Converter.fromContent(inputContent, inExt).then((graph) => {
+  await Converter.fromContent(inputContent, inExt, false, props.code.content).then((graph) => {
     const output = graph.target(outExt);
 
     fs.writeFileSync(outputFile, output);

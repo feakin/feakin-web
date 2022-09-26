@@ -36,7 +36,7 @@ export const App = () => {
     content: `digraph TicketBooking {
   component=true;layout=fdp;
   node [shape=box style=filled];
-  cluster_reservation -> cluster_cinema [label="AntiCorruptionLayer",headlabel="D"];
+  cluster_reservation -> cluster_cinema [label="AntiCorruptionLayer", headlabel="D"];
   cluster_reservation -> cluster_movie;
   cluster_reservation -> cluster_user;
 

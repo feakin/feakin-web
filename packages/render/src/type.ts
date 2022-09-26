@@ -13,6 +13,7 @@ export interface CodeProp {
   language: SupportedCodeLang;
   sourceType: SupportedFileType;
   content: string;
+  compiledContent: string;
 }
 
 export interface RenderOptions {
