@@ -1,15 +1,14 @@
 import { graphvizSync } from "@hpcc-js/wasm";
-import { DotWasmImporter, GraphvizToGim, parseGraphvizPos } from "./dot-wasm-importer";
-import { DotImporter } from "./dot-importer";
+import { DotWasmImporter } from "./dot-wasm-importer";
 import { Graph } from "../../model/graph";
 
 describe('Dot Wasm', () => {
   it('parse graphviz location', () => {
-    expect(parseGraphvizPos(undefined)).toEqual([{x: 0, y: 0}]);
-    expect(parseGraphvizPos("")).toEqual([{x: 0, y: 0}]);
-    expect(parseGraphvizPos("0,0")).toEqual([{x: 0, y: 0}]);
-    expect(parseGraphvizPos("e,27,36.104 27,71.697")).toEqual([{x: 27, y: 36.104}, {x: 27, y: 71.697}]);
-    expect(parseGraphvizPos("s,27,36.104 27,71.697")).toEqual([{x: 27, y: 36.104}, {x: 27, y: 71.697}]);
+    expect(DotWasmImporter.parseGraphvizPos(undefined)).toEqual([{x: 0, y: 0}]);
+    expect(DotWasmImporter.parseGraphvizPos("")).toEqual([{x: 0, y: 0}]);
+    expect(DotWasmImporter.parseGraphvizPos("0,0")).toEqual([{x: 0, y: 0}]);
+    expect(DotWasmImporter.parseGraphvizPos("e,27,36.104 27,71.697")).toEqual([{x: 27, y: 36.104}, {x: 27, y: 71.697}]);
+    expect(DotWasmImporter.parseGraphvizPos("s,27,36.104 27,71.697")).toEqual([{x: 27, y: 36.104}, {x: 27, y: 71.697}]);
   });
 
   it('compare items', async () => {
@@ -58,22 +57,6 @@ describe('Dot Wasm', () => {
     });
 
     console.log(output);
-  });
-
-  it('edge with', async () => {
-    const source = `digraph {
-  node [shape=box style=filled];
-  a -> b;
-}
-`;
-
-    const output = await graphvizSync().then((graph) => {
-      return graph.layout(source, "json")
-    });
-
-    const structure = JSON.parse(output);
-
-    console.log(JSON.stringify(GraphvizToGim(structure)));
   });
 
   it('sample 2', async () => {

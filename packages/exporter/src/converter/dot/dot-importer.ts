@@ -90,7 +90,7 @@ export class DotImporter extends Importer {
       })
     });
 
-    let config: LayoutOptions = {
+    const config: LayoutOptions = {
       direction: 'TB',
       node: {
         width: 100,
