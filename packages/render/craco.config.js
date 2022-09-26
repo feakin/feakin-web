@@ -2,33 +2,33 @@ const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
-const webpack = require('webpack');
+// const CopyPlugin = require("copy-webpack-plugin");
+// const webpack = require('webpack');
 
 module.exports = {
   webpack: {
     configure: (config) => {
-      const wasmExtensionRegExp = /\.wasm$/;
-      config.resolve.extensions.push('.wasm');
-      config.experiments = {
-        asyncWebAssembly: false,
-        lazyCompilation: true,
-        syncWebAssembly: true,
-        topLevelAwait: true,
-      };
-      config.resolve.fallback = {
-        buffer: require.resolve('buffer/')
-      }
-      config.module.rules.forEach((rule) => {
-        (rule.oneOf || []).forEach((oneOf) => {
-          if (oneOf.type === "asset/resource") {
-            oneOf.exclude.push(wasmExtensionRegExp);
-          }
-        });
-      });
-      config.plugins.push(new webpack.ProvidePlugin({
-        Buffer: ['buffer', 'Buffer'],
-      }));
+      // const wasmExtensionRegExp = /\.wasm$/;
+      // config.resolve.extensions.push('.wasm');
+      // config.experiments = {
+      //   asyncWebAssembly: false,
+      //   lazyCompilation: true,
+      //   syncWebAssembly: true,
+      //   topLevelAwait: true,
+      // };
+      // config.resolve.fallback = {
+      //   buffer: require.resolve('buffer/')
+      // }
+      // config.module.rules.forEach((rule) => {
+      //   (rule.oneOf || []).forEach((oneOf) => {
+      //     if (oneOf.type === "asset/resource") {
+      //       oneOf.exclude.push(wasmExtensionRegExp);
+      //     }
+      //   });
+      // });
+      // config.plugins.push(new webpack.ProvidePlugin({
+      //   Buffer: ['buffer', 'Buffer'],
+      // }));
 
 
       // Remove guard against importing modules outside of `src`.
@@ -80,16 +80,6 @@ module.exports = {
       ]
 
       return config;
-    },
-    plugins: {
-      add: [
-        new CopyPlugin({
-          patterns: [{
-            from: "../../node_modules/@hpcc-js/wasm/dist/graphvizlib.wasm",
-            to: "static/js/"
-          }],
-        }),
-      ],
     },
   },
   jest: {
