@@ -1,7 +1,7 @@
 import { Point } from "../../model/geometry/point";
 import { defaultEdgeProperty, ElementProperty } from "../../model/graph";
 import { NodeDrawing } from "../base/node-drawing";
-import { CircleShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../../model/node";
+import { EllipseShape, DiamondShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../../model/node";
 
 export class CanvasShapeDrawing implements NodeDrawing {
   private readonly _ctx: CanvasRenderingContext2D;
@@ -72,7 +72,7 @@ export class CanvasShapeDrawing implements NodeDrawing {
     return this;
   }
 
-  drawCircle(circle: CircleShape): this {
+  drawEllipse(circle: EllipseShape): this {
     this._ctx.beginPath();
     this._ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
     this._ctx.stroke();

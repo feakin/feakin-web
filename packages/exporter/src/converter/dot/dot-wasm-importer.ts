@@ -53,7 +53,7 @@ function pointsFrom(_draw_: Drawops | undefined): Point[] {
     return [];
   }
 
-  for (let element of _draw_) {
+  for (const element of _draw_) {
     if (element.op === "P" || element.op === "p") {
       const polygon = element as Polygon;
 
@@ -125,6 +125,36 @@ function propFromObj(obj: NodeOrSubgraph): ElementProperty {
   return props;
 }
 
+function shapeFromDraw(_draw_: Drawops | undefined) : ShapeType {
+  if (_draw_ === undefined) {
+    return ShapeType.Ellipse;
+  }
+
+  let shape = ShapeType.Polygon;
+  for (const element of _draw_) {
+    if (element.op === "e") {
+       shape = ShapeType.Ellipse;
+    }
+  }
+
+  return shape;
+}
+
+function shapePointsFrom(_draw_: Drawops | undefined) : number[] {
+  if (_draw_ === undefined) {
+    return [];
+  }
+
+  for (const element of _draw_) {
+    if (element.op === "e") {
+      const ellipse = element as Ellipse;
+      return ellipse.rect;
+    }
+  }
+
+  return [];
+}
+
 export function GraphvizToGim(graphviz: GraphvizJson): Graph {
   const graph: Graph = {
     nodes: [],
@@ -136,23 +166,28 @@ export function GraphvizToGim(graphviz: GraphvizJson): Graph {
 
   if (graphviz.objects) {
     graphviz.objects.forEach((obj: NodeOrSubgraph) => {
-      const loc = parseGraphvizPos(obj.pos)[0];
-      const width = parseFloat(<string>obj['width']);
-      const height = parseFloat(<string>obj['height']);
+      const location = parseGraphvizPos(obj.pos)[0];
+      let width = parseFloat(<string>obj['width']);
+      let height = parseFloat(<string>obj['height']);
 
       const labelInfo = labelFromDraw(obj._ldraw_);
-      console.log(labelInfo);
+      const shape: ShapeType = shapeFromDraw(obj._draw_);
+
+      const shapePoints = shapePointsFrom(obj._draw_);
+      if (shape == ShapeType.Ellipse) {
+        width = shapePoints[2];
+        height = shapePoints[3];
+      }
 
       const node: Node = {
         id: obj._gvid.toString(),
         label: labelInfo.text,
-        x: loc.x,
-        y: loc.y,
+        x: location.x,
+        y: location.y,
         width: width,
         height: height,
-        //  todo: change to polygon?
         data: {
-          shape: ShapeType.Polygon,
+          shape: shape,
           points: pointsFrom(obj._draw_),
           labelPosition: labelInfo.position,
         },

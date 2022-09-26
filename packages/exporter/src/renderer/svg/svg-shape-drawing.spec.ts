@@ -1,5 +1,5 @@
 import { SvgShapeDrawing } from "./svg-shape-drawing";
-import { CircleShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape, ImageShape } from "../../model/node";
+import { EllipseShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape, ImageShape } from "../../model/node";
 
 describe('SvgShapeDrawing', () => {
   let svg: SVGElement;
@@ -34,7 +34,7 @@ describe('SvgShapeDrawing', () => {
 
   it('circle', () => {
     const drawing = new SvgShapeDrawing(svg as SVGElement);
-    drawing.drawCircle(new CircleShape(0, 0, 100));
+    drawing.drawEllipse(new EllipseShape(0, 0, 100));
 
     expect(svg.innerHTML).toBe('<circle cx="0" cy="0" r="100" stroke="#000000" stroke-width="1" stroke-opacity="1" fill="#000000"></circle>');
   });

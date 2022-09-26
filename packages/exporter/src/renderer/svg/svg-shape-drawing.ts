@@ -1,7 +1,7 @@
 import { Point } from "../../model/geometry/point";
 import { defaultEdgeProperty, ElementProperty } from "../../model/graph";
 import { NodeDrawing } from "../base/node-drawing";
-import { CircleShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../../model/node";
+import { EllipseShape, HexagonShape, ImageShape, RectangleShape, TriangleShape } from "../../model/node";
 import { DiamondShape } from "../../model/node/diamond-shape";
 import { AbstractSvgRender } from "./abstract-svg-render";
 
@@ -95,7 +95,7 @@ export class SvgShapeDrawing implements NodeDrawing {
     return this;
   }
 
-  drawCircle(circle: CircleShape): this {
+  drawEllipse(circle: EllipseShape): this {
     const circleEl = this.createElement('circle');
     circleEl.setAttribute('cx', String(circle.x));
     circleEl.setAttribute('cy', String(circle.y));

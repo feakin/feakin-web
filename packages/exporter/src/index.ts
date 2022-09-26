@@ -43,7 +43,7 @@ export * from './model/geometry/point';
 export * from './model/graph';
 export * from './model/layout/layout-lifecycle';
 export * from "./model/node/base/shape-type";
-export * from './model/node/circle-shape';
+export * from './model/node/ellipse-shape';
 export * from './model/node/diamond-shape';
 export * from './model/node/hexagon-shape';
 export * from './model/node/image-shape';

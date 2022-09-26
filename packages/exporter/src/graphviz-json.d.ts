@@ -76,6 +76,7 @@ export interface NodeOrSubgraph {
   pos?: Pos
 
   style?: string
+  shape?: string
 
   [k: string]: unknown
 }

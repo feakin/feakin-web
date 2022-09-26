@@ -3,9 +3,9 @@
  */
 export enum ShapeType {
   None,
-  Circle = "circle",
   Line = "line",
   Rectangle = "rectangle",
+  Ellipse = "ellipse",
   Hexagon = "hexagon",
   Triangle = "triangle",
   Text = "text",

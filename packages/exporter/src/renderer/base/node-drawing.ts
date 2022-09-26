@@ -1,6 +1,6 @@
 import { ElementProperty } from "../../model/graph";
 import { Point } from "../../model/geometry/point";
-import { CircleShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape } from "../../model/node";
+import { EllipseShape, HexagonShape, RectangleShape, DiamondShape, TriangleShape } from "../../model/node";
 
 export interface NodeDrawing {
   property: ElementProperty;
@@ -16,7 +16,7 @@ export interface NodeDrawing {
 
   drawPath(point: Point[], offset: Point): this;
 
-  drawCircle(circle: CircleShape): this;
+  drawEllipse(ellipse: EllipseShape): this;
 
   drawHexagon(hexagon: HexagonShape): this;
 
