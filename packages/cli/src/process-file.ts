@@ -9,13 +9,14 @@ function getExtension(filename) {
   return ext[ext.length - 1];
 }
 
-export function processFile(inputFile: string, outputFile: string) {
+export async function processFile(inputFile: string, outputFile: string) {
   const inExt = getExtension(inputFile);
   const outExt = getExtension(outputFile);
   const inputContent = fs.readFileSync(inputFile, 'utf8');
 
-  const graph = Converter.fromContent(inputContent, inExt);
-  const output = graph.target(outExt);
+  await Converter.fromContent(inputContent, inExt).then((graph) => {
+    const output = graph.target(outExt);
 
-  fs.writeFileSync(outputFile, output);
+    fs.writeFileSync(outputFile, output);
+  });
 }

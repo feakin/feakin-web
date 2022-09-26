@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+
 const program = new Command();
 
 import { processFile } from "./process-file";
@@ -13,4 +14,4 @@ const options = program.opts();
 const inputFile = options['input'];
 const outputFile = options['output'];
 
-processFile(inputFile, outputFile)
+processFile(inputFile, outputFile).then(r => console.log('done'));
