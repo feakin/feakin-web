@@ -1,5 +1,6 @@
 import { graphvizSync } from "@hpcc-js/wasm";
 import { nanoid } from "nanoid";
+import  { parse } from 'json5'
 
 import { Drawops, Ellipse, GraphvizJson, NodeOrSubgraph, Polygon, Pos, Text } from "./graphviz-json";
 import { defaultEdgeProperty, ElementProperty, Graph, Node } from "../../model/graph";
@@ -17,7 +18,7 @@ export class DotWasmImporter extends Importer {
     });
 
     try {
-      output = JSON.parse(output.replace(this.trailingCommaRegex, ''));
+      output = parse(output.replace(this.trailingCommaRegex, ''));
     } catch (e) {
       console.error(e);
       return {
