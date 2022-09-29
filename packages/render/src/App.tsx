@@ -31,96 +31,56 @@ export const App = () => {
 
   // todo: add @{AppState} to store the code and history
   const [code, setCode] = React.useState({
-    language: SupportedCodeLang.fkl,
-    sourceType: SupportedFileType.Feakin,
-    content: `ContextMap TicketBooking {
-  Reservation -> Cinema;
-  Reservation -> Movie;
-  Reservation -> User;
-}
+    language: SupportedCodeLang.dot,
+    sourceType: SupportedFileType.GRAPHVIZ,
+    content: `digraph TicketBooking {
+  component=true;layout=fdp;
+  node [shape=box style=filled];
+  cluster_reservation -> cluster_cinema [label="AntiCorruptionLayer", headlabel="D"];
+  cluster_reservation -> cluster_movie;
+  cluster_reservation -> cluster_user;
 
-Context Reservation {
-  Aggregate Reservation;
-}
+  subgraph cluster_cinema {
+    label="Cinema(Context)";
 
-Aggregate Reservation {
-  Entity Ticket, Reservation;
-}
-
-Entity Reservation  {
-  Struct {
-    id: String;
-    token: UUID;
-    status: ReservationStatus = ReservationStatus.OPEN;
-    expiresAt: LocalDateTime;
-    createdAt: LocalDateTime;
-    screeningId: String;
-    screeningStartTime: LocalDateTime;
-    name: String;
-    surname: String;
-    tickets: Set<Ticket>;
-    totalPrice: BigDecimal;
+    subgraph cluster_aggregate_cinema {
+      label="Cinema(Aggregate)";
+      entity_Cinema [label="Cinema"];
+      entity_ScreeningRoom [label="ScreeningRoom"];
+      entity_Seat [label="Seat"];
+    }
   }
-}
 
-Entity Ticket  {}
+  subgraph cluster_movie {
+    label="Movie(Context)";
 
-Context Cinema {
-  Aggregate Cinema;
-}
-
-Aggregate Cinema {
-  Entity Cinema, ScreeningRoom, Seat;
-}
-
-Entity Cinema { }
-Entity ScreeningRoom { }
-Entity Seat { }
-
-Context Movie {
-  Aggregate Movie;
-}
-
-Aggregate Movie {
-  Entity Movie, Actor, Publisher;
-}
-
-Entity Movie { }
-Entity Actor { }
-Entity Publisher { }
-
-Context User {
-  Aggregate User;
-}
-
-Aggregate User {
-  Entity User;
-}
-
-Entity User {
-  Struct {
-    id: UUID;
-    mobile: String;
-    email: String;
-    username: String;
-    password: String;
-    address: String;
+    subgraph cluster_aggregate_movie {
+      label="Movie(Aggregate)";
+      entity_Movie [label="Movie"];
+      entity_Actor [label="Actor"];
+      entity_Publisher [label="Publisher"];
+    }
   }
-}
 
-Entity Payment {
-  Struct {
-    id: UUID;
-    amount: BigDecimal;
-    currency: Currency;
-    status: PaymentStatus;
-    createdAt: LocalDateTime;
+  subgraph cluster_reservation {
+    label="Reservation(Context)";
+
+    subgraph cluster_aggregate_reservation {
+      label="Reservation(Aggregate)";
+      entity_Ticket [label="Ticket"];
+      entity_Reservation [label="Reservation"];
+    }
   }
-}
 
-ValueObject Price { }
-ValueObject Notifications { }
-`
+  subgraph cluster_user {
+    label="User(Context)";
+
+    subgraph cluster_aggregate_user {
+      label="User(Aggregate)";
+      entity_User [label="User"];
+    }
+  }
+}`
   } as CodeProp);
 
   const updateRenderFormats = (event: React.MouseEvent<HTMLElement>, newFormats: string[],) => {
