@@ -39,6 +39,39 @@ Core Technical:
   - [x] Dot Language
   - [ ] Fkl Language 
 
+## DSL Samples
+
+```fkl
+ContextMap TicketBooking {
+  Reservation <-> TicketContext;
+}
+
+Context TicketContext {
+  Aggregate Ticket, Reservation;
+}
+
+Entity Ticket {
+  Struct {
+    seat: String;
+  }
+}
+
+// binding;
+impl CinemaCreated {
+  endpoint {
+    GET "/book/{id}";
+    authorization: Basic admin admin;
+    response: Cinema;
+  }
+
+  flow {
+    via UserRepository::getUser receive x: User;
+    via Kafak send User to "user.create";
+  }
+}
+```
+
+
   
 ## Demos
 
