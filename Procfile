@@ -1,1 +1,1 @@
-web: target/release/server
+web: crates/target/release/server
