@@ -1,18 +1,5 @@
 [workspace]
 
 members = [
-  "domain_derive",
   "server",
-
-  "fkl_cli",
-  "fkl_lsp",
-  "fkl_parser",
-  "fkl_parser_wasm",
-
-  "fkl_codegen_dot",
-  "fkl_codegen_java",
-  "codegen_plugins/feakin-aws-lambda",
 ]
-
-[profile.release.package.fkl-wasm]
-opt-level = 2

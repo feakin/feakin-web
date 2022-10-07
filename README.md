@@ -32,7 +32,7 @@ Core Technical:
     - [x] CRDT
   - [x] Editor
 - [ ] DSL
-  - [ ] FKL Syntax
+  - [x] FKL Syntax
   - [x] FKL Parser
   - [ ] FKL LSP
 - [ ] Editor
