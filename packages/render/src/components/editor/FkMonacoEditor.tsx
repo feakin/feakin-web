@@ -33,17 +33,17 @@ interface FkMonacoEditorParams {
   code: CodeProp;
   subject: WebSocketSubject<any>;
   updateCode: (code: CodeProp) => void;
-  room: string;
-  agentName: string;
-  setRoomId: (roomId: string) => void;
+  room?: string;
+  agentName?: string;
+  setRoomId?: (roomId: string) => void;
 }
 
 function FkMonacoEditor(props: FkMonacoEditorParams) {
-  const [roomId, setRoomId] = React.useState<string>(props.room);
-  const [subject] = React.useState<WebSocketSubject<any>>(props.subject);
+  // const [roomId, setRoomId] = React.useState<string>(props.room);
+  // const [subject] = React.useState<WebSocketSubject<any>>(props.subject);
   const [editor, setEditor] = React.useState<editor.IStandaloneCodeEditor>();
 
-  const [doc, setDoc] = React.useState<Doc>(null as any);
+  const [doc] = React.useState<Doc>(null as any);
 
   const [isLoadingWasm, setIsLoadingWasm] = useState(false);
 
@@ -53,14 +53,14 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     setContent(props.code.content);
   }, [props.code.content]);
 
-  useEffect(() => {
-    if (props.room.length > 0) {
-      setRoomId(props.room);
-      if (subject) {
-        subject.next({ "type": "LeaveRoom", "value": { "room_id": props.room, "agent_name": props.agentName } });
-      }
-    }
-  }, [props.agentName, props.room, subject]);
+  // useEffect(() => {
+  //   if (props.room.length > 0) {
+  //     setRoomId(props.room);
+  //     if (subject) {
+  //       subject.next({ "type": "LeaveRoom", "value": { "room_id": props.room, "agent_name": props.agentName } });
+  //     }
+  //   }
+  // }, [props.agentName, props.room, subject]);
 
   useEffect(() => {
     if (!isLoadingWasm) {
@@ -72,53 +72,53 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
 
   const [patchInfo, setPatchInfo] = React.useState<FkPatch>(null as any);
 
-  useEffect(() => {
-    if (!isLoadingWasm) {
-      return;
-    }
-
-    subject.subscribe({
-      next: (msg: FkResponse) => {
-        if (roomId.length === 0 && msg.type === "CreateRoom") {
-          props.setRoomId(msg.value.room_id);
-          setRoomId(msg.value.room_id);
-
-          let newDoc = Doc.fromBytes(msg.value.content as any, props.agentName);
-          newDoc.localToRemoteVersion(newDoc.getLocalVersion());
-          setDoc(newDoc);
-
-          return;
-        }
-
-        if (msg.type === "Join") {
-          let newDoc = Doc.fromBytes(msg.value.content as any, props.agentName)
-          newDoc.localToRemoteVersion(newDoc.getLocalVersion());
-          setDoc(newDoc);
-          setContent(newDoc.get());
-          return;
-        }
-
-        if (msg.type === "Upstream") {
-          setApplyPatching(true);
-          setPatchInfo(msg.value);
-          return;
-        }
-
-        if (msg.type === "Patches") {
-          setApplyPatching(true);
-          setPatchInfo(msg.value);
-          return;
-        }
-      },
-      error: (err: any) => console.log(err),
-      complete: () => console.log('complete')
-    });
-
-    // Todo: change content to be a json object? But since is same library? will be generate same version?
-    if (roomId.length <= 0) {
-      subject.next({ "type": "CreateRoom", "value": { "agent_name": props.agentName, "content": props.code.content } });
-    }
-  }, [props.agentName, isLoadingWasm, props, roomId.length, subject, setPatchInfo]);
+  // useEffect(() => {
+  //   if (!isLoadingWasm) {
+  //     return;
+  //   }
+  //
+  //   subject.subscribe({
+  //     next: (msg: FkResponse) => {
+  //       if (roomId.length === 0 && msg.type === "CreateRoom") {
+  //         props.setRoomId(msg.value.room_id);
+  //         setRoomId(msg.value.room_id);
+  //
+  //         let newDoc = Doc.fromBytes(msg.value.content as any, props.agentName);
+  //         newDoc.localToRemoteVersion(newDoc.getLocalVersion());
+  //         setDoc(newDoc);
+  //
+  //         return;
+  //       }
+  //
+  //       if (msg.type === "Join") {
+  //         let newDoc = Doc.fromBytes(msg.value.content as any, props.agentName)
+  //         newDoc.localToRemoteVersion(newDoc.getLocalVersion());
+  //         setDoc(newDoc);
+  //         setContent(newDoc.get());
+  //         return;
+  //       }
+  //
+  //       if (msg.type === "Upstream") {
+  //         setApplyPatching(true);
+  //         setPatchInfo(msg.value);
+  //         return;
+  //       }
+  //
+  //       if (msg.type === "Patches") {
+  //         setApplyPatching(true);
+  //         setPatchInfo(msg.value);
+  //         return;
+  //       }
+  //     },
+  //     error: (err: any) => console.log(err),
+  //     complete: () => console.log('complete')
+  //   });
+  //
+  //   // Todo: change content to be a json object? But since is same library? will be generate same version?
+  //   if (roomId.length <= 0) {
+  //     subject.next({ "type": "CreateRoom", "value": { "agent_name": props.agentName, "content": props.code.content } });
+  //   }
+  // }, [props.agentName, isLoadingWasm, props, roomId.length, subject, setPatchInfo]);
 
   const [isApplyPatch, setApplyPatching] = React.useState<boolean>(false);
 
@@ -187,18 +187,18 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
 
     let content;
     if (doc) {
-      let localVersion = doc.getLocalVersion();
+      // let localVersion = doc.getLocalVersion();
 
       event.changes.sort((change1, change2) => change2.rangeOffset - change1.rangeOffset).forEach(change => {
         doc.ins(change.rangeOffset, change.text);
         doc.del(change.rangeOffset, change.rangeLength);
       })
 
-      let patches = doc.getPatchSince(localVersion);
-      subject.next({
-        type: "OpsByPatches",
-        value: { room_id: roomId, agent_name: props.agentName, patches: Array.prototype.slice.call(patches) }
-      })
+      // let patches = doc.getPatchSince(localVersion);
+      // subject.next({
+      //   type: "OpsByPatches",
+      //   value: { room_id: roomId, agent_name: props.agentName, patches: Array.prototype.slice.call(patches) }
+      // })
 
       // todo: update by samples
       content = doc.get();
@@ -212,7 +212,7 @@ function FkMonacoEditor(props: FkMonacoEditorParams) {
     });
 
     setContent(content);
-  }, [isApplyPatch, doc, subject, roomId, props]);
+  }, [isApplyPatch, doc, props]);
 
   const editorDidMount = useCallback((editor: any, monaco: any) => {
     addDotLangSupport(monaco);

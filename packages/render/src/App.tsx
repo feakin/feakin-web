@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { SupportedFileType } from "@feakin/exporter";
 
@@ -15,7 +15,6 @@ import { NavBar } from "./layout/nav-bar";
 import { SupportedLayout } from "@feakin/exporter/src/layout/layout-engine";
 import FkMonacoEditor from "./components/editor/FkMonacoEditor";
 import { webSocket } from "rxjs/webSocket";
-import { randomId } from "./components/editor/subscribe-wrapper";
 
 export const App = () => {
   const history = new ChangeHistory();
@@ -93,16 +92,16 @@ export const App = () => {
     })
   };
 
-  const [roomId, setRoomId] = React.useState<string>("");
-
-  const updateRoomId = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRoomId(event.target.value);
-  }
-
-  const agentName = randomId();
-  const joinRoom = () => {
-    subject.next({ "type": "JoinRoom", "value": { "room_id": roomId, "agent_name": agentName } });
-  }
+  // const [roomId, setRoomId] = React.useState<string>("");
+  //
+  // const updateRoomId = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setRoomId(event.target.value);
+  // }
+  //
+  // const agentName = randomId();
+  // const joinRoom = () => {
+  //   subject.next({ "type": "JoinRoom", "value": { "room_id": roomId, "agent_name": agentName } });
+  // }
 
   return (
     <div>
@@ -112,15 +111,15 @@ export const App = () => {
           <Box sx={ { display: 'flex', alignItems: 'center', md: 'flex', '& > :not(style)': { m: 1 } } }>
             <TextField id="lang-name" disabled size="small" label="Language" value={ code.language }/>
             <TextField id="source-type" disabled size="small" label="Source Type" value={ code.sourceType }/>
-            <TextField id="roomId" size="small" label="Room Id" value={ roomId } onChange={ updateRoomId }/>
-            <Button size={ "small" } onClick={ joinRoom }>Join</Button>
+            {/*<TextField id="roomId" size="small" label="Room Id" value={ roomId } onChange={ updateRoomId }/>*/}
+            {/*<Button size={ "small" } onClick={ joinRoom }>Join</Button>*/}
           </Box>
           <FkMonacoEditor code={ code }
                           updateCode={ setCode }
                           subject={ subject }
-                          room={ roomId }
-                          setRoomId={ setRoomId }
-                          agentName={ agentName }
+                          // room={ roomId }
+                          // setRoomId={ setRoomId }
+                          // agentName={ agentName }
           />
         </Grid2>
         <Grid2 xs={ 6 }>
