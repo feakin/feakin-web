@@ -5,6 +5,74 @@ import { SupportedCodeLang } from "../type";
 
 export const templates: FkTemplate[] = [
   {
+    name: 'ddd-booking',
+    label: 'Feakin Sample',
+    template: {
+      sourceType: SupportedFileType.Feakin,
+      language: SupportedCodeLang.fkl,
+      compiledContent: '',
+      content: `ContextMap TicketBooking {
+  Reservation -> Cinema;
+  Reservation -> Movie;
+  Reservation -> User;
+}
+
+Context Reservation {
+  Aggregate Reservation;
+}
+
+Aggregate Reservation {
+  Entity Ticket, Reservation;
+}
+
+Entity Reservation  {}
+
+Entity Ticket  {}
+
+Context Cinema {
+  Aggregate Cinema;
+}
+
+Aggregate Cinema {
+  Entity Cinema, ScreeningRoom, Seat;
+}
+
+Entity Cinema { }
+Entity ScreeningRoom { }
+Entity Seat { }
+
+Context Movie {
+  Aggregate Movie;
+}
+
+Aggregate Movie {
+  Entity Movie, Actor, Publisher;
+}
+
+Entity Movie { }
+Entity Actor { }
+Entity Publisher { }
+
+Context User {
+  Aggregate User;
+}
+
+Aggregate User {
+  Entity User;
+}
+
+Entity User {
+}
+
+Entity Payment {
+}
+
+ValueObject Price { }
+ValueObject Notifications { }
+`
+    }
+  },
+  {
     name: 'concept-map',
     label: 'Concept Map',
     template: {
@@ -72,74 +140,6 @@ export const templates: FkTemplate[] = [
   expressjs -> "aws-sdk" [constraint=false];
   "aws-sdk" -> S3 [lhead=cluster_aws];
 }
-`
-    }
-  },
-  {
-    name: 'ddd-booking',
-    label: 'DDD Booking',
-    template: {
-      sourceType: SupportedFileType.Feakin,
-      language: SupportedCodeLang.fkl,
-      compiledContent: '',
-      content: `ContextMap TicketBooking {
-  Reservation -> Cinema;
-  Reservation -> Movie;
-  Reservation -> User;
-}
-
-Context Reservation {
-  Aggregate Reservation;
-}
-
-Aggregate Reservation {
-  Entity Ticket, Reservation;
-}
-
-Entity Reservation  {}
-
-Entity Ticket  {}
-
-Context Cinema {
-  Aggregate Cinema;
-}
-
-Aggregate Cinema {
-  Entity Cinema, ScreeningRoom, Seat;
-}
-
-Entity Cinema { }
-Entity ScreeningRoom { }
-Entity Seat { }
-
-Context Movie {
-  Aggregate Movie;
-}
-
-Aggregate Movie {
-  Entity Movie, Actor, Publisher;
-}
-
-Entity Movie { }
-Entity Actor { }
-Entity Publisher { }
-
-Context User {
-  Aggregate User;
-}
-
-Aggregate User {
-  Entity User;
-}
-
-Entity User {
-}
-
-Entity Payment {
-}
-
-ValueObject Price { }
-ValueObject Notifications { }
 `
     }
   }
