@@ -227,6 +227,19 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
   useEffect(() => {
     try {
       switch (props.code.sourceType) {
+        case SupportedFileType.Feakin:
+          try {
+            let parser = new FklParser(props.code.content);
+            let output = parser.to_dot();
+
+            console.info(output);
+            Converter.fromContent(output, SupportedFileType.GRAPHVIZ).then((data) => {
+              setGraph(data.graph);
+            });
+          } catch (e) {
+            console.error(e);
+          }
+          break;
         case SupportedFileType.GRAPHVIZ:
         case SupportedFileType.MERMAID:
           Converter.fromContent(props.code.content, props.code.sourceType).then((data) => {
@@ -243,18 +256,6 @@ function Render(props: { code: CodeProp, history: ChangeHistory, options: Render
           Converter.fromContent(props.code.content, props.code.sourceType).then((data) => {
             setGraph(data.graph);
           });
-          break;
-        case SupportedFileType.Feakin:
-          try {
-            let parser = new FklParser(props.code.content);
-            let output = parser.to_dot();
-
-            Converter.fromContent(output, SupportedFileType.GRAPHVIZ).then((data) => {
-              setGraph(data.graph);
-            });
-          } catch (e) {
-            console.error(e);
-          }
           break;
         default:
           throw new Error(`Unsupported source type: ${ props.code.sourceType }`);

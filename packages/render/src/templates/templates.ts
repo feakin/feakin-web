@@ -96,21 +96,7 @@ Aggregate Reservation {
   Entity Ticket, Reservation;
 }
 
-Entity Reservation  {
-  Struct {
-    id: String;
-    token: UUID;
-    status: ReservationStatus = ReservationStatus.OPEN;
-    expiresAt: LocalDateTime;
-    createdAt: LocalDateTime;
-    screeningId: String;
-    screeningStartTime: LocalDateTime;
-    name: String;
-    surname: String;
-    tickets: Set<Ticket>;
-    totalPrice: BigDecimal;
-  }
-}
+Entity Reservation  {}
 
 Entity Ticket  {}
 
@@ -147,24 +133,9 @@ Aggregate User {
 }
 
 Entity User {
-  Struct {
-    id: UUID;
-    mobile: String;
-    email: String;
-    username: String;
-    password: String;
-    address: String;
-  }
 }
 
 Entity Payment {
-  Struct {
-    id: UUID;
-    amount: BigDecimal;
-    currency: Currency;
-    status: PaymentStatus;
-    createdAt: LocalDateTime;
-  }
 }
 
 ValueObject Price { }
