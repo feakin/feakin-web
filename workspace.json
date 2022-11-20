@@ -4,7 +4,6 @@
   "projects": {
     "cli": "packages/cli",
     "exporter": "packages/exporter",
-    "model": "packages/model",
     "parser": "packages/parser",
     "render": "packages/render"
   }
