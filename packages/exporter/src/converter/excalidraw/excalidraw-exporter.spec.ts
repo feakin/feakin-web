@@ -4,7 +4,6 @@ import { Mxfile, MxGraph } from "../drawio/mxgraph";
 import { DrawioImporter } from "../drawio/drawio-importer";
 import { ExcalidrawExporter } from "./excalidraw-exporter";
 import { Graph } from "../../model/graph";
-import { DotImporter } from "../dot/dot-importer";
 
 function fromFile(path: string): DrawioImporter {
   return new DrawioImporter(fs.readFileSync(path, 'utf8'));
@@ -79,8 +78,6 @@ describe('ExcalidrawExporter', () => {
 
     const exporter = new ExcalidrawExporter(sourceTargetGraph).intermediate();
 
-    const nodes = exporter.elements.filter(e => e.type === 'rectangle');
-    // expect(nodes.length).toEqual(47);
     expect(exporter.elements.length).toEqual(152);
 
     fs.writeFileSync('./test/functional.excalidraw', JSON.stringify(exporter, null, 2));
@@ -100,22 +97,5 @@ describe('ExcalidrawExporter', () => {
     const exporter = new ExcalidrawExporter(graph).export();
 
     fs.writeFileSync('./test/exporter.excalidraw', JSON.stringify(exporter, null, 2));
-  });
-
-  it('triangle to line', () => {
-    const dotImporter = new DotImporter(`digraph G {
-  subgraph cluster0 {
-    a [shape="triangle"];
-    b [shape="diamond"];
-  }
-}`);
-
-    const graph: Graph = dotImporter.parse();
-    const exporter = new ExcalidrawExporter(graph).intermediate();
-    const elements = exporter.elements;
-    expect(elements.length).toEqual(6);
-
-    const triangle = elements.filter(e => e.type === 'line')[0];
-    expect(triangle.points.length).toEqual(4);
   });
 });
