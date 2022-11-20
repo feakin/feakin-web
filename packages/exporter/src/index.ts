@@ -1,6 +1,5 @@
 export * from './converter/converter';
 export * from './converter/dot/dot-exporter';
-export * from './converter/dot/dot-importer';
 export * from './converter/dot/dot-wasm-importer';
 export * from "./converter/drawio/cell-state";
 export * from './converter/drawio/cell-state-style';
