@@ -1,12 +1,12 @@
 import * as fs from "fs";
 
-import { DotImporter } from "./dot/dot-importer";
 import { Graph } from "../model/graph";
 import { DrawioExporter } from "./drawio/drawio-exporter";
 import { MermaidImporter } from "./mermaid/mermaid-importer";
 import { ExcalidrawExporter } from "./excalidraw/excalidraw-exporter";
 import { DrawioImporter } from "./drawio/drawio-importer";
 import { DotExporter } from "./dot/dot-exporter";
+import { DotWasmImporter } from "./dot/dot-wasm-importer";
 
 describe('Converter', () => {
   it('from mermaid', () => {
@@ -29,8 +29,8 @@ graph TD;
     fs.writeFileSync("./test/from-mermaid.excalidraw", JSON.stringify(output, null, 2));
   });
 
-  it('from dot', () => {
-    const executor = new DotImporter(`
+  it('from dot', async () => {
+    const executor = new DotWasmImporter(`
 digraph {
   a -> b
   a -> c
@@ -39,7 +39,7 @@ digraph {
   e
 }
 `);
-    const graph: Graph = executor.parse();
+    const graph: Graph = await executor.parsePromise();
 
     const output = new ExcalidrawExporter(graph).intermediate();
     const edges = output.elements.filter(e => e.type === "arrow");
@@ -51,8 +51,8 @@ digraph {
     fs.writeFileSync("./test/from-dot.excalidraw", JSON.stringify(output, null, 2));
   });
 
-  it('from dot to drawio', () => {
-    const executor = new DotImporter(`
+  it('from dot to drawio', async () => {
+    const executor = new DotWasmImporter(`
 digraph {
   a -> b
   a -> c
@@ -61,7 +61,7 @@ digraph {
   e
 }
 `);
-    const graph: Graph = executor.parse();
+    const graph: Graph = await executor.parsePromise();
 
     const output = new DrawioExporter(graph).export();
 
@@ -78,8 +78,8 @@ digraph {
     fs.writeFileSync("./test/from-drawio.dot", output);
   });
 
-  it('from dot to drawio', () => {
-    const executor = new DotImporter(`digraph G {
+  it('from dot to drawio', async () => {
+    const executor = new DotWasmImporter(`digraph G {
   compound=true;
   subgraph cluster0 {
     a [shape="triangle", fillcolor=red, style=filled];
@@ -92,7 +92,7 @@ digraph {
     e -> f;
   }
 }`);
-    const graph: Graph = executor.parse();
+    const graph: Graph = await executor.parsePromise();
 
     const output = new DrawioExporter(graph).export();
 
